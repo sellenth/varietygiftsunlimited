@@ -27,18 +27,16 @@
         buyButton.addEventListener('click', () => {
             // Replace 'your_price_id' with the actual Price ID from your Stripe dashboard
             stripe.redirectToCheckout({
-                lineItems: [{price: 'price_1Pt1oCAp2D4XT14xRVTbzUaL', quantity: 1}],
+                lineItems: [{price: 'price_1Pt1yQAp2D4XT14x42kSeCxp', quantity: 1}],
                 mode: 'payment',
-                successUrl: 'https://yourwebsite.com/success',
-                cancelUrl: 'https://yourwebsite.com/cancel',
+                successUrl: 'https://sellenth.github.io/varietygiftsunlimited/success',
+                cancelUrl: 'https://sellenth.github.io/varietygiftsunlimited',
             }).then(function (result) {
                 if (result.error) {
                     alert(result.error.message);
                 }
             });
         });
-    </script>git remote add origin https://github.com/sellenth/varietygiftsunlimited.git
-git branch -M main
-git push -u origin main
+    </script>
 </body>
 </html>
