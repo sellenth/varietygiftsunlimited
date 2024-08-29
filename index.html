@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Box Shop</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Savings Box Shop</h1>
+    <div id="product">
+        <h2>Savings Box</h2>
+        <p>A stylish box to store your savings.</p>
+        <p>Price: $19.99</p>
+        <button id="buy-button">Buy Now</button>
+    </div>
+
+    <script>
+        // Replace 'your_publishable_key' with your actual Stripe publishable key
+        const stripe = Stripe('your_publishable_key');
+
+        const buyButton = document.getElementById('buy-button');
+        buyButton.addEventListener('click', () => {
+            // Replace 'your_price_id' with the actual Price ID from your Stripe dashboard
+            stripe.redirectToCheckout({
+                lineItems: [{price: 'your_price_id', quantity: 1}],
+                mode: 'payment',
+                successUrl: 'https://yourwebsite.com/success',
+                cancelUrl: 'https://yourwebsite.com/cancel',
+            }).then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
