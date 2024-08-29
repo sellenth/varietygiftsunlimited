@@ -21,13 +21,13 @@
 
     <script>
         // Replace 'your_publishable_key' with your actual Stripe publishable key
-        const stripe = Stripe('your_publishable_key');
+        const stripe = Stripe('pk_test_51HWvhOAp2D4XT14xsXvno9chrxXEqojGtRYCg2ZMaAOlLNcAwKsxsoYn3GEGJL1kc0yJROPePIULdba2T80t7RVb00VmBMk7SQ');
 
         const buyButton = document.getElementById('buy-button');
         buyButton.addEventListener('click', () => {
             // Replace 'your_price_id' with the actual Price ID from your Stripe dashboard
             stripe.redirectToCheckout({
-                lineItems: [{price: 'your_price_id', quantity: 1}],
+                lineItems: [{price: 'price_1Pt1oCAp2D4XT14xRVTbzUaL', quantity: 1}],
                 mode: 'payment',
                 successUrl: 'https://yourwebsite.com/success',
                 cancelUrl: 'https://yourwebsite.com/cancel',
@@ -37,6 +37,8 @@
                 }
             });
         });
-    </script>
+    </script>git remote add origin https://github.com/sellenth/varietygiftsunlimited.git
+git branch -M main
+git push -u origin main
 </body>
 </html>
