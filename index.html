@@ -6,18 +6,35 @@
     <title>Savings Box Shop</title>
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --text-color: #333;
+            --background-color: #f9f9f9;
+        }
+        body { display: flex; flex-direction: column; align-items: center; font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        button { background-color: #333; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        img { width: 100%; height: auto; max-width: 400px }
+        .price { color: var(--secondary-color)}
+        h1 {
+            background: linear-gradient(45deg, var(--primary-color), #4a504a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
-    <h1>Savings Box Shop</h1>
-    <div id="product">
-        <h2>Savings Box</h2>
-        <p>A stylish box to store your savings.</p>
-        <p>Price: $19.99</p>
-        <button id="buy-button">Buy Now</button>
-    </div>
+    <h1>Variety Gifts Unlimited</h1>
+    <h2>Presents...</h2>
+    <img src="box.jpg" alt="Savings Box">
+    <p>A stylish box to store your savings and motivate you.</p>
+    <p class="price">Special Offer: $14.99</p>
+    <button id="buy-button">Buy Now</button>
 
     <script>
         // Replace 'your_publishable_key' with your actual Stripe publishable key
@@ -30,7 +47,7 @@
                 lineItems: [{price: 'price_1Pt1yQAp2D4XT14x42kSeCxp', quantity: 1}],
                 mode: 'payment',
                 successUrl: 'https://sellenth.github.io/varietygiftsunlimited/success',
-                cancelUrl: 'https://sellenth.github.io/varietygiftsunlimited',
+                cancelUrl: 'https://sellenth.github.io/varietygiftsunlimited/cancel',
             }).then(function (result) {
                 if (result.error) {
                     alert(result.error.message);
