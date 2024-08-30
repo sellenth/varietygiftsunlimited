@@ -38,13 +38,13 @@
 
     <script>
         // Replace 'your_publishable_key' with your actual Stripe publishable key
-        const stripe = Stripe('pk_test_51HWvhOAp2D4XT14xsXvno9chrxXEqojGtRYCg2ZMaAOlLNcAwKsxsoYn3GEGJL1kc0yJROPePIULdba2T80t7RVb00VmBMk7SQ');
+        const stripe = Stripe('pk_live_51HWvhOAp2D4XT14xq0WXoT5XA5xiJGBKRcMOQjfgXKB8t5ZxPzzAJ1kyK4D6fDA6mQ2P4Ml4P76Aje1Cy9YGos1100tzptbd9K');
 
         const buyButton = document.getElementById('buy-button');
         buyButton.addEventListener('click', () => {
             // Replace 'your_price_id' with the actual Price ID from your Stripe dashboard
             stripe.redirectToCheckout({
-                lineItems: [{price: 'price_1Pt1yQAp2D4XT14x42kSeCxp', quantity: 1}],
+                lineItems: [{price: 'price_1Pt1oCAp2D4XT14xRVTbzUaL', quantity: 1}],
                 mode: 'payment',
                 successUrl: 'https://sellenth.github.io/varietygiftsunlimited/success',
                 cancelUrl: 'https://sellenth.github.io/varietygiftsunlimited/cancel',
