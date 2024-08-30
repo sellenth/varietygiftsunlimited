@@ -46,8 +46,8 @@
             stripe.redirectToCheckout({
                 lineItems: [{price: 'price_1Pt1oCAp2D4XT14xRVTbzUaL', quantity: 1}],
                 mode: 'payment',
-                successUrl: 'https://sellenth.github.io/varietygiftsunlimited/success',
-                cancelUrl: 'https://sellenth.github.io/varietygiftsunlimited/cancel',
+                successUrl: 'https://www.varietygiftsunlimited.com/success',
+                cancelUrl: 'https://www.varietygiftsunlimited.com/cancel',
             }).then(function (result) {
                 if (result.error) {
                     alert(result.error.message);
