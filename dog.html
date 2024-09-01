@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazing Dog Toy - Variety Gifts Unlimited</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(to bottom, #87CEEB, #E0FFFF);
+            color: #FF6347;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 3em;
+            text-shadow: 2px 2px #FFA500;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .price {
+            font-size: 1.5em;
+            color: #32CD32;
+            font-weight: bold;
+        }
+        button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .price {
+                font-size: 1.2em;
+            }
+            button {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Woof-tastic Dog Toy!</h1>
+        <img src="dog1.png" alt="Amazing Dog Toy">
+        <p>This furry little companion can keep you company wherever you go!</p>
+        <p class="price">Bark-gain Price: $13.99</p>
+        <h4>(free shipping on us :D)</p>
+        <button id="buy-button">Fetch This Toy!</button>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_live_51HWvhOAp2D4XT14xq0WXoT5XA5xiJGBKRcMOQjfgXKB8t5ZxPzzAJ1kyK4D6fDA6mQ2P4Ml4P76Aje1Cy9YGos1100tzptbd9K');
+
+        const buyButton = document.getElementById('buy-button');
+        buyButton.addEventListener('click', () => {
+            stripe.redirectToCheckout({
+                lineItems: [{price: 'price_1Pu2AtAp2D4XT14xiRFgfXkn', quantity: 1}],
+                mode: 'payment',
+                successUrl: 'https://www.varietygiftsunlimited.com/success',
+                cancelUrl: 'https://www.varietygiftsunlimited.com/cancel',
+                shippingAddressCollection: {
+                    allowedCountries: ['US', 'CA', 'MX', 'TH'],
+                },
+            }).then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
