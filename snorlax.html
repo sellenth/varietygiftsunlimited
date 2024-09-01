@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giant Snorlax Plushie - Variety Gifts Unlimited</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            background-color: #87CEFA;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #4169E1;
+            text-shadow: 2px 2px #FFD700;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .size-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .size-option {
+            background-color: #FFD700;
+            border: 2px solid #4169E1;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .size-option:hover {
+            transform: scale(1.05);
+        }
+        .size-option.selected {
+            background-color: #4169E1;
+            color: white;
+        }
+        button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .size-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><a href="index.html" style="text-decoration: none; color: #4169E1;">Variety Gifts Unlimited</a></h1>
+        <h2>Presents... Giant Snorlax Plushie!</h2>
+        <img src="snorlax.png" alt="Giant Snorlax Plushie">
+        <p>Cuddle up with this adorable and enormous Snorlax plushie!</p>
+        <div class="size-options">
+            <div class="size-option" data-size="5ft" data-price="35">
+                <h3>5ft Snorlax</h3>
+                <p>$35</p>
+            </div>
+            <div class="size-option" data-size="6.5ft" data-price="70">
+                <h3>6.5ft Snorlax</h3>
+                <p>$70</p>
+            </div>
+        </div>
+        <button id="buy-button" disabled>Choose a size to buy!</button>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_live_51HWvhOAp2D4XT14xq0WXoT5XA5xiJGBKRcMOQjfgXKB8t5ZxPzzAJ1kyK4D6fDA6mQ2P4Ml4P76Aje1Cy9YGos1100tzptbd9K');
+
+        const buyButton = document.getElementById('buy-button');
+        const sizeOptions = document.querySelectorAll('.size-option');
+        let selectedSize = null;
+        let selectedPrice = null;
+
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedSize = option.dataset.size;
+                selectedPrice = option.dataset.price;
+                buyButton.textContent = `Buy ${selectedSize == '5ft' ? 'big' : 'bigger'} Snorlax`;
+                buyButton.disabled = false;
+            });
+        });
+
+        buyButton.addEventListener('click', () => {
+            if (!selectedSize || !selectedPrice) return;
+
+            stripe.redirectToCheckout({
+                lineItems: [{
+                    price: selectedSize === '5ft' ? 'price_1PuKbgAp2D4XT14xPmNl3B3R' : 'price_1PuKbgAp2D4XT14xpk37b6pz',
+                    quantity: 1
+                }],
+                mode: 'payment',
+                successUrl: 'https://www.varietygiftsunlimited.com/success',
+                cancelUrl: 'https://www.varietygiftsunlimited.com/cancel',
+                shippingAddressCollection: {
+                    allowedCountries: ['US', 'CA', 'MX', 'TH'],
+                },
+            }).then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
