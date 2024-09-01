@@ -48,6 +48,9 @@
                 mode: 'payment',
                 successUrl: 'https://www.varietygiftsunlimited.com/success',
                 cancelUrl: 'https://www.varietygiftsunlimited.com/cancel',
+                shippingAddressCollection: {
+                    allowedCountries: ['US', 'CA', 'MX', 'TH'], // Add or remove countries as needed
+                },
             }).then(function (result) {
                 if (result.error) {
                     alert(result.error.message);
