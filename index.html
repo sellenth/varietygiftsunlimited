@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -10,6 +10,9 @@
             margin: 0 auto;
             padding: 20px;
             text-align: center;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
         h1 {
             color: #4a90e2;
@@ -22,22 +25,37 @@
         .product-item {
             margin: 20px;
             max-width: 300px;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            border: 2px solid #4a90e2;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+        .product-item:hover {
+            transform: scale(1.05);
         }
         .product-item img {
             width: 100%;
             height: auto;
             border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-        .product-item img:hover {
-            transform: scale(1.05);
         }
         .product-item a {
             display: block;
             margin-top: 10px;
             text-decoration: none;
-            color: #333;
+            color: #4a90e2;
             font-weight: bold;
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
     </style>
 
@@ -63,23 +81,29 @@
     <link rel="canonical" href="https://www.varietygiftsunlimited.com/">
 </head>
 <body>
-    <h1><a href="index.html" style="text-decoration: none; color: #4a90e2;">Variety Gifts Unlimited</a></h1>
+    <h1 style="background-color: #f8f8f8; border-radius: 10px; border: 2px solid #4a90e2; padding: 10px; text-align: center;"><a href="index.html" style="text-decoration: none; color: #4a90e2;">Variety Gifts Unlimited</a></h1>
     <div class="product-grid">
         <div class="product-item">
             <a href="box.html">
-                <img src="box.jpg" alt="Savings Box">
+                <img src="box.webp" alt="Savings Box">
                 <span>Savings Box</span>
             </a>
         </div>
         <div class="product-item">
+            <a href="cape.html">
+                <img src="shaving/2.webp" alt="Shaving Cape" style="width: 300px; height: 300px;">
+                <span>Shaving Cape</span>
+            </a>
+        </div>
+        <div class="product-item">
             <a href="dog.html">
-                <img src="dog1.png" alt="Dog Toy">
+                <img src="dog1.webp" alt="Dog Toy">
                 <span>Amazing Dog Toy</span>
             </a>
         </div>
         <div class="product-item">
             <a href="snorlax.html">
-                <img src="snorlax.png" alt="Giant Snorlax Plushie">
+                <img src="snorlax.webp" alt="Giant Snorlax Plushie">
                 <span>Giant Snorlax Plushie</span>
             </a>
         </div>
