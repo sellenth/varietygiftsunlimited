@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shaving Cape - Variety Gifts Unlimited</title>
     <script src="https://js.stripe.com/v3/"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,21 +12,6 @@
             margin: 0 auto;
             padding: 20px;
             text-align: center;
-        }
-        .tns-nav {
-            text-align: center;
-            margin: 10px 0;
-        }
-        .tns-nav button {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ccc;
-            border: none;
-            margin: 0 5px;
-        }
-        .tns-nav button.tns-nav-active {
-            background: #333;
         }
         .price { color: #f39c12; font-size: 1.5em; }
         button {
@@ -50,22 +33,10 @@
     <a href="index.html" aria-label="Home">🏠</a>
     <h1><a href="index.html" style="text-decoration: none; color: #4a90e2;">Variety Gifts Unlimited</a></h1>
     <h2>Shaving Cape</h2>
-    <div class="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item">
-                <img src="shaving/1.webp" alt="Shaving cape" style="max-width: 500px; aspect-ratio: 4 / 3;">
-                <p class="carousel-caption">A stylish cape for your cleaning habits</p>
-            </div>
-            <div class="carousel-item">
-                <img src="shaving/2.webp" alt="Model wearing shaving cape" style="max-width: 500px; aspect-ratio: 4 / 3;">
-                <p class="carousel-caption">Keep your bathroom clean while looking stylish</p>
-            </div>
-            <div class="carousel-item">
-                <img src="shaving/3.webp" alt="Close-up of hair on cape" style="max-width: 500px; aspect-ratio: 4 / 3;">
-                <p class="carousel-caption">Durable material catches even the finest hair</p>
-            </div>
-        </div>
-    </div>
+    
+    <img src="shaving/2.webp" alt="Model wearing shaving cape" style="max-width: 500px; aspect-ratio: 4 / 3;">
+    <p>Keep your bathroom clean while looking stylish</p>
+    
     <p>Never worry about messy sinks again! Perfect for spouses, roommates, and anyone who values cleanliness.</p>
     <p class="price">Only $20 with Free Shipping!</p>
     <button id="buy-button" style="width: 200px; height: 50px; font-size: 1.5em;">Buy Now</button>
@@ -89,18 +60,6 @@
                     alert(result.error.message);
                 }
             });
-        });
-
-        // Tiny Slider initialization
-        const slider = tns({
-            container: '.carousel-inner',
-            items: 1,
-            slideBy: 'page',
-            autoplay: false,
-            controls: false,
-            nav: true,
-            falsosition: 'bottom',
-            controlsText: ['<', '>']
         });
     </script>
 </body>
