@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanner Sticker - Variety Gifts Unlimited</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .price { color: #f39c12; font-size: 1.5em; }
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .powered-by-stripe {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 10px;
+        }
+        #quantity {
+            width: 50px;
+            padding: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" aria-label="Home">🏠</a>
+    <h1><a href="../index.html" style="text-decoration: none; color: #4a90e2;">Variety Gifts Unlimited</a></h1>
+    <h2>Tanner Sticker</h2>
+    
+    <img src="stickers.webp" alt="Tanner Stickers" style="max-width: 500px;">
+    <p>Meet Tanner, our husky mascot for Variety Gifts Unlimited!</p>
+    
+    <p>Let Tanner bring some love into your life with these stickers of her cute face!</p>
+    <p class="price">$5.99 per 4 stickers with Free Shipping!</p>
+    <p>Dimensions: These are probably about 1" x 1"</p>
+    <button id="buy-button" style="border-radius: 10px; width: 200px; height: 50px; font-size: 1.5em;">Buy Now</button>
+    <p class="powered-by-stripe">Powered by Stripe</p>
+
+    <script>
+        const stripe = Stripe('pk_live_51HWvhOAp2D4XT14xq0WXoT5XA5xiJGBKRcMOQjfgXKB8t5ZxPzzAJ1kyK4D6fDA6mQ2P4Ml4P76Aje1Cy9YGos1100tzptbd9K');
+
+        stripe.redirectToCheckout({
+            lineItems: [{price: 'price_1PzqLFAp2D4XT14xzkgRqF8T'}],
+            mode: 'payment',
+            successUrl: 'https://www.varietygiftsunlimited.com/success',
+            cancelUrl: 'https://www.varietygiftsunlimited.com/cancel',
+            shippingAddressCollection: {
+                allowedCountries: ['US', 'CA', 'MX', 'TH'],
+            },
+        }).then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        });
+    </script>
+</body>
+</html>
