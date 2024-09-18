@@ -135,9 +135,6 @@
             </a>
         </div>
     </div>
-    <footer style="margin-top: 20px; text-align: center;">
-        <a href="privacy_policy.html" style="color: #4a90e2; text-decoration: none;">Privacy Policy</a>
-    </footer>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -146,6 +143,16 @@
       "url": "https://www.varietygiftsunlimited.com/",
       "description": "Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!",
     }
+    </script>
+    <footer id="footer-placeholder"></footer>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+;
     </script>
 </body>
 </html>

@@ -66,5 +66,13 @@
     <p>If you have any questions about this Privacy Policy, please contact us at halston (at) sellent .in</p>
     
     <p><a href="index.html">Back to Home</a></p>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
 </body>
 </html>

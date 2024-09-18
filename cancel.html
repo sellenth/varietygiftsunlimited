@@ -16,5 +16,13 @@
     <p>Your order has been cancelled.</p>
     <p>No charges have been made to your account.</p>
     <a href="index.html" class="button">Return to Shop</a>
+    <footer id="footer-placeholder"></footer>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
 </body>
 </html>
