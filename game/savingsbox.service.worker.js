@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1726968468|20406193576';
+const CACHE_VERSION = '1727029042|1355362397';
 /** @type {string} */
 const CACHE_PREFIX = 'savingsbox-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
