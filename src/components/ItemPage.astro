@@ -35,7 +35,7 @@ const {
     <div class="flex flex-col items-center justify-center">
   <figure><img src={imageUrl} alt={imageAlt} /></figure>
       <p class="text-2xl font-bold text-accent pb-4">{priceText}</p>
-      <button id="buy-button" data-stripe-key={stripeKey} class="btn btn-primary">Get Yours Now!</button>
+      <button id="buy-button" data-stripe-key={stripeKey} data-stripe-payment-id={stripePaymentId} class="btn btn-primary">Get Yours Now!</button>
     <p class="text-sm text-base-content/70">Powered by Stripe</p>
     </div>
 
@@ -54,11 +54,21 @@ const {
 </main> 
 <Footer />
 
-<script define:vars={{ stripeKey, stripePaymentId }}>
+<script>
   import { loadStripe } from '@stripe/stripe-js';
   
   const buyButton = document.getElementById('buy-button');
+  if (!buyButton || !buyButton.dataset || !buyButton.dataset.stripeKey || !buyButton.dataset.stripePaymentId) {
+    console.error('You managed to break my site. Please contact the Tanner.');
+    throw new Error('You managed to break my site. Please contact the Tanner.');
+  }
+  const stripeKey = buyButton.dataset.stripeKey;
+  const stripePaymentId = buyButton.dataset.stripePaymentId;
   const stripe = await loadStripe(stripeKey);
+  if (!stripe) {
+    console.error('Failed to initialize Stripe.');
+    throw new Error('Failed to initialize Stripe.');
+  }
 
   buyButton.addEventListener('click', () => {
     stripe.redirectToCheckout({
