@@ -1,0 +1,20 @@
+---
+interface Props {
+	img: string;
+	title: string;
+	href: string;
+}
+
+const { img, href, title } = Astro.props;
+---
+
+<a href={href}>
+  <div class="h-full">
+  <figure>
+    <img
+		class="rounded-full w-96 h-96"
+      src={img}
+      alt={title} />
+  </figure>
+</div>
+</a>

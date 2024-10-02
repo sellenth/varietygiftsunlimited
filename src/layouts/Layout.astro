@@ -1,0 +1,148 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+import '@fontsource/creepster';
+import '@fontsource-variable/roboto-slab';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+		<meta
+			name="description"
+			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+		/>
+		<meta
+			name="keywords"
+			content="gifts, unique gifts, fun gifts, savings box, dog toy, Snorlax plushie"
+		/>
+		<meta name="author" content="Variety Gifts Unlimited" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:url"
+			content="https://www.varietygiftsunlimited.com/"
+		/>
+		<meta
+			property="og:title"
+			content="Variety Gifts Unlimited - Unique and Fun Gifts"
+		/>
+		<meta
+			property="og:description"
+			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+		/>
+		<meta
+			property="og:image"
+			content="https://www.varietygiftsunlimited.com/thumbnail.jpg"
+		/>
+
+		<!-- Microsoft Teams App Sharing -->
+		<meta name="msapplication-TileColor" content="#da532c" />
+		<meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+		<meta
+			name="msapplication-square70x70logo"
+			content="/mstile-70x70.png"
+		/>
+		<meta
+			name="msapplication-square150x150logo"
+			content="/mstile-150x150.png"
+		/>
+		<meta
+			name="msapplication-wide310x150logo"
+			content="/mstile-310x150.png"
+		/>
+		<meta
+			name="msapplication-square310x310logo"
+			content="/mstile-310x310.png"
+		/>
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta
+			property="twitter:url"
+			content="https://www.varietygiftsunlimited.com/"
+		/>
+		<meta
+			property="twitter:title"
+			content="Variety Gifts Unlimited - Unique and Fun Gifts"
+		/>
+		<meta
+			property="twitter:description"
+			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+		/>
+		<meta
+			property="twitter:image"
+			content="https://www.varietygiftsunlimited.com/thumbnail.jpg"
+		/>
+
+		<link rel="canonical" href="https://www.varietygiftsunlimited.com/" />
+	</head>
+
+	<body>
+		<a href="/" class="home-button" aria-label="Go to homepage">🏠</a>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	html,
+	body {
+		height: 100%;
+		min-width: 100%;
+		margin: 0;
+		padding: 0;
+		font-family: system-ui, sans-serif;
+		background: #212121;
+		/*
+		background: linear-gradient(-45deg, #4d4c4c, #6e5961, #374246, #cacaca);
+		background-image: linear-gradient(
+			to right,
+			#fffd8e 33%,
+			#ff9428 33%,
+			#ff9428 66%,
+			rgba(128, 0, 64, 0.676) 66%
+		);*/
+		background-size: 400% 200%;
+		animation: gradient 15s ease infinite;
+	}
+	@keyframes gradient {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+	h1 {
+		font-family: 'Creepster', cursive;
+	}
+	h2, h3, h4, h5, h6 {
+		font-family: 'Roboto Slab Variable', serif;
+	}
+	.home-button {
+		filter: brightness(50%);
+		position: fixed;
+		top: -.2em;
+		left: -.1em;
+		font-size: 48px;
+		text-decoration: none;
+		z-index: 1000;
+		background-image: radial-gradient(circle at top left, white 50%, transparent 50%);
+		background-size: 1.2em 1.2em;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+</style>

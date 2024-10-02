@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ItemPage from '../components/ItemPage.astro';
+
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+<Layout title="Variety Gifts Unlimited - Giant Snorlax Plushie">
+
+    <ItemPage
+      title="Giant Snorlax Plushie"
+      bodyText="Cuddle up with this adorable and enormous Snorlax plushie!"
+      priceText="5 ft. Version: $35"
+      imageUrl="/snorlax.webp"
+      imageAlt="Giant Snorlax Plushie"
+      stripeKey={PUBLIC_STRIPE_KEY}
+      stripePaymentId="price_1PuKbgAp2D4XT14xPmNl3B3R"
+      youtubeEmbedId="Q1GS-AAYuE4"
+    />
+
+</Layout>
