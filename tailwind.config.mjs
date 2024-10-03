@@ -8,7 +8,6 @@ export default {
 	daisyui: {
 		themes: [        
 			{
-				/*
 				mytheme: {
 					"primary": "#fde047",
 					"secondary": "#fbcfe8",
@@ -20,8 +19,7 @@ export default {
 				"warning": "#9f1239",
 				"error": "#ff0000",
 			}
-			*/
-		}, 'halloween', 'dark'],
+		}, 'halloween'],
 		base: true,
 		styled: true,
 		utils: true,
