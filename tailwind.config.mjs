@@ -8,17 +8,26 @@ export default {
 	daisyui: {
 		themes: [        
 			{
-				mytheme: {
-					"primary": "#fde047",
-					"secondary": "#fbcfe8",
-					"accent": "#a5f3fc",
-				"neutral": "#4b5563",
-				"base-100": "#fef9c3",
-				"info": "#fecdd3",
-				"success": "#a3e635",
-				"warning": "#9f1239",
-				"error": "#ff0000",
-			}
+        mytheme: {
+          
+"primary": "#f7ff2e",
+          
+"secondary": "#fbcfe8",
+          
+"accent": "#28158e",
+          
+"neutral": "#ffffff",
+          
+"base-100": "#a07af7",
+          
+"info": "#fecdd3",
+          
+"success": "#a3e635",
+          
+"warning": "#9f1239",
+          
+"error": "#ff0000",
+          },
 		}, 'halloween'],
 		base: true,
 		styled: true,
