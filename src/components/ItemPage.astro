@@ -26,6 +26,7 @@ const {
 ---
 
 	<main class="p-5 w-full flex flex-col gap-4 items-center overflow-x-hidden">
+    <a href="/" class="absolute top-0 left-0 m-5 text-3xl z-50">🏠</a>
 <Hero 
     img={imageUrl} 
     title={title} 
@@ -74,8 +75,8 @@ const {
     stripe.redirectToCheckout({
       lineItems: [{price: stripePaymentId, quantity: 1}],
       mode: 'payment',
-      successUrl: 'https://www.varietygiftsunlimited.com/',
-      cancelUrl: 'https://www.varietygiftsunlimited.com/',
+      successUrl: 'https://varietygiftsunlimited.com/',
+      cancelUrl: 'https://varietygiftsunlimited.com/',
       shippingAddressCollection: {
         allowedCountries: ['US', 'CA', 'MX', 'TH'],
       },
