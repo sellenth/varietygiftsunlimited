@@ -68,31 +68,36 @@ import Header from "../components/Header.astro";
 						document.getElementById("thumbnail-container")?.classList.add("hidden");
 						let formData = new FormData();
 						formData.append("filename", imageId);
-						var filenameResponse = await fetch(
-						`https://api.varietygiftsunlimited.com/pet-converter`,
-						{
-							method: "POST",
-							body: formData,
-						},
-					);
-					document.getElementById("loading")?.classList.add("hidden");
-					document.getElementById("thumbnail-container")?.classList.remove("hidden");
-					if (filenameResponse.ok) {
-						document.getElementById("after-conversion")?.classList.remove("hidden");
-						var filename = await filenameResponse
-							.text()
+						try {
+							var filenameResponse = await fetch(
+								`https://api.varietygiftsunlimited.com/pet-converter`,
+								{
+									method: "POST",
+									body: formData,
+								},
+							);
+							document.getElementById("loading")?.classList.add("hidden");
+							document.getElementById("thumbnail-container")?.classList.remove("hidden");
+						if (filenameResponse.ok) {
+							document.getElementById("after-conversion")?.classList.remove("hidden");
+							var filename = await filenameResponse
+								.text()
 							.then((text) => text.replace(/^"|"$/g, ""));
-						console.log(filename);
-						thumbnail.src =
-							"https://api.varietygiftsunlimited.com/" + filename;
-					} else {
-						console.error("Failed to fetch pet image");
-						getImg();
+							console.log(filename);
+								thumbnail.src =
+									"https://api.varietygiftsunlimited.com/" + filename;
+							} else {
+								console.error("Failed to fetch pet image");
+								getImg();
+							}
+						} catch (error) {
+							console.error("Error fetching pet image:", error);
+							getImg();
+						}
 					}
+					getImg();
 				}
-				getImg();
 			}
-		}
 
 			// Function to get URL parameters
 			function getUrlParameter(name: string) {
