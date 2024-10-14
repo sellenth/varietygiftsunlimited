@@ -1,0 +1,25 @@
+<header class="header bg-black text-info font-bold p-2 flex justify-between max-w-3xl mx-auto">
+  <a href="/">
+    <h3 class="text-white">VGU</h3>
+  </a>
+  <input
+    id="themeToggle"
+    type="checkbox"
+    value="halloween"
+    class="toggle theme-controller hidden"
+  />
+</header>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle') as HTMLInputElement;
+
+  const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
+  themeToggle.checked = isDark;
+  themeToggle.classList.remove('hidden');
+
+  themeToggle.addEventListener('change', () => {
+    const newIsDark = themeToggle.checked;
+    localStorage.setItem('isDark', JSON.stringify(newIsDark));
+    document.documentElement.setAttribute('data-theme', newIsDark ? 'halloween' : 'mytheme');
+  });
+</script>

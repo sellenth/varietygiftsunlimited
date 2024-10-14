@@ -10,21 +10,18 @@ import Circle from '../components/Circle.astro';
 <Layout title="Variety Gifts Unlimited - Unique and Fun Gifts"
 >
 	<main class="p-5 w-full flex flex-col gap-4 items-center overflow-x-hidden">
-		<input type="checkbox" value="halloween" class="absolute top-0 right-0 m-5 toggle theme-controller" />
-
 		<Hero img="" 
 		title="Variety Gifts Unlimited" 
 		body="wishes YOU a spooooky October 👻" />
 
 
-		<div class="fixed-buttons opacity-80">
-		<button class="btn btn-primary" onclick="alert('This is actually all we have... we will add more soon! :D')">All Products</button>
-		<a href="/game/savingsbox.html">
-			<button class="btn btn-secondary">Games</button>
-		</a>
-		<a href="/pet-converter">
-			<button class="btn btn-accent">Pet Converter</button>
-		</a>
+		<div class="opacity-80 w-full max-w-2xl flex justify-center gap-4">
+			<a href="/game/savingsbox.html" class="w-1/2">
+				<button class="btn btn-secondary w-full">Games</button>
+			</a>
+			<a href="/pet-converter" class="w-1/2">
+				<button class="btn btn-accent w-full">Pet Converter</button>
+			</a>
 		</div>
 
 		<section id="cards" class="grid grid-cols-1 lg:grid-cols-3 justify-items-center gap-4">

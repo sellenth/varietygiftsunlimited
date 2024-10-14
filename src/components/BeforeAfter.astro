@@ -8,21 +8,21 @@ interface Props {
 const { imgBefore, imgAfter, name } = Astro.props;
 ---
 
-<div class="flex flex-col items-center mb-8 bg-neutral p-4 rounded-xl">
-	<h1 class="text-4xl font-bold mb-4">{name}</h1>
-	<div class="flex gap-4 max-w-[600px] w-full">
-		<div class="w-1/2 aspect-[9/16] overflow-hidden">
+<div class="flex flex-col items-center mb-8 p-4">
+	<h1 class="text-4xl font-bold mb-4 text-primary-content">{name}</h1>
+	<div class="flex gap-4 max-w-[600px]">
+		<div class="">
 			<img 
 				src={imgBefore} 
 				alt={`${name} before`} 
-				class="w-full h-full object-cover rounded-xl"
+				class="w-full object-cover rounded-xl h-48"
 			/>
 		</div>
-		<div class="w-1/2">
+		<div class="">
 			<img 
 				src={imgAfter} 
 				alt={`${name} after`} 
-				class="w-full h-auto rounded-xl"
+				class="w-full rounded-xl h-48"
 			/>
 		</div>
 	</div>

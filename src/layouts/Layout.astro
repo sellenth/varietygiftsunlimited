@@ -6,6 +6,7 @@ interface Props {
 const { title } = Astro.props;
 import '@fontsource/creepster';
 import '@fontsource-variable/roboto-slab';
+import Header from '../components/Header.astro';
 ---
 
 <!doctype html>
@@ -86,62 +87,92 @@ import '@fontsource-variable/roboto-slab';
 		/>
 
 		<link rel="canonical" href="https://www.varietygiftsunlimited.com/" />
+		<script is:inline>
+			const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
+			document.documentElement.setAttribute('data-theme', isDark ? 'halloween' : 'light');
+
+			// Check if user has already made a choice about data collection
+			const dataCollectionChoice = localStorage.getItem('allowDataCollection');
+			if (dataCollectionChoice === null) {
+				// If no choice has been made, we'll show the dialog when the page loads
+				window.addEventListener('load', showDataCollectionDialog);
+			} else if (dataCollectionChoice === 'true') {
+				// If user agreed, inject Vercel Analytics
+				import('@vercel/analytics').then(analytics => analytics.inject());
+			}
+
+			function showDataCollectionDialog() {
+				const dialog = document.createElement('dialog');
+				dialog.innerHTML = `
+					<h2>Allow Anonymous Data Collection?</h2>
+					<p>We'd like to collect anonymous usage data to improve our site. This helps us understand how our site is used and make it better for everyone.</p>
+					<button id="allowData">Allow</button>
+					<button id="denyData">Deny</button>
+				`;
+				document.body.appendChild(dialog);
+				dialog.showModal();
+
+				dialog.querySelector('#allowData').addEventListener('click', () => {
+					localStorage.setItem('allowDataCollection', 'true');
+					import('@vercel/analytics').then(analytics => analytics.inject());
+					dialog.close();
+				});
+
+				dialog.querySelector('#denyData').addEventListener('click', () => {
+					localStorage.setItem('allowDataCollection', 'false');
+					dialog.close();
+				});
+			}
+		</script>
 	</head>
 
-	<body>
-		<!--  <a href="/" class="home-button" aria-label="Go to homepage">🏠</a>  -->
+	<body class="bg-black">
 		<slot />
 	</body>
 </html>
 
+
 <style is:global>
 	html,
 	body {
-		height: 100%;
+		overflow-y: auto;
 		min-width: 100%;
+		min-height: fit-content;
 		margin: 0;
 		padding: 0;
 		font-family: system-ui, sans-serif;
-		/*
-		background: linear-gradient(-45deg, #4d4c4c, #6e5961, #374246, #cacaca);
-		background-image: linear-gradient(
-			to right,
-			#fffd8e 33%,
-			#ff9428 33%,
-			#ff9428 66%,
-			rgba(128, 0, 64, 0.676) 66%
-		);*/
-		background-size: 400% 200%;
-		animation: gradient 15s ease infinite;
 	}
-	@keyframes gradient {
-		0% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-		100% {
-			background-position: 0% 50%;
-		}
-	}
-	h1 {
+	h1, h2 {
 		font-family: 'Creepster', cursive;
 	}
-	h2, h3, h4, h5, h6 {
+	h3, h4, h5, h6 {
 		font-family: 'Roboto Slab Variable', serif;
 	}
-	.home-button {
-		filter: brightness(50%);
-		position: fixed;
-		top: -.2em;
-		left: -.1em;
-		font-size: 48px;
-		text-decoration: none;
-		z-index: 1000;
-		background-image: radial-gradient(circle at top left, white 50%, transparent 50%);
-		background-size: 1.2em 1.2em;
-		background-position: center;
-		background-repeat: no-repeat;
+
+	dialog {
+		padding: 1rem;
+		background: white;
+		color: black;
+		border: 1px solid var(--border-color);
+		border-radius: 0.5rem;
+		max-width: 400px;
+	}
+
+	dialog::backdrop {
+		background: rgba(0, 0, 0, 0.5);
+	}
+
+	dialog button {
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 0.25rem;
+		background: var(--button-bg);
+		color: var(--button-text);
+		cursor: pointer;
+	}
+
+	dialog button:hover {
+		opacity: 0.8;
 	}
 </style>
