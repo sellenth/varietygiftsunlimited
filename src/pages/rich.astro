@@ -26,15 +26,15 @@
         }
         /** * Sends a score to YouTube. * * @return a Promise that completes when succeeded and rejects with an * `SdkError` when failed. */ export function sendScore(
             score: Score,
-        ): Promise;
+        ): Promise<void>;
     }
     /** * The functions and properties related to generic game behaviors. */ declare namespace ytgame.game {
         /** * Notifies YouTube that the game's first frame is ready to be * shown. The game **MUST** call this API. Otherwise, the game is not shown to * users. `firstFrameReady()` **MUST** be called before `gameReady()`. */ export function firstFrameReady(): void;
         /** * Notifies YouTube that the game is ready for players to interact with. The * game **MUST** call this API. Otherwise, the game is not shown to users. * `firstFrameReady()` **MUST** be called before `gameReady()`. */ export function gameReady(): void;
         /** * Saves game data to the YouTube in the form of a serialized string. * * @return a Promise that completes when saving succeeded and rejects with an * `SdkError` when failed. */ export function saveData(
             data: string,
-        ): Promise;
-        /** * Loads game data from the YouTube in the form of a serialized string. * * @return a Promise that completes when loading succeeded and rejects with an * `SdkError` when failed. */ export function loadData(): Promise;
+        ): Promise<void>;
+        /** * Loads game data from the YouTube in the form of a serialized string. * * @return a Promise that completes when loading succeeded and rejects with an * `SdkError` when failed. */ export function loadData(): Promise<string>;
     }
     /** * The functions and properties related to the game health. */ declare namespace ytgame.health {
         /** * Logs an error to YouTube. Aggregate information will be accessible on the * YouTube Playables health page. This API is best-effort and rate-limited, * which can result in data loss. */ export function logError(): void;
@@ -51,7 +51,7 @@
         /** * Sets a callback to be triggered when a resume game event is fired from * YouTube. * * @return a function to unset the callback. */ export function onResume(
             callback: () => void,
         ): () => void;
-        /** * Returns the language that is set in the user's YouTube settings in the * form of a BCP-47 language tag. * * @return a Promise that completes when getting the language succeeded and * rejects with an `SdkError` when failed. */ export function getLanguage(): Promise;
+        /** * Returns the language that is set in the user's YouTube settings in the * form of a BCP-47 language tag. * * @return a Promise that completes when getting the language succeeded and * rejects with an `SdkError` when failed. */ export function getLanguage(): Promise<string>;
     }
 
     /**
@@ -455,7 +455,7 @@
     function addInteractionHandling() {
         can.addEventListener(
             "pointerdown",
-            () => {
+            (event) => {
                 buttons.leftButton.wasPressed = buttons.leftButton.isPressed =
                     ctx.isPointInPath(
                         buttons.leftButton.shape,
@@ -468,7 +468,7 @@
 
         can.addEventListener(
             "pointermove",
-            () => {
+            (event) => {
                 if (buttons.leftButton.wasPressed) {
                     buttons.leftButton.isPressed = ctx.isPointInPath(
                         buttons.leftButton.shape,
@@ -482,7 +482,7 @@
 
         can.addEventListener(
             "pointerup",
-            () => {
+            (event) => {
                 buttons.leftButton.isPressed = ctx.isPointInPath(
                     buttons.leftButton.shape,
                     event.offsetX,

@@ -4,6 +4,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "noImplicitAny": false,
-    "strict": false
+    "strict": false,
   }
 }
