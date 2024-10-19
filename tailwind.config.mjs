@@ -28,7 +28,7 @@ export default {
           
 "error": "#ff0000",
           },
-		}, 'halloween'],
+		}, 'halloween', 'cupcake'],
 		base: true,
 		styled: true,
 		utils: true,
