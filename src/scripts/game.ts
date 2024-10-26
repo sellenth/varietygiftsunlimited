@@ -89,27 +89,40 @@ function animate() {
 document.body.appendChild(VRButton.createButton(renderer));
 renderer.xr.enabled = true;
 
-const material = new THREE.RawShaderMaterial( {
+const material = new THREE.RawShaderMaterial({
+  uniforms: {
+    time: { value: 1.0 },
+    resolution: { value: new THREE.Vector2() }
+  },
 
-	uniforms: {
-		time: { value: 1.0 },
-		resolution: { value: new THREE.Vector2() }
-	},
+  vertexShader: `
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    attribute vec3 position;
 
-	vertexShader: `void main() {
-    gl_Position = vec4(position, 1.0);
-}`,
-	fragmentShader: `uniform float time;
-    uniform vec2 resolution;
     void main() {
-        vec2 uv = gl_FragCoord.xy / resolution;
-        uv -= vec2(0.5);
-        uv *= vec2(resolution.x / resolution.y, 1);
-        vec3 col = vec3(0);
-        float noise = sin(dot(uv, vec2(12.9898, 4.1414)) * 43758.5453 + time);
-        col += vec3(noise);
-        gl_FragColor = vec4(col, 1.0);
-    }`,
-} );
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vec3(0, 0, -2), 1.0);
+      
+    }
+  `,
+  fragmentShader: `
+    precision mediump float;
+    uniform float time;
+    uniform vec2 resolution;
 
-scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+    void main() {
+      vec2 uv = gl_FragCoord.xy / resolution;
+      uv -= vec2(0.5);
+      uv *= vec2(resolution.x / resolution.y, 1);
+      vec3 col = vec3(0);
+      float noise = sin(dot(uv, vec2(12.9898, 4.1414)) * 43758.5453 + time);
+      col += vec3(noise);
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+});
+
+var plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+plane.position.set(0, 0, 0);
+plane.rotation.set(-Math.PI / 6, 0, 0);
+scene.add(plane);
