@@ -74,8 +74,50 @@ window.onresize = function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
+const material = new THREE.RawShaderMaterial({
+  uniforms: {
+    time: { value: 0.0 },
+    waveHeight: { value: 0.2 },
+    waveFrequency: { value: 3.0 }
+  },
+
+  vertexShader: `
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform float time;
+    uniform float waveHeight;
+    uniform float waveFrequency;
+    
+    attribute vec3 position;
+
+    void main() {
+      vec3 pos = position + vec3(0, 5, -1.7);
+      float wave = 
+        sin(pos.x * waveFrequency + time) * cos(pos.z * waveFrequency + time) * waveHeight;
+      pos.y += wave * (pos.y - 0.5);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `,
+  fragmentShader: `
+    precision mediump float;
+
+    void main() {
+      gl_FragColor = vec4(0.5, 0.8, 1.0, 1.0); // Light blue color
+    }
+  `,
+});
+
+// Create a plane with more segments for smoother waves
+const planeGeometry = new THREE.PlaneGeometry(5, 5, 64, 64);
+const plane = new THREE.Mesh(planeGeometry, material);
+plane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+scene.add(plane);
+
 function animate() {
   const delta = clock.getDelta();
+
+  // Update the time uniform for animation
+  material.uniforms.time.value += delta;
 
   mixer.update(delta);
 
@@ -88,41 +130,3 @@ function animate() {
 
 document.body.appendChild(VRButton.createButton(renderer));
 renderer.xr.enabled = true;
-
-const material = new THREE.RawShaderMaterial({
-  uniforms: {
-    time: { value: 1.0 },
-    resolution: { value: new THREE.Vector2() }
-  },
-
-  vertexShader: `
-    uniform mat4 modelViewMatrix;
-    uniform mat4 projectionMatrix;
-    attribute vec3 position;
-
-    void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vec3(0, 0, -2), 1.0);
-      
-    }
-  `,
-  fragmentShader: `
-    precision mediump float;
-    uniform float time;
-    uniform vec2 resolution;
-
-    void main() {
-      vec2 uv = gl_FragCoord.xy / resolution;
-      uv -= vec2(0.5);
-      uv *= vec2(resolution.x / resolution.y, 1);
-      vec3 col = vec3(0);
-      float noise = sin(dot(uv, vec2(12.9898, 4.1414)) * 43758.5453 + time);
-      col += vec3(noise);
-      gl_FragColor = vec4(col, 1.0);
-    }
-  `,
-});
-
-var plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-plane.position.set(0, 2, -2.8);
-plane.rotation.set(-Math.PI / 2, 0, 0);
-scene.add(plane);
