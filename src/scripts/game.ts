@@ -102,8 +102,7 @@ const material = new THREE.RawShaderMaterial({
 
     void main() {
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position + vec3(0, 0, -2), 1.0);
-      float height = sin(dot(position.xy, vec2(12.9898, 4.1414)) * 43758.5453 + time) * 0.5 + 0.5;
-      gl_Position.y += height * 0;
+      
     }
   `,
   fragmentShader: `
