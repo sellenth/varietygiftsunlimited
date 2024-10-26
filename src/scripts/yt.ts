@@ -1,0 +1,539 @@
+import Game from "./game";
+
+/** * Copyright 2024 Google LLC * * Licensed under the Apache License, Version 2.0 (the "License"); * you may not use this file except in compliance with the License. * You may obtain a copy of the License at * * https://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */ /** * The top-level namespace for the YouTube Playables SDK. */ declare namespace ytgame {
+  /** * The types of errors that the YouTube Playables SDK throws. */ export const enum SdkErrorType {
+    /** * The error type is unknown. */ UNKNOWN,
+    /** * The API was temporarily unavailable. Ask players to retry at a later time * if they are in a critical flow. */ API_UNAVAILABLE,
+    /** * The API was called with invalid parameters. */ INVALID_PARAMS,
+    /** * The API was called with parameters exceeding the size limit. */ SIZE_LIMIT_EXCEEDED,
+  }
+  /** * The error object that the YouTube Playables SDK throws. The `SdkError` * object is a child of `Error` and contains an additional field. */ export class SdkError
+    extends Error {
+    /** * The type of the error. */ errorType: SdkErrorType;
+  }
+  /** * The YouTube Playables SDK version. */ export const SDK_VERSION: string;
+  /** * Whether or not the game is running within the Playables environment. */ export const IN_PLAYABLES_ENV:
+    boolean;
+}
+/** * The functions and properties related to player engagement. */ declare namespace ytgame.engagement {
+  /** * The score object the game sends to YouTube. */ export interface Score {
+    /** * The score value expressed as an integer. */ value: number;
+  }
+  /** * Sends a score to YouTube. * * @return a Promise that completes when succeeded and rejects with an * `SdkError` when failed. */ export function sendScore(
+    score: Score,
+  ): Promise<void>;
+}
+/** * The functions and properties related to generic game behaviors. */ declare namespace ytgame.game {
+  /** * Notifies YouTube that the game's first frame is ready to be * shown. The game **MUST** call this API. Otherwise, the game is not shown to * users. `firstFrameReady()` **MUST** be called before `gameReady()`. */ export function firstFrameReady(): void;
+  /** * Notifies YouTube that the game is ready for players to interact with. The * game **MUST** call this API. Otherwise, the game is not shown to users. * `firstFrameReady()` **MUST** be called before `gameReady()`. */ export function gameReady(): void;
+  /** * Saves game data to the YouTube in the form of a serialized string. * * @return a Promise that completes when saving succeeded and rejects with an * `SdkError` when failed. */ export function saveData(
+    data: string,
+  ): Promise<void>;
+  /** * Loads game data from the YouTube in the form of a serialized string. * * @return a Promise that completes when loading succeeded and rejects with an * `SdkError` when failed. */ export function loadData(): Promise<
+    string
+  >;
+}
+/** * The functions and properties related to the game health. */ declare namespace ytgame.health {
+  /** * Logs an error to YouTube. Aggregate information will be accessible on the * YouTube Playables health page. This API is best-effort and rate-limited, * which can result in data loss. */ export function logError(): void;
+  /** * Logs a warning to YouTube. Aggregate information will be accessible on the * YouTube Playables health webpage. This API is best-effort and rate-limited, * which can result in data loss. */ export function logWarning(): void;
+}
+/** * The functions and properties related to the YouTube system. */ declare namespace ytgame.system {
+  /** * Returns whether the game audio is enabled in the YouTube settings. The game * **SHOULD** use this to initialize the game audio state. */ export function isAudioEnabled(): boolean;
+  /** * Sets a callback to be triggered when the audio settings change event is * fired from YouTube. The game **MUST** use this API to update the game audio * state. * * @param isAudioEnabled whether the audio is enabled in YouTube settings. * @return function to unset the callback. * */ export function onAudioEnabledChange(
+    callback: (isAudioEnabled: boolean) => void,
+  ): () => void;
+  /** * Sets a callback to be triggered when a pause game event is fired from * YouTube. The game has a short window to save any state before it is * evicted. * * @return a function to unset the callback. */ export function onPause(
+    callback: () => void,
+  ): () => void;
+  /** * Sets a callback to be triggered when a resume game event is fired from * YouTube. * * @return a function to unset the callback. */ export function onResume(
+    callback: () => void,
+  ): () => void;
+  /** * Returns the language that is set in the user's YouTube settings in the * form of a BCP-47 language tag. * * @return a Promise that completes when getting the language succeeded and * rejects with an `SdkError` when failed. */ export function getLanguage(): Promise<
+    string
+  >;
+}
+
+/**
+ * If the game is running as a YouTube Playable.
+ * @type {boolean}
+ */
+const inPlayablesEnv = typeof ytgame !== "undefined" && ytgame.IN_PLAYABLES_ENV;
+
+/**
+ * Holds the save data.
+ * @type {Object}
+ */
+let playableSave: any;
+
+/**
+ * Holds the current counter.
+ *
+ * @type {number}
+ */
+let counter = -1;
+
+function onPause() {
+  stopAnimation();
+}
+
+function onResume() {
+  startAnimation();
+}
+
+/**
+ * Initialize the parts of the game relevant to YouTube Playables.
+ *
+ * Separating this functionality enables testing both as a plain web game and
+ * as a YouTube Playable.
+ */
+async function initAsPlayable() {
+  // Hold the YouTube Playable pause/resume callbacks.
+  let unsetOnPause;
+  let unsetOnResume;
+
+  unsetOnPause = ytgame.system.onPause(() => {
+    onPause();
+  });
+
+  unsetOnResume = ytgame.system.onResume(() => {
+    onResume();
+  });
+
+  // Generally, it is best to wait for this data to avoid race conditions or
+  // the need to merge with conflicting data.
+  const data = await ytgame.game.loadData();
+
+  if (data && data !== "") {
+    // Process data to resume game state.
+    try {
+      playableSave = JSON.parse(data);
+      console.debug("Loaded Playable save:");
+      console.debug(playableSave);
+      counter = playableSave.counter;
+    } catch (e) {
+      // On error, the game starts from scratch.
+      playableSave = {};
+      counter = 0;
+      // This isn't ideal, so log an error.
+      console.error(e);
+      // Send an error to YouTube when this happens.
+      ytgame.health.logError();
+    }
+  } else {
+    playableSave = {};
+    counter = 0;
+  }
+
+  // Handle the audio changing state from YouTube.
+  ytgame.system.onAudioEnabledChange((isAudioEnabled) => {
+    console.debug(
+      `onAudioEnabledChange() - isAudioEnabled: [${isAudioEnabled}]`,
+    );
+    if (isAudioEnabled) {
+      // Allow audio.
+      audioEnabled = true;
+      startAudio();
+    } else if (!isAudioEnabled) {
+      // Disable audio.
+      stopAudio();
+      audioEnabled = false;
+    }
+  });
+}
+
+/**
+ * Save the current user data to YouTube.
+ */
+function saveData() {
+  if (inPlayablesEnv) {
+    ytgame.game.saveData(JSON.stringify(playableSave)).then(
+      () => {
+        // Handle data save success.
+      },
+      (e) => {
+        // Handle data save failure.
+        console.error(e);
+        // Send an error to YouTube when this happens.
+        ytgame.health.logError();
+      },
+    );
+  }
+}
+
+/**
+ * Handle a new score.
+ *
+ * This could display it, but in this case, it is just sent to YouTube.
+ * @param {number} newScore
+ */
+function sendScore(newScore) {
+  if (inPlayablesEnv) {
+    ytgame.engagement.sendScore({ value: newScore });
+  }
+}
+
+// ==================================================
+// End YouTube Playables integration section
+// ==================================================
+
+// ==================================================
+// Begin audio section
+// ==================================================
+
+let audioSource;
+let audioCtx;
+/**
+ * Whether audio is currently allowed to play.
+ *
+ * @type {boolean}
+ */
+let audioEnabled = true;
+/**
+ * Whether audio is currently playing.
+ *
+ * @type {boolean}
+ */
+let audioPlaying = false;
+
+async function initAudio() {
+  // Don't initialize more than once.
+  if (audioSource) {
+    return;
+  }
+
+  audioCtx = new AudioContext();
+  audioSource = audioCtx.createBufferSource();
+  const audioBuffer = await fetch("moonlight.mp3")
+    .then((res) => res.arrayBuffer())
+    .then((ArrayBuffer) => audioCtx.decodeAudioData(ArrayBuffer));
+
+  audioSource.buffer = audioBuffer;
+  audioSource.connect(audioCtx.destination);
+  audioSource.loop = true;
+  audioSource.start();
+
+  // Media requires user interaction to start, but YouTube Playables may be
+  // given focus automatically. The game has to handle that case.
+  if (audioCtx.state !== "suspended") {
+    if (audioEnabled) {
+      // Audio is enabled, so we let it continue playing.
+      audioPlaying = true;
+    } else {
+      // Audio is not enabled, so we suspend it.
+      audioCtx.suspend();
+      audioPlaying = false;
+    }
+  }
+}
+
+/**
+ * Start audio playback if it is set up, allowed, and not already playing.
+ */
+function startAudio() {
+  // The game has to check several conditions before starting audio.
+  console.debug("startAudio()");
+  if (audioCtx && audioEnabled && !audioPlaying) {
+    console.debug("Resuming audio...");
+    audioCtx.resume();
+    audioPlaying = true;
+  }
+}
+
+/**
+ * Stop audio playback if it is set up and not already stopped.
+ */
+function stopAudio() {
+  console.debug("stopAudio()");
+  if (audioCtx && audioPlaying) {
+    console.debug("Suspending audio...");
+    audioCtx.suspend();
+    audioPlaying = false;
+  }
+}
+
+// ==================================================
+// End audio section
+// ==================================================
+
+// ==================================================
+// Begin animation section
+// ==================================================
+
+const spiral = new Image();
+spiral.src = "spiral.svg";
+
+/**
+ * Holds the requestAnimationFrame return value.
+ *
+ * @type {number}
+ */
+let rafID = 0;
+
+/**
+ * If animation is stopped.
+ *
+ * @type {boolean}
+ */
+let stopped = true;
+const radiansPerTurn = Math.PI / 60;
+let currentTurn = 0;
+/**
+ * Holds a reference to the <canvas>.
+ */
+let can;
+
+/**
+ * Holds a reference to the CanvasRenderingContext2D.
+ */
+let ctx;
+
+function firstStartAnimation() {
+  if (inPlayablesEnv) {
+    // Send first frame ready now that we've started to draw.
+    ytgame.game.firstFrameReady();
+
+    // Send game ready since there isn't any other processing.
+    ytgame.game.gameReady();
+  }
+
+  startAnimation();
+
+  ctx.canvas.width = 1080;
+  ctx.canvas.height = 1920;
+}
+
+function startAnimation() {
+  if (stopped) {
+    stopped = false;
+    rafID = window.requestAnimationFrame(runAnimation);
+    console.debug(`Starting animation: ${rafID}`);
+  }
+}
+
+function stopAnimation() {
+  if (!stopped) {
+    // rafID must be the most recent rAF call.
+    cancelAnimationFrame(rafID);
+    console.debug(`Stopping animation: ${rafID}`);
+    stopped = true;
+    rafID = 0;
+  }
+}
+
+function runAnimation() {
+  if (stopped) {
+    // Don't continue to run if we are stopped.
+    return;
+  }
+
+  // Size the canvas to the page. This also clears the canvas.
+  // Games may want to listen for a window resize instead to avoid
+  // clearing the canvas every loop.
+  ctx.canvas.width = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
+  // Set a background color.
+  ctx.fillStyle = "#fae7f4";
+  ctx.fillRect(0, 0, can.width, can.height);
+
+  drawGame();
+
+  drawButtons();
+  drawCounter();
+
+  // Animate and callback.
+  rafID = window.requestAnimationFrame(runAnimation);
+}
+
+function drawGame() {
+  const game = new Game();
+  game.animate();
+}
+
+/**
+ * Holds references to buttons being used.
+ *
+ * @type {Object}
+ */
+const buttons: any = {};
+
+/**
+ * Create any buttons.
+ *
+ * The game only has one button, yet it is a useful abstraction.
+ */
+function createButtons() {
+  buttons.leftButton = {
+    isPressed: false,
+    shape: null,
+    text: "Loading...",
+  };
+  buttons.rightButton = {
+    isPressed: false,
+    shape: null,
+    text: "Loading...",
+  };
+}
+
+/**
+ * Draw any buttons.
+ *
+ * The game only has one button, yet it is a useful abstraction.
+ */
+function drawButtons() {
+  if (buttons.leftButton.isPressed) {
+    ctx.fillStyle = "#6089bf";
+  } else {
+    ctx.fillStyle = "#2975d9";
+  }
+  buttons.leftButton.shape = new Path2D();
+  buttons.leftButton.shape.rect(0, can.height - 100, can.width / 2, 100);
+  ctx.fill(buttons.leftButton.shape);
+
+  ctx.font = "20px Georgia";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#000";
+  ctx.fillText(buttons.leftButton.text, can.width / 2, can.height - 80);
+}
+
+/**
+ * Draw the counter.
+ *
+ * Similar to a high score. Only draws if the counter has been loaded.
+ */
+function drawCounter() {
+  if (counter !== -1) {
+    ctx.font = "20px Georgia";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(
+      `Counter: ${counter}`,
+      can.width / 2,
+      can.height - 120,
+    );
+  }
+}
+
+// ==================================================
+// End animation section
+// ==================================================
+
+// ==================================================
+// Begin interaction handling section
+// ==================================================
+
+/**
+ * Handles the first click/tap event on the canvas.
+ *
+ * Media (audio, video) will not autoplay, so listening for first click.
+ * This handler removes itself after it is called.
+ */
+function firstClickHandler() {
+  can.removeEventListener("click", firstClickHandler, false);
+  if (audioCtx.state === "suspended") {
+    startAudio();
+  }
+}
+
+/**
+ * Add interaction handling to interactive elements.
+ *
+ * The game only has one button, yet it is a useful abstraction.
+ */
+function addInteractionHandling() {
+  can.addEventListener(
+    "pointerdown",
+    (event) => {
+      buttons.leftButton.wasPressed =
+        buttons.leftButton.isPressed =
+          ctx.isPointInPath(
+            buttons.leftButton.shape,
+            event.offsetX,
+            event.offsetY,
+          );
+    },
+    false,
+  );
+
+  can.addEventListener(
+    "pointermove",
+    (event) => {
+      if (buttons.leftButton.wasPressed) {
+        buttons.leftButton.isPressed = ctx.isPointInPath(
+          buttons.leftButton.shape,
+          event.offsetX,
+          event.offsetY,
+        );
+      }
+    },
+    false,
+  );
+
+  can.addEventListener(
+    "pointerup",
+    (event) => {
+      buttons.leftButton.isPressed = ctx.isPointInPath(
+        buttons.leftButton.shape,
+        event.offsetX,
+        event.offsetY,
+      );
+      if (
+        buttons.leftButton.wasPressed &&
+        buttons.leftButton.isPressed
+      ) {
+        counter++;
+        playableSave.counter = counter;
+        saveData();
+        sendScore(counter);
+      }
+
+      buttons.leftButton.wasPressed =
+        buttons.leftButton.isPressed =
+          false;
+    },
+    false,
+  );
+}
+
+// ==================================================
+// End interaction handling section
+// ==================================================
+
+// ==================================================
+// Begin initialization section
+// ==================================================
+
+/**
+ * Initialize the game.
+ *
+ * Sets up animation, interaction, audio, and Playable integrations.
+ * Must be run after the DOM is loaded.
+ */
+async function init() {
+  console.debug(`init()`);
+
+  can = document.getElementById("canvas");
+  ctx = can.getContext("2d");
+
+  createButtons();
+  firstStartAnimation();
+
+  if (inPlayablesEnv) {
+    await initAsPlayable();
+  } else {
+    playableSave = {};
+    counter = 0;
+  }
+  await initAudio();
+
+  // This call will only have an effect if audio is enabled.
+  can.addEventListener("click", firstClickHandler, false);
+  buttons.leftButton.text = "Press!";
+  addInteractionHandling();
+}
+
+// Wait until the DOM is loaded to begin running.
+addEventListener("DOMContentLoaded", (event) => {
+  init();
+});
