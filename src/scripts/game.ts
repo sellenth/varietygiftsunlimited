@@ -36,6 +36,7 @@ const camera = new THREE.PerspectiveCamera(
   100,
 );
 camera.position.set(5, 2, 8);
+camera.lookAt(0, 0.5, 0);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0.5, 0);
@@ -77,7 +78,7 @@ window.onresize = function () {
 const material = new THREE.RawShaderMaterial({
   uniforms: {
     time: { value: 0.0 },
-    waveHeight: { value: 0.2 },
+    waveHeight: { value: 2.0 },
     waveFrequency: { value: 3.0 }
   },
 
@@ -91,10 +92,9 @@ const material = new THREE.RawShaderMaterial({
     attribute vec3 position;
 
     void main() {
-      vec3 pos = position + vec3(0, 5, -1.7);
-      float wave = 
-        sin(pos.x * waveFrequency + time) * cos(pos.z * waveFrequency + time) * waveHeight;
-      pos.y += wave * (pos.y - 0.5);
+      vec3 pos = position;
+      float wave = sin(time + pos.x) * waveHeight;
+      pos.z += wave;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     }
   `,
