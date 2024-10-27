@@ -75,58 +75,59 @@ window.onresize = function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
-const material = new THREE.RawShaderMaterial({
-  side: THREE.DoubleSide,
-  uniforms: {
-    time: { value: 0.0 },
-    waveHeight: { value: .2 },
-    waveFrequency: { value: 3.0 }
-  },
-
-  vertexShader: `
-    uniform mat4 modelViewMatrix;
-    uniform mat4 projectionMatrix;
-    uniform float time;
-    uniform float waveHeight;
-    uniform float waveFrequency;
-    
-    attribute vec3 position;
-
-    void main() {
-      vec3 pos = position;
-      float wave = sin(time + pos.x) * waveHeight;
-      pos.z += wave;
-      pos.z *= sin(pos.y * 1.5) + 1. / 2.0;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-    }
-  `,
-  fragmentShader: `
-    precision mediump float;
-
-    void main() {
-      gl_FragColor = vec4(0.5, 0.8, 1.0, 1.0); // Light blue color
-    }
-  `,
+// Replace the RawShaderMaterial with MeshPhongMaterial for better shadow handling
+const material = new THREE.MeshPhongMaterial({
+  color: 0x0077be,  // Ocean blue color
+  shininess: 60,
+  side: THREE.DoubleSide
 });
 
-// Create a plane with more segments for smoother waves
-const planeGeometry = new THREE.PlaneGeometry(500, 500, 64, 64);
+// Modify the plane geometry to have even more segments for better shadow detail
+const planeGeometry = new THREE.PlaneGeometry(500, 500, 128, 128);
 const plane = new THREE.Mesh(planeGeometry, material);
-plane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+plane.rotation.x = -Math.PI / 2;
 scene.add(plane);
+
+// Add directional light instead of point light for better shadows
+const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(100, 100, 50);
+dirLight.castShadow = true;
+
+// Improve shadow quality
+dirLight.shadow.mapSize.width = 4096;
+dirLight.shadow.mapSize.height = 4096;
+dirLight.shadow.camera.near = 0.5;
+dirLight.shadow.camera.far = 500;
+
+// Adjust shadow camera frustum to cover the waves
+dirLight.shadow.camera.left = -300;
+dirLight.shadow.camera.right = 300;
+dirLight.shadow.camera.top = 300;
+dirLight.shadow.camera.bottom = -300;
+
+scene.add(dirLight);
+
+// Add ambient light to soften shadows
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
 
 function animate() {
   const delta = clock.getDelta();
 
-  // Update the time uniform for animation
-  material.uniforms.time.value += delta;
+  // Animate the plane vertices for waves
+  const time = Date.now() * 0.001;
+  const vertices = planeGeometry.attributes.position.array;
+  for (let i = 0; i < vertices.length; i += 3) {
+    const x = vertices[i];
+    const y = vertices[i + 1];
+    vertices[i + 2] = Math.sin(x * 0.05 + time) * 5 + Math.sin(y * 0.05 + time) * 5;
+  }
+  planeGeometry.attributes.position.needsUpdate = true;
+  planeGeometry.computeVertexNormals(); // Important for proper lighting
 
   mixer.update(delta);
-
   controls.update();
-
   stats.update();
-
   renderer.render(scene, camera);
 }
 
