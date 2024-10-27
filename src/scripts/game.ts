@@ -76,9 +76,10 @@ window.onresize = function () {
 };
 
 const material = new THREE.RawShaderMaterial({
+  side: THREE.DoubleSide,
   uniforms: {
     time: { value: 0.0 },
-    waveHeight: { value: 2.0 },
+    waveHeight: { value: .2 },
     waveFrequency: { value: 3.0 }
   },
 
@@ -95,6 +96,7 @@ const material = new THREE.RawShaderMaterial({
       vec3 pos = position;
       float wave = sin(time + pos.x) * waveHeight;
       pos.z += wave;
+      pos.z *= sin(pos.y * 1.5) + 1. / 2.0;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     }
   `,
@@ -108,7 +110,7 @@ const material = new THREE.RawShaderMaterial({
 });
 
 // Create a plane with more segments for smoother waves
-const planeGeometry = new THREE.PlaneGeometry(5, 5, 64, 64);
+const planeGeometry = new THREE.PlaneGeometry(500, 500, 64, 64);
 const plane = new THREE.Mesh(planeGeometry, material);
 plane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
 scene.add(plane);
