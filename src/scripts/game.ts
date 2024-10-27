@@ -20,6 +20,7 @@ container.appendChild(stats.dom);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
 container.appendChild(renderer.domElement);
 
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
@@ -112,8 +113,29 @@ const material = new THREE.RawShaderMaterial({
 // Create a plane with more segments for smoother waves
 const planeGeometry = new THREE.PlaneGeometry(500, 500, 64, 64);
 const plane = new THREE.Mesh(planeGeometry, material);
+plane.receiveShadow = true;
+plane.castShadow = true;
 plane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
 scene.add(plane);
+
+// build point light
+let pointLight = new THREE.PointLight(0xccffcc, 1, 100);
+pointLight.castShadow = true;
+pointLight.position.set(0, 10, 0);
+pointLight.shadowCameraVisible = true;
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+
+var d = 200;
+
+pointLight.shadowCameraLeft = -d;
+pointLight.shadowCameraRight = d;
+pointLight.shadowCameraTop = d;
+pointLight.shadowCameraBottom = -d;
+
+pointLight.shadowCameraFar = 1000;
+pointLight.shadowDarkness = 0.75;
+scene.add(pointLight);
 
 function animate() {
   const delta = clock.getDelta();
