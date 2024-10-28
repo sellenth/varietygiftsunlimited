@@ -11,6 +11,7 @@ const { img, href, title, body, sticker } = Astro.props;
 ---
 
 <div class="card bg-neutral shadow-xl w-5/6 shadow-lg">
+  <a href={href}>
   <figure class="w-full">
     <img
 		class="rounded-3xl bg-white m-5 w-5/6 shadow-2xl {sticker ? 'translate-x-20' : ''}"
@@ -26,9 +27,8 @@ const { img, href, title, body, sticker } = Astro.props;
   <div class="card-body justify-end">
     <h2 class="card-title text-base-content text-2xl lg:text-4xl mb-4 justify-center">{title}</h2>
     <div class="justify-center items-center flex">
-		<a href={href}>
       <button class="btn btn-primary h-fit w-full sm:w-fit sm:text-6xl py-4">View</button>
-		</a>
     </div>
   </div>
+  </a>
 </div>
