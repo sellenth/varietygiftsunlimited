@@ -5,5 +5,7 @@
     "jsxImportSource": "react",
     "noImplicitAny": false,
     "strict": false
-  }
+  },
+
+  "exclude": ["public/*", "node_modules/*"]
 }
