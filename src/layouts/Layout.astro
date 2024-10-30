@@ -90,39 +90,6 @@ import Header from '../components/Header.astro';
 		<script is:inline>
 			const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
 			document.documentElement.setAttribute('data-theme', isDark ? 'halloween' : 'light');
-
-			// Check if user has already made a choice about data collection
-			const dataCollectionChoice = localStorage.getItem('allowDataCollection');
-			if (dataCollectionChoice === null) {
-				// If no choice has been made, we'll show the dialog when the page loads
-				window.addEventListener('load', showDataCollectionDialog);
-			} else if (dataCollectionChoice === 'true') {
-				// If user agreed, inject Vercel Analytics
-				import('@vercel/analytics').then(analytics => analytics.inject());
-			}
-
-			function showDataCollectionDialog() {
-				const dialog = document.createElement('dialog');
-				dialog.innerHTML = `
-					<h2>Allow Anonymous Data Collection?</h2>
-					<p>We'd like to collect anonymous usage data to improve our site. This helps us understand how our site is used and make it better for everyone.</p>
-					<button id="allowData">Allow</button>
-					<button id="denyData">Deny</button>
-				`;
-				document.body.appendChild(dialog);
-				dialog.showModal();
-
-				dialog.querySelector('#allowData').addEventListener('click', () => {
-					localStorage.setItem('allowDataCollection', 'true');
-					import('@vercel/analytics').then(analytics => analytics.inject());
-					dialog.close();
-				});
-
-				dialog.querySelector('#denyData').addEventListener('click', () => {
-					localStorage.setItem('allowDataCollection', 'false');
-					dialog.close();
-				});
-			}
 		</script>
 	</head>
 
