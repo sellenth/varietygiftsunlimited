@@ -51,7 +51,6 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 				name="Jag"
 			/>
 			</div>
-			<!--
 			<div class="carousel-item">
 			<BeforeAfter
 				imgBefore="/spook/dino.png"
@@ -59,7 +58,6 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 				name="Dino"
 			/>
 			</div>
-			-->
 		</div>
 		
 		<div class="flex flex-col items-center gap-4 px-8 text-lg max-w-3xl">
@@ -93,7 +91,6 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 </Layout>
 
 		<script>
-			import { loadStripe } from "@stripe/stripe-js";
 			async function main() {
 				const checkoutDiv = document.getElementById("buy-button");
 				if (
@@ -108,12 +105,6 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 					throw new Error(
 						"You managed to break my site. Please contact Tanner.",
 					);
-				}
-				const pet1 = checkoutDiv.dataset.pet1;
-				const stripe = await loadStripe(checkoutDiv.dataset.stripeKey);
-				if (!stripe) {
-					console.error("Stripe failed to load");
-					throw new Error("Stripe failed to load");
 				}
 				const petImage = document.getElementById(
 					"petImage",
@@ -185,29 +176,13 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 
 					if (response.ok) {
 						const responseText = await response.text();
-						console.log("API Response:", responseText);
-						// Redirect to Stripe checkout after successful upload
-						stripe
-							.redirectToCheckout({
-								lineItems: [
-									{
-										price: pet1,
-										quantity: 1,
-									},
-								],
-								mode: "payment",
-								successUrl: `${window.location.origin}/pet-converted?success=true&session_id={CHECKOUT_SESSION_ID}&image_id=${responseText}&gender=${selectedGender}`,
-								cancelUrl: `${window.location.origin}`,
-							})
-							.then(function (result) {
-								if (result.error) {
-									alert(result.error.message);
-								}
-							});
+						console.log("Uploaded image successfully");
+						window.location.href = `/pet-converted?success=true&image_id=${responseText}&gender=${selectedGender}`;
 					} else {
 						alert(
 							"Failed to upload thumbnail image. Please try again.",
 						);
+						buyButton.textContent = "Something went wrong. Try again in a bit.";
 					}
 				});
 
