@@ -25,11 +25,32 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 			<input type="file" id="petImage" accept="image/*" hidden />
 		</div>
 
-		<div class="flex flex-col items-center text-justify gap-4 px-8 text-lg max-w-3xl">
+		<div class="flex flex-col items-center text-white text-justify gap-4 px-8 text-lg max-w-3xl">
 			<p>Our highly advanced digital alchemist will transform your pet into a cute Halloween version of themselves!</p>
 		</div>
 
-		<div class="carousel max-h-64 bg-primary">
+			<div class="carousel max-h-64 bg-primary w-full lg:max-w-3xl">
+				<div class="carousel-item">
+				<BeforeAfter
+					imgBefore="/spook/dino.png"
+					imgAfter="/spook/dino_spook.png"
+					name="Dino"
+				/>
+			</div>
+			<div class="carousel-item">
+			<BeforeAfter
+				imgBefore="/spook/miller.jpg"
+				imgAfter="/spook/miller_spook.jpg"
+				name="Miller"
+			/>
+			</div>
+			<div class="carousel-item">
+				<BeforeAfter
+					imgBefore="/spook/stella.jpeg"
+					imgAfter="/spook/stella_spook.jpg"
+					name="Stella"
+			/>
+			</div>
 			<div class="carousel-item">
 				<BeforeAfter
 					imgBefore="/spook/tanner.jpg"
@@ -40,7 +61,7 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 			<div class="carousel-item">
 			<BeforeAfter
 				imgBefore="/spook/tong.jpg"
-				imgAfter="/spook/tong_spook.png"
+				imgAfter="/spook/tong_spook.jpg"
 				name="Mr. Tong"
 			/>
 			</div>
@@ -51,22 +72,15 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 				name="Jag"
 			/>
 			</div>
-			<div class="carousel-item">
-			<BeforeAfter
-				imgBefore="/spook/dino.png"
-				imgAfter="/spook/dino_spook.png"
-				name="Dino"
-			/>
-			</div>
 		</div>
 		
 		<div class="flex flex-col items-center gap-4 px-8 text-lg max-w-3xl">
-			<h2 class="text-4xl font-bold tracking-wider text-primary">Wonder What Yours Will Look Like?</h1>
-			<p>Click the button below to upload your image and get started. For best results, please include just one pet in your image.</p>
+			<h2 class="text-4xl font-bold tracking-wider text-white">Wonder What Yours Will Look Like?</h1>
+			<p class="text-white">Click the button below to upload your image and get started. For best results, please include just one pet in your image.</p>
 		</div>
 		<button
 			class="btn btn-primary rounded-[25px] px-8 mb-16"
-			onclick="document.getElementById('petImage').click()"
+			onclick="document.getElementById('petImage').click();"
 			><h2 class="text-2xl">Upload Image</h2></button
 		>
 
@@ -154,8 +168,15 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 					throw new Error("Buy button not found");
 				}
 				buyButton.addEventListener("click", async () => {
+					// Replace button text with loading spinner
+					buyButton.innerHTML = '<p class="text-primary">Uploading<span class="loading loading-spinner loading-md"></span></p>';
+					buyButton.disabled = true;  // Disable button while loading
+
 					if (!petImage.files || petImage.files.length === 0) {
 						alert("Please select an image first.");
+						// Reset button if error
+						buyButton.innerHTML = '<h2 class="text-2xl">Spookify My Pet</h2>';
+						buyButton.disabled = false;
 						throw new Error("Please select an image first.");
 					}
 					const thumbnailFile = petImage.files[0];
@@ -182,7 +203,9 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 						alert(
 							"Failed to upload thumbnail image. Please try again.",
 						);
-						buyButton.textContent = "Something went wrong. Try again in a bit.";
+						// Reset button if error
+						buyButton.innerHTML = '<h2 class="text-2xl">Something went wrong. Try again in a bit.</h2>';
+						buyButton.disabled = false;
 					}
 				});
 
