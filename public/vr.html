@@ -1,0 +1,42 @@
+<head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+  />
+
+  <script src="/a-frame/aframe-master.min.js" is:inline></script>
+  <script>
+    if (!window.isSecureContext) {
+      alert("WebXR needs HTTPS");
+    }
+  </script>
+</head>
+<div>
+  <a-scene
+  >
+    <a-sky color="#87CEEB"></a-sky>
+    <a-plane 
+      position="0 0 0" 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#8B4513"
+      shadow="receive: true"
+    ></a-plane>
+
+    <a-entity position="0 0 0">
+      <a-camera></a-camera>
+    </a-entity>
+
+    <a-entity
+      id="rightHand"
+      hand-tracking-grab-controls="hand: right"
+      coffee-spawner="targetElementSelector: [data-world-mesh=table]"
+    ></a-entity>
+    <a-entity
+      id="leftHand"
+      hand-tracking-grab-controls="hand: left"
+      coffee-spawner="targetElementSelector: [data-world-mesh=table]"
+    ></a-entity>
+  </a-scene>
+</div>
