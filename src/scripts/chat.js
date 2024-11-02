@@ -10,6 +10,7 @@ export async function initializeChat() {
   });
 
   let isProcessingAudio = false;
+  let isPaused = true; // Start paused
 
   try {
     // Connect to API first
@@ -51,9 +52,15 @@ export async function initializeChat() {
     source.connect(processor);
     processor.connect(audioContext.destination);
 
-    // Resample and convert audio data
+    // Add pause toggle listener
+    window.addEventListener('togglePause', (event) => {
+      isPaused = event.detail.isPaused;
+      console.log(`Audio processing ${isPaused ? 'paused' : 'resumed'}`);
+    });
+
+    // Update audio processing to respect pause state
     processor.onaudioprocess = (e) => {
-      if (!isProcessingAudio || !client.isConnected()) {
+      if (isPaused || !isProcessingAudio || !client.isConnected()) {
         return;
       }
 

@@ -18,19 +18,35 @@
     
     // Initialize chat when the page loads
     window.addEventListener('load', async () => {
-      console.log('Page loaded, initializing chat...'); // Debug log
+      console.log('Page loaded, initializing chat...');
       
       try {
         const client = await initializeChat();
-        console.log('Chat initialized'); // Debug log
+        console.log('Chat initialized');
         
-        // Get reference to the text element
+        // Get reference to elements
         const robotText = document.querySelector('a-text');
-        console.log('Robot text element:', robotText); // Debug log
+        const pauseButton = document.querySelector('#pauseButton');
+        console.log('Robot text element:', robotText);
         
+        // Handle pause button clicks
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.getAttribute('data-paused') === 'true';
+          pauseButton.setAttribute('data-paused', !isPaused);
+          pauseButton.textContent = isPaused ? 'PAUSE' : 'RESUME';
+          
+          // Dispatch pause state change event
+          window.dispatchEvent(new CustomEvent('togglePause', {
+            detail: { isPaused: !isPaused }
+          }));
+          
+          // Update robot text
+          robotText.setAttribute('value', isPaused ? 'LISTENING' : 'PAUSED');
+        });
+
         // Listen for assistant responses
         window.addEventListener('assistantResponse', (event) => {
-          console.log('Received assistant response:', event.detail.text); // Debug log
+          console.log('Received assistant response:', event.detail.text);
           robotText.setAttribute('value', event.detail.text);
         });
       } catch (error) {
@@ -39,6 +55,31 @@
     });
   </script>
 </head>
+
+<style>
+  .pause-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    padding: 10px 20px;
+    background-color: #4CC3D9;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .pause-button:hover {
+    background-color: #3AA3B9;
+  }
+</style>
+
+<!-- Add the HTML button before the a-scene -->
+<button id="pauseButton" class="pause-button" data-paused="true">PAUSE</button>
+
 <div>
   <a-scene
   >
