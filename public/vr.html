@@ -9,6 +9,62 @@
     if (!window.isSecureContext) {
       alert("WebXR needs HTTPS");
     }
+    var openai_key = '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'
+
+    // Corrected WebSocket connection setup
+    const ws = new WebSocket(
+      `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01&authorization=Bearer ${openai_key}&openai-beta=realtime=v1`
+    );
+
+    // Handle WebSocket events
+    ws.onopen = function() {
+      console.log("Connected to OpenAI Realtime API");
+      setupVoiceCapture();
+    };
+
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      
+      // Update robot's text bubble when receiving response
+      if (data.type === 'response.text.delta') {
+        const textElement = document.querySelector('a-text');
+        textElement.setAttribute('value', data.text);
+      }
+    };
+
+    // Setup voice capture
+    function setupVoiceCapture() {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          const audioContext = new AudioContext();
+          const source = audioContext.createMediaStreamSource(stream);
+          const processor = audioContext.createScriptProcessor(1024, 1, 1);
+          
+          processor.onaudioprocess = function(e) {
+            const inputData = e.inputBuffer.getChannelData(0);
+            const base64Audio = floatTo16BitPCM(inputData);
+            
+            ws.send(JSON.stringify({
+              type: 'input_audio_buffer.append',
+              audio: base64Audio
+            }));
+          };
+
+          source.connect(processor);
+          processor.connect(audioContext.destination);
+        });
+    }
+
+    // Helper function to convert audio format
+    function floatTo16BitPCM(float32Array) {
+      const buffer = new ArrayBuffer(float32Array.length * 2);
+      const view = new DataView(buffer);
+      for (let i = 0; i < float32Array.length; i++) {
+        const s = Math.max(-1, Math.min(1, float32Array[i]));
+        view.setInt16(i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+      }
+      return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    }
   </script>
 </head>
 <div>
@@ -30,7 +86,7 @@
     ></a-plane>
 
     <!-- Robot with floating text above it -->
-    <a-entity position="0 0 -3">
+    <a-entity position="0 0 -3" scale="0.5 0.5 0.5">
       <!-- Robot model -->
       <a-entity
         gltf-model="#robot"
