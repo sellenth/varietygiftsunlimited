@@ -121,6 +121,26 @@ export async function initializeChat() {
         }
         if (delta?.audio) {
           console.log('Received audio response');
+          // Create an audio context
+          const audioContext = new AudioContext();
+          
+          // Create an audio buffer
+          const audioBuffer = audioContext.createBuffer(1, delta.audio.length, 24000);
+          const channelData = audioBuffer.getChannelData(0);
+          
+          // Convert Int16 to Float32
+          for (let i = 0; i < delta.audio.length; i++) {
+            // Convert from [-32768,32767] to [-1,1]
+            channelData[i] = delta.audio[i] / 32768.0;
+          }
+          
+          // Create a buffer source
+          const source = audioContext.createBufferSource();
+          source.buffer = audioBuffer;
+          // Connect to speakers
+          source.connect(audioContext.destination);
+          // Play the audio
+          source.start(0);
         }
       }
     });
