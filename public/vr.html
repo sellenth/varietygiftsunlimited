@@ -14,6 +14,11 @@
 <div>
   <a-scene
   >
+    <!-- Add assets management system -->
+    <a-assets>
+      <a-asset-item id="robot" src="/a-frame/robot.glb"></a-asset-item>
+    </a-assets>
+
     <a-sky color="#87CEEB"></a-sky>
     <a-plane 
       position="0 0 0" 
@@ -24,8 +29,30 @@
       shadow="receive: true"
     ></a-plane>
 
+    <!-- Robot with floating text above it -->
+    <a-entity position="0 0 -3">
+      <!-- Robot model -->
+      <a-entity
+        gltf-model="#robot"
+        scale="0.5 0.5 0.5"
+        animation-mixer
+        shadow="cast: true"
+      ></a-entity>
+
+      <a-entity position="0 2.5 0">
+        <a-text
+          value="Hi"
+          scale="2 2 2"
+          color="#000000"
+          align="center"
+          side="double"
+          billboard
+        ></a-text>
+      </a-entity>
+    </a-entity>
+
     <a-entity position="0 0 0">
-      <a-camera></a-camera>
+      <a-camera id="camera"></a-camera>
     </a-entity>
 
     <a-entity
