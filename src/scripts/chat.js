@@ -1,34 +1,41 @@
-import { RealtimeClient } from 'openai-realtime-api';
+import { RealtimeClient } from '@openai/realtime-api-beta';
 
 // Export the initialization function
-export function initializeChat(openai_key) {
-  const client = new RealtimeClient({
-    apiKey: openai_key,
-    dangerouslyAllowAPIKeyInBrowser: true,
-    sessionConfig: {
-      instructions: "You are a friendly robot assistant. Keep your responses brief and engaging.",
-      voice: 'alloy',
-      input_audio_transcription: { model: 'whisper-1' }
-    }
-  });
+export async function initializeChat() {
 
-  // Set up event handling for conversation updates
-  client.on('conversation.updated', (event) => {
-    const { delta } = event;
-    if (delta?.role === 'assistant' && delta?.content) {
-      // Update the robot's text with the assistant's response
-      const robotText = document.querySelector('a-text');
-      if (robotText) {
-        robotText.setAttribute('value', delta.content);
-      }
-    }
-  });
+const client = new RealtimeClient({ apiKey: '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',
+  dangerouslyAllowAPIKeyInBrowser: true,
+ });
 
-  // Connect to the Realtime API
-  client.connect();
+// Can set parameters ahead of connecting, either separately or all at once
+client.updateSession({ instructions: 'You are a great, upbeat friend.' });
+client.updateSession({ voice: 'alloy' });
+client.updateSession({
+  turn_detection: { type: 'none' }, // or 'server_vad'
+  input_audio_transcription: { model: 'whisper-1' },
+});
 
-  // Send initial greeting
-  client.sendUserMessageContent([{ type: 'input_text', text: 'Hello!' }]);
+// Set up event handling
+client.on('conversation.updated', (event) => {
+  const { item } = event;
+  console.log('Conversation updated:', item); // Debug log
+  
+  // Dispatch a custom event with the latest message
+  if (item.role === 'assistant' && item.content?.[0]?.transcript) {
+    console.log('Dispatching assistant response:', item.content[0].transcript); // Debug log
+    window.dispatchEvent(new CustomEvent('assistantResponse', {
+      detail: { text: item.content[0].transcript }
+    }));
+  }
+});
+
+// Connect to Realtime API
+await client.connect();
+console.log('Connected to Realtime API'); // Debug log
+
+// Send a test message
+await client.sendUserMessageContent([{ type: 'input_text', text: `How are you?` }]);
+console.log('Sent initial message'); // Debug log
 
   return client;
 } 

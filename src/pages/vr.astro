@@ -15,9 +15,28 @@
   <!-- Import the client script as a module -->
   <script>
     import { initializeChat } from '../scripts/chat.js';
-    var openai_key = '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'
     
-    const client = initializeChat(openai_key);
+    // Initialize chat when the page loads
+    window.addEventListener('load', async () => {
+      console.log('Page loaded, initializing chat...'); // Debug log
+      
+      try {
+        const client = await initializeChat();
+        console.log('Chat initialized'); // Debug log
+        
+        // Get reference to the text element
+        const robotText = document.querySelector('a-text');
+        console.log('Robot text element:', robotText); // Debug log
+        
+        // Listen for assistant responses
+        window.addEventListener('assistantResponse', (event) => {
+          console.log('Received assistant response:', event.detail.text); // Debug log
+          robotText.setAttribute('value', event.detail.text);
+        });
+      } catch (error) {
+        console.error('Error initializing chat:', error);
+      }
+    });
   </script>
 </head>
 <div>
