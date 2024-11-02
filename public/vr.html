@@ -5,112 +5,71 @@
   />
 
   <script src="/a-frame/aframe-master.min.js" is:inline></script>
+  <script src="https://unpkg.com/openai-realtime-api@latest/dist/browser.js"></script>
+
   <script>
     if (!window.isSecureContext) {
       alert("WebXR needs HTTPS");
     }
     var openai_key = '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'
 
-    // Add WebSocket state tracking and reconnection logic
-    let ws = null;
-    let isConnected = false;
+    // Initialize the Realtime client
+    const client = new RealtimeClient({
+      apiKey: openai_key,
+      sessionConfig: {
+        instructions: "You are a friendly robot assistant. Keep your responses brief and engaging.",
+        voice: 'alloy',
+        input_audio_transcription: { model: 'whisper-1' }
+      }
+    });
 
-    function connectWebSocket() {
-      ws = new WebSocket(
-        `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01&authorization=Bearer ${openai_key}&openai-beta=realtime=v1`
-      );
+    // Handle responses to update the robot's text
+    client.on('response.text.delta', (event) => {
+      const textElement = document.querySelector('a-text');
+      textElement.setAttribute('value', event.text);
+    });
 
-      ws.onopen = function() {
-        console.log("Connected to OpenAI Realtime API");
-        isConnected = true;
+    // Setup voice capture
+    async function setupVoiceCapture() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioContext = new AudioContext();
+        const source = audioContext.createMediaStreamSource(stream);
+        const processor = audioContext.createScriptProcessor(1024, 1, 1);
         
-        // Initialize the session with configuration
-        ws.send(JSON.stringify({
-          type: 'session.update',
-          session: {
-            input_audio_transcription: true,
-            turn_detection: {
-              mode: 'server_vad'
-            },
-            instructions: "You are a friendly robot assistant. Keep your responses brief and engaging."
-          }
-        }));
-
-        // Create initial response configuration
-        ws.send(JSON.stringify({
-          type: 'response.create',
-          response: {
-            modalities: ['text']
-          }
-        }));
-
-        setupVoiceCapture();
-      };
-
-      ws.onclose = function(event) {
-        console.log("WebSocket connection closed", event.code, event.reason);
-        isConnected = false;
-        // Only try to reconnect if it wasn't closed intentionally
-        if (event.code !== 1000) {
-          setTimeout(connectWebSocket, 2000);
-        }
-      };
-
-      ws.onerror = function(error) {
-        console.error("WebSocket error:", error);
-        isConnected = false;
-      };
-
-      ws.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        console.log("Received message:", data); // Debug logging
-        
-        if (data.type === 'error') {
-          console.error("API Error:", data.error);
-          return;
-        }
-        
-        if (data.type === 'response.text.delta') {
-          const textElement = document.querySelector('a-text');
-          textElement.setAttribute('value', data.text);
-        }
-      };
-    }
-
-    // Modify setupVoiceCapture to check connection state
-    function setupVoiceCapture() {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          const audioContext = new AudioContext();
-          const source = audioContext.createMediaStreamSource(stream);
-          const processor = audioContext.createScriptProcessor(1024, 1, 1);
+        processor.onaudioprocess = function(e) {
+          if (!client.isConnected) return;
           
-          processor.onaudioprocess = function(e) {
-            if (!isConnected || !ws || ws.readyState !== WebSocket.OPEN) return;
+          try {
+            const inputData = e.inputBuffer.getChannelData(0);
+            const base64Audio = floatTo16BitPCM(inputData);
             
-            try {
-              const inputData = e.inputBuffer.getChannelData(0);
-              const base64Audio = floatTo16BitPCM(inputData);
-              
-              ws.send(JSON.stringify({
-                type: 'input_audio_buffer.append',
-                audio: base64Audio
-              }));
-            } catch (error) {
-              console.error("Error sending audio data:", error);
-            }
-          };
+            client.sendAudioBuffer(base64Audio);
+          } catch (error) {
+            console.error("Error sending audio data:", error);
+          }
+        };
 
-          source.connect(processor);
-          processor.connect(audioContext.destination);
-        })
-        .catch(error => {
-          console.error("Error accessing microphone:", error);
-        });
+        source.connect(processor);
+        processor.connect(audioContext.destination);
+      } catch (error) {
+        console.error("Error accessing microphone:", error);
+      }
     }
 
-    // Initialize the WebSocket connection
-    connectWebSocket();
+    // Initialize connection and setup
+    async function initialize() {
+      try {
+        await client.connect();
+        console.log("Connected to OpenAI Realtime API");
+        await setupVoiceCapture();
+      } catch (error) {
+        console.error("Error initializing:", error);
+      }
+    }
+
+    // Start everything when the page loads
+    window.addEventListener('load', initialize);
 
     // Helper function to convert audio format
     function floatTo16BitPCM(float32Array) {

@@ -1,0 +1,78 @@
+<head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+  />
+
+  <script src="/a-frame/aframe-master.min.js" is:inline></script>
+
+  <script>
+    if (!window.isSecureContext) {
+      alert("WebXR needs HTTPS");
+    }
+  </script>
+
+  <!-- Import the client script as a module -->
+  <script>
+    import { initializeChat } from '../scripts/chat.js';
+    var openai_key = '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'
+    
+    const client = initializeChat(openai_key);
+  </script>
+</head>
+<div>
+  <a-scene
+  >
+    <!-- Add assets management system -->
+    <a-assets>
+      <a-asset-item id="robot" src="/a-frame/robot.glb"></a-asset-item>
+    </a-assets>
+
+    <a-sky color="#87CEEB"></a-sky>
+    <a-plane 
+      position="0 0 0" 
+      rotation="-90 0 0" 
+      width="30" 
+      height="30" 
+      color="#8B4513"
+      shadow="receive: true"
+    ></a-plane>
+
+    <!-- Robot with floating text above it -->
+    <a-entity position="0 0 -3" scale="0.5 0.5 0.5">
+      <!-- Robot model -->
+      <a-entity
+        gltf-model="#robot"
+        scale="0.5 0.5 0.5"
+        animation-mixer
+        shadow="cast: true"
+      ></a-entity>
+
+      <a-entity position="0 2.5 0">
+        <a-text
+          value="Hi"
+          scale="2 2 2"
+          color="#000000"
+          align="center"
+          side="double"
+          billboard
+        ></a-text>
+      </a-entity>
+    </a-entity>
+
+    <a-entity position="0 0 0">
+      <a-camera id="camera"></a-camera>
+    </a-entity>
+
+    <a-entity
+      id="rightHand"
+      hand-tracking-grab-controls="hand: right"
+      coffee-spawner="targetElementSelector: [data-world-mesh=table]"
+    ></a-entity>
+    <a-entity
+      id="leftHand"
+      hand-tracking-grab-controls="hand: left"
+      coffee-spawner="targetElementSelector: [data-world-mesh=table]"
+    ></a-entity>
+  </a-scene>
+</div>
