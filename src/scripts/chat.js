@@ -10,7 +10,9 @@ export async function initializeChat() {
   });
 
   let isProcessingAudio = false;
-  let isPaused = true; // Start paused
+  let isPaused = false; // Start paused
+  let audioQueue = [];
+  let isPlaying = false;
 
   try {
     // Connect to API first
@@ -120,30 +122,41 @@ export async function initializeChat() {
           }));
         }
         if (delta?.audio) {
-          console.log('Received audio response');
-          // Create an audio context
-          const audioContext = new AudioContext();
-          
-          // Create an audio buffer
-          const audioBuffer = audioContext.createBuffer(1, delta.audio.length, 24000);
-          const channelData = audioBuffer.getChannelData(0);
-          
-          // Convert Int16 to Float32
-          for (let i = 0; i < delta.audio.length; i++) {
-            // Convert from [-32768,32767] to [-1,1]
-            channelData[i] = delta.audio[i] / 32768.0;
-          }
-          
-          // Create a buffer source
-          const source = audioContext.createBufferSource();
-          source.buffer = audioBuffer;
-          // Connect to speakers
-          source.connect(audioContext.destination);
-          // Play the audio
-          source.start(0);
+          console.log('Received audio chunk');
+          audioQueue.push(delta.audio);
+          playNextAudioChunk();
         }
       }
     });
+
+    // Add this function to handle sequential audio playback
+    function playNextAudioChunk() {
+      if (isPlaying || audioQueue.length === 0) return;
+      
+      isPlaying = true;
+      const audioChunk = audioQueue.shift();
+      
+      const audioContext = new AudioContext();
+      const audioBuffer = audioContext.createBuffer(1, audioChunk.length, 24000);
+      const channelData = audioBuffer.getChannelData(0);
+      
+      // Convert Int16 to Float32
+      for (let i = 0; i < audioChunk.length; i++) {
+        channelData[i] = audioChunk[i] / 32768.0;
+      }
+      
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      
+      // When this chunk ends, play the next one if available
+      source.onended = () => {
+        isPlaying = false;
+        playNextAudioChunk();
+      };
+      
+      source.start(0);
+    }
 
     console.log('Chat initialization complete');
     return client;
