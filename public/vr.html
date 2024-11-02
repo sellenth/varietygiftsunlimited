@@ -11,28 +11,73 @@
     }
     var openai_key = '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'
 
-    // Corrected WebSocket connection setup
-    const ws = new WebSocket(
-      `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01&authorization=Bearer ${openai_key}&openai-beta=realtime=v1`
-    );
+    // Add WebSocket state tracking and reconnection logic
+    let ws = null;
+    let isConnected = false;
 
-    // Handle WebSocket events
-    ws.onopen = function() {
-      console.log("Connected to OpenAI Realtime API");
-      setupVoiceCapture();
-    };
+    function connectWebSocket() {
+      ws = new WebSocket(
+        `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01&authorization=Bearer ${openai_key}&openai-beta=realtime=v1`
+      );
 
-    ws.onmessage = function(event) {
-      const data = JSON.parse(event.data);
-      
-      // Update robot's text bubble when receiving response
-      if (data.type === 'response.text.delta') {
-        const textElement = document.querySelector('a-text');
-        textElement.setAttribute('value', data.text);
-      }
-    };
+      ws.onopen = function() {
+        console.log("Connected to OpenAI Realtime API");
+        isConnected = true;
+        
+        // Initialize the session with configuration
+        ws.send(JSON.stringify({
+          type: 'session.update',
+          session: {
+            input_audio_transcription: true,
+            turn_detection: {
+              mode: 'server_vad'
+            },
+            instructions: "You are a friendly robot assistant. Keep your responses brief and engaging."
+          }
+        }));
 
-    // Setup voice capture
+        // Create initial response configuration
+        ws.send(JSON.stringify({
+          type: 'response.create',
+          response: {
+            modalities: ['text']
+          }
+        }));
+
+        setupVoiceCapture();
+      };
+
+      ws.onclose = function(event) {
+        console.log("WebSocket connection closed", event.code, event.reason);
+        isConnected = false;
+        // Only try to reconnect if it wasn't closed intentionally
+        if (event.code !== 1000) {
+          setTimeout(connectWebSocket, 2000);
+        }
+      };
+
+      ws.onerror = function(error) {
+        console.error("WebSocket error:", error);
+        isConnected = false;
+      };
+
+      ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log("Received message:", data); // Debug logging
+        
+        if (data.type === 'error') {
+          console.error("API Error:", data.error);
+          return;
+        }
+        
+        if (data.type === 'response.text.delta') {
+          const textElement = document.querySelector('a-text');
+          textElement.setAttribute('value', data.text);
+        }
+      };
+    }
+
+    // Modify setupVoiceCapture to check connection state
     function setupVoiceCapture() {
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
@@ -41,19 +86,31 @@
           const processor = audioContext.createScriptProcessor(1024, 1, 1);
           
           processor.onaudioprocess = function(e) {
-            const inputData = e.inputBuffer.getChannelData(0);
-            const base64Audio = floatTo16BitPCM(inputData);
+            if (!isConnected || !ws || ws.readyState !== WebSocket.OPEN) return;
             
-            ws.send(JSON.stringify({
-              type: 'input_audio_buffer.append',
-              audio: base64Audio
-            }));
+            try {
+              const inputData = e.inputBuffer.getChannelData(0);
+              const base64Audio = floatTo16BitPCM(inputData);
+              
+              ws.send(JSON.stringify({
+                type: 'input_audio_buffer.append',
+                audio: base64Audio
+              }));
+            } catch (error) {
+              console.error("Error sending audio data:", error);
+            }
           };
 
           source.connect(processor);
           processor.connect(audioContext.destination);
+        })
+        .catch(error => {
+          console.error("Error accessing microphone:", error);
         });
     }
+
+    // Initialize the WebSocket connection
+    connectWebSocket();
 
     // Helper function to convert audio format
     function floatTo16BitPCM(float32Array) {
