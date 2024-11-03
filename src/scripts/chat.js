@@ -13,6 +13,7 @@ export async function initializeChat() {
   let isPaused = false; // Start paused
   let audioQueue = [];
   let isPlaying = false;
+  let sharedAudioContext = null;  // Add shared AudioContext
 
   try {
     // Connect to API first
@@ -122,40 +123,61 @@ export async function initializeChat() {
           }));
         }
         if (delta?.audio) {
-          console.log('Received audio chunk');
+          console.log('Received audio chunk, queue length:', audioQueue.length);
           audioQueue.push(delta.audio);
+          
+          // Initialize shared AudioContext if needed
+          if (!sharedAudioContext) {
+            sharedAudioContext = new AudioContext();
+          }
+          
+          // Resume the context if it's suspended
+          if (sharedAudioContext.state === 'suspended') {
+            sharedAudioContext.resume();
+          }
+          
           playNextAudioChunk();
         }
       }
     });
 
-    // Add this function to handle sequential audio playback
+    // Updated playNextAudioChunk function
     function playNextAudioChunk() {
-      if (isPlaying || audioQueue.length === 0) return;
-      
-      isPlaying = true;
-      const audioChunk = audioQueue.shift();
-      
-      const audioContext = new AudioContext();
-      const audioBuffer = audioContext.createBuffer(1, audioChunk.length, 24000);
-      const channelData = audioBuffer.getChannelData(0);
-      
-      // Convert Int16 to Float32
-      for (let i = 0; i < audioChunk.length; i++) {
-        channelData[i] = audioChunk[i] / 32768.0;
+      if (isPlaying || audioQueue.length === 0) {
+        console.log('Skipping playback - isPlaying:', isPlaying, 'queue length:', audioQueue.length);
+        return;
       }
       
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
-      
-      // When this chunk ends, play the next one if available
-      source.onended = () => {
-        isPlaying = false;
-        playNextAudioChunk();
-      };
-      
-      source.start(0);
+      try {
+        isPlaying = true;
+        const audioChunk = audioQueue.shift();
+        
+        console.log('Playing chunk, remaining in queue:', audioQueue.length);
+        
+        const audioBuffer = sharedAudioContext.createBuffer(1, audioChunk.length, 24000);
+        const channelData = audioBuffer.getChannelData(0);
+        
+        // Convert Int16 to Float32
+        for (let i = 0; i < audioChunk.length; i++) {
+          channelData[i] = audioChunk[i] / 32768.0;
+        }
+        
+        const source = sharedAudioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(sharedAudioContext.destination);
+        
+        source.onended = () => {
+          console.log('Chunk finished playing');
+          isPlaying = false;
+          playNextAudioChunk();  // Play next chunk if available
+        };
+        
+        source.start(0);
+      } catch (error) {
+        console.error('Error playing audio chunk:', error);
+        isPlaying = false;  // Reset playing state on error
+        playNextAudioChunk();  // Try next chunk
+      }
     }
 
     console.log('Chat initialization complete');
