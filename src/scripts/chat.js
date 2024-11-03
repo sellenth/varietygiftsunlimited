@@ -59,6 +59,9 @@ export async function initializeChat() {
     window.addEventListener('togglePause', (event) => {
       isPaused = event.detail.isPaused;
       console.log(`Audio processing ${isPaused ? 'paused' : 'resumed'}`);
+      if (isPaused) {
+        clearAudioQueue();  // Clear audio queue when paused
+      }
     });
 
     // Update audio processing to respect pause state
@@ -115,7 +118,11 @@ export async function initializeChat() {
     client.on('conversation.updated', (event) => {
       const { item, delta } = event;
       if (item.role === 'assistant' && item.content[0].transcript) {
-        console.log(item);
+        // Clear any existing audio when a new response starts
+        if (item.content[0].transcript && !delta?.audio) {
+          clearAudioQueue();
+        }
+        
         if (item.content[0].transcript) {
           console.log('Assistant transcript:', item.content[0].transcript);
           window.dispatchEvent(new CustomEvent('assistantResponse', {
