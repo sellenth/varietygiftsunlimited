@@ -26,7 +26,7 @@ export async function initializeChat() {
     console.log('Configuring session parameters...');
     client.updateSession({
       instructions: 'You are a great, upbeat friend.',
-      voice: 'alloy',
+      voice: 'echo',
       turn_detection: { type: 'server_vad' },
       input_audio_transcription: { model: 'whisper-1' }
     });
