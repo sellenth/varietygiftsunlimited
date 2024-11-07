@@ -4,8 +4,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import '@fontsource/creepster';
-import '@fontsource-variable/roboto-slab';
+//import '@fontsource/creepster';
+//import '@fontsource-variable/roboto-slab';
+import '@fontsource/eagle-lake';
 import Header from '../components/Header.astro';
 ---
 
@@ -89,11 +90,11 @@ import Header from '../components/Header.astro';
 		<link rel="canonical" href="https://www.varietygiftsunlimited.com/" />
 		<script is:inline>
 			const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
-			document.documentElement.setAttribute('data-theme', isDark ? 'halloween' : 'light');
+			document.documentElement.setAttribute('data-theme', isDark ? 'leaf-blue' : 'light');
 		</script>
 	</head>
 
-	<body class="bg-black">
+	<body>
 		<slot />
 	</body>
 </html>
@@ -109,10 +110,7 @@ import Header from '../components/Header.astro';
 		padding: 0;
 		font-family: system-ui, sans-serif;
 	}
-	h1, h2 {
-		font-family: 'Creepster', cursive;
-	}
-	h3, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 		font-family: 'Roboto Slab Variable', serif;
 	}
 

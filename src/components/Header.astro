@@ -5,7 +5,7 @@
   <input
     id="themeToggle"
     type="checkbox"
-    value="halloween"
+    value="leaf-blue"
     class="toggle theme-controller hidden"
   />
 </header>
@@ -20,6 +20,6 @@
   themeToggle.addEventListener('change', () => {
     const newIsDark = themeToggle.checked;
     localStorage.setItem('isDark', JSON.stringify(newIsDark));
-    document.documentElement.setAttribute('data-theme', newIsDark ? 'halloween' : 'mytheme');
+    document.documentElement.setAttribute('data-theme', newIsDark ? 'leaf-blue' : 'mytheme');
   });
 </script>
