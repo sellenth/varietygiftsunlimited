@@ -7,19 +7,42 @@ interface Props {
 const { img, body } = Astro.props;
 ---
 
-<div class="hero w-100 max-w-3xl">
+<div class="hero w-100 max-w-3xl relative z-20">
   <div class=""></div>
-  <div class="hero-content text-neutral-content text-center ">
+  <div class="hero-content text-neutral-content text-center">
     <div class="w-full flex flex-col gap-4 items-center">
-      <div class="mb-5 p-4 pb-8 rounded-xl text-center">
-        <img src="/nobglogo.svg" alt="Variety Gifts Unlimited" class="w-full max-w-[500px] h-auto" />
+      <div class="mb-5 p-4 pb-8 rounded-xl text-center parallax-container">
+        <img src="/nobglogo.svg" alt="Variety Gifts Unlimited" class="w-full max-w-[500px] h-auto parallax-logo" />
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const logo = document.querySelector('.parallax-logo');
+    let initialTop = logo.getBoundingClientRect().top;
+    
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const parallaxValue = scrolled * 0.5; 
+      logo.style.transform = `translateY(${parallaxValue}px)`;
+    });
+  });
+</script>
 
 <style>
+  .parallax-container {
+    position: relative;
+    overflow: visible;
+  }
+
+  .parallax-logo {
+    position: relative;
+    will-change: transform;
+    z-index: 20;
+  }
+
   .curved-text {
     position: relative;
     display: inline-block;
