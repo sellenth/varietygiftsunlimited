@@ -10,25 +10,27 @@ interface Props {
 const { img, href, title, body, sticker } = Astro.props;
 ---
 
-<div class="card bg-neutral shadow-xl w-5/6 shadow-lg relative z-10">
+<div class="group hover:scale-105 transition-all duration-300 w-full">
   <a href={href}>
-  <figure class="w-full">
-    <img
-		class="rounded-3xl bg-white m-5 w-5/6 shadow-2xl {sticker ? 'translate-x-20' : ''}"
-      src={img}
-      alt={title} />
-	{sticker &&
-    <img
-		class="rounded-3xl bg-white w-5/6 shadow-2xl shadow-black transform -rotate-12"
-      src={img}
-      alt={title} />
-	}
-  </figure>
-  <div class="card-body justify-end relative z-30">
-    <h2 class="card-title text-base-content text-2xl lg:text-4xl mb-4 justify-center">{title}</h2>
-    <div class="justify-center items-center flex">
-      <button class="btn btn-primary h-fit w-full sm:w-fit sm:text-6xl py-4">View</button>
+    <div class="card bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-4 border-primary/20">
+      <figure class="w-full p-6 flex justify-center items-center">
+        <img
+          class="rounded-2xl w-5/6 object-cover transition-transform duration-300 group-hover:scale-105 {sticker ? 'translate-x-20' : ''}"
+          src={img}
+          alt={title} />
+        {sticker &&
+        <img
+          class="rounded-2xl w-5/6 absolute transform -rotate-12 transition-transform duration-300 group-hover:rotate-[-16deg]"
+          src={img}
+          alt={title} />
+        }
+      </figure>
+      <div class="card-body justify-end relative z-30 text-center pb-8">
+        <h2 class="card-title text-accent text-2xl lg:text-3xl mb-4 justify-center font-bold">{title}</h2>
+        <div class="justify-center items-center flex">
+        <button class="btn btn-primary h-fit w-full sm:w-fit px-8 py-3 rounded-full transform transition-transform duration-300 group-hover:scale-110">See Details</button>
+        </div>
+      </div>
     </div>
-  </div>
   </a>
 </div>
