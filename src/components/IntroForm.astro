@@ -1,0 +1,88 @@
+---
+---
+
+<form id="introForm" class="space-y-6 mb-8 text-black">
+  <div>
+    <label for="name" class="block text-sm font-medium mb-2">Your Name</label>
+    <input
+      type="text"
+      id="name"
+      required
+      class="w-full px-4 py-2 rounded bg-white border border-purple-500 focus:border-purple-300 focus:ring-2 focus:ring-purple-300 outline-none transition text-black"
+    />
+  </div>
+  
+  <div>
+    <label for="hobby1" class="block text-sm font-medium mb-2">Favorite Hobby</label>
+    <input
+      type="text"
+      id="hobby1"
+      required
+      class="w-full px-4 py-2 rounded bg-white border border-purple-500 focus:border-purple-300 focus:ring-2 focus:ring-purple-300 outline-none transition text-black"
+    />
+  </div>
+  
+  <div>
+    <label for="hobby2" class="block text-sm font-medium mb-2">Second Favorite Hobby</label>
+    <input
+      type="text"
+      id="hobby2"
+      required
+      class="w-full px-4 py-2 rounded bg-white border border-purple-500 focus:border-purple-300 focus:ring-2 focus:ring-purple-300 outline-none transition text-black"
+    />
+  </div>
+
+  <div>
+    <label for="email" class="block text-sm font-medium mb-2">Your Email</label>
+    <input
+      type="email"
+      id="email"
+      required
+      class="w-full px-4 py-2 rounded bg-white border border-purple-500 focus:border-purple-300 focus:ring-2 focus:ring-purple-300 outline-none transition text-black"
+    />
+  </div>
+
+  <button
+    type="submit"
+    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded transition duration-300 ease-in-out transform hover:scale-105"
+  >
+    CREATE YOUR INTRO
+  </button>
+</form>
+
+<script>
+  const form = document.getElementById('introForm') as HTMLFormElement;
+
+  async function handleFormSubmission(e: Event) {
+    e.preventDefault();
+    
+    const formData = {
+      name: (document.getElementById('name') as HTMLInputElement).value,
+      hobby1: (document.getElementById('hobby1') as HTMLInputElement).value,
+      hobby2: (document.getElementById('hobby2') as HTMLInputElement).value,
+      email: (document.getElementById('email') as HTMLInputElement).value
+    };
+
+    try {
+      const response = await fetch('https://hook.us2.make.com/5swpa791fm46qfbi65y758kslc26uipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        alert('Thanks! Your intro will be sent to your email shortly.');
+        form.reset();
+      } else {
+        throw new Error('Failed to submit');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong. Please try again.');
+    }
+  }
+
+  form.addEventListener('submit', handleFormSubmission);
+</script>

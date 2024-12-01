@@ -1,0 +1,55 @@
+---
+---
+
+<div id="payment-container" class="mb-6">
+  <button
+    id="payment-button"
+    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded transition duration-300 ease-in-out transform hover:scale-105 mb-4"
+  >
+   Just $0.50 to Generate an Intro, Try Now!
+  </button>
+  <p class="text-sm text-center text-purple-300">Secure payment powered by Stripe</p>
+</div>
+
+<script is:inline src="https://js.stripe.com/v3/"></script>
+<script>
+  //const stripe = Stripe('pk_live_51HWvhOAp2D4XT14xq0WXoT5XA5xiJGBKRcMOQjfgXKB8t5ZxPzzAJ1kyK4D6fDA6mQ2P4Ml4P76Aje1Cy9YGos1100tzptbd9K');
+const stripe = Stripe('pk_test_51HWvhOAp2D4XT14xsXvno9chrxXEqojGtRYCg2ZMaAOlLNcAwKsxsoYn3GEGJL1kc0yJROPePIULdba2T80t7RVb00VmBMk7SQ');
+  //const priceId = 'price_1QQgg2Ap2D4XT14xX8SkIzUA';
+    const priceId = 'price_1Pt1yQAp2D4XT14x42kSeCxp';
+
+  const paymentButton = document.getElementById('payment-button');
+  
+  paymentButton?.addEventListener('click', async () => {
+    try {
+      const name = document.getElementById('name')?.value || '';
+      const hobby1 = document.getElementById('hobby1')?.value || '';
+      const hobby2 = document.getElementById('hobby2')?.value || '';
+      
+      const successParams = new URLSearchParams({
+        payment: 'success',
+        name,
+        hobby1,
+        hobby2
+      }).toString();
+
+      const { error } = await stripe.redirectToCheckout({
+        lineItems: [{
+          price: priceId,
+          quantity: 1,
+        }],
+        mode: 'payment',
+        successUrl: `${window.location.href}?${successParams}`,
+        cancelUrl: window.location.href + '?payment=cancelled',
+      });
+
+      if (error) {
+        console.error('Error:', error);
+        alert('Payment failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong. Please try again.');
+    }
+  });
+</script>

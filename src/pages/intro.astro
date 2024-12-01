@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import IntroForm from '../components/IntroForm.astro';
+import Logo from '../components/Logo.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+---
+
+<Layout title="WWE Intro Generator">
+  <main class="bg-[#ddd0fc] min-h-screen text-white py-8 px-4">
+    <div class="container mx-auto max-w-2xl">
+      <Logo />
+      <h1 class="text-4xl font-bold text-center mb-8 text-accent">
+        CREATE YOUR <span class="underline decoration-2 underline-offset-4">VERY OWN</span> FIGHT NIGHT INTRO
+      </h1>
+      <IntroForm />
+      <SocialLinks />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .text-gradient {
+    background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
