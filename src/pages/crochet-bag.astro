@@ -1,12 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import IntroForm from '../components/IntroForm.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 
+<Layout title="Crochet Bag - Variety Gifts Unlimited">
+  <main class="bg-[#ddd0fc] min-h-screen text-white py-8 px-4">
+    <div class="container mx-auto max-w-2xl">
+      <Hero img="" />
+      <div class=" backdrop-blur-sm bg-white/10 p-6 rounded-xl border border-white/20 shadow-lg">
+        <h1 class="text-4xl font-bold text-center mb-8 text-accent">
+          Coming Soon!
+          <SocialLinks />
+        </h1>
+      </div>
+    </div>
+  </main>
+</Layout>
 <Layout title="Variety Gifts Unlimited - Crochet Bag">
 
   <Hero 
     img="/crochet-bag.webp" 
   />
+  
+  <h1 class="text-4xl font-bold text-center">Coming Soon!</h1>
 
 </Layout>

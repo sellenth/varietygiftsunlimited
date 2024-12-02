@@ -52,6 +52,19 @@
       required
       class="w-full px-4 py-2 rounded bg-white border border-purple-500 focus:border-purple-300 focus:ring-2 focus:ring-purple-300 outline-none transition text-black"
     />
+    <button
+      id="infoButton"
+      type="button"
+      class="text-xs text-black/60 mt-2 hover:text-black transition-all duration-300 opacity-100"
+    >
+      More info about how we use your email
+    </button>
+    <div
+      id="infoText"
+      class="hidden text-xs text-black/80 mt-2 transition-all duration-300"
+    >
+      We use your email to deliver your custom intro. We're a small operation so please expect a response within 24-48 hours. Your privacy matters! We'll never sell your information.
+    </div>
   </div>
 
   <button
@@ -64,6 +77,23 @@
 
 <script>
   const form = document.getElementById('introForm') as HTMLFormElement;
+  const infoButton = document.getElementById('infoButton') as HTMLButtonElement;
+  const infoText = document.getElementById('infoText') as HTMLDivElement;
+
+  // Auto-hide the info button after 5 seconds
+  setTimeout(() => {
+    infoButton.style.opacity = '0';
+    setTimeout(() => {
+      infoButton.style.display = 'none';
+    }, 300); // Wait for fade out animation
+  }, 5000);
+
+  // Show/hide info text on button click
+  infoButton.addEventListener('click', () => {
+    infoText.classList.remove('hidden');
+    infoText.style.opacity = '1';
+    infoButton.style.display = 'none';
+  });
 
   async function handleFormSubmission(e: Event) {
     e.preventDefault();
