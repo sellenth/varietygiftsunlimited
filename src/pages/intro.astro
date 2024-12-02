@@ -13,6 +13,16 @@ import SocialLinks from '../components/SocialLinks.astro';
         CREATE YOUR <span class="underline decoration-2 underline-offset-4">VERY OWN</span> FIGHT NIGHT INTRO
       </h1>
       <IntroForm />
+      <div class="my-8">
+        <video 
+          class="w-full max-h-[320px] rounded-lg shadow-lg" 
+          controls 
+          preload="none"
+        >
+          <source src="/jonathan_intro.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <SocialLinks />
     </div>
   </main>
