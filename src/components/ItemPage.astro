@@ -40,19 +40,21 @@ const {
     <p class="text-sm text-base-content/70">Powered by Stripe</p>
   </div>
 
+  { youtubeEmbedId !== "" &&
   <div class="divider my-8">Product Video</div>
 
-  <div class="flex justify-center pb-8">
-    <iframe
-      width="150"
-      height="300"
-      src={`https://www.youtube.com/embed/${youtubeEmbedId}`}
-      class="rounded-box shadow-lg"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    >
-    </iframe>
-  </div>
+    <div class="flex justify-center pb-8">
+      <iframe
+        width="150"
+        height="300"
+        src={`https://www.youtube.com/embed/${youtubeEmbedId}`}
+        class="rounded-box shadow-lg"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      >
+      </iframe>
+    </div>
+  }
 </main>
 <Footer />
 
