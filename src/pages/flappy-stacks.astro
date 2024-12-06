@@ -107,6 +107,11 @@
         }
 
         window.addEventListener('keydown', flap);
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                flap();
+            }
+        });
         gameLoop();
     </script>
 </div>
