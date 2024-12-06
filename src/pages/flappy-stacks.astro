@@ -1,12 +1,23 @@
+---
+import Header from "../components/Header.astro";
+---
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+  }
+</style>
+<Header />
 <div id="game">
-    <h1>Flappy Stacks</h1>
     <p>Get ready to fly as a stack of money with wings!</p>
     <script>
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         document.getElementById('game').appendChild(canvas);
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.height = window.innerHeight - document.querySelector('header').offsetHeight;
 
         let stack = { x: canvas.width / 2, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
         let obstacles = [];
