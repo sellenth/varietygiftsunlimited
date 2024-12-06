@@ -8,7 +8,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let stack = { x: 50, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
+        let stack = { x: canvas.width / 2, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
         let obstacles = [];
         let score = 0;
 
@@ -60,8 +60,13 @@
                 if (stack.x < obstacle.x + obstacle.width &&
                     stack.x + stack.width > obstacle.x &&
                     (stack.y < obstacle.height || stack.y + stack.height > obstacle.height + 150)) {
-                    alert('Game Over! Your score: ' + score);
-                    document.location.reload();
+                    console.log('Hit a wall! Resetting scene.');
+                    // Reset player position and velocity
+                    stack.y = 150; // Reset to spawn position
+                    stack.velocity = 0; // Reset velocity
+                    // Reset obstacles and score
+                    obstacles = []; // Clear obstacles
+                    score = 0; // Reset score
                 }
             });
         }
@@ -82,4 +87,3 @@
         gameLoop();
     </script>
 </div>
->
