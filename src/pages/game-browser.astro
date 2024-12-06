@@ -1,76 +1,13 @@
-<html>
-<head>
-    <title>Game Browser</title>
-    <style>
-        body { 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            background: url('/path/to/background-image.jpg') no-repeat center center fixed; 
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #fff;
-        }
-        h1 { 
-            text-align: center; 
-            margin-bottom: 20px; 
-            font-size: 36px; 
-        }
-        .game { 
-            border: 2px solid #fff; 
-            border-radius: 10px; 
-            padding: 20px; 
-            text-align: center; 
-            background: rgba(0, 0, 0, 0.7); 
-            transition: transform 0.3s;
-        }
-        .game h2 { 
-            margin: 0; 
-            font-size: 24px; 
-            margin-bottom: 15px; 
-        }
-        .game:hover { 
-            transform: scale(1.05); 
-        }
-        .button { 
-            margin-top: 10px; 
-            padding: 10px; 
-            background-color: #007BFF; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .button:hover { 
-            background-color: #0056b3; 
-        }
-        .container { 
-            display: flex; 
-            flex-direction: column;
-            justify-content: space-around; 
-            width: 80%; 
-            flex-wrap: wrap;
-        }
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .game {
-                margin-bottom: 20px;
-            }
-        }
-    </style>
-</head>
-<body>
+---
+import Header from "../components/Header.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts">
     <h1>Welcome to the Game Browser</h1>
-    <div>
+    <div class="flex flex-col w-full justify-center items-center">
         <div class="game mb-2 ">
-            <h2>Flappy Stacks</h2>
+            <h2 class="text-white">Flappy Stacks</h2>
             <a href="/flappy-stacks">
 
                 <img src="/flappy-stacks/flappy_stacks_art.jpg" alt="Flappy Stacks Art" style="width: 300px; height: auto;" />
@@ -79,9 +16,63 @@
             </div> </a>
         </div>
         <div class="game">
-            <h2>Savings Box Anthology</h2>
+            <h2 class="text-white">Savings Box Anthology</h2>
             <a href="/savings-box-anthology" class="button">Learn More</a>
         </div>
     </div>
-</body>
-</html>
+</Layout>
+
+<style>
+    h1 { 
+        text-align: center; 
+        margin-bottom: 20px; 
+        font-size: 36px; 
+    }
+    .game { 
+        max-width: 50%;
+        border: 2px solid #fff; 
+        border-radius: 10px; 
+        padding: 20px; 
+        text-align: center; 
+        background: rgba(0, 0, 0, 0.7); 
+        transition: transform 0.3s;
+    }
+    .game h2 { 
+        margin: 0; 
+        font-size: 24px; 
+        margin-bottom: 15px; 
+    }
+    .game:hover { 
+        transform: scale(1.05); 
+    }
+    .button { 
+        margin-top: 10px; 
+        padding: 10px; 
+        background-color: #007BFF; 
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+    .button:hover { 
+        background-color: #0056b3; 
+    }
+    .container { 
+        display: flex; 
+        flex-direction: column;
+        justify-content: space-around; 
+        width: 80%; 
+        flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            align-items: center;
+        }
+        .game {
+            margin-bottom: 20px;
+        }
+    }
+</style>
