@@ -8,9 +8,20 @@ import Header from "../components/Header.astro";
     overflow: hidden;
     height: 100%;
   }
+  #high-score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20vw; /* Giant size relative to viewport width */
+    color: rgba(48, 25, 52, 0.2); /* Dark purple with transparency */
+    z-index: -1; /* Ensure it's behind other elements */
+    pointer-events: none; /* Prevent interaction */
+  }
 </style>
 <Header />
 <div id="game">
+    <div id="high-score">0</div>
     <p>Get ready to fly as a stack of money with wings!</p>
     <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
       <small>Score</small>
@@ -66,6 +77,10 @@ import Header from "../components/Header.astro";
                 } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
                     score++;
                     document.getElementById('score').innerText = score;
+                    const highScoreElement = document.getElementById('high-score');
+                    if (parseInt(highScoreElement.innerText) < score) {
+                        highScoreElement.innerText = score;
+                    }
                     scoredObstacles.add(obstacle);
                 }
             });
