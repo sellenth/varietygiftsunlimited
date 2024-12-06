@@ -12,6 +12,14 @@ import Header from "../components/Header.astro";
 <Header />
 <div id="game">
     <p>Get ready to fly as a stack of money with wings!</p>
+    <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
+      <small>Score</small>
+      <h1 id="score" style="margin: 0;">0</h1>
+    </div>
+    <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
+      <small>Score</small>
+      <h1 id="score" style="margin: 0;">0</h1>
+    </div>
     <script>
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
@@ -59,6 +67,7 @@ import Header from "../components/Header.astro";
                 if (obstacle.x + obstacle.width < 0) {
                     obstacles.splice(index, 1);
                     score++;
+                    document.getElementById('score').innerText = score;
                 }
             });
         }
@@ -100,6 +109,7 @@ import Header from "../components/Header.astro";
                     // Reset obstacles and score
                     obstacles = []; // Clear obstacles
                     score = 0; // Reset score
+                    document.getElementById('score').innerText = score;
                 }
             });
         }
