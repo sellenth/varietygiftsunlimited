@@ -19,20 +19,48 @@ import Header from "../components/Header.astro";
     pointer-events: none; /* Prevent interaction */
   }
   .instructions {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    z-index: 1000;
     transition: opacity 0.5s ease;
   }
   .hidden {
     opacity: 0;
     visibility: hidden;
   }
+  .win-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    z-index: 1000;
+    display: none;
+  }
 </style>
 <Header />
 <div id="game">
     <div id="high-score">0</div>
-    <p id="instructions" class="instructions">Get ready to fly as a stack of money with wings!</p>
+    <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 5 for a BIG surprise!</p>
     <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
       <small>Score</small>
       <h1 id="score" style="margin: 0;">0</h1>
+    </div>
+    <div id="win-message" class="win-message">
+      You won! Tag us on IG to get 10 Variety Gifts tokens
     </div>
     <script>
         try {
@@ -122,6 +150,15 @@ import Header from "../components/Header.astro";
                 });
             }
 
+            function checkWinCondition() {
+                if (score >= 5) {
+                    const winMessage = document.getElementById('win-message');
+                    if (winMessage) {
+                        winMessage.style.display = 'block';
+                    }
+                }
+            }
+
             let frames = 0;
             console.log('Initializing game loop...');
             function gameLoop() {
@@ -132,6 +169,7 @@ import Header from "../components/Header.astro";
                 update();
                 updateObstacles();
                 checkCollision();
+                checkWinCondition();
                 requestAnimationFrame(gameLoop);
             }
 
