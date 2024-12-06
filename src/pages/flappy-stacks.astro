@@ -17,6 +17,20 @@
             context.fillRect(stack.x, stack.y, stack.width, stack.height);
         }
 
+        // drawObstacles()
+        // 
+        // This function draws the obstacles on the screen.
+        // 
+        // It iterates over the obstacles array and for each obstacle:
+        // 
+        // 1. It sets the fill color to green.
+        // 2. It draws a rectangle for the top part of the obstacle
+        //    with the x position, width and height of the obstacle.
+        // 3. It draws a rectangle for the bottom part of the obstacle
+        //    with the x position and width of the obstacle,
+        //    and the height of the canvas minus the height of the obstacle
+        //    minus 100 (the distance between the top and bottom parts of the obstacle).
+        // 
         function drawObstacles() {
             context.fillStyle = 'green';
             obstacles.forEach(obstacle => {
@@ -27,7 +41,7 @@
 
         function updateObstacles() {
             if (frames % 75 === 0) {
-                obstacles.push({ x: canvas.width, width: 50, height: Math.random() * (canvas.height - 150) });
+                obstacles.push({ x: canvas.width, width: 50, height: Math.random() * (canvas.height - 150) / 2 });
             }
             obstacles.forEach((obstacle, index) => {
                 obstacle.x -= 5;
@@ -38,8 +52,16 @@
             });
         }
 
+        let canJump = true; // Flag for debounce
+
         function flap() {
-            stack.velocity += stack.lift;
+            if (canJump) {
+                stack.velocity = stack.lift; // Immediate jump response
+                canJump = false; // Disable jumping
+                setTimeout(() => {
+                    canJump = true; // Re-enable jumping after 0.4 seconds
+                }, 300);
+            }
         }
 
         function update() {
