@@ -94,10 +94,10 @@ import Header from "../components/Header.astro";
                         obstacles.splice(index, 1);
                     } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
                         score++;
-                        document.getElementById('score').innerText = score;
+                        document.getElementById('score').innerText = score.toString();
                         const highScoreElement = document.getElementById('high-score');
                         if (parseInt(highScoreElement.innerText) < score) {
-                            highScoreElement.innerText = score;
+                            highScoreElement.innerText = score.toString();
                         }
                         scoredObstacles.add(obstacle);
                     }
@@ -141,7 +141,7 @@ import Header from "../components/Header.astro";
                         // Reset obstacles and score
                         obstacles = []; // Clear obstacles
                         score = 0; // Reset score
-                        document.getElementById('score').innerText = score;
+                        document.getElementById('score').innerText = score.toString();
                     }
                 });
             }
