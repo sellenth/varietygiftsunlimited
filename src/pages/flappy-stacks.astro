@@ -76,11 +76,6 @@ import Header from "../components/Header.astro";
             let score = 0;
             let scoredObstacles = new Set();
 
-            function drawStack() {
-                context.fillStyle = 'gold';
-                context.fillRect(stack.x, stack.y, stack.width, stack.height);
-            }
-
             function drawObstacles() {
                 context.fillStyle = 'green';
                 obstacles.forEach(obstacle => {
@@ -161,16 +156,32 @@ import Header from "../components/Header.astro";
             }
 
             let frames = 0;
+            let currentFrame = 0;
+            const frameWidth = 1024 / 4; // Assuming each frame is 100px wide
+            const frameHeight = 1024 / 5; // Assuming each frame is 100px tall
+            const totalFrames = 20; // 4 columns * 5 rows
+            const spriteSheet = new Image();
+            spriteSheet.src = '/flappy-stacks/money_sprite_sheet.jpg';
+
             console.log('Initializing game loop...');
             function gameLoop() {
                 frames++;
                 context.clearRect(0, 0, canvas.width, canvas.height);
-                drawStack();
+                
+                // Draw sprite where the stack is
+                const row = Math.floor(currentFrame / 4);
+                const col = currentFrame % 4;
+                const offsetX = col * frameWidth;
+                const offsetY = row * frameHeight;
+                context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
+                currentFrame = (currentFrame + 1) % totalFrames;
+                
                 drawObstacles();
                 update();
                 updateObstacles();
                 checkCollision();
                 checkWinCondition();
+                
                 requestAnimationFrame(gameLoop);
             }
 
