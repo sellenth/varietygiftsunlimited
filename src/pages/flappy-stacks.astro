@@ -1,0 +1,85 @@
+<div id="game">
+    <h1>Flappy Stacks</h1>
+    <p>Get ready to fly as a stack of money with wings!</p>
+    <script>
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        document.getElementById('game').appendChild(canvas);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let stack = { x: 50, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
+        let obstacles = [];
+        let score = 0;
+
+        function drawStack() {
+            context.fillStyle = 'gold';
+            context.fillRect(stack.x, stack.y, stack.width, stack.height);
+        }
+
+        function drawObstacles() {
+            context.fillStyle = 'green';
+            obstacles.forEach(obstacle => {
+                context.fillRect(obstacle.x, 0, obstacle.width, obstacle.height);
+                context.fillRect(obstacle.x, obstacle.height + 150, obstacle.width, canvas.height - obstacle.height - 150);
+            });
+        }
+
+        function updateObstacles() {
+            if (frames % 75 === 0) {
+                obstacles.push({ x: canvas.width, width: 50, height: Math.random() * (canvas.height - 150) });
+            }
+            obstacles.forEach((obstacle, index) => {
+                obstacle.x -= 5;
+                if (obstacle.x + obstacle.width < 0) {
+                    obstacles.splice(index, 1);
+                    score++;
+                }
+            });
+        }
+
+        function flap() {
+            stack.velocity += stack.lift;
+        }
+
+        function update() {
+            stack.velocity += stack.gravity;
+            stack.y += stack.velocity;
+            if (stack.y + stack.height >= canvas.height) {
+                stack.y = canvas.height - stack.height;
+                stack.velocity = 0;
+            }
+            if (stack.y <= 0) {
+                stack.y = 0;
+                stack.velocity = 0;
+            }
+        }
+
+        function checkCollision() {
+            obstacles.forEach(obstacle => {
+                if (stack.x < obstacle.x + obstacle.width &&
+                    stack.x + stack.width > obstacle.x &&
+                    (stack.y < obstacle.height || stack.y + stack.height > obstacle.height + 150)) {
+                    alert('Game Over! Your score: ' + score);
+                    document.location.reload();
+                }
+            });
+        }
+
+        let frames = 0;
+        function gameLoop() {
+            frames++;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawStack();
+            drawObstacles();
+            update();
+            updateObstacles();
+            checkCollision();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.addEventListener('keydown', flap);
+        gameLoop();
+    </script>
+</div>
+>
