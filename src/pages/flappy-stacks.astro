@@ -1,219 +1,237 @@
 ---
 import Header from "../components/Header.astro";
+
+// Define metadata for the page
+const meta = {
+  title: "Flappy Stacks",
+  description: "A fun stacking game inspired by Flappy Bird",
+};
 ---
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-  }
-  #high-score {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20vw; /* Giant size relative to viewport width */
-    color: rgba(48, 25, 52, 0.2); /* Dark purple with transparency */
-    z-index: -1; /* Ensure it's behind other elements */
-    pointer-events: none; /* Prevent interaction */
-  }
-  .instructions {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    z-index: 1000;
-    transition: opacity 0.5s ease;
-  }
-  .hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-  .win-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    z-index: 1000;
-    display: none;
-  }
-</style>
-<Header />
-<div id="game">
-    
-    <div id="high-score">0</div>
-    <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
-    <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
-      <small>Score</small>
-      <h1 id="score" style="margin: 0;">0</h1>
-    </div>
-    <div id="win-message" class="win-message">
-      You won! Tag us on IG to get 10 Variety Gifts tokens
-    </div>
-    <script>
-        try {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            document.getElementById('game').appendChild(canvas);
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - document.querySelector('header').offsetHeight;
 
-            let stack = { x: canvas.width / 2, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
-            let obstacles = [];
-            let score = 0;
-            let scoredObstacles = new Set();
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content={meta.description} />
+    <title>{meta.title}</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+      #high-score {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20vw; /* Giant size relative to viewport width */
+        color: rgba(48, 25, 52, 0.2); /* Dark purple with transparency */
+        z-index: -1; /* Ensure it's behind other elements */
+        pointer-events: none; /* Prevent interaction */
+      }
+      .instructions {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 24px;
+        color: #333;
+        z-index: 1000;
+        transition: opacity 0.5s ease;
+      }
+      .hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .win-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 24px;
+        color: #333;
+        z-index: 1000;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <div id="game">
+        
+        <div id="high-score">0</div>
+        <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
+        <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
+          <small>Score</small>
+          <h1 id="score" style="margin: 0;">0</h1>
+        </div>
+        <div id="win-message" class="win-message">
+          You won! Tag us on IG to get 10 Variety Gifts tokens
+        </div>
+        <script>
+            try {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                document.getElementById('game').appendChild(canvas);
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - document.querySelector('header').offsetHeight;
 
-            function drawObstacles() {
-                context.fillStyle = 'green';
-                obstacles.forEach(obstacle => {
-                    context.fillRect(obstacle.x, 0, obstacle.width, obstacle.height);
-                    context.fillRect(obstacle.x, obstacle.height + 200, obstacle.width, canvas.height - obstacle.height - 175);
-                });
-            }
+                let stack = { x: canvas.width / 2, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
+                let obstacles = [];
+                let score = 0;
+                let scoredObstacles = new Set();
 
-            function updateObstacles() {
-                if (frames % 75 === 0) {
-                    obstacles.push({ x: canvas.width, width: 50, height: Math.random() * (canvas.height - 200) / 2 });
+                function drawObstacles() {
+                    context.fillStyle = 'green';
+                    obstacles.forEach(obstacle => {
+                        context.fillRect(obstacle.x, 0, obstacle.width, obstacle.height);
+                        context.fillRect(obstacle.x, obstacle.height + 200, obstacle.width, canvas.height - obstacle.height - 175);
+                    });
                 }
-                obstacles.forEach((obstacle, index) => {
-                    obstacle.x -= 5;
-                    if (obstacle.x + obstacle.width < 0) {
-                        obstacles.splice(index, 1);
-                    } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
-                        score++;
-                        document.getElementById('score').innerText = score.toString();
-                        const highScoreElement = document.getElementById('high-score');
-                        if (parseInt(highScoreElement.innerText) < score) {
-                            highScoreElement.innerText = score.toString();
+
+                function updateObstacles() {
+                    if (frames % 75 === 0) {
+                        obstacles.push({ x: canvas.width, width: 50, height: Math.random() * (canvas.height - 200) / 2 });
+                    }
+                    obstacles.forEach((obstacle, index) => {
+                        obstacle.x -= 5;
+                        if (obstacle.x + obstacle.width < 0) {
+                            obstacles.splice(index, 1);
+                        } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
+                            score++;
+                            document.getElementById('score').innerText = score.toString();
+                            const highScoreElement = document.getElementById('high-score');
+                            if (parseInt(highScoreElement.innerText) < score) {
+                                highScoreElement.innerText = score.toString();
+                            }
+                            scoredObstacles.add(obstacle);
                         }
-                        scoredObstacles.add(obstacle);
-                    }
-                });
-            }
-
-            let canJump = true; // Flag for debounce
-
-            function flap() {
-                if (canJump) {
-                    stack.velocity = stack.lift; // Immediate jump response
-                    canJump = false; // Disable jumping
-                    setTimeout(() => {
-                        canJump = true; // Re-enable jumping after 0.4 seconds
-                    }, 220);
+                    });
                 }
-            }
 
-            function update() {
-                stack.velocity += stack.gravity;
-                stack.y += stack.velocity;
-                if (stack.y + stack.height >= canvas.height) {
-                    stack.y = canvas.height - stack.height;
-                    stack.velocity = 0;
-                }
-                if (stack.y <= 0) {
-                    stack.y = 0;
-                    stack.velocity = 0;
-                }
-            }
+                let canJump = true; // Flag for debounce
 
-            function checkCollision() {
-                obstacles.forEach(obstacle => {
-                    if (stack.x < obstacle.x + obstacle.width &&
-                        stack.x + stack.width > obstacle.x &&
-                        (stack.y < obstacle.height || stack.y + stack.height > obstacle.height + 200)) {
-                        console.log('Hit a wall! Resetting scene.');
-                        // Reset player position and velocity
-                        stack.y = 150; // Reset to spawn position
-                        stack.velocity = 0; // Reset velocity
-                        // Reset obstacles and score
-                        obstacles = []; // Clear obstacles
-                        score = 0; // Reset score
-                        document.getElementById('score').innerText = score.toString();
-                    }
-                });
-            }
-
-            function checkWinCondition() {
-                if (score >= 10) {
-                    const winMessage = document.getElementById('win-message');
-                    if (winMessage) {
-                        winMessage.style.display = 'block';
+                function flap() {
+                    if (canJump) {
+                        stack.velocity = stack.lift; // Immediate jump response
+                        canJump = false; // Disable jumping
+                        setTimeout(() => {
+                            canJump = true; // Re-enable jumping after 0.4 seconds
+                        }, 220);
                     }
                 }
-            }
 
-            let frames = 0;
-            let currentFrame = 0;
-            const frameWidth = 1024 / 4; // Assuming each frame is 100px wide
-            const frameHeight = 1024 / 5; // Assuming each frame is 100px tall
-            const totalFrames = 20; // 4 columns * 5 rows
-            const spriteSheet = new Image();
-            spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
+                function update() {
+                    stack.velocity += stack.gravity;
+                    stack.y += stack.velocity;
+                    if (stack.y + stack.height >= canvas.height) {
+                        stack.y = canvas.height - stack.height;
+                        stack.velocity = 0;
+                    }
+                    if (stack.y <= 0) {
+                        stack.y = 0;
+                        stack.velocity = 0;
+                    }
+                }
 
-            let lastFrameTime = 0;
-            const frameInterval = 1000 / 60; // 30 fps = ~33.33ms between frames
+                function checkCollision() {
+                    obstacles.forEach(obstacle => {
+                        if (stack.x < obstacle.x + obstacle.width &&
+                            stack.x + stack.width > obstacle.x &&
+                            (stack.y < obstacle.height || stack.y + stack.height > obstacle.height + 200)) {
+                            console.log('Hit a wall! Resetting scene.');
+                            // Reset player position and velocity
+                            stack.y = 150; // Reset to spawn position
+                            stack.velocity = 0; // Reset velocity
+                            // Reset obstacles and score
+                            obstacles = []; // Clear obstacles
+                            score = 0; // Reset score
+                            document.getElementById('score').innerText = score.toString();
+                        }
+                    });
+                }
 
-            console.log('Initializing game loop...');
-            function gameLoop(currentTime) {
-                // Calculate time since last frame
-                const deltaTime = currentTime - lastFrameTime;
+                function checkWinCondition() {
+                    if (score >= 10) {
+                        const winMessage = document.getElementById('win-message');
+                        if (winMessage) {
+                            winMessage.style.display = 'block';
+                        }
+                    }
+                }
 
-                // Only update if enough time has passed
-                if (deltaTime >= frameInterval) {
-                    lastFrameTime = currentTime - (deltaTime % frameInterval);
-                    frames++;
-                    context.clearRect(0, 0, canvas.width, canvas.height);
+                let frames = 0;
+                let currentFrame = 0;
+                const frameWidth = 1024 / 4; // Assuming each frame is 100px wide
+                const frameHeight = 1024 / 5; // Assuming each frame is 100px tall
+                const totalFrames = 20; // 4 columns * 5 rows
+                const spriteSheet = new Image();
+                spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
+
+                let lastFrameTime = 0;
+                const frameInterval = 1000 / 60; // 30 fps = ~33.33ms between frames
+
+                console.log('Initializing game loop...');
+                function gameLoop(currentTime) {
+                    // Calculate time since last frame
+                    const deltaTime = currentTime - lastFrameTime;
+
+                    // Only update if enough time has passed
+                    if (deltaTime >= frameInterval) {
+                        lastFrameTime = currentTime - (deltaTime % frameInterval);
+                        frames++;
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        
+                        // Draw sprite where the stack is
+                        const row = Math.floor(currentFrame / 4);
+                        const col = currentFrame % 4;
+                        const offsetX = col * frameWidth;
+                        const offsetY = row * frameHeight;
+                        context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
+                        if (frames % 10 === 0) {
+                            currentFrame = (currentFrame + 1) % totalFrames;
+                        }
+
+                        drawObstacles();
+                        update();
+                        updateObstacles();
+                        checkCollision();
+                        checkWinCondition();
+                    }
                     
-                    // Draw sprite where the stack is
-                    const row = Math.floor(currentFrame / 4);
-                    const col = currentFrame % 4;
-                    const offsetX = col * frameWidth;
-                    const offsetY = row * frameHeight;
-                    context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
-                    if (frames % 10 === 0) {
-                        currentFrame = (currentFrame + 1) % totalFrames;
+                    requestAnimationFrame((currentTime) => gameLoop(currentTime));
+                }
+
+                window.addEventListener('keydown', flap);
+                document.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        flap();
                     }
-
-                    drawObstacles();
-                    update();
-                    updateObstacles();
-                    checkCollision();
-                    checkWinCondition();
-                }
-                
+                });
                 requestAnimationFrame((currentTime) => gameLoop(currentTime));
+            } catch (error) {
+                console.error('An error occurred in the game script:', error);
             }
-
-            window.addEventListener('keydown', flap);
-            document.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    flap();
-                }
-            });
-            requestAnimationFrame((currentTime) => gameLoop(currentTime));
-        } catch (error) {
-            console.error('An error occurred in the game script:', error);
-        }
-    </script>
-    <script>
-      setTimeout(() => {
-        const instructions = document.getElementById('instructions');
-        if (instructions) {
-          instructions.classList.add('hidden');
-        }
-      }, 5000);
-    </script>
-</div>
+        </script>
+        <script>
+          setTimeout(() => {
+            const instructions = document.getElementById('instructions');
+            if (instructions) {
+              instructions.classList.add('hidden');
+            }
+          }, 5000);
+        </script>
+    </div>
+  </body>
+</html>
