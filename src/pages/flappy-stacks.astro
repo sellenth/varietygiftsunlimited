@@ -180,36 +180,38 @@ const meta = {
                 spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
 
                 let lastFrameTime = 0;
-                const frameInterval = 1000 / 60; 
+                const fixedTimeStep = 1000 / 60; // 60 updates per second
+                let accumulatedTime = 0;
 
                 console.log('Initializing game loop...');
                 function gameLoop(currentTime) {
                     // Calculate time since last frame
                     const deltaTime = currentTime - lastFrameTime;
+                    lastFrameTime = currentTime;
+                    accumulatedTime += deltaTime;
 
-                    // Only update if enough time has passed
-                    if (deltaTime >= frameInterval) {
-                        lastFrameTime = currentTime - (deltaTime % frameInterval);
-                        frames++;
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                        
-                        // Draw sprite where the stack is
-                        const row = Math.floor(currentFrame / 4);
-                        const col = currentFrame % 4;
-                        const offsetX = col * frameWidth;
-                        const offsetY = row * frameHeight;
-                        context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
-                        if (frames % 10 === 0) {
-                            currentFrame = (currentFrame + 1) % totalFrames;
-                        }
-
-                        drawObstacles();
+                    // Update game logic with fixed time step
+                    while (accumulatedTime >= fixedTimeStep) {
                         update();
                         updateObstacles();
                         checkCollision();
                         checkWinCondition();
+                        accumulatedTime -= fixedTimeStep;
                     }
-                    
+
+                    // Render the frame
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    const row = Math.floor(currentFrame / 4);
+                    const col = currentFrame % 4;
+                    const offsetX = col * frameWidth;
+                    const offsetY = row * frameHeight;
+                    context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
+                    if (frames % 10 === 0) {
+                        currentFrame = (currentFrame + 1) % totalFrames;
+                    }
+                    drawObstacles();
+
+                    frames++;
                     requestAnimationFrame((currentTime) => gameLoop(currentTime));
                 }
 
