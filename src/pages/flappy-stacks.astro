@@ -164,7 +164,7 @@ import Header from "../components/Header.astro";
             spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
 
             let lastFrameTime = 0;
-            const frameInterval = 1000 / 30; // 30 fps = ~33.33ms between frames
+            const frameInterval = 1000 / 60; // 30 fps = ~33.33ms between frames
 
             console.log('Initializing game loop...');
             function gameLoop(currentTime) {
@@ -194,7 +194,7 @@ import Header from "../components/Header.astro";
                     checkWinCondition();
                 }
                 
-                requestAnimationFrame(gameLoop);
+                requestAnimationFrame((currentTime) => gameLoop(currentTime));
             }
 
             window.addEventListener('keydown', flap);
@@ -203,7 +203,7 @@ import Header from "../components/Header.astro";
                     flap();
                 }
             });
-            gameLoop();
+            requestAnimationFrame((currentTime) => gameLoop(currentTime));
         } catch (error) {
             console.error('An error occurred in the game script:', error);
         }
