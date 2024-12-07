@@ -128,7 +128,7 @@ const meta = {
                         canJump = false; // Disable jumping
                         setTimeout(() => {
                             canJump = true; // Re-enable jumping after 0.4 seconds
-                        }, 220);
+                        }, 70);
                     }
                 }
 
@@ -180,7 +180,7 @@ const meta = {
                 spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
 
                 let lastFrameTime = 0;
-                const frameInterval = 1000 / 60; // 30 fps = ~33.33ms between frames
+                const frameInterval = 1000 / 60; 
 
                 console.log('Initializing game loop...');
                 function gameLoop(currentTime) {
