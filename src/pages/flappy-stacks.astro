@@ -163,26 +163,36 @@ import Header from "../components/Header.astro";
             const spriteSheet = new Image();
             spriteSheet.src = '/flappy-stacks/money_sprite_sheet.png';
 
+            let lastFrameTime = 0;
+            const frameInterval = 1000 / 30; // 30 fps = ~33.33ms between frames
+
             console.log('Initializing game loop...');
-            function gameLoop() {
-                frames++;
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Draw sprite where the stack is
-                const row = Math.floor(currentFrame / 4);
-                const col = currentFrame % 4;
-                const offsetX = col * frameWidth;
-                const offsetY = row * frameHeight;
-                context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
-                if (frames % 10 === 0) {
-                    currentFrame = (currentFrame + 1) % totalFrames;
+            function gameLoop(currentTime) {
+                // Calculate time since last frame
+                const deltaTime = currentTime - lastFrameTime;
+
+                // Only update if enough time has passed
+                if (deltaTime >= frameInterval) {
+                    lastFrameTime = currentTime - (deltaTime % frameInterval);
+                    frames++;
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw sprite where the stack is
+                    const row = Math.floor(currentFrame / 4);
+                    const col = currentFrame % 4;
+                    const offsetX = col * frameWidth;
+                    const offsetY = row * frameHeight;
+                    context.drawImage(spriteSheet, offsetX, offsetY, frameWidth, frameHeight, stack.x, stack.y, stack.width, stack.height);
+                    if (frames % 10 === 0) {
+                        currentFrame = (currentFrame + 1) % totalFrames;
+                    }
+
+                    drawObstacles();
+                    update();
+                    updateObstacles();
+                    checkCollision();
+                    checkWinCondition();
                 }
-                
-                drawObstacles();
-                update();
-                updateObstacles();
-                checkCollision();
-                checkWinCondition();
                 
                 requestAnimationFrame(gameLoop);
             }
