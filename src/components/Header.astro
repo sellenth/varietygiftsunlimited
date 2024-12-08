@@ -11,6 +11,7 @@
 </header>
 
 <script>
+  if (localStorage) {
   const themeToggle = document.getElementById('themeToggle') as HTMLInputElement;
 
   const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
@@ -22,4 +23,5 @@
     localStorage.setItem('isDark', JSON.stringify(newIsDark));
     document.documentElement.setAttribute('data-theme', newIsDark ? 'leaf-blue' : 'mytheme');
   });
+}
 </script>
