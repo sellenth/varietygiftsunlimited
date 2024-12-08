@@ -38,14 +38,13 @@ const meta = {
       }
       .instructions {
         position: absolute;
-        top: 20%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(255, 255, 255, 0.8);
+        bottom: 1vw;
+        right: 0px;
+        background-color: rgba(255, 255, 255, 1);
         padding: 20px;
         border-radius: 10px;
         text-align: center;
-        font-size: 24px;
+        font-size: 16px; /* Smaller size for better visibility */
         color: #333;
         z-index: 1000;
         transition: opacity 0.5s ease;
@@ -97,13 +96,13 @@ const meta = {
     <div id="game" class="max-w-3xl mx-auto overflow-hidden" style="position: relative;">
         
         <div id="high-score">0</div>
-        <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
+        <p id="instructions" class="instructions">Flap your way to glory by tapping<br>(or pressing the space bar)<br> Get a score of 10 for a BIG surprise!</p>
         <div id="score-counter" style="visibility: hidden; position: absolute; bottom: 20px; left: 20px; color: white;">
           <small>Score</small>
           <h1 id="score" style="margin: 0;">0</h1>
         </div>
         <div id="win-message" class="win-message">
-          You won! Tag us on IG to get 10 Variety Gifts tokens
+          You won! Tag us on IG to get 10 Variety Gifts tokens (redeemable for $10 in the Variety Gifts shop.)
         </div>
         <canvas id="canvas" class="aspect-ratio-16-9"></canvas>
         <script>
@@ -149,7 +148,7 @@ const meta = {
 
                 function updateObstacles() {
                     if (frames % 75 === 0) {
-                        obstacles.push({ x: 400, width: 50, height: Math.random() * (canvas.height - 200) / 2 });
+                        obstacles.push({ x: 600, width: 50, height: Math.random() * (canvas.height - 200) / 2 });
                     }
                     obstacles.forEach((obstacle, index) => {
                         obstacle.x -= 5;
@@ -177,6 +176,14 @@ const meta = {
                             canJump = true; // Re-enable jumping after 0.4 seconds
                         }, 150);
                     }
+                }
+
+                const flapSound = new Audio('/flappy-stacks/flap.ogg');
+
+                function playFlapSound() {
+                    flapSound.currentTime = 0; // Reset to start
+                    flapSound.play();
+                    setTimeout(() => flapSound.pause(), 200); // Play only first 200ms
                 }
 
                 function update() {
@@ -262,14 +269,22 @@ const meta = {
                     requestAnimationFrame((currentTime) => gameLoop(currentTime));
                 }
 
+                const soundtrack = new Audio('/flappy-stacks/soundtrack.mp3');
+                soundtrack.addEventListener('canplaythrough', () => {
+                    soundtrack.play(); // Play once loaded
+                }, { once: true });
+                soundtrack.load(); // Defer loading
+
                 window.addEventListener('keydown', (e) => {
                     e.preventDefault();
-                    flap(); 
+                    flap();
+                    playFlapSound(); // Play sound on flap
                   });
                 document.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     if (e.touches.length === 1) {
                         flap();
+                        playFlapSound(); // Play sound on flap
                     }
                 });
                 requestAnimationFrame((currentTime) => gameLoop(currentTime));
@@ -281,9 +296,9 @@ const meta = {
           setTimeout(() => {
             const instructions = document.getElementById('instructions');
             if (instructions) {
-              instructions.classList.add('hidden');
+              instructions.style.opacity = 1; // Ensure instructions remain visible
             }
-          }, 5000);
+          }, 0); // Remove delay to prevent hiding
         </script>
     </div>
   </body>
