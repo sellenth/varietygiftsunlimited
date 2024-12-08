@@ -59,8 +59,16 @@ const meta = {
         -ms-user-select: none; /* For IE 10+ */
       }
       #canvas {
-        background-image: url('/path/to/your/background-image.jpg'); /* Add your desired background image */
-        background-size: cover;
+        background-image: url('/logo.png'); /* Add your desired background image */
+        background-size: 2000px;
+        animation: scrollBackground 10s linear infinite;
+        background-color: rgba(255,255,255,0.5);
+        background-blend-mode: lighten;
+      }
+
+      @keyframes scrollBackground {
+        from { background-position: 0 0; }
+        to { background-position: -200px -200px; }
       }
       canvas {
         user-select: none; /* For modern browsers */
@@ -89,7 +97,7 @@ const meta = {
   </head>
   <body>
     <Header />
-    <div id="game" class="max-w-3xl mx-auto">
+    <div id="game" class="max-w-3xl mx-auto overflow-hidden">
         
         <div id="high-score">0</div>
         <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
