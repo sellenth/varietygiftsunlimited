@@ -47,6 +47,16 @@ const meta = {
         z-index: 1000;
         transition: opacity 0.5s ease;
       }
+      #score-counter {
+        user-select: none; /* For modern browsers */
+        -webkit-user-select: none; /* For Safari */
+        -ms-user-select: none; /* For IE 10+ */
+      }
+      canvas {
+        user-select: none; /* For modern browsers */
+    -webkit-user-select: none; /* For Safari */
+    -ms-user-select: none; /* For IE 10+ */
+      }
       .hidden {
         opacity: 0;
         visibility: hidden;
