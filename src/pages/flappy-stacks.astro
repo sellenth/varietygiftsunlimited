@@ -28,16 +28,13 @@ const meta = {
       }
       #high-score {
         position: absolute;
-        top: 50%;
-        left: 50%;
+        top: 10vw;
+        right: 0;
         transform: translate(-50%, -50%);
-        font-size: 20vw; /* Giant size relative to viewport width */
-        color: rgba(48, 25, 52, 0.2); /* Dark purple with transparency */
+        font-size: 20vw; /* Large size relative to viewport width */
+        color: black; /* Black text color */
         pointer-events: none; /* Prevent interaction */
-        background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
-        color: #fff; /* White text for contrast */
-        font-size: 20px;
-        z-index: 1500; /* Higher z-index to ensure visibility */
+        z-index: 500; /* Positioned between background and game elements */
       }
       .instructions {
         position: absolute;
@@ -97,7 +94,7 @@ const meta = {
   </head>
   <body>
     <Header />
-    <div id="game" class="max-w-3xl mx-auto overflow-hidden">
+    <div id="game" class="max-w-3xl mx-auto overflow-hidden" style="position: relative;">
         
         <div id="high-score">0</div>
         <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
