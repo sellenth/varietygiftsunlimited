@@ -23,6 +23,9 @@ const meta = {
         overflow: hidden;
         height: 100%;
       }
+      body {
+        background: linear-gradient(to bottom, #87CEEB, #f0f8ff); /* Sky blue to light blue gradient */
+      }
       #high-score {
         position: absolute;
         top: 50%;
@@ -52,10 +55,14 @@ const meta = {
         -webkit-user-select: none; /* For Safari */
         -ms-user-select: none; /* For IE 10+ */
       }
+      #canvas {
+        background-image: url('/path/to/your/background-image.jpg'); /* Add your desired background image */
+        background-size: cover;
+      }
       canvas {
         user-select: none; /* For modern browsers */
-    -webkit-user-select: none; /* For Safari */
-    -ms-user-select: none; /* For IE 10+ */
+        -webkit-user-select: none; /* For Safari */
+        -ms-user-select: none; /* For IE 10+ */
       }
       .hidden {
         opacity: 0;
@@ -83,7 +90,7 @@ const meta = {
         
         <div id="high-score">0</div>
         <p id="instructions" class="instructions">Get ready to flap your way to glory!<br/>Get a score of 10 for a BIG surprise!</p>
-        <div id="score-counter" style="position: absolute; bottom: 20px; left: 20px; color: white;">
+        <div id="score-counter" style="visibility: hidden; position: absolute; bottom: 20px; left: 20px; color: white;">
           <small>Score</small>
           <h1 id="score" style="margin: 0;">0</h1>
         </div>
@@ -106,9 +113,27 @@ const meta = {
                 let score = 0;
                 let scoredObstacles = new Set();
 
+                function createObstaclePattern() {
+                    const patternCanvas = document.createElement('canvas');
+                    patternCanvas.width = 10;
+                    patternCanvas.height = 10;
+                    const patternContext = patternCanvas.getContext('2d');
+
+                    patternContext.fillStyle = 'green';
+                    patternContext.fillRect(0, 0, 10, 10);
+                    patternContext.fillStyle = 'darkgreen';
+                    patternContext.beginPath();
+                    patternContext.arc(5, 5, 3, 0, Math.PI * 2);
+                    patternContext.fill();
+
+                    return context.createPattern(patternCanvas, 'repeat');
+                }
+
+                const obstaclePattern = createObstaclePattern();
+
                 function drawObstacles() {
-                    context.fillStyle = 'green';
                     obstacles.forEach(obstacle => {
+                        context.fillStyle = obstaclePattern;
                         context.fillRect(obstacle.x, 0, obstacle.width, obstacle.height);
                         context.fillRect(obstacle.x, obstacle.height + 200, obstacle.width, canvas.height - obstacle.height - 175);
                     });
