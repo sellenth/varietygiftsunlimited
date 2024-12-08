@@ -1,4 +1,5 @@
 ---
+// This is one page in a larger astro codebase. prefer using typescript that will compile without errors.
 import Header from "../components/Header.astro";
 
 // Define metadata for the page
@@ -87,7 +88,7 @@ const meta = {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight - document.querySelector('header').offsetHeight;
 
-                let stack = { x: canvas.width / 2, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
+                let stack = { x: 100, y: 150, width: 50, height: 50, gravity: 0.6, lift: -15, velocity: 0 };
                 let obstacles = [];
                 let score = 0;
                 let scoredObstacles = new Set();
@@ -215,8 +216,12 @@ const meta = {
                     requestAnimationFrame((currentTime) => gameLoop(currentTime));
                 }
 
-                window.addEventListener('keydown', flap);
+                window.addEventListener('keydown', (e) => {
+                    e.preventDefault();
+                    flap(); 
+                  });
                 document.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
                     if (e.touches.length === 1) {
                         flap();
                     }
