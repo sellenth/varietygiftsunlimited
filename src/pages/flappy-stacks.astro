@@ -42,6 +42,7 @@ const meta = {
         right: 0px;
         background-color: rgba(255, 255, 255, 1);
         padding: 20px;
+        pointer-events: none;
         border-radius: 10px;
         text-align: center;
         font-size: 16px; /* Smaller size for better visibility */
@@ -133,8 +134,24 @@ const meta = {
                 const chachingSound = new Audio('/flappy-stacks/chaching.mp3');
 
                 function playChachingSound() {
-                    chachingSound.currentTime = 0; // Start from the beginning
+                    chachingSound.currentTime = .5; // Start from the beginning
                     chachingSound.play();
+                }
+
+                const drumrollSound = new Audio('/flappy-stacks/drumroll.mp3');
+
+                function playDrumrollSound() {
+                    drumrollSound.currentTime = 2; // Start from the beginning
+                    drumrollSound.play();
+                    setTimeout(() => {
+                        drumrollSound.pause();
+                    }, 2000); // Pause after 200ms
+                }
+
+                function checkScoreForDrumroll() {
+                    if (score === parseInt(highScoreElement.innerText)) {
+                        playDrumrollSound();
+                    }
                 }
 
                 // Initialize high score from localStorage
@@ -148,7 +165,8 @@ const meta = {
                     if (score > parseInt(highScoreElement.innerText)) {
                         highScoreElement.innerText = score.toString();
                         localStorage.setItem('highScore', score.toString());
-                        playChachingSound();
+                        //playChachingSound();
+                      //drumrollSound.play(); // Resume drumroll if a new high score is achieved
                     }
                 }
 
@@ -188,6 +206,7 @@ const meta = {
                             obstacles.splice(index, 1);
                         } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
                             score++;
+                            checkScoreForDrumroll();
                             document.getElementById('score').innerText = score.toString();
                             updateHighScore();
                             scoredObstacles.add(obstacle);
@@ -200,6 +219,7 @@ const meta = {
 
                 function flap() {
                     if (canJump) {
+                        playFlapSound(); // Play sound on flap
                         stack.velocity = stack.lift; // Immediate jump response
                         canJump = false; // Disable jumping
                         setTimeout(() => {
@@ -208,12 +228,12 @@ const meta = {
                     }
                 }
 
-                const flapSound = new Audio('/flappy-stacks/flap.ogg');
+                const flapSound = new Audio('/flappy-stacks/flap.mp3');
 
                 function playFlapSound() {
                     flapSound.currentTime = 0; // Reset to start
                     flapSound.play();
-                    setTimeout(() => flapSound.pause(), 200); // Play only first 200ms
+                    //setTimeout(() => flapSound.pause(), 200); // Play only first 200ms
                 }
 
                 function update() {
@@ -308,13 +328,11 @@ const meta = {
                 window.addEventListener('keydown', (e) => {
                     e.preventDefault();
                     flap();
-                    playFlapSound(); // Play sound on flap
                   });
                 document.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     if (e.touches.length === 1) {
                         flap();
-                        playFlapSound(); // Play sound on flap
                     }
                 });
                 requestAnimationFrame((currentTime) => gameLoop(currentTime));
@@ -326,7 +344,7 @@ const meta = {
           setTimeout(() => {
             const instructions = document.getElementById('instructions');
             if (instructions) {
-              instructions.style.opacity = 1; // Ensure instructions remain visible
+              instructions.style.opacity = "1.0"; // Ensure instructions remain visible
             }
           }, 0); // Remove delay to prevent hiding
         </script>
