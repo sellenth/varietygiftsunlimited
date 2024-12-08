@@ -120,6 +120,38 @@ const meta = {
                 let score = 0;
                 let scoredObstacles = new Set();
 
+                const popSound = new Audio('/flappy-stacks/pop.mp3');
+
+                function playPopSound() {
+                    popSound.currentTime = 0; // Start from the beginning
+                    popSound.play();
+                    setTimeout(() => {
+                        popSound.pause();
+                    }, 200); // Pause after 200ms
+                }
+
+                const chachingSound = new Audio('/flappy-stacks/chaching.mp3');
+
+                function playChachingSound() {
+                    chachingSound.currentTime = 0; // Start from the beginning
+                    chachingSound.play();
+                }
+
+                // Initialize high score from localStorage
+                const storedHighScore = localStorage.getItem('highScore');
+                const highScoreElement = document.getElementById('high-score');
+                if (storedHighScore) {
+                    highScoreElement.innerText = storedHighScore;
+                }
+
+                function updateHighScore() {
+                    if (score > parseInt(highScoreElement.innerText)) {
+                        highScoreElement.innerText = score.toString();
+                        localStorage.setItem('highScore', score.toString());
+                        playChachingSound();
+                    }
+                }
+
                 function createObstaclePattern() {
                     const patternCanvas = document.createElement('canvas');
                     patternCanvas.width = 10;
@@ -157,11 +189,9 @@ const meta = {
                         } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
                             score++;
                             document.getElementById('score').innerText = score.toString();
-                            const highScoreElement = document.getElementById('high-score');
-                            if (parseInt(highScoreElement.innerText) < score) {
-                                highScoreElement.innerText = score.toString();
-                            }
+                            updateHighScore();
                             scoredObstacles.add(obstacle);
+                            playPopSound();
                         }
                     });
                 }
