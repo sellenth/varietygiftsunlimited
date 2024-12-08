@@ -33,8 +33,11 @@ const meta = {
         transform: translate(-50%, -50%);
         font-size: 20vw; /* Giant size relative to viewport width */
         color: rgba(48, 25, 52, 0.2); /* Dark purple with transparency */
-        z-index: -1; /* Ensure it's behind other elements */
         pointer-events: none; /* Prevent interaction */
+        background-color: rgba(0, 0, 0, 0.7); /* Darker background for contrast */
+        color: #fff; /* White text for contrast */
+        font-size: 20px;
+        z-index: 1500; /* Higher z-index to ensure visibility */
       }
       .instructions {
         position: absolute;
