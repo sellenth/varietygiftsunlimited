@@ -27,14 +27,11 @@ const meta = {
         background: linear-gradient(to bottom, #87CEEB, #f0f8ff); /* Sky blue to light blue gradient */
       }
       #high-score {
-        position: absolute;
-        top: 10vw;
-        right: 0;
-        transform: translate(-50%, -50%);
         font-size: 20vw; /* Large size relative to viewport width */
         color: black; /* Black text color */
         pointer-events: none; /* Prevent interaction */
         z-index: 500; /* Positioned between background and game elements */
+        font-size: 36px;
       }
       .instructions {
         position: absolute;
@@ -58,14 +55,14 @@ const meta = {
       #canvas {
         background-image: url('/logo.png'); /* Add your desired background image */
         background-size: 2000px;
-        animation: scrollBackground 10s linear infinite;
+      animation: scrollBackground 20s linear infinite alternate;
         background-color: rgba(255,255,255,0.5);
         background-blend-mode: lighten;
       }
 
       @keyframes scrollBackground {
         from { background-position: 0 0; }
-        to { background-position: -200px -200px; }
+        to { background-position: -1000px -1000px; }
       }
       canvas {
         user-select: none; /* For modern browsers */
@@ -96,8 +93,10 @@ const meta = {
     <Header />
     <div id="game" class="max-w-3xl mx-auto overflow-hidden" style="position: relative;">
         
-        <div id="high-score">0</div>
-        <p id="instructions" class="instructions">Flap your way to glory by tapping<br>(or pressing the space bar)<br> Get a score of 10 for a BIG surprise!</p>
+        <p id="instructions" class="instructions">Flap your way to glory by tapping<br>(or pressing the space bar)<br> Get a score of 10 for a BIG surprise!
+          <br>Current best:
+          <span id="high-score">0</span>
+        </p>
         <div id="score-counter" style="visibility: hidden; position: absolute; bottom: 20px; left: 20px; color: white;">
           <small>Score</small>
           <h1 id="score" style="margin: 0;">0</h1>
@@ -131,28 +130,6 @@ const meta = {
                     }, 200); // Pause after 200ms
                 }
 
-                const chachingSound = new Audio('/flappy-stacks/chaching.mp3');
-
-                function playChachingSound() {
-                    chachingSound.currentTime = .5; // Start from the beginning
-                    chachingSound.play();
-                }
-
-                const drumrollSound = new Audio('/flappy-stacks/drumroll.mp3');
-
-                function playDrumrollSound() {
-                    drumrollSound.currentTime = 2; // Start from the beginning
-                    drumrollSound.play();
-                    setTimeout(() => {
-                        drumrollSound.pause();
-                    }, 2000); // Pause after 200ms
-                }
-
-                function checkScoreForDrumroll() {
-                    if (score === parseInt(highScoreElement.innerText)) {
-                        playDrumrollSound();
-                    }
-                }
 
                 // Initialize high score from localStorage
                 const storedHighScore = localStorage.getItem('highScore');
@@ -206,11 +183,10 @@ const meta = {
                             obstacles.splice(index, 1);
                         } else if (obstacle.x < stack.x && !scoredObstacles.has(obstacle)) {
                             score++;
-                            checkScoreForDrumroll();
+                            playPopSound();
                             document.getElementById('score').innerText = score.toString();
                             updateHighScore();
                             scoredObstacles.add(obstacle);
-                            playPopSound();
                         }
                     });
                 }
