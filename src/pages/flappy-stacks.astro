@@ -35,17 +35,16 @@ const meta = {
       }
       .instructions {
         position: absolute;
-        bottom: 1vw;
-        right: 0px;
-        background-color: rgba(255, 255, 255, 1);
+        bottom:0px;
+        right: 0;
+        background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
         padding: 20px;
         pointer-events: none;
-        border-radius: 10px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 18px;
         text-align: center;
-        font-size: 16px; /* Smaller size for better visibility */
         color: #333;
-        z-index: 1000;
-        transition: opacity 0.5s ease;
       }
       #score-counter {
         user-select: none; /* For modern browsers */
@@ -53,11 +52,9 @@ const meta = {
         -ms-user-select: none; /* For IE 10+ */
       }
       #canvas {
-        background-image: url('/logo.png'); /* Add your desired background image */
+        background-image: url('/logo_50.png'); /* Add your desired background image */
         background-size: 2000px;
-      animation: scrollBackground 20s linear infinite alternate;
-        background-color: rgba(255,255,255,0.5);
-        background-blend-mode: lighten;
+        animation: scrollBackground 20s linear infinite alternate;
       }
 
       @keyframes scrollBackground {
