@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout title="Shop - Variety Gifts Unlimited">
+    <main class="p-5 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
+        <Header />
+        <section class="text-center my-10">
+            <h1 class="text-4xl font-bold">Shop</h1>
+            <p class="mt-4 text-lg">Discover our unique and fun gifts. Perfect for every occasion!</p>
+        </section>
+        <section id="products" class="w-full max-w-3xl px-4 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center relative z-10">
+            <Card img="/tanner/tannerlogo.png" 
+            title="Tanner Sticker" 
+            body="woah!!" 
+            sticker="true"
+            href="tanner-sticker"></Card>
+
+            <Card img="/box.webp" 
+            title="Savings Box" 
+            body="woah!!" 
+            href="savings-box"></Card>
+
+            <Card img="/snorlax.webp" 
+            title="Snorlax Plushie" 
+            body="woah!!" 
+            href="snorlax"></Card>
+
+            <Card img="/dog1.webp" 
+            title="Dog Plushie" 
+            body="woah!!" 
+            href="dog"></Card>
+        </section>
+        <Footer />
+    </main>
+</Layout>

@@ -35,12 +35,12 @@ const meta = {
         z-index: 500; /* Positioned between background and game elements */
         font-size: 36px;
       }
-      .instructions {
+      #scoreboard {
         position: absolute;
         bottom:0px;
         right: 0;
         background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-        padding: 20px;
+        padding: 5px 10px 10px 10px;
         pointer-events: none;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -92,10 +92,12 @@ const meta = {
     <Header />
     <div id="game" class="max-w-3xl mx-auto overflow-hidden" style="position: relative;">
         
+      <div id="scoreboard">
         <p id="instructions" class="instructions">Flap your way to glory by tapping<br>(or pressing the space bar)<br> Get a score of 10 for a BIG surprise!
-          <br>Current best:
-          <span id="high-score">0</span>
         </p>
+          Current best:
+          <span id="high-score">0</span>
+</div>
         <div id="score-counter" style="visibility: hidden; position: absolute; bottom: 20px; left: 20px; color: white;">
           <small>Score</small>
           <h1 id="score" style="margin: 0;">0</h1>
@@ -108,9 +110,9 @@ const meta = {
           setTimeout(() => {
             const instructions = document.getElementById('instructions');
             if (instructions) {
-              instructions.style.opacity = "1.0"; // Ensure instructions remain visible
+              instructions.style.display = 'none';
             }
-          }, 0); // Remove delay to prevent hiding
+          }, 4000); // Remove delay to prevent hiding
         </script>
     </div>
   </body>
