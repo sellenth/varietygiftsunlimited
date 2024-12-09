@@ -42,6 +42,14 @@ export class Game extends Scene
         this.showHand();
 
         this.checkStage();
+
+        // Flappy Bird Mechanics
+        this.player = new Player();
+        this.pipes = [];
+        this.score = 0;
+        this.highScore = 0;
+
+        this.setup();
     }
 
     checkStage ()
@@ -354,5 +362,114 @@ export class Game extends Scene
                 this.scene.start('GameOver');
             }
         }
+
+        // Flappy Bird Mechanics
+        this.player.update();
+        this.player.show();
+
+        // Handle pipes
+        if (this.frameCount % 75 === 0)
+        {
+            this.pipes.push(new Pipe()); // Add new pipe every 75 frames
+        }
+        for (let i = this.pipes.length - 1; i >= 0; i--)
+        {
+            this.pipes[i].update();
+            this.pipes[i].show();
+            if (this.pipes[i].x + this.pipes[i].width < 0)
+            {
+                this.pipes.splice(i, 1); // Remove off-screen pipes
+            }
+        }
+
+        // Display score
+        this.context.fillStyle = 'black';
+        this.context.font = '20px Arial';
+        this.context.fillText(`Score: ${this.score}`, 10, 20);
+        this.context.fillText(`High Score: ${this.highScore}`, 10, 40);
+    }
+
+    setup ()
+    {
+        this.player = new Player();
+        this.pipes = [];
+        this.score = 0;
+        this.highScore = 0;
+
+        this.pipes.push(new Pipe()); // Add initial pipe
+    }
+
+    draw ()
+    {
+        this.context.clearRect(0, 0, this.view.width, this.view.height);
+        this.player.update();
+        this.player.show();
+
+        // Handle pipes
+        if (this.frameCount % 75 === 0)
+        {
+            this.pipes.push(new Pipe()); // Add new pipe every 75 frames
+        }
+        for (let i = this.pipes.length - 1; i >= 0; i--)
+        {
+            this.pipes[i].update();
+            this.pipes[i].show();
+            if (this.pipes[i].x + this.pipes[i].width < 0)
+            {
+                this.pipes.splice(i, 1); // Remove off-screen pipes
+            }
+        }
+
+        // Display score
+        this.context.fillStyle = 'black';
+        this.context.font = '20px Arial';
+        this.context.fillText(`Score: ${this.score}`, 10, 20);
+        this.context.fillText(`High Score: ${this.highScore}`, 10, 40);
+    }
+}
+
+class Player {
+    constructor() {
+        this.x = 50; // Starting x position
+        this.y = 200; // Starting y position
+        this.gravity = 0.5; // Gravity effect
+        this.lift = -10; // Flap strength
+        this.velocity = 0; // Current velocity
+    }
+
+    flap() {
+        this.velocity += this.lift; // Apply lift on flap
+    }
+
+    update() {
+        this.velocity += this.gravity; // Apply gravity
+        this.y += this.velocity; // Update position
+        this.y = Math.min(this.y, 400); // Prevent going off screen
+    }
+
+    show() {
+        // Render player (bird)
+        context.fillStyle = 'yellow';
+        context.fillRect(this.x, this.y, 20, 20); // Simple rectangle as bird
+    }
+}
+
+class Pipe {
+    constructor() {
+        this.top = Math.random() * 200 + 50; // Random height for top pipe
+        this.bottom = Math.random() * 200 + 50; // Random height for bottom pipe
+        this.x = canvas.width; // Start off screen
+        this.width = 50;
+        this.speed = 3; // Speed of pipe movement
+    }
+
+    update() {
+        this.x -= this.speed; // Move pipe left
+    }
+
+    show() {
+        context.fillStyle = 'green';
+        context.fillRect(this.x, 0, this.width, this.top); // Top pipe
+        context.fillRect(this.x, canvas.height - this.bottom, this.width, this.bottom); // Bottom pipe
     }
 }
