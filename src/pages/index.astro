@@ -15,43 +15,43 @@ import Circle from '../components/Circle.astro';
 
 		<div class="max-w-3xl w-full grid grid-cols-2 gap-4 relative z-10">
 			<a href="/game-browser" class="w-full h-32 md:h-64 relative">
-				<button class="btn btn-secondary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center">
+				<div class="btn btn-secondary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
+					<div class="items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
+						<span class="text-3xl font-bold">Games</span>
+					</div>
+					<div class="w-full flex items-center justify-center overflow-hidden">
 						<img src="/game/preview.png" alt="Games" class="object-cover h-full w-full" />
 					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit">
-						<span class="text-3xl">Games</span>
-					</div>
-					<span class="absolute -top-2 -left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse">NEW</span>
-				</button>
+					<span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse z-10">NEW</span>
+				</div>
 			</a>
 			<a href="/shop" class="w-full h-32 md:h-64">
 				<button class="btn btn-accent w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center">
-						<img src="/presents.jpg" alt="Gift Shop" class="object-cover h-full w-full" />
+					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
+						<img src="/presents.jpg" alt="Gift Shop" class="object-cover h-full w-full" style="object-position: center;" />
 					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit">
-						<span class="text-3xl">Gift Shop</span>
+					<div class="w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
+						<span class="text-black font-bold">Gift Shop</span>
 					</div>
 				</button>
 			</a>
 			<a href="/pet-converter" class="w-full h-32 md:h-64">
 				<button class="btn btn-primary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center">
-						<img src="/spook/jag_spook.png" alt="Pet Converter" class="object-cover h-full w-full" />
+					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
+						<img src="/spook/jag_spook.png" alt="Pet Converter" class="object-cover h-full w-full transform translate-y-[-150px]" />
 					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit">
-						<span class="text-3xl">Pet Converter</span>
+					<div class="h-[20%] w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
+						<span class="text-3xl font-bold">Pet Converter</span>
 					</div>
 				</button>
 			</a>
 			<a href="/intro" class="w-full h-32 md:h-64">
 				<button class="btn btn-primary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center">
-						<img src="/microphone.png" alt="Intro Maker" class="object-cover h-full w-full" />
+					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
+						<img src="/microphone.png" alt="Intro Maker" class="object-cover h-full w-full scale-75" />
 					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit">
-						<span class="text-3xl">Intro Maker</span>
+					<div class="h-[20%] w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
+						<span class="text-3xl font-bold">Intro Maker</span>
 					</div>
 				</button>
 			</a>
@@ -64,10 +64,12 @@ import Circle from '../components/Circle.astro';
 	.btn {
 		position: relative;
 	}
+	/*
 	.btn img {
 		transition: transform 0.3s ease;
 	}
 	.btn:hover img {
 		transform: scale(1.1);
 	}
+	*/
 </style>
