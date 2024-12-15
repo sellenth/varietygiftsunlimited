@@ -26,6 +26,7 @@ export default {
           "warning": "#9f1239",
 
           "error": "#ff0000",
+          'accent-content': "#f9cfd5",
         },
       },
       "leaf-blue",
