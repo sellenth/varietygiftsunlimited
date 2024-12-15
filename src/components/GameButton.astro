@@ -15,8 +15,9 @@ const { href, title, imageUrl, isNew = false, imageClass = "", imageStyle = "" }
 
 <a href={href} class="w-full h-64 relative group">
     <div class="w-full h-64 flex flex-col items-center p-0 overflow-hidden bg-base-100 rounded-2xl transition-all duration-300 ease-in-out transform group-hover:scale-[1.02] group-hover:shadow-lg">
-        <h3 class="min-h-12 font-bold text-white">{title}</h3>
-        <img src={imageUrl} alt={title} class="w-full h-full object-cover" />
+        <h3 class="min-h-[20%] text-lg font-bold text-white">{title}</h3>
+        <!--<Picture src={imageUrl} alt={title} class="min-h-[80%] min-w-full h-full" width="400" height="400"/> -->
+        <Image src={imageUrl} alt={title} class=`min-h-[80%] min-w-full object-cover h-full` width="300" height="300" position="top"/>
         {isNew && <span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse z-10">NEW</span>}
     </div>
 </a>
