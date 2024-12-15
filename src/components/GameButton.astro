@@ -1,0 +1,24 @@
+---
+interface Props {
+    href: string;
+    title: string;
+    imageUrl: string;
+    isNew?: boolean;
+    imageClass?: string;
+    imageStyle?: string;
+}
+
+const { href, title, imageUrl, isNew = false, imageClass = "", imageStyle = "" } = Astro.props;
+---
+
+<a href={href} class="w-full h-32 md:h-64 relative">
+    <div class="w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden bg-base-100 rounded-2xl">
+        <div class="items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80 py-2">
+            <span class="text-3xl font-bold text-white">{title}</span>
+        </div>
+        <div class="w-full flex items-center justify-center overflow-hidden">
+            <img src={imageUrl} alt={title} class={`object-cover h-full w-full ${imageClass}`} style={imageStyle} />
+        </div>
+        {isNew && <span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse z-10">NEW</span>}
+    </div>
+</a>

@@ -6,55 +6,39 @@ import Hero from '../components/Hero.astro';
 import Carousel from '../components/Carousel.astro';
 import Header from '../components/Header.astro';
 import Circle from '../components/Circle.astro';
+import GameButton from '../components/GameButton.astro';
 ---
 
-<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts"
->
+<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts">
 	<main class="p-5 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
 		<Hero img="" />
 
 		<div class="max-w-3xl w-full grid grid-cols-2 gap-4 relative z-10">
-			<a href="/game-browser" class="w-full h-32 md:h-64 relative">
-				<div class="w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden bg-base-100 rounded-2xl">
-					<div class="items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80 py-2">
-						<span class="text-3xl font-bold text-white">Games</span>
-					</div>
-					<div class="w-full flex items-center justify-center overflow-hidden">
-						<img src="/game/preview.png" alt="Games" class="object-cover h-full w-full scale-125" />
-					</div>
-					<span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse z-10">NEW</span>
-				</div>
-			</a>
-			<a href="/shop" class="w-full h-32 md:h-64">
-				<button class="btn btn-accent w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
-						<img src="/presents.jpg" alt="Gift Shop" class="object-cover h-full w-full" style="object-position: center;" />
-					</div>
-					<div class="w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
-						<span class="text-black font-bold">Gift Shop</span>
-					</div>
-				</button>
-			</a>
-			<a href="/pet-converter" class="w-full h-32 md:h-64">
-				<button class="btn btn-primary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
-						<img src="/spook/jag_spook.png" alt="Pet Converter" class="object-cover h-full w-full transform translate-y-[-150px]" />
-					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
-						<span class="text-3xl font-bold">Pet Converter</span>
-					</div>
-				</button>
-			</a>
-			<a href="/intro" class="w-full h-32 md:h-64">
-				<button class="btn btn-primary w-full h-32 md:h-64 flex flex-col items-center justify-end p-0 overflow-hidden">
-					<div class="h-[80%] w-full flex items-center justify-center overflow-hidden">
-						<img src="/microphone.png" alt="Intro Maker" class="object-cover h-full w-full scale-75" />
-					</div>
-					<div class="h-[20%] w-full flex items-center justify-center bg-inherit backdrop-blur-sm bg-opacity-80">
-						<span class="text-3xl font-bold">Intro Maker</span>
-					</div>
-				</button>
-			</a>
+			<GameButton 
+				href="/game-browser"
+				title="Games"
+				imageUrl="/game/preview.png"
+				imageClass="scale-125"
+				isNew={true}
+			/>
+			<GameButton 
+				href="/shop"
+				title="Gift Shop"
+				imageUrl="/presents.png"
+				imageClass="scale-125"
+			/>
+			<GameButton 
+				href="/pet-converter"
+				title="Pet Converter"
+				imageUrl="/spook/jag_spook.png"
+				imageClass="scale-125"
+			/>
+			<GameButton 
+				href="/intro"
+				title="Intro Maker"
+				imageUrl="/microphone.png"
+				imageClass="scale-125"
+			/>
 		</div>
 		<script async src="https://api.lindy.ai/api/lindyEmbed/lindyEmbed.js?a=ebd4b389-96ef-4acf-90b3-36eaadb961d1" crossorigin="use-credentials"></script>
 	</main>
