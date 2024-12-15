@@ -1,4 +1,6 @@
 ---
+import { Image, Picture } from 'astro:assets';
+
 interface Props {
     href: string;
     title: string;
@@ -17,7 +19,7 @@ const { href, title, imageUrl, isNew = false, imageClass = "", imageStyle = "" }
             <span class="text-3xl font-bold text-white">{title}</span>
         </div>
         <div class="w-full flex items-center justify-center overflow-hidden">
-            <img src={imageUrl} alt={title} class={`object-cover h-full w-full ${imageClass}`} style={imageStyle} />
+            <Picture src={imageUrl} alt={title} class={`object-cover h-full w-full ${imageClass}`} style={imageStyle} width={402} height={205} />
         </div>
         {isNew && <span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse z-10">NEW</span>}
     </div>
