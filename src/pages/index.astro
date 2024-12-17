@@ -1,59 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import Footer from '../components/Footer.astro';
-import Hero from '../components/Hero.astro';
-import Carousel from '../components/Carousel.astro';
-import Header from '../components/Header.astro';
-import Circle from '../components/Circle.astro';
 import GameButton from '../components/GameButton.astro';
+import Hero from '../components/Hero.astro';
 ---
 
 <Layout title="Variety Gifts Unlimited - Unique and Fun Gifts">
-	<main class="p-5 pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
-		<Hero img="" />
+  <main class="p-5 pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
+    <Hero img="" />
 
-		<div class="max-w-3xl w-full grid grid-cols-2 gap-4 relative z-10">
-			<GameButton 
-				href="/game-browser"
-				title="Games"
-				imageUrl="/$.jpg"
-				imageClass=""
-				isNew={true}
-			/>
-			<GameButton 
-				href="/shop"
-				title="Gift Shop"
-				imageUrl="/presents.png"
-				imageClass=""
-			/>
-			<GameButton 
-				href="/pet-converter"
-				title="Pet Converter"
-				imageUrl="/spook/jag_spook.png"
-				imageClass=""
-			/>
-			<GameButton 
-				href="/intro"
-				title="Fight Night"
-				imageUrl="/microphone.png"
-				imageClass=""
-			/>
-		</div>
-		<script async src="https://api.lindy.ai/api/lindyEmbed/lindyEmbed.js?a=ebd4b389-96ef-4acf-90b3-36eaadb961d1" crossorigin="use-credentials"></script>
-	</main>
+    <div class="mt-8">
+      <h1 class="text-6xl font-bold ">Welcome!</h1>
+      <p class="mt-4 text-md md:text-lg max-w-3xl">
+        Discover a world of unique and fun gifts at Variety Gifts Unlimited. Whether you're looking for the latest games or delightful presents, we've got something special just for you!
+      </p>
+    </div>
+
+    <div class="max-w-3xl w-full grid grid-cols-2 gap-4 relative z-10 mt-8">
+      <GameButton 
+        href="/game-browser"
+        title="Games"
+        imageUrl="/$.jpg"
+        imageClass=""
+        isNew={true}
+      />
+      <GameButton 
+        href="/shop"
+        title="Gift Shop"
+        imageUrl="/presents.png"
+        imageClass=""
+      />
+      <GameButton 
+        href="/pet-converter"
+        title="Pet Converter"
+        imageUrl="/spook/jag_spook.png"
+        imageClass=""
+      />
+      <GameButton 
+        href="/intro"
+        title="Fight Night"
+        imageUrl="/microphone.png"
+        imageClass=""
+      />
+    </div>
+    <script async src="https://api.lindy.ai/api/lindyEmbed/lindyEmbed.js?a=ebd4b389-96ef-4acf-90b3-36eaadb961d1" crossorigin="use-credentials"></script>
+  </main>
 </Layout>
 
 <style>
-	.btn {
-		position: relative;
-	}
-	/*
-	.btn img {
-		transition: transform 0.3s ease;
-	}
-	.btn:hover img {
-		transform: scale(1.1);
-	}
-	*/
+  .btn {
+    position: relative;
+  }
+  /*
+  .btn img {
+    transition: transform 0.3s ease;
+  }
+  .btn:hover img {
+    transform: scale(1.1);
+  }
+  */
 </style>
