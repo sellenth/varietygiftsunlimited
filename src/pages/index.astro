@@ -7,14 +7,14 @@ import GameButton from '../components/GameButton.astro';
   <main class="pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
     <div class="h-screen relative p-0 flex flex-col md:block items-center justify-center">
       <img 
-        src="/logos/bg.svg" 
+        src="/logos/bg.png" 
         alt="Variety Gifts Unlimited" 
-        class="w-full md:h-full md:object-cover z-10" 
+        class="" 
       />
       <img 
-        src="/logos/new_logo.svg" 
+        src="/logos/logo.png" 
         alt="Variety Gifts Unlimited" 
-        class="relative z-20 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2" 
+        class="" 
       />
     </div>
 
@@ -48,4 +48,10 @@ import GameButton from '../components/GameButton.astro';
   .btn {
     position: relative;
   }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+  }
+
 </style>
