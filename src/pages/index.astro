@@ -4,10 +4,18 @@ import GameButton from '../components/GameButton.astro';
 ---
 
 <Layout title="Variety Gifts Unlimited - Unique and Fun Gifts" hideHeader={true}>
-  <main class="p-5 pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
-    <div class="h-screen relative p-0">
-      <img src="/logos/bg.svg" alt="Variety Gifts Unlimited" class="w-full md:absolute z-10" />
-      <img src="/logos/new_logo.svg" alt="Variety Gifts Unlimited" class="relative z-20" />
+  <main class="pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
+    <div class="h-screen relative p-0 flex flex-col md:block items-center justify-center">
+      <img 
+        src="/logos/bg.svg" 
+        alt="Variety Gifts Unlimited" 
+        class="w-full md:h-full md:object-cover z-10" 
+      />
+      <img 
+        src="/logos/new_logo.svg" 
+        alt="Variety Gifts Unlimited" 
+        class="relative z-20 md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2" 
+      />
     </div>
 
     <div class="mt-8">
