@@ -1,12 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GameButton from '../components/GameButton.astro';
-import Hero from '../components/Hero.astro';
 ---
 
-<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts">
+<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts" hideHeader={true}>
   <main class="p-5 pb-32 w-full flex flex-col gap-4 items-center overflow-x-hidden relative">
-    <Hero img="" />
+    <div class="h-screen relative p-0">
+      <img src="/logos/bg.svg" alt="Variety Gifts Unlimited" class="w-full md:absolute z-10" />
+      <img src="/logos/new_logo.svg" alt="Variety Gifts Unlimited" class="relative z-20" />
+    </div>
 
     <div class="mt-8">
       <h1 class="text-6xl font-bold ">Welcome!</h1>
@@ -19,13 +21,13 @@ import Hero from '../components/Hero.astro';
       <GameButton 
         href="/shop"
         title="Gift Shop"
-        imageUrl="/presents.png"
+        imageUrl="/etc/presents.png"
         imageClass=""
       />
       <GameButton 
         href="/game-browser"
         title="Games"
-        imageUrl="/$.jpg"
+        imageUrl="/game/shootout.png"
         imageClass=""
         isNew={true}
       />
@@ -38,12 +40,4 @@ import Hero from '../components/Hero.astro';
   .btn {
     position: relative;
   }
-  /*
-  .btn img {
-    transition: transform 0.3s ease;
-  }
-  .btn:hover img {
-    transform: scale(1.1);
-  }
-  */
 </style>

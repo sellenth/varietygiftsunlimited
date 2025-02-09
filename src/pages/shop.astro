@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 ---
 
-<Layout title="Shop - Variety Gifts Unlimited">
+<Layout title="Shop - Variety Gifts Unlimited" hideHeader={false}>
     <main class="w-full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20">
         <section class="text-center my-10">
             <h1 class="text-4xl font-bold">Shop</h1>
@@ -18,25 +18,15 @@ import Header from '../components/Header.astro';
             sticker="true"
             href="tanner-sticker"></Card>
 
-            <Card img="/box.webp" 
+            <Card img="/box/box.webp" 
             title="Savings Box" 
             body="woah!!" 
             href="savings-box"></Card>
 
-            <Card img="/snorlax.webp" 
+            <Card img="/snorlax/snorlax.webp" 
             title="Snorlax Plushie" 
             body="woah!!" 
             href="snorlax"></Card>
-
-            <Card img="/dog1.webp" 
-            title="Dog Plushie" 
-            body="woah!!" 
-            href="dog"></Card>
-
-            <Card img="/shaving/2.webp" 
-            title="Shaving Cape" 
-            body="Stay neat and tidy!" 
-            href="shaving"></Card>
 
             <Card img="/bags/1.webp" 
             title="Crochet Bag" 
