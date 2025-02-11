@@ -1,21 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ItemPage from '../components/ItemPage.astro';
+import ProductDetail from '../components/ProductDetail.astro';
 
-const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+const title = "Corgi Yoga T-Shirt";
+const description = "Comfortable and stylish t-shirt featuring our adorable Corgi Yoga design. Available in sizes S through XL.";
+
+// Price IDs from new_price_ids.txt for the Corgi product
+const priceIds = {
+    S: "price_1QrEmcAp2D4XT14x0F0HqWS7",
+    M: "price_1QrEmdAp2D4XT14xxwoEnIpR",
+    L: "price_1QrEmeAp2D4XT14xCcysmM0x",
+    XL: "price_1QrEmeAp2D4XT14xaWTzR6UK"
+};
 ---
 
-<Layout title="Variety Gifts Unlimited - Corgi Yoga" hideHeader={false}>
-
-    <ItemPage
-      title="Corgi Yoga"
-      bodyText="Add some pawsitive vibes to your day with this adorable Corgi yoga design. Perfect for Corgi lovers and anyone who appreciates cute, mindful art!"
-      priceText="$19.99 with Free Shipping!"
-      imageUrl="/yoga/corgi.jpg"
-      imageAlt="Corgi Yoga Design"
-      stripeKey={PUBLIC_STRIPE_KEY}
-      stripePaymentId="price_1QrEEdAp2D4XT14xE6oEiuKr"
-      youtubeEmbedId=""
+<Layout title={title} hideHeader={false}>
+    <ProductDetail 
+        title={title}
+        description={description}
+        priceIds={priceIds}
+        image="/yoga/corgi.jpg"
     />
-
 </Layout> 

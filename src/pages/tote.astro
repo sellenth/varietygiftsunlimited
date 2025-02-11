@@ -1,21 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ItemPage from '../components/ItemPage.astro';
+import ProductDetail from '../components/ProductDetail.astro';
 
-const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+const title = "Eco-Friendly Tote Bag";
+const description = "A versatile and stylish tote bag perfect for everyday use. Made from durable, eco-friendly materials.";
+const singlePrice = "15.99";
+// You'll need to create this price ID in Stripe for the tote at $15.99
+const singlePriceId = "price_tote_1599"; // Replace with actual Stripe price ID
 ---
 
-<Layout title="Variety Gifts Unlimited - Yoga Tote Bag" hideHeader={false}>
-
-    <ItemPage
-      title="Yoga Tote Bag"
-      bodyText="Carry your essentials in style with this beautiful yoga-themed tote bag. Perfect for yoga enthusiasts and anyone who loves unique, artistic designs!"
-      priceText="$15.99 with Free Shipping!"
-      imageUrl="/yoga/tote.jpg"
-      imageAlt="Yoga Tote Bag"
-      stripeKey={PUBLIC_STRIPE_KEY}
-      stripePaymentId="price_1QrEG2Ap2D4XT14xdjVEYn3o"
-      youtubeEmbedId=""
+<Layout title={title} hideHeader={false}>
+    <ProductDetail 
+        title={title}
+        description={description}
+        singlePrice={singlePrice}
+        singlePriceId={singlePriceId}
+        image="/yoga/tote.jpg"
     />
-
 </Layout> 

@@ -1,21 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ItemPage from '../components/ItemPage.astro';
+import ProductDetail from '../components/ProductDetail.astro';
 
-const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+const title = "Husky Yoga T-Shirt";
+const description = "Comfortable and stylish t-shirt featuring our unique Husky Yoga design. Available in sizes S through XL.";
+
+// Price IDs from new_price_ids.txt for the Husky product
+const priceIds = {
+    S: "price_1QrEmhAp2D4XT14x3pNS8UoQ",
+    M: "price_1QrEmhAp2D4XT14x8H8EhERo",
+    L: "price_1QrEmiAp2D4XT14x49o9yMdo",
+    XL: "price_1QrEmjAp2D4XT14xVWEHyfy5"
+};
 ---
 
-<Layout title="Variety Gifts Unlimited - Husky Yoga" hideHeader={false}>
-
-    <ItemPage
-      title="Husky Yoga"
-      bodyText="Embrace the spirit of a zen Husky with this delightful yoga design. Perfect for Husky lovers and anyone who wants to add some Arctic charm to their space!"
-      priceText="$19.99 with Free Shipping!"
-      imageUrl="/yoga/husky.jpg"
-      imageAlt="Husky Yoga Design"
-      stripeKey={PUBLIC_STRIPE_KEY}
-      stripePaymentId="price_1QrEGgAp2D4XT14xtFi7Gu1O"
-      youtubeEmbedId=""
+<Layout title={title} hideHeader={false}>
+    <ProductDetail 
+        title={title}
+        description={description}
+        priceIds={priceIds}
+        image="/yoga/husky.jpg"
     />
-
 </Layout> 
