@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ItemPage from '../components/ItemPage.astro';
+
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+<Layout title="Variety Gifts Unlimited - Golden Retriever Yoga" hideHeader={false}>
+
+    <ItemPage
+      title="Golden Retriever Yoga"
+      bodyText="Add a touch of zen and playfulness to your space with this adorable Golden Retriever yoga design. Perfect for dog lovers and yoga enthusiasts alike!"
+      priceText="$19.99 with Free Shipping!"
+      imageUrl="/yoga/golden.jpg"
+      imageAlt="Golden Retriever Yoga Design"
+      stripeKey={PUBLIC_STRIPE_KEY}
+      stripePaymentId="price_1QrEDNAp2D4XT14xHFy0Txme"
+      youtubeEmbedId=""
+    />
+
+</Layout> 

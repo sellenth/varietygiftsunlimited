@@ -15,15 +15,9 @@ const { img, href, title, body, sticker } = Astro.props;
     <div class="bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-4 border-primary/20 h-full flex flex-col">
       <figure class="w-full p-6 flex justify-center items-center flex-1">
         <img
-          class="rounded-2xl w-5/6 h-48 object-contain transition-transform duration-300 group-hover:scale-105 {sticker ? 'translate-x-20' : ''}"
+          class="rounded-2xl w-5/6 h-48 object-cover transition-transform duration-300 group-hover:scale-105"
           src={img}
           alt={title} />
-        {sticker &&
-        <img
-          class="rounded-2xl w-5/6 h-48 object-contain absolute transform -rotate-12 transition-transform duration-300 group-hover:rotate-[-16deg]"
-          src={img}
-          alt={title} />
-        }
       </figure>
       <div class="justify-end relative z-30 text-center pb-8">
         <h2 class="title text-accent text-2xl lg:text-3xl mb-4 justify-center font-bold">{title}</h2>

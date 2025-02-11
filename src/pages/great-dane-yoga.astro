@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ItemPage from '../components/ItemPage.astro';
+
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+<Layout title="Variety Gifts Unlimited - Great Dane Yoga" hideHeader={false}>
+
+    <ItemPage
+      title="Great Dane Yoga"
+      bodyText="Bring some gentle giant energy to your space with this charming Great Dane yoga design. A perfect blend of strength and serenity!"
+      priceText="$19.99 with Free Shipping!"
+      imageUrl="/yoga/dane.jpg"
+      imageAlt="Great Dane Yoga Design"
+      stripeKey={PUBLIC_STRIPE_KEY}
+      stripePaymentId="price_1QrEGgAp2D4XT14xtFi7Gu1O"
+      youtubeEmbedId=""
+    />
+
+</Layout> 

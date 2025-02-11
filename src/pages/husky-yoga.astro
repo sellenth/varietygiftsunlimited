@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ItemPage from '../components/ItemPage.astro';
+
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+<Layout title="Variety Gifts Unlimited - Husky Yoga" hideHeader={false}>
+
+    <ItemPage
+      title="Husky Yoga"
+      bodyText="Embrace the spirit of a zen Husky with this delightful yoga design. Perfect for Husky lovers and anyone who wants to add some Arctic charm to their space!"
+      priceText="$19.99 with Free Shipping!"
+      imageUrl="/yoga/husky.jpg"
+      imageAlt="Husky Yoga Design"
+      stripeKey={PUBLIC_STRIPE_KEY}
+      stripePaymentId="price_1QrEGgAp2D4XT14xtFi7Gu1O"
+      youtubeEmbedId=""
+    />
+
+</Layout> 

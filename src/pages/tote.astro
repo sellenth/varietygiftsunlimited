@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ItemPage from '../components/ItemPage.astro';
+
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+<Layout title="Variety Gifts Unlimited - Yoga Tote Bag" hideHeader={false}>
+
+    <ItemPage
+      title="Yoga Tote Bag"
+      bodyText="Carry your essentials in style with this beautiful yoga-themed tote bag. Perfect for yoga enthusiasts and anyone who loves unique, artistic designs!"
+      priceText="$15.99 with Free Shipping!"
+      imageUrl="/yoga/tote.jpg"
+      imageAlt="Yoga Tote Bag"
+      stripeKey={PUBLIC_STRIPE_KEY}
+      stripePaymentId="price_1QrEG2Ap2D4XT14xdjVEYn3o"
+      youtubeEmbedId=""
+    />
+
+</Layout> 
