@@ -1,0 +1,37 @@
+---
+interface Props {
+    product: {
+        title: string;
+        images: Array<{ src: string }>;
+        variants: Array<{ price: number }>;
+        description: string;
+    };
+}
+
+const { product } = Astro.props;
+const formattedPrice = (product.variants && product.variants[0]) 
+    ? (product.variants[0].price / 100).toFixed(2)
+    : '0.00';
+---
+
+<div class="hover:scale-105 transition-all duration-300 w-full h-full">
+    <a href={`/shirt#${product.title}`} class="block h-full">
+        <div class="bg-white/90 backdrop-blur-sm rounded-[2rem] shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-4 border-primary/20 h-full flex flex-col">
+            <figure class="w-full p-6 flex justify-center items-center flex-1">
+                {product.images && product.images[0] && (
+                    <img 
+                        src={product.images[0].src} 
+                        alt={product.title}
+                        class="rounded-2xl w-5/6 h-48 object-contain transition-transform duration-300 group-hover:scale-105"
+                    />
+                )}
+            </figure>
+            <div class="justify-end relative z-30 text-center pb-8">
+                <h2 class="title text-accent text-2xl lg:text-3xl mb-4 justify-center font-bold">{product.title}</h2>
+                <div class="justify-center items-center flex">
+                    <button class="btn btn-primary h-fit sm:w-fit px-8 py-3 rounded-full transform transition-transform duration-300 group-hover:scale-110">See Details</button>
+                </div>
+            </div>
+        </div>
+    </a>
+</div> 
