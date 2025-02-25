@@ -1,7 +1,12 @@
 ---
+import ImageCarousel from './ImageCarousel.astro';
+
 const { title, description, priceIds, singlePrice, singlePriceId, image } = Astro.props;
 const availableSizes = priceIds ? Object.keys(priceIds) : [];
 const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
+
+// Get the base image name by removing the file extension
+const baseImage = image.replace(/\.[^/.]+$/, '');
 
 // Get the API key from environment variables
 const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
@@ -19,9 +24,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 </div>
 <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="grid md:grid-cols-2 gap-8">
-        <div class="aspect-square overflow-hidden rounded-lg">
-            <img src={image} alt={title} class="w-full h-full object-cover">
-        </div>
+        <ImageCarousel baseImage={baseImage} title={title} />
         <div class="flex flex-col gap-4">
             <h1 class="text-3xl font-bold">{title}</h1>
             <p class="text-gray-600">{description}</p>

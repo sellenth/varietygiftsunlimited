@@ -1,0 +1,118 @@
+---
+interface Props {
+    baseImage: string; // The base image name without extension (e.g. "husky")
+    title: string;
+}
+
+const { baseImage, title } = Astro.props;
+---
+
+<div class="relative group aspect-square overflow-hidden rounded-lg">
+    <div class="carousel w-full h-full touch-none">
+        <img src={`${baseImage}1.jpg`} alt={`${title} view 1`} class="w-full h-full object-cover carousel-item select-none" data-index="1">
+        <img src={`${baseImage}2.jpg`} alt={`${title} view 2`} loading="lazy" class="w-full h-full object-cover carousel-item hidden select-none" data-index="2">
+        <img src={`${baseImage}3.jpg`} alt={`${title} view 3`} loading="lazy" class="w-full h-full object-cover carousel-item hidden select-none" data-index="3">
+    </div>
+    
+    <!-- Navigation Arrows - only hidden on desktop hover -->
+    <button 
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100" 
+        id="prevBtn"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+    <button 
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100" 
+        id="nextBtn"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+    </button>
+</div>
+
+<script>
+    const carousel = document.querySelector('.carousel');
+    const items = carousel?.querySelectorAll('.carousel-item');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (carousel && items && prevBtn && nextBtn) {
+        let currentIndex = 1;
+        const maxIndex = items.length;
+
+        function showImage(index: number) {
+            items.forEach((item) => {
+                item.classList.add('hidden');
+            });
+            const targetItem = carousel.querySelector(`[data-index="${index}"]`);
+            if (targetItem) {
+                targetItem.classList.remove('hidden');
+            }
+        }
+
+        function nextImage() {
+            currentIndex = currentIndex === maxIndex ? 1 : currentIndex + 1;
+            showImage(currentIndex);
+        }
+
+        function prevImage() {
+            currentIndex = currentIndex === 1 ? maxIndex : currentIndex - 1;
+            showImage(currentIndex);
+        }
+
+        // Add click event listeners to the buttons
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default behavior
+            nextImage();
+        });
+        
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent any default behavior
+            prevImage();
+        });
+
+        // Optional: Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+
+        // Add touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        carousel.addEventListener('touchstart', (e: TouchEvent) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', (e: TouchEvent) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50; // minimum distance for a swipe
+            const diff = touchEndX - touchStartX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    prevImage(); // Swipe right, go to previous
+                } else {
+                    nextImage(); // Swipe left, go to next
+                }
+            }
+        }
+    }
+</script>
+
+<style>
+    .carousel-item {
+        transition: opacity 0.3s ease-in-out;
+    }
+</style> 
