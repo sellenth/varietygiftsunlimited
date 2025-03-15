@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import GameButton from "../components/GameButton.astro";
+import LandingPageButton from "../components/LandingPageButton.astro";
 ---
 
 <Layout
@@ -34,13 +34,13 @@ import GameButton from "../components/GameButton.astro";
       </div>
 
       <div class="max-w-3xl w-full grid grid-cols-2 gap-4 relative z-10 mt-8">
-        <GameButton
+          <LandingPageButton
           href="/shop"
           title="Gift Shop"
           imageUrl="/etc/presents.png"
-          imageClass=""
+          imageClass="gift-image"
         />
-        <GameButton
+                <LandingPageButton
           href="/game-browser"
           title="Games"
           imageUrl="/game/shootout.png"
