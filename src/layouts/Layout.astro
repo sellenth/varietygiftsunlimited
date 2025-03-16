@@ -12,7 +12,7 @@ import '@fontsource/eagle-lake';
 import '@fontsource-variable/comfortaa';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import  SpeedInsights  from "@vercel/speed-insights/astro"
+import Analytics from '@vercel/analytics/astro';
 ---
 
 <!doctype html>
@@ -106,7 +106,7 @@ import  SpeedInsights  from "@vercel/speed-insights/astro"
 		</div>
 		{ !hideFooter && <Footer /> }
 	</body>
-	<SpeedInsights />
+	<Analytics />
 </html>
 
 
