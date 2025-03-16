@@ -125,7 +125,9 @@ import Layout from "../layouts/Layout.astro";
   let debugMode = true; // Enable debug visualization
   let hitboxHelpers = []; // Store hitbox visualizers
   
-  // Sound effects
+  // Three.js Audio
+  let audioListener;
+  let audioLoader;
   let jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic;
   let soundsLoaded = false;
   let musicMuted = false;
@@ -182,8 +184,8 @@ import Layout from "../layouts/Layout.astro";
     grassField.position.set(0, 0, -1);
     scene.add(grassField);
 
-    // Load sounds
-    loadSounds();
+    // Initialize audio
+    initAudio();
 
     // Create gift box character
     createGiftBox();
@@ -235,6 +237,96 @@ import Layout from "../layouts/Layout.astro";
 
     // Start the animation loop
     animate();
+  }
+  
+  // Initialize Three.js audio system
+  function initAudio() {
+    // Create audio listener and attach to camera
+    audioListener = new THREE.AudioListener();
+    camera.add(audioListener);
+    
+    // Create audio loader
+    audioLoader = new THREE.AudioLoader();
+    
+    // Create sound objects
+    jumpStartSound = new THREE.Audio(audioListener);
+    jumpLandSound = new THREE.Audio(audioListener);
+    collisionSound = new THREE.Audio(audioListener);
+    winSound = new THREE.Audio(audioListener);
+    
+    // Create background music (positional audio for better control)
+    bgMusic = new THREE.PositionalAudio(audioListener);
+    
+    // Load sound files
+    let loadedCount = 0;
+    const totalSounds = 5;
+    
+    // Helper function to track loading progress
+    const onSoundLoaded = () => {
+      loadedCount++;
+      if (loadedCount === totalSounds) {
+        soundsLoaded = true;
+        console.log("All sounds loaded");
+        
+        // Setup audio for mobile after sounds are loaded
+        setupAudioForMobile();
+      }
+    };
+    
+    // Load jump start sound
+    audioLoader.load('/gifty-dodge/jump-press.mp3', function(buffer) {
+      jumpStartSound.setBuffer(buffer);
+      jumpStartSound.setVolume(1.0);
+      onSoundLoaded();
+    });
+    
+    // Load jump land sound
+    audioLoader.load('/gifty-dodge/jump-release.mp3', function(buffer) {
+      jumpLandSound.setBuffer(buffer);
+      jumpLandSound.setVolume(1.0);
+      onSoundLoaded();
+    });
+    
+    // Load collision sound
+    audioLoader.load('/gifty-dodge/ow.mp3', function(buffer) {
+      collisionSound.setBuffer(buffer);
+      collisionSound.setVolume(1.0);
+      onSoundLoaded();
+    });
+    
+    // Load win sound
+    audioLoader.load('/gifty-dodge/yay.mp3', function(buffer) {
+      winSound.setBuffer(buffer);
+      winSound.setVolume(1.0);
+      onSoundLoaded();
+    });
+    
+    // Load background music
+    audioLoader.load('/gifty-dodge/boba-date.mp3', function(buffer) {
+      bgMusic.setBuffer(buffer);
+      bgMusic.setVolume(0.25);
+      bgMusic.setLoop(true);
+      bgMusic.setRefDistance(20); // Adjust as needed
+      
+      // Add music to scene
+      const musicDummy = new THREE.Object3D();
+      musicDummy.position.set(0, 0, 0);
+      musicDummy.add(bgMusic);
+      scene.add(musicDummy);
+      
+      onSoundLoaded();
+    });
+    
+    // Fallback in case loading takes too long
+    setTimeout(() => {
+      if (!soundsLoaded) {
+        soundsLoaded = true;
+        console.log("Sound loading timeout - proceeding anyway");
+        
+        // Setup audio for mobile even if timeout occurs
+        setupAudioForMobile();
+      }
+    }, 5000);
   }
   
   // Create Three.js audio control buttons
@@ -478,7 +570,9 @@ import Layout from "../layouts/Layout.astro";
       musicButton.userData.icon.material.needsUpdate = true;
       
       // Pause background music
-      bgMusic.pause();
+      if (bgMusic.isPlaying) {
+        bgMusic.pause();
+      }
       console.log("Music paused");
     } else {
       // Update button appearance
@@ -488,7 +582,9 @@ import Layout from "../layouts/Layout.astro";
       musicButton.userData.icon.material.needsUpdate = true;
       
       // Play background music
-      bgMusic.play().catch(e => console.log("Audio play failed:", e));
+      if (soundsLoaded && !bgMusic.isPlaying) {
+        bgMusic.play();
+      }
       console.log("Music playing");
     }
     
@@ -508,10 +604,10 @@ import Layout from "../layouts/Layout.astro";
       fxButton.userData.icon.material.needsUpdate = true;
       
       // Mute sound effects
-      jumpStartSound.volume = 0;
-      jumpLandSound.volume = 0;
-      collisionSound.volume = 0;
-      winSound.volume = 0;
+      jumpStartSound.setVolume(0);
+      jumpLandSound.setVolume(0);
+      collisionSound.setVolume(0);
+      winSound.setVolume(0);
       console.log("FX muted");
     } else {
       // Update button appearance
@@ -521,10 +617,10 @@ import Layout from "../layouts/Layout.astro";
       fxButton.userData.icon.material.needsUpdate = true;
       
       // Unmute sound effects
-      jumpStartSound.volume = 1;
-      jumpLandSound.volume = 1;
-      collisionSound.volume = 1;
-      winSound.volume = 1;
+      jumpStartSound.setVolume(1);
+      jumpLandSound.setVolume(1);
+      collisionSound.setVolume(1);
+      winSound.setVolume(1);
       console.log("FX unmuted");
     }
     
@@ -626,8 +722,9 @@ import Layout from "../layouts/Layout.astro";
     
     // Play jump start sound
     if (soundsLoaded && !fxMuted) {
-      jumpStartSound.currentTime = 0;
-      jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
+      if (!jumpStartSound.isPlaying) {
+        jumpStartSound.play();
+      }
     }
     
     // Start charge animation
@@ -661,8 +758,9 @@ import Layout from "../layouts/Layout.astro";
       
       // Play jump release sound
       if (soundsLoaded && !fxMuted) {
-        jumpLandSound.currentTime = 0;
-        jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
+        if (!jumpLandSound.isPlaying) {
+          jumpLandSound.play();
+        }
       }
       
       // Execute jump with charge strength
@@ -716,8 +814,9 @@ import Layout from "../layouts/Layout.astro";
       if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
         // Collision detected - reset the game
         if (soundsLoaded && !fxMuted) {
-          collisionSound.currentTime = 0;
-          collisionSound.play().catch(e => console.log("Audio play failed:", e));
+          if (!collisionSound.isPlaying) {
+            collisionSound.play();
+          }
         }
         currentState = GameState.GAME_OVER;
         resetGame();
@@ -739,8 +838,9 @@ import Layout from "../layouts/Layout.astro";
     
     // Play win sound
     if (soundsLoaded && !fxMuted) {
-      winSound.currentTime = 0;
-      winSound.play().catch(e => console.log("Audio play failed:", e));
+      if (!winSound.isPlaying) {
+        winSound.play();
+      }
     }
     
     // Show custom popup
@@ -793,8 +893,9 @@ import Layout from "../layouts/Layout.astro";
         if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
           // Collision detected during movement
           if (soundsLoaded && !fxMuted) {
-            collisionSound.currentTime = 0;
-            collisionSound.play().catch(e => console.log("Audio play failed:", e));
+            if (!collisionSound.isPlaying) {
+              collisionSound.play();
+            }
           }
           currentState = GameState.GAME_OVER;
           resetGame();
@@ -872,66 +973,42 @@ import Layout from "../layouts/Layout.astro";
     });
   }
 
-  // Load sound effects
-  function loadSounds() {
-    // Create audio elements
-    jumpStartSound = new Audio('/gifty-dodge/jump-press.mp3');
-    jumpLandSound = new Audio('/gifty-dodge/jump-release.mp3');
-    collisionSound = new Audio('/gifty-dodge/ow.mp3');
-    winSound = new Audio('/gifty-dodge/yay.mp3');
-    bgMusic = new Audio('/gifty-dodge/boba-date.mp3');
-    
-    // Set background music properties
-    bgMusic.loop = true;
-    bgMusic.volume = 0.25;
-    
-    // Handle sound loading
-    const soundsToLoad = [jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic];
-    let loadedCount = 0;
-    
-    soundsToLoad.forEach(sound => {
-      // Use a dummy event listener to preload sounds
-      sound.addEventListener('canplaythrough', function onCanPlay() {
-        loadedCount++;
-        sound.removeEventListener('canplaythrough', onCanPlay);
-        
-        if (loadedCount === soundsToLoad.length) {
-          soundsLoaded = true;
-          // Don't auto-start music - wait for user interaction
-        }
-      });
-      
-      // Force load attempt
-      sound.load();
-    });
-    
-    // Fallback in case the events don't fire
-    setTimeout(() => {
-      if (!soundsLoaded) {
-        soundsLoaded = true;
-      }
-    }, 3000);
-    
-    // Setup audio context for mobile
-    setupAudioForMobile();
-  }
-  
   // Setup audio for mobile devices
   function setupAudioForMobile() {
-    // Add a touch/click event listener to start audio on first interaction
-    const startAudioOnInteraction = () => {
-      if (!musicMuted) {
+    console.log("Setting up audio for mobile/first interaction");
+    
+    // Create a function to unlock audio context
+    const unlockAudioContext = () => {
+      // Resume the audio context if it's suspended
+      if (audioListener.context.state === 'suspended') {
+        audioListener.context.resume().then(() => {
+          console.log("AudioContext resumed successfully");
+        });
+      }
+      
+      // Start background music if not muted
+      if (!musicMuted && soundsLoaded) {
         console.log("Starting background music on first interaction");
-        bgMusic.play().catch(e => console.log("Audio play failed:", e));
+        if (!bgMusic.isPlaying) {
+          bgMusic.play();
+        }
       }
       
       // Remove the event listeners after first interaction
-      document.removeEventListener('touchstart', startAudioOnInteraction);
-      document.removeEventListener('click', startAudioOnInteraction);
+      document.removeEventListener('touchstart', unlockAudioContext, true);
+      document.removeEventListener('touchend', unlockAudioContext, true);
+      document.removeEventListener('click', unlockAudioContext, true);
+      document.removeEventListener('keydown', unlockAudioContext, true);
     };
     
-    document.addEventListener('touchstart', startAudioOnInteraction);
-    document.addEventListener('click', startAudioOnInteraction);
+    // Add event listeners for user interaction
+    document.addEventListener('touchstart', unlockAudioContext, true);
+    document.addEventListener('touchend', unlockAudioContext, true);
+    document.addEventListener('click', unlockAudioContext, true);
+    document.addEventListener('keydown', unlockAudioContext, true);
+    
+    // Try to unlock immediately if possible
+    unlockAudioContext();
   }
 
   // Create the gift box character
