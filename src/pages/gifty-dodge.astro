@@ -211,6 +211,7 @@ import Layout from "../layouts/Layout.astro";
     window.addEventListener('click', handleClick);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('touchstart', function(e) {
@@ -220,6 +221,10 @@ import Layout from "../layouts/Layout.astro";
     window.addEventListener('touchend', function(e) {
       e.preventDefault();
       handleTouchEnd(e);
+    });
+    window.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      handleTouchMove(e);
     });
 
     // Setup popup button
@@ -235,7 +240,7 @@ import Layout from "../layouts/Layout.astro";
   // Create Three.js audio control buttons
   function createAudioButtons() {
     // Music button
-    const musicGeometry = new THREE.CircleGeometry(0.8, 32);
+    const musicGeometry = new THREE.CircleGeometry(0.4, 16);
     const musicMaterial = new THREE.MeshBasicMaterial({ 
       color: 0xf2f60d, // Yellow
       transparent: true,
@@ -246,7 +251,7 @@ import Layout from "../layouts/Layout.astro";
     // Position in top-right corner of screen
     const aspect = window.innerWidth / window.innerHeight;
     const viewSize = 15;
-    musicButton.position.set(viewSize * aspect / 2 - 1.5, viewSize / 2 - 1, 1);
+    musicButton.position.set(viewSize * aspect / 2 - 0.5, viewSize / 2 - 1, 1);
     scene.add(musicButton);
     
     // Music icon (note symbol)
@@ -290,7 +295,7 @@ import Layout from "../layouts/Layout.astro";
     }
     
     // Sound effects button
-    const fxGeometry = new THREE.CircleGeometry(0.8, 32);
+    const fxGeometry = new THREE.CircleGeometry(0.4, 32);
     const fxMaterial = new THREE.MeshBasicMaterial({ 
       color: 0xf2f60d, // Yellow
       transparent: true,
@@ -299,7 +304,7 @@ import Layout from "../layouts/Layout.astro";
     fxButton = new THREE.Mesh(fxGeometry, fxMaterial);
     
     // Position next to music button
-    fxButton.position.set(viewSize * aspect / 2 - 3.5, viewSize / 2 - 1, 1);
+    fxButton.position.set(viewSize * aspect / 2 - 1.5, viewSize / 2 - 1, 1);
     scene.add(fxButton);
     
     // Sound icon
@@ -341,6 +346,11 @@ import Layout from "../layouts/Layout.astro";
       soundIcon.material.map = new THREE.CanvasTexture(createTextureCanvas('🔇'));
       soundIcon.material.needsUpdate = true;
     }
+    
+    // Add a dedicated click handler for the buttons
+    window.addEventListener('click', (e) => {
+      checkButtonClick(e.clientX, e.clientY);
+    });
   }
   
   // Create a canvas texture with emoji
@@ -366,9 +376,13 @@ import Layout from "../layouts/Layout.astro";
   
   // Handle button clicks
   function checkButtonClick(x, y) {
+    console.log("Checking button click at:", x, y);
+    
     // Convert screen coordinates to normalized device coordinates
     mouse.x = (x / window.innerWidth) * 2 - 1;
     mouse.y = -(y / window.innerHeight) * 2 + 1;
+    
+    console.log("Normalized coordinates:", mouse.x, mouse.y);
     
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
@@ -376,18 +390,24 @@ import Layout from "../layouts/Layout.astro";
     // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects([musicButton, fxButton], true);
     
+    console.log("Intersections found:", intersects.length);
+    
     if (intersects.length > 0) {
       const button = intersects[0].object;
+      console.log("Intersected object:", button);
       
       // Check if we hit a button or its child
-      const targetButton = button.userData.type ? button : button.parent;
+      const targetButton = button.userData && button.userData.type ? button : button.parent;
+      console.log("Target button:", targetButton);
       
-      if (targetButton.userData.type === 'music') {
+      if (targetButton && targetButton.userData && targetButton.userData.type === 'music') {
+        console.log("Music button clicked");
         // Visual feedback - scale animation
         animateButtonPress(musicButton);
         toggleMusic();
         return true;
-      } else if (targetButton.userData.type === 'fx') {
+      } else if (targetButton && targetButton.userData && targetButton.userData.type === 'fx') {
+        console.log("FX button clicked");
         // Visual feedback - scale animation
         animateButtonPress(fxButton);
         toggleFx();
@@ -459,6 +479,7 @@ import Layout from "../layouts/Layout.astro";
       
       // Pause background music
       bgMusic.pause();
+      console.log("Music paused");
     } else {
       // Update button appearance
       musicButton.material.color.set(0xf2f60d); // Yellow
@@ -468,6 +489,7 @@ import Layout from "../layouts/Layout.astro";
       
       // Play background music
       bgMusic.play().catch(e => console.log("Audio play failed:", e));
+      console.log("Music playing");
     }
     
     musicButton.userData.muted = musicMuted;
@@ -490,6 +512,7 @@ import Layout from "../layouts/Layout.astro";
       jumpLandSound.volume = 0;
       collisionSound.volume = 0;
       winSound.volume = 0;
+      console.log("FX muted");
     } else {
       // Update button appearance
       fxButton.material.color.set(0xf2f60d); // Yellow
@@ -502,6 +525,7 @@ import Layout from "../layouts/Layout.astro";
       jumpLandSound.volume = 1;
       collisionSound.volume = 1;
       winSound.volume = 1;
+      console.log("FX unmuted");
     }
     
     fxButton.userData.muted = fxMuted;
@@ -511,6 +535,8 @@ import Layout from "../layouts/Layout.astro";
   function handleMouseDown(e) {
     // Check if we clicked a button
     if (checkButtonClick(e.clientX, e.clientY)) {
+      e.preventDefault();
+      e.stopPropagation();
       return; // Button was clicked, don't process game action
     }
     
@@ -535,6 +561,8 @@ import Layout from "../layouts/Layout.astro";
   function handleClick(e) {
     // Check if we clicked a button
     if (checkButtonClick(e.clientX, e.clientY)) {
+      e.preventDefault();
+      e.stopPropagation();
       return; // Button was clicked, don't process game action
     }
     
@@ -566,6 +594,8 @@ import Layout from "../layouts/Layout.astro";
   function handleTouchStart(e) {
     // Check if we touched a button
     if (e.touches.length > 0 && checkButtonClick(e.touches[0].clientX, e.touches[0].clientY)) {
+      e.preventDefault();
+      e.stopPropagation();
       return; // Button was touched, don't process game action
     }
     
