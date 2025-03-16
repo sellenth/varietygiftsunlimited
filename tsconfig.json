@@ -7,5 +7,5 @@
     "strict": false
   },
 
-  "exclude": ["public/*", "node_modules/*"]
+  "exclude": ["public/*", "node_modules/*", "dist/*", ".vercel/*"]
 }
