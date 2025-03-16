@@ -1,0 +1,624 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Gifty Dodge - Help the gift reach its recipient!" hideHeader={true}>
+  <div id="game-container"></div>
+  <div id="custom-popup" class="hidden">
+    <div class="popup-content">
+      <h2>Congratulations!</h2>
+      <p id="popup-message"></p>
+      <button id="popup-button">Next Level</button>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+  
+  #game-container {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background-color: #ffe0f0;
+    border: 4px solid #ff69b4;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    max-width: 80%;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+  }
+
+  .popup-content h2 {
+    color: #ff69b4;
+    margin-top: 0;
+    font-size: 28px;
+  }
+
+  .popup-content p {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+
+  #popup-button {
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #popup-button:hover {
+    background-color: #ff4da6;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script>
+  import * as THREE from 'three';
+
+  // Prevent zoom and text selection on mobile
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
+  document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  // Game variables
+  let scene, camera, renderer;
+  let giftBox, grassField;
+  let gameHeight = 15; // Number of jumps to win
+  let currentPosition = 0;
+  let gameWidth = 10; // Arbitrary width units
+  let isJumping = false;
+  let level = 1;
+  let obstacles = [];
+  let clocksToRotate = [];
+  let truckSpeedChangeTimers = [];
+  
+  // Sound effects
+  let jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic;
+  let soundsLoaded = false;
+
+  // Initialize the game
+  function init() {
+    // Create scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffe0f0); // Light pink background
+
+    // Create camera (orthographic for top-down view)
+    const aspect = window.innerWidth / window.innerHeight;
+    const viewSize = 15;
+    camera = new THREE.OrthographicCamera(
+      -viewSize * aspect / 2, 
+      viewSize * aspect / 2, 
+      viewSize / 2, 
+      -viewSize / 2, 
+      0.1, 
+      1000
+    );
+    camera.position.set(0, 0, 10);
+    camera.lookAt(0, 0, 0);
+
+    // Create renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('game-container').appendChild(renderer.domElement);
+
+    // Create grassy field
+    const fieldGeometry = new THREE.PlaneGeometry(gameWidth, gameHeight);
+    const fieldMaterial = new THREE.MeshBasicMaterial({ color: 0x66cc66 }); // Green color
+    grassField = new THREE.Mesh(fieldGeometry, fieldMaterial);
+    grassField.position.set(0, 0, -1);
+    scene.add(grassField);
+
+    // Load sounds
+    loadSounds();
+
+    // Create gift box character
+    createGiftBox();
+    
+    // Create goal (hands)
+    createGoal();
+    
+    // Add some initial obstacles
+    createObstacles();
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize);
+    
+    // Add touch/click event listener
+    window.addEventListener('click', playerJump);
+    window.addEventListener('keyup', playerJump);
+    window.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      playerJump();
+    });
+
+    // Setup popup button
+    document.getElementById('popup-button').addEventListener('click', function() {
+      document.getElementById('custom-popup').classList.add('hidden');
+      createObstacles(); // New obstacle pattern
+    });
+
+    // Start the animation loop
+    animate();
+  }
+
+  // Load sound effects
+  function loadSounds() {
+    // Create audio elements
+    jumpStartSound = new Audio('/sounds/jump-start.mp3');
+    jumpLandSound = new Audio('/sounds/jump-land.mp3');
+    collisionSound = new Audio('/sounds/ow.mp3');
+    winSound = new Audio('/sounds/its-just-what-i-wanted.mp3');
+    bgMusic = new Audio('/sounds/background-music.mp3');
+    
+    // Set background music properties
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+    
+    // Handle sound loading
+    const soundsToLoad = [jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic];
+    let loadedCount = 0;
+    
+    soundsToLoad.forEach(sound => {
+      // Use a dummy event listener to preload sounds
+      sound.addEventListener('canplaythrough', function onCanPlay() {
+        loadedCount++;
+        sound.removeEventListener('canplaythrough', onCanPlay);
+        
+        if (loadedCount === soundsToLoad.length) {
+          soundsLoaded = true;
+          // Start background music when everything is loaded
+          bgMusic.play().catch(e => console.log("Audio play failed:", e));
+        }
+      });
+      
+      // Force load attempt
+      sound.load();
+    });
+    
+    // Fallback in case the events don't fire
+    setTimeout(() => {
+      if (!soundsLoaded) {
+        soundsLoaded = true;
+        bgMusic.play().catch(e => console.log("Audio play failed:", e));
+      }
+    }, 3000);
+  }
+
+  // Create the gift box character
+  function createGiftBox() {
+    // Gift box body
+    const boxGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xff69b4 }); // Hot pink
+    giftBox = new THREE.Mesh(boxGeometry, boxMaterial);
+    
+    // Gift box ribbon (cross on top)
+    const ribbonGeometry1 = new THREE.BoxGeometry(0.9, 0.1, 0.1);
+    const ribbonGeometry2 = new THREE.BoxGeometry(0.1, 0.9, 0.1);
+    const ribbonMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    
+    const ribbonH = new THREE.Mesh(ribbonGeometry1, ribbonMaterial);
+    ribbonH.position.set(0, 0, 0.45);
+    
+    const ribbonV = new THREE.Mesh(ribbonGeometry2, ribbonMaterial);
+    ribbonV.position.set(0, 0, 0.45);
+    
+    // Create gift box group
+    const giftBoxGroup = new THREE.Group();
+    giftBoxGroup.add(giftBox);
+    giftBoxGroup.add(ribbonH);
+    giftBoxGroup.add(ribbonV);
+    
+    // Position at bottom of the screen
+    giftBoxGroup.position.set(0, -gameHeight/2 + 0.5, 0);
+    
+    // Add collision geometry (for better hitbox)
+    const hitboxSize = 0.7; // Slightly smaller than visual size
+    giftBoxGroup.userData.hitbox = new THREE.Box3(
+      new THREE.Vector3(-hitboxSize/2, -hitboxSize/2, -hitboxSize/2),
+      new THREE.Vector3(hitboxSize/2, hitboxSize/2, hitboxSize/2)
+    );
+    
+    scene.add(giftBoxGroup);
+    
+    // Assign the group to giftBox for easier reference
+    giftBox = giftBoxGroup;
+  }
+
+  // Create finish line (hands)
+  function createGoal() {
+    // Simple placeholder for now - two hands at the top
+    const handGeometry = new THREE.BoxGeometry(1, 0.5, 0.2);
+    const handMaterial = new THREE.MeshBasicMaterial({ color: 0xffcc99 }); // Skin tone
+    
+    const leftHand = new THREE.Mesh(handGeometry, handMaterial);
+    leftHand.position.set(-1.5, gameHeight/2 - 0.5, 0);
+    
+    const rightHand = new THREE.Mesh(handGeometry, handMaterial);
+    rightHand.position.set(1.5, gameHeight/2 - 0.5, 0);
+    
+    scene.add(leftHand);
+    scene.add(rightHand);
+  }
+
+  // Create obstacles
+  function createObstacles() {
+    // Clear existing obstacles
+    obstacles.forEach(obstacle => scene.remove(obstacle));
+    obstacles = [];
+    clocksToRotate = [];
+    
+    // Clear any existing truck speed change timers
+    truckSpeedChangeTimers.forEach(timer => clearTimeout(timer));
+    truckSpeedChangeTimers = [];
+    
+    // Create 6 rows of obstacles (delivery vans, clocks, "out of stock" text)
+    for (let i = 1; i < gameHeight - 1; i += 2) {
+      const y = -gameHeight/2 + i + 1;
+      
+      // Randomly choose obstacle type
+      const obstacleType = Math.floor(Math.random() * 3);
+      let obstacle;
+      
+      switch (obstacleType) {
+        case 0: // Delivery van
+          obstacle = createDeliveryVan();
+          setupTruckSpeedChanges(obstacle);
+          break;
+        case 1: // Clock
+          obstacle = createClock();
+          clocksToRotate.push(obstacle);
+          break;
+        case 2: // "Out of stock" text
+          obstacle = createOutOfStock();
+          break;
+      }
+      
+      // Random starting position
+      const x = Math.random() * gameWidth - gameWidth/2;
+      obstacle.position.set(x, y, 0);
+      
+      // Random direction (1: right, -1: left)
+      const direction = i % 4 === 0 ? -1 : 1;
+      const baseSpeed = Math.random() * 0.05 + 0.02;
+      
+      obstacle.userData = {
+        speed: baseSpeed * direction,
+        baseSpeed: baseSpeed,
+        direction: direction,
+        type: obstacleType
+      };
+      
+      // Add collision geometry based on obstacle type
+      if (obstacleType === 0) { // Delivery van
+        const hitboxWidth = 1.8; // Slightly smaller than visual size
+        const hitboxHeight = 0.7;
+        obstacle.userData.hitbox = new THREE.Box3(
+          new THREE.Vector3(-hitboxWidth/2, -hitboxHeight/2, -0.4),
+          new THREE.Vector3(hitboxWidth/2, hitboxHeight/2, 0.4)
+        );
+      } else if (obstacleType === 1) { // Clock
+        const radius = 0.45; // Slightly smaller than visual size
+        obstacle.userData.hitbox = new THREE.Box3(
+          new THREE.Vector3(-radius, -radius, -0.1),
+          new THREE.Vector3(radius, radius, 0.1)
+        );
+      } else { // Out of stock
+        const hitboxSize = 0.9;
+        obstacle.userData.hitbox = new THREE.Box3(
+          new THREE.Vector3(-hitboxSize/2, -hitboxSize/2, -0.1),
+          new THREE.Vector3(hitboxSize/2, hitboxSize/2, 0.1)
+        );
+      }
+      
+      obstacles.push(obstacle);
+      scene.add(obstacle);
+    }
+  }
+
+  // Setup random speed changes for trucks
+  function setupTruckSpeedChanges(truck) {
+    const createSpeedChange = () => {
+      const timer = setTimeout(() => {
+        // Random speed multiplier between 0.5 and 2
+        const speedMultiplier = 0.5 + Math.random() * 1.5;
+        truck.userData.speed = truck.userData.baseSpeed * truck.userData.direction * speedMultiplier;
+        
+        // Schedule next speed change
+        const nextChangeTimer = createSpeedChange();
+        truckSpeedChangeTimers.push(nextChangeTimer);
+      }, 2000 + Math.random() * 3000); // Random time between 2-5 seconds
+      
+      return timer;
+    };
+    
+    const initialTimer = createSpeedChange();
+    truckSpeedChangeTimers.push(initialTimer);
+  }
+
+  // Create a delivery van obstacle
+  function createDeliveryVan() {
+    const van = new THREE.Group();
+    
+    // Van body
+    const bodyGeometry = new THREE.BoxGeometry(2, 0.8, 0.8);
+    const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x4285f4 }); // Blue
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    
+    // Wheels
+    const wheelGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 16);
+    wheelGeometry.rotateX(Math.PI / 2);
+    const wheelMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 });
+    
+    const wheel1 = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    wheel1.position.set(-0.6, -0.4, 0);
+    
+    const wheel2 = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    wheel2.position.set(0.6, -0.4, 0);
+    
+    van.add(body);
+    van.add(wheel1);
+    van.add(wheel2);
+    
+    return van;
+  }
+
+  // Create a clock obstacle
+  function createClock() {
+    const clock = new THREE.Group();
+    
+    // Clock face
+    const faceGeometry = new THREE.CircleGeometry(0.5, 32);
+    const faceMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const face = new THREE.Mesh(faceGeometry, faceMaterial);
+    
+    // Clock outline
+    const outlineGeometry = new THREE.RingGeometry(0.48, 0.5, 32);
+    const outlineMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const outline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+    outline.position.set(0, 0, 0.01);
+    
+    // Clock hands
+    const hourHandGeometry = new THREE.PlaneGeometry(0.05, 0.3);
+    const hourHandMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const hourHand = new THREE.Mesh(hourHandGeometry, hourHandMaterial);
+    hourHand.position.set(0, 0, 0.02);
+    hourHand.rotation.z = Math.random() * Math.PI * 2;
+    
+    const minuteHandGeometry = new THREE.PlaneGeometry(0.03, 0.4);
+    const minuteHandMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const minuteHand = new THREE.Mesh(minuteHandGeometry, minuteHandMaterial);
+    minuteHand.position.set(0, 0, 0.03);
+    minuteHand.rotation.z = Math.random() * Math.PI * 2;
+    
+    clock.add(face);
+    clock.add(outline);
+    clock.add(hourHand);
+    clock.add(minuteHand);
+    
+    // Store references to hands for rotation
+    clock.userData.hourHand = hourHand;
+    clock.userData.minuteHand = minuteHand;
+    clock.userData.rotationSpeed = {
+      hour: 0.001 + Math.random() * 0.002,
+      minute: 0.003 + Math.random() * 0.005
+    };
+    
+    return clock;
+  }
+
+  // Create "Out of Stock" text
+  function createOutOfStock() {
+    const textGroup = new THREE.Group();
+    
+    // Background rectangle
+    const bgGeometry = new THREE.PlaneGeometry(1.8, 0.8);
+    const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const background = new THREE.Mesh(bgGeometry, bgMaterial);
+    
+    // Red border
+    const borderGeometry = new THREE.RingGeometry(0.85, 0.9, 32);
+    const borderMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const border = new THREE.Mesh(borderGeometry, borderMaterial);
+    border.scale.set(1, 0.45, 1);
+    border.position.set(0, 0, 0.01);
+    
+    // Red text (simplified as red bars)
+    const line1Geometry = new THREE.PlaneGeometry(1.4, 0.1);
+    const line1Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const line1 = new THREE.Mesh(line1Geometry, line1Material);
+    line1.position.set(0, 0.15, 0.02);
+    
+    const line2Geometry = new THREE.PlaneGeometry(1.4, 0.1);
+    const line2Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const line2 = new THREE.Mesh(line2Geometry, line2Material);
+    line2.position.set(0, 0, 0.02);
+    
+    const line3Geometry = new THREE.PlaneGeometry(1.4, 0.1);
+    const line3Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const line3 = new THREE.Mesh(line3Geometry, line3Material);
+    line3.position.set(0, -0.15, 0.02);
+    
+    textGroup.add(background);
+    textGroup.add(border);
+    textGroup.add(line1);
+    textGroup.add(line2);
+    textGroup.add(line3);
+    
+    return textGroup;
+  }
+
+  // Player jump function
+  function playerJump() {
+    if (!isJumping) {
+      isJumping = true;
+      
+      // Play jump start sound
+      if (soundsLoaded) {
+        jumpStartSound.currentTime = 0;
+        jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
+      }
+      
+      // Move up one row
+      const targetY = giftBox.position.y + 1;
+      
+      // Animation
+      const jumpAnimation = () => {
+        const jumpSpeed = 0.1;
+        if (giftBox.position.y < targetY) {
+          giftBox.position.y += jumpSpeed;
+          requestAnimationFrame(jumpAnimation);
+        } else {
+          giftBox.position.y = targetY;
+          isJumping = false;
+          
+          // Play landing sound
+          if (soundsLoaded) {
+            jumpLandSound.currentTime = 0;
+            jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
+          }
+          
+          // Check if player reached the top
+          if (giftBox.position.y >= gameHeight/2 - 1) {
+            levelComplete();
+          }
+          
+          // Check collision with obstacles
+          checkCollisions();
+        }
+      };
+      
+      requestAnimationFrame(jumpAnimation);
+    }
+  }
+
+  // Check for collisions with obstacles
+  function checkCollisions() {
+    // Create a box3 for the gift box at its current position
+    const giftBoxHitbox = giftBox.userData.hitbox.clone();
+    giftBoxHitbox.translate(giftBox.position);
+    
+    for (const obstacle of obstacles) {
+      // Get the obstacle's hitbox at its current position
+      const obstacleHitbox = obstacle.userData.hitbox.clone();
+      obstacleHitbox.translate(obstacle.position);
+      
+      // Check for intersection
+      if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
+        // Collision detected - reset the game
+        if (soundsLoaded) {
+          collisionSound.currentTime = 0;
+          collisionSound.play().catch(e => console.log("Audio play failed:", e));
+        }
+        resetGame();
+        break;
+      }
+    }
+  }
+
+  // Reset the game when player collides with obstacle
+  function resetGame() {
+    giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
+  }
+
+  // Complete the level
+  function levelComplete() {
+    level++;
+    
+    // Play win sound
+    if (soundsLoaded) {
+      winSound.currentTime = 0;
+      winSound.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    // Show custom popup
+    document.getElementById('popup-message').textContent = `You completed level ${level-1}!`;
+    document.getElementById('custom-popup').classList.remove('hidden');
+    
+    resetGame();
+  }
+
+  // Handle window resize
+  function onWindowResize() {
+    const aspect = window.innerWidth / window.innerHeight;
+    const viewSize = 15;
+    
+    camera.left = -viewSize * aspect / 2;
+    camera.right = viewSize * aspect / 2;
+    camera.top = viewSize / 2;
+    camera.bottom = -viewSize / 2;
+    
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+    
+    // Move obstacles
+    obstacles.forEach(obstacle => {
+      obstacle.position.x += obstacle.userData.speed;
+      
+      // Wrap around screen edges
+      if (obstacle.position.x > gameWidth/2 + 1) {
+        obstacle.position.x = -gameWidth/2 - 1;
+      } else if (obstacle.position.x < -gameWidth/2 - 1) {
+        obstacle.position.x = gameWidth/2 + 1;
+      }
+    });
+    
+    // Rotate clock hands
+    clocksToRotate.forEach(clock => {
+      if (clock.userData.hourHand && clock.userData.minuteHand) {
+        clock.userData.hourHand.rotation.z += clock.userData.rotationSpeed.hour;
+        clock.userData.minuteHand.rotation.z += clock.userData.rotationSpeed.minute;
+      }
+    });
+    
+    renderer.render(scene, camera);
+  }
+
+  // Start the game when the page loads
+  window.onload = init;
+</script> 

@@ -5,17 +5,27 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Variety Gifts Unlimited - Unique and Fun Gifts" hideHeader={false}>
     <h1>Welcome to the Game Browser</h1>
-    <div class="flex flex-col w-full justify-center items-center">
-            <a href="/hoops/index.html">
-        <div class="game mb-2 ">
-            <h2 class="text-white">Basketball Shoot Out</h2>
-
-                <img src="/game/shootout.png" alt="Flappy Stacks Art" style="width: 300px; height: auto;" />
+    <div class="flex flex-col md:flex-row w-full justify-center items-center">
+        <a href="/gifty-dodge">
+            <div class="game mb-2">
+                <h2 class="text-white">Gifty Dodge</h2>
+                <img src="/gifty-dodge/gifty-dodge.png" alt="Gifty Dodge Game" style="width: 300px; height: 300px;" />
                 <div class="button">
-                Play Now
-            </div> </a>
-        </div>
-    </a>
+                    Play Now
+                </div>
+            </div>
+        </a>
+
+        <a href="/hoops/index.html">
+            <div class="game mb-2 ">
+                <h2 class="text-white">Basketball Shoot Out</h2>
+                <img src="/game/shootout.png" alt="Flappy Stacks Art" style="width: 300px; height: 300px;" />
+                <div class="button">
+                    Play Now
+                </div>
+            </div>
+        </a>
+        
         <div class="game hidden">
             <h2 class="text-white">Savings Box Anthology</h2>
             <a href="/savings-box-anthology" class="button">Learn More</a>
@@ -30,7 +40,6 @@ import Layout from "../layouts/Layout.astro";
         font-size: 36px; 
     }
     .game { 
-        max-width: 50%;
         border: 2px solid #fff; 
         border-radius: 10px; 
         padding: 20px; 
