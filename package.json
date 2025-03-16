@@ -14,6 +14,7 @@
     "@astrojs/react": "^4.2.1",
     "@astrojs/tailwind": "^6.0.0",
     "@astrojs/vercel": "^8.1.2",
+    "@fontsource-variable/comfortaa": "^5.2.5",
     "@fontsource-variable/roboto-slab": "^5.1.0",
     "@fontsource/creepster": "^5.1.0",
     "@fontsource/eagle-lake": "^5.1.0",
