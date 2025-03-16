@@ -11,6 +11,10 @@ import Layout from "../layouts/Layout.astro";
       <button id="popup-button">Next Level</button>
     </div>
   </div>
+  <div id="audio-controls">
+    <button id="music-toggle" aria-label="Toggle Music">🎵</button>
+    <button id="fx-toggle" aria-label="Toggle Sound Effects">🔊</button>
+  </div>
 </Layout>
 
 <style>
@@ -85,6 +89,40 @@ import Layout from "../layouts/Layout.astro";
   .hidden {
     display: none !important;
   }
+  
+  #audio-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+  }
+  
+  #audio-controls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(242, 246, 13, 0.7);
+    border: 2px solid white;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  #audio-controls button:hover {
+    background-color: rgba(255, 105, 180, 0.9);
+    transform: scale(1.1);
+  }
+  
+  #audio-controls button.muted {
+    background-color: rgba(150, 150, 150, 0.7);
+    text-decoration: line-through;
+  }
 </style>
 
 <script>
@@ -118,6 +156,8 @@ import Layout from "../layouts/Layout.astro";
   // Sound effects
   let jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic;
   let soundsLoaded = false;
+  let musicMuted = false;
+  let fxMuted = false;
   
   // State machine
   const GameState = {
@@ -204,9 +244,50 @@ import Layout from "../layouts/Layout.astro";
       document.getElementById('custom-popup').classList.add('hidden');
       createObstacles(); // New obstacle pattern
     });
+    
+    // Setup audio control buttons
+    setupAudioControls();
 
     // Start the animation loop
     animate();
+  }
+  
+  // Setup audio control buttons
+  function setupAudioControls() {
+    const musicToggle = document.getElementById('music-toggle');
+    const fxToggle = document.getElementById('fx-toggle');
+    
+    musicToggle.addEventListener('click', function() {
+      musicMuted = !musicMuted;
+      this.classList.toggle('muted');
+      
+      if (musicMuted) {
+        bgMusic.volume = 0;
+        this.textContent = '🔇';
+      } else {
+        bgMusic.volume = 0.25;
+        this.textContent = '🎵';
+      }
+    });
+    
+    fxToggle.addEventListener('click', function() {
+      fxMuted = !fxMuted;
+      this.classList.toggle('muted');
+      
+      if (fxMuted) {
+        jumpStartSound.volume = 0;
+        jumpLandSound.volume = 0;
+        collisionSound.volume = 0;
+        winSound.volume = 0;
+        this.textContent = '🔇';
+      } else {
+        jumpStartSound.volume = 1;
+        jumpLandSound.volume = 1;
+        collisionSound.volume = 1;
+        winSound.volume = 1;
+        this.textContent = '🔊';
+      }
+    });
   }
 
   // Load sound effects
@@ -589,7 +670,7 @@ import Layout from "../layouts/Layout.astro";
     chargeStrength = 0;
     
     // Play jump start sound
-    if (soundsLoaded) {
+    if (soundsLoaded && !fxMuted) {
       jumpStartSound.currentTime = 0;
       jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
     }
@@ -624,7 +705,7 @@ import Layout from "../layouts/Layout.astro";
       chargeIndicator.scale.set(1, 0, 1);
       
       // Play jump release sound
-      if (soundsLoaded) {
+      if (soundsLoaded && !fxMuted) {
         jumpLandSound.currentTime = 0;
         jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
       }
@@ -679,7 +760,7 @@ import Layout from "../layouts/Layout.astro";
       // Check for intersection
       if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
         // Collision detected - reset the game
-        if (soundsLoaded) {
+        if (soundsLoaded && !fxMuted) {
           collisionSound.currentTime = 0;
           collisionSound.play().catch(e => console.log("Audio play failed:", e));
         }
@@ -702,7 +783,7 @@ import Layout from "../layouts/Layout.astro";
     currentState = GameState.LEVEL_COMPLETE;
     
     // Play win sound
-    if (soundsLoaded) {
+    if (soundsLoaded && !fxMuted) {
       winSound.currentTime = 0;
       winSound.play().catch(e => console.log("Audio play failed:", e));
     }
@@ -756,7 +837,7 @@ import Layout from "../layouts/Layout.astro";
         
         if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
           // Collision detected during movement
-          if (soundsLoaded) {
+          if (soundsLoaded && !fxMuted) {
             collisionSound.currentTime = 0;
             collisionSound.play().catch(e => console.log("Audio play failed:", e));
           }
