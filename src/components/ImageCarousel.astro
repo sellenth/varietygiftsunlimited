@@ -1,17 +1,28 @@
 ---
+interface Image {
+    src: string;
+    alt: string;
+}
+
 interface Props {
-    baseImage: string; // The base image name without extension (e.g. "husky")
+    images: Image[];
     title: string;
 }
 
-const { baseImage, title } = Astro.props;
+const { images, title } = Astro.props;
 ---
 
 <div class="relative group aspect-square overflow-hidden rounded-lg">
     <div class="carousel w-full h-full touch-none">
-        <img src={`${baseImage}1.jpg`} alt={`${title} view 1`} class="w-full h-full object-cover carousel-item select-none" data-index="1">
-        <img src={`${baseImage}2.jpg`} alt={`${title} view 2`} loading="lazy" class="w-full h-full object-cover carousel-item hidden select-none" data-index="2">
-        <img src={`${baseImage}3.jpg`} alt={`${title} view 3`} loading="lazy" class="w-full h-full object-cover carousel-item hidden select-none" data-index="3">
+        {images.map((image, index) => (
+            <img 
+                src={image.src} 
+                alt={image.alt || `${title} view ${index + 1}`} 
+                loading={index === 0 ? "eager" : "lazy"} 
+                class={`w-full h-full object-cover carousel-item select-none ${index === 0 ? '' : 'hidden'}`} 
+                data-index={index + 1}
+            />
+        ))}
     </div>
     
     <!-- Navigation Arrows - only hidden on desktop hover -->
@@ -42,6 +53,12 @@ const { baseImage, title } = Astro.props;
     if (carousel && items && prevBtn && nextBtn) {
         let currentIndex = 1;
         const maxIndex = items.length;
+
+        // Hide navigation buttons if there's only one image
+        if (maxIndex <= 1) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
 
         function showImage(index: number) {
             items.forEach((item) => {

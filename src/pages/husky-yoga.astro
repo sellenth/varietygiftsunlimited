@@ -12,6 +12,13 @@ const priceIds = {
     L: "price_1QrEmYAp2D4XT14xUGpDzNNI",
     XL: "price_1QrEmZAp2D4XT14xyHxcrbgE"
 };
+
+// Create an array of images for the carousel
+const images = [
+    { src: "/yoga/husky1.jpg", alt: `${title} view 1` },
+    { src: "/yoga/husky2.jpg", alt: `${title} view 2` },
+    { src: "/yoga/husky3.jpg", alt: `${title} view 3` }
+];
 ---
 
 <Layout title={title} hideHeader={false}>
@@ -19,6 +26,6 @@ const priceIds = {
         title={title}
         description={description}
         priceIds={priceIds}
-        image="/yoga/husky.jpg"
+        images={images}
     />
 </Layout> 

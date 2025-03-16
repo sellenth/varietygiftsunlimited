@@ -2,9 +2,10 @@
 interface Props {
 	title: string;
 	hideHeader: boolean;
+	hideFooter?: boolean;
 }
 
-const { title, hideHeader } = Astro.props;
+const { title, hideHeader, hideFooter = false } = Astro.props;
 //import '@fontsource/creepster';
 //import '@fontsource-variable/roboto-slab';
 import '@fontsource/eagle-lake';
@@ -103,7 +104,7 @@ import  SpeedInsights  from "@vercel/speed-insights/astro"
 			{ !hideHeader && <Header /> }
 			<slot />
 		</div>
-		<Footer />
+		{ !hideFooter && <Footer /> }
 	</body>
 	<SpeedInsights />
 </html>

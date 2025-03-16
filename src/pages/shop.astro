@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import PrintifyProductCard from '../components/PrintifyProductCard.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import PrintifyProductCard from "../components/PrintifyProductCard.astro";
 
 /*
 // Get the API key from environment variables
@@ -22,44 +22,64 @@ if (response.ok) {
 ---
 
 <Layout title="Shop - Variety Gifts Unlimited" hideHeader={false}>
-    <main class="w-full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20">
+    <main
+        class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8"
+    >
         <section class="text-center my-10">
             <h1 class="text-4xl font-bold">Shop</h1>
-            <p class="mt-4 text-lg">Discover our unique and fun gifts. Perfect for every occasion!</p>
+            <p class="mt-4 text-lg">
+                Discover our unique and fun gifts. Perfect for every occasion!
+            </p>
         </section>
-        <section id="products" class="w-full max-w-3xl px-4 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center relative z-10">
+        <section
+            id="products"
+            class="w-full max-w-3xl px-4 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center relative z-10"
+        >
             <!--
-            {/* Display Printify Products */}
-            {printifyProducts.map((product) => (
-                <PrintifyProductCard product={product} />
-            ))} -->
-
             <div class="md:col-span-2 md:row-span-2 w-full h-full md:px-24">
-                <Card img="/yoga/tote" 
-                title="Tote" 
-                body="woah!!" 
-                href="tote"></Card>
             </div>
+            -->
+            <Card
+                img="/yoga/tote1.jpg"
+                title="Tote"
+                body="woah!!"
+                href="tote"
+            />
 
-            <Card img="/yoga/golden" 
-            title="Golden Yoga" 
-            body="woah!!" 
-            href="golden-yoga"></Card>
+            <Card
+                img="/chewbarka/item.webp"
+                title="Chewbarka Bandana"
+                body="woah!!"
+                href="chewbarka-bandana"
+            />
 
-            <Card img="/yoga/dane" 
-            title="Great Dane Yoga" 
-            body="woah!!" 
-            href="great-dane-yoga"></Card>
+            <Card
+                img="/yoga/golden1.jpg"
+                title="Golden Yoga"
+                body="woah!!"
+                href="golden-yoga"
+            />
 
-            <Card img="/yoga/corgi" 
-            title="Corgi Yoga" 
-            body="woah!!" 
-            href="corgi-yoga"></Card>
+            <Card
+                img="/yoga/dane1.jpg"
+                title="Great Dane Yoga"
+                body="woah!!"
+                href="great-dane-yoga"
+            />
 
-            <Card img="/yoga/husky" 
-            title="Husky Yoga" 
-            body="woah!!" 
-            href="husky-yoga"></Card>
+            <Card
+                img="/yoga/corgi1.jpg"
+                title="Corgi Yoga"
+                body="woah!!"
+                href="corgi-yoga"
+            />
+
+            <Card
+                img="/yoga/husky1.jpg"
+                title="Husky Yoga"
+                body="woah!!"
+                href="husky-yoga"
+            />
 
             <!--
              <Card img="/tanner/tannerlogo.png" 
