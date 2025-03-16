@@ -185,15 +185,15 @@ import Layout from "../layouts/Layout.astro";
   // Load sound effects
   function loadSounds() {
     // Create audio elements
-    jumpStartSound = new Audio('/sounds/jump-start.mp3');
-    jumpLandSound = new Audio('/sounds/jump-land.mp3');
-    collisionSound = new Audio('/sounds/ow.mp3');
-    winSound = new Audio('/sounds/its-just-what-i-wanted.mp3');
-    bgMusic = new Audio('/sounds/background-music.mp3');
+    jumpStartSound = new Audio('/gifty-dodge/jump-press.mp3');
+    jumpLandSound = new Audio('/gifty-dodge/jump-release.mp3');
+    collisionSound = new Audio('/gifty-dodge/ow.mp3');
+    winSound = new Audio('/gifty-dodge/yay.mp3');
+    bgMusic = new Audio('/gifty-dodge/boba-date.mp3');
     
     // Set background music properties
     bgMusic.loop = true;
-    bgMusic.volume = 0.5;
+    bgMusic.volume = 0.25;
     
     // Handle sound loading
     const soundsToLoad = [jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic];
