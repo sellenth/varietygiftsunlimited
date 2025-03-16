@@ -280,7 +280,7 @@ import Layout from "../layouts/Layout.astro";
     giftBoxGroup.position.set(0, -gameHeight/2 + 0.5, 0);
     
     // Add collision geometry (for better hitbox)
-    const hitboxSize = .85; // Increased from 0.7 to make hitbox bigger
+    const hitboxSize = .75; // Increased from 0.7 to make hitbox bigger
     giftBoxGroup.userData.hitbox = new THREE.Box3(
       new THREE.Vector3(-hitboxSize/2, -hitboxSize/2, -hitboxSize/2),
       new THREE.Vector3(hitboxSize/2, hitboxSize/2, hitboxSize/2)
@@ -637,8 +637,8 @@ import Layout from "../layouts/Layout.astro";
   // Player jump function
   function playerJump(strength = 1) {
     if (currentState === GameState.JUMPING) {
-      // Calculate jump distance based on strength (minimum 1 row)
-      const jumpDistance = Math.max(1, Math.ceil(strength * 1.5));
+      // Calculate jump distance based on strength with no minimum (pixel precision)
+      const jumpDistance = strength * 1.5;
       const targetY = giftBox.position.y + jumpDistance;
       
       // Animation
