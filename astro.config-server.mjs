@@ -13,4 +13,14 @@ export default defineConfig({
       enabled: true,
     },
   }),
+  vite: {
+    ssr: {
+      noExternal: ['zwitch', 'hast-util-to-html'],
+    },
+    resolve: {
+      alias: {
+        'zwitch': 'zwitch/index.js'
+      }
+    }
+  }
 });
