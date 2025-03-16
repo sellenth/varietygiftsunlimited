@@ -116,6 +116,21 @@ import Layout from "../layouts/Layout.astro";
   // Sound effects
   let jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic;
   let soundsLoaded = false;
+  
+  // State machine
+  const GameState = {
+    IDLE: 'idle',
+    CHARGING: 'charging',
+    JUMPING: 'jumping',
+    GAME_OVER: 'gameOver',
+    LEVEL_COMPLETE: 'levelComplete'
+  };
+  
+  let currentState = GameState.IDLE;
+  let chargeStartTime = 0;
+  let maxChargeTime = 1000; // 1 second max charge
+  let chargeStrength = 0;
+  let chargeIndicator;
 
   // Initialize the game
   function init() {
@@ -161,15 +176,25 @@ import Layout from "../layouts/Layout.astro";
     // Add some initial obstacles
     createObstacles();
 
+    // Create charge indicator
+    createChargeIndicator();
+    
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
     
     // Add touch/click event listener
-    window.addEventListener('click', playerJump);
-    window.addEventListener('keyup', playerJump);
+    window.addEventListener('click', handleClick);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('touchstart', function(e) {
       e.preventDefault();
-      playerJump();
+      handleTouchStart();
+    });
+    window.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      handleTouchEnd();
     });
 
     // Setup popup button
@@ -488,35 +513,138 @@ import Layout from "../layouts/Layout.astro";
     return textGroup;
   }
 
-  // Player jump function
-  function playerJump() {
-    if (!isJumping) {
-      isJumping = true;
+  // Create charge indicator
+  function createChargeIndicator() {
+    const geometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    chargeIndicator = new THREE.Mesh(geometry, material);
+    chargeIndicator.position.set(1.2, -gameHeight/2 + 0.5, 0);
+    chargeIndicator.scale.set(1, 0, 1); // Start with no height
+    scene.add(chargeIndicator);
+  }
+
+  // Handle mouse down event
+  function handleMouseDown(e) {
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle mouse up event
+  function handleMouseUp(e) {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Handle click event (for compatibility)
+  function handleClick(e) {
+    // Only use this for devices that don't support mousedown/mouseup
+    if (!('ontouchstart' in window) && !('onmousedown' in window)) {
+      if (currentState === GameState.IDLE) {
+        startCharging();
+        // Simulate immediate release
+        setTimeout(releaseJump, 100);
+      }
+    }
+  }
+
+  // Handle key down event
+  function handleKeyDown(e) {
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle key up event
+  function handleKeyUp(e) {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Handle touch start event
+  function handleTouchStart() {
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle touch end event
+  function handleTouchEnd() {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Start charging the jump
+  function startCharging() {
+    currentState = GameState.CHARGING;
+    chargeStartTime = Date.now();
+    chargeStrength = 0;
+    
+    // Play jump start sound
+    if (soundsLoaded) {
+      jumpStartSound.currentTime = 0;
+      jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    // Start charge animation
+    animateCharging();
+  }
+
+  // Animate the charging state
+  function animateCharging() {
+    if (currentState === GameState.CHARGING) {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - chargeStartTime;
       
-      // Play jump start sound
+      // Calculate charge strength (0 to 1)
+      chargeStrength = Math.min(elapsedTime / maxChargeTime, 1);
+      
+      // Update charge indicator
+      chargeIndicator.scale.set(1, chargeStrength, 1);
+      
+      // Continue animation
+      requestAnimationFrame(animateCharging);
+    }
+  }
+
+  // Release the jump
+  function releaseJump() {
+    if (currentState === GameState.CHARGING) {
+      currentState = GameState.JUMPING;
+      
+      // Reset charge indicator
+      chargeIndicator.scale.set(1, 0, 1);
+      
+      // Play jump release sound
       if (soundsLoaded) {
-        jumpStartSound.currentTime = 0;
-        jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
+        jumpLandSound.currentTime = 0;
+        jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
       }
       
-      // Move up one row
-      const targetY = giftBox.position.y + 1;
+      // Execute jump with charge strength
+      playerJump(chargeStrength);
+    }
+  }
+
+  // Player jump function
+  function playerJump(strength = 1) {
+    if (currentState === GameState.JUMPING) {
+      // Calculate jump distance based on strength (minimum 1 row)
+      const jumpDistance = Math.max(1, Math.ceil(strength * 1.5));
+      const targetY = giftBox.position.y + jumpDistance;
       
       // Animation
       const jumpAnimation = () => {
-        const jumpSpeed = 0.1;
+        const jumpSpeed = 0.1 * (1 + strength); // Faster jump for stronger charge
         if (giftBox.position.y < targetY) {
           giftBox.position.y += jumpSpeed;
           requestAnimationFrame(jumpAnimation);
         } else {
-          giftBox.position.y = targetY;
-          isJumping = false;
-          
-          // Play landing sound
-          if (soundsLoaded) {
-            jumpLandSound.currentTime = 0;
-            jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
-          }
+          giftBox.position.y = Math.min(targetY, gameHeight/2 - 0.5); // Cap at top of screen
+          currentState = GameState.IDLE;
           
           // Check if player reached the top
           if (giftBox.position.y >= gameHeight/2 - 1) {
@@ -550,6 +678,7 @@ import Layout from "../layouts/Layout.astro";
           collisionSound.currentTime = 0;
           collisionSound.play().catch(e => console.log("Audio play failed:", e));
         }
+        currentState = GameState.GAME_OVER;
         resetGame();
         break;
       }
@@ -559,11 +688,13 @@ import Layout from "../layouts/Layout.astro";
   // Reset the game when player collides with obstacle
   function resetGame() {
     giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
+    currentState = GameState.IDLE;
   }
 
   // Complete the level
   function levelComplete() {
     level++;
+    currentState = GameState.LEVEL_COMPLETE;
     
     // Play win sound
     if (soundsLoaded) {
@@ -615,6 +746,11 @@ import Layout from "../layouts/Layout.astro";
         clock.userData.minuteHand.rotation.z += clock.userData.rotationSpeed.minute;
       }
     });
+    
+    // Update charge indicator position to follow gift box horizontally
+    if (chargeIndicator) {
+      chargeIndicator.position.x = giftBox.position.x + 1.2;
+    }
     
     renderer.render(scene, camera);
   }
