@@ -11,10 +11,6 @@ import Layout from "../layouts/Layout.astro";
       <button id="popup-button">Next Level</button>
     </div>
   </div>
-  <div id="audio-controls">
-    <button id="music-toggle" aria-label="Toggle Music">🎵</button>
-    <button id="fx-toggle" aria-label="Toggle Sound Effects">🔊</button>
-  </div>
 </Layout>
 
 <style>
@@ -99,49 +95,6 @@ import Layout from "../layouts/Layout.astro";
   .hidden {
     display: none !important;
   }
-  
-  #audio-controls {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 100;
-    display: flex;
-    gap: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-  
-  #audio-controls button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(242, 246, 13, 0.7);
-    border: 2px solid white;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-touch-callout: none;
-  }
-  
-  #audio-controls button:hover {
-    background-color: rgba(255, 105, 180, 0.9);
-    transform: scale(1.1);
-  }
-  
-  #audio-controls button.muted {
-    background-color: rgba(150, 150, 150, 0.7);
-    text-decoration: line-through;
-  }
 </style>
 
 <script>
@@ -177,6 +130,10 @@ import Layout from "../layouts/Layout.astro";
   let soundsLoaded = false;
   let musicMuted = false;
   let fxMuted = false;
+  
+  // Audio control buttons (Three.js objects)
+  let musicButton, fxButton;
+  let raycaster, mouse;
   
   // State machine
   const GameState = {
@@ -240,6 +197,13 @@ import Layout from "../layouts/Layout.astro";
     // Create charge indicator
     createChargeIndicator();
     
+    // Create Three.js audio control buttons
+    createAudioButtons();
+    
+    // Setup raycaster for button interaction
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
     
@@ -251,11 +215,11 @@ import Layout from "../layouts/Layout.astro";
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('touchstart', function(e) {
       e.preventDefault();
-      handleTouchStart();
+      handleTouchStart(e);
     });
     window.addEventListener('touchend', function(e) {
       e.preventDefault();
-      handleTouchEnd();
+      handleTouchEnd(e);
     });
 
     // Setup popup button
@@ -263,49 +227,618 @@ import Layout from "../layouts/Layout.astro";
       document.getElementById('custom-popup').classList.add('hidden');
       createObstacles(); // New obstacle pattern
     });
-    
-    // Setup audio control buttons
-    setupAudioControls();
 
     // Start the animation loop
     animate();
   }
   
-  // Setup audio control buttons
-  function setupAudioControls() {
-    const musicToggle = document.getElementById('music-toggle');
-    const fxToggle = document.getElementById('fx-toggle');
+  // Create Three.js audio control buttons
+  function createAudioButtons() {
+    // Music button
+    const musicGeometry = new THREE.CircleGeometry(0.8, 32);
+    const musicMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xf2f60d, // Yellow
+      transparent: true,
+      opacity: 0.8
+    });
+    musicButton = new THREE.Mesh(musicGeometry, musicMaterial);
     
-    musicToggle.addEventListener('click', function() {
-      musicMuted = !musicMuted;
-      this.classList.toggle('muted');
+    // Position in top-right corner of screen
+    const aspect = window.innerWidth / window.innerHeight;
+    const viewSize = 15;
+    musicButton.position.set(viewSize * aspect / 2 - 1.5, viewSize / 2 - 1, 1);
+    scene.add(musicButton);
+    
+    // Music icon (note symbol)
+    const noteGeometry = new THREE.PlaneGeometry(0.8, 0.8);
+    const noteTexture = new THREE.CanvasTexture(createTextureCanvas('🎵'));
+    const noteMaterial = new THREE.MeshBasicMaterial({ 
+      map: noteTexture,
+      transparent: true
+    });
+    const noteIcon = new THREE.Mesh(noteGeometry, noteMaterial);
+    noteIcon.position.set(0, 0, 0.01);
+    musicButton.add(noteIcon);
+    
+    // Add a highlight effect for better visual feedback
+    const musicHighlightGeometry = new THREE.RingGeometry(0.8, 0.9, 32);
+    const musicHighlightMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+      side: THREE.DoubleSide
+    });
+    const musicHighlight = new THREE.Mesh(musicHighlightGeometry, musicHighlightMaterial);
+    musicHighlight.position.set(0, 0, 0.005);
+    musicHighlight.visible = false;
+    musicButton.add(musicHighlight);
+    
+    // Store reference to icon for updating
+    musicButton.userData = {
+      icon: noteIcon,
+      highlight: musicHighlight,
+      type: 'music',
+      muted: musicMuted,
+      isHovered: false
+    };
+    
+    // Update appearance if muted
+    if (musicMuted) {
+      musicButton.material.color.set(0x969696); // Gray
+      noteIcon.material.map = new THREE.CanvasTexture(createTextureCanvas('🔇'));
+      noteIcon.material.needsUpdate = true;
+    }
+    
+    // Sound effects button
+    const fxGeometry = new THREE.CircleGeometry(0.8, 32);
+    const fxMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xf2f60d, // Yellow
+      transparent: true,
+      opacity: 0.8
+    });
+    fxButton = new THREE.Mesh(fxGeometry, fxMaterial);
+    
+    // Position next to music button
+    fxButton.position.set(viewSize * aspect / 2 - 3.5, viewSize / 2 - 1, 1);
+    scene.add(fxButton);
+    
+    // Sound icon
+    const soundGeometry = new THREE.PlaneGeometry(0.8, 0.8);
+    const soundTexture = new THREE.CanvasTexture(createTextureCanvas('🔊'));
+    const soundMaterial = new THREE.MeshBasicMaterial({ 
+      map: soundTexture,
+      transparent: true
+    });
+    const soundIcon = new THREE.Mesh(soundGeometry, soundMaterial);
+    soundIcon.position.set(0, 0, 0.01);
+    fxButton.add(soundIcon);
+    
+    // Add a highlight effect for better visual feedback
+    const fxHighlightGeometry = new THREE.RingGeometry(0.8, 0.9, 32);
+    const fxHighlightMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5,
+      side: THREE.DoubleSide
+    });
+    const fxHighlight = new THREE.Mesh(fxHighlightGeometry, fxHighlightMaterial);
+    fxHighlight.position.set(0, 0, 0.005);
+    fxHighlight.visible = false;
+    fxButton.add(fxHighlight);
+    
+    // Store reference to icon for updating
+    fxButton.userData = {
+      icon: soundIcon,
+      highlight: fxHighlight,
+      type: 'fx',
+      muted: fxMuted,
+      isHovered: false
+    };
+    
+    // Update appearance if muted
+    if (fxMuted) {
+      fxButton.material.color.set(0x969696); // Gray
+      soundIcon.material.map = new THREE.CanvasTexture(createTextureCanvas('🔇'));
+      soundIcon.material.needsUpdate = true;
+    }
+  }
+  
+  // Create a canvas texture with emoji
+  function createTextureCanvas(emoji) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    
+    // Clear canvas
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw emoji
+    ctx.fillStyle = 'white';
+    ctx.font = '80px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(emoji, canvas.width / 2, canvas.height / 2);
+    
+    return canvas;
+  }
+  
+  // Handle button clicks
+  function checkButtonClick(x, y) {
+    // Convert screen coordinates to normalized device coordinates
+    mouse.x = (x / window.innerWidth) * 2 - 1;
+    mouse.y = -(y / window.innerHeight) * 2 + 1;
+    
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+    
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObjects([musicButton, fxButton], true);
+    
+    if (intersects.length > 0) {
+      const button = intersects[0].object;
       
-      if (musicMuted) {
-        bgMusic.volume = 0;
-        this.textContent = '🔇';
-      } else {
-        bgMusic.volume = 0.25;
-        this.textContent = '🎵';
+      // Check if we hit a button or its child
+      const targetButton = button.userData.type ? button : button.parent;
+      
+      if (targetButton.userData.type === 'music') {
+        // Visual feedback - scale animation
+        animateButtonPress(musicButton);
+        toggleMusic();
+        return true;
+      } else if (targetButton.userData.type === 'fx') {
+        // Visual feedback - scale animation
+        animateButtonPress(fxButton);
+        toggleFx();
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  // Check for button hover
+  function checkButtonHover(x, y) {
+    // Convert screen coordinates to normalized device coordinates
+    mouse.x = (x / window.innerWidth) * 2 - 1;
+    mouse.y = -(y / window.innerHeight) * 2 + 1;
+    
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+    
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObjects([musicButton, fxButton], true);
+    
+    // Reset hover states
+    if (musicButton.userData.isHovered) {
+      musicButton.userData.isHovered = false;
+      musicButton.userData.highlight.visible = false;
+    }
+    
+    if (fxButton.userData.isHovered) {
+      fxButton.userData.isHovered = false;
+      fxButton.userData.highlight.visible = false;
+    }
+    
+    // Set hover state for intersected button
+    if (intersects.length > 0) {
+      const button = intersects[0].object;
+      const targetButton = button.userData.type ? button : button.parent;
+      
+      targetButton.userData.isHovered = true;
+      targetButton.userData.highlight.visible = true;
+    }
+  }
+  
+  // Animate button press
+  function animateButtonPress(button) {
+    // Save original scale
+    const originalScale = button.scale.clone();
+    
+    // Scale down
+    button.scale.set(0.9, 0.9, 0.9);
+    
+    // Scale back up after a short delay
+    setTimeout(() => {
+      button.scale.copy(originalScale);
+    }, 100);
+  }
+  
+  // Toggle music
+  function toggleMusic() {
+    musicMuted = !musicMuted;
+    console.log("Music toggle activated, new state:", musicMuted);
+    
+    if (musicMuted) {
+      // Update button appearance
+      musicButton.material.color.set(0x969696); // Gray
+      const muteTexture = new THREE.CanvasTexture(createTextureCanvas('🔇'));
+      musicButton.userData.icon.material.map = muteTexture;
+      musicButton.userData.icon.material.needsUpdate = true;
+      
+      // Pause background music
+      bgMusic.pause();
+    } else {
+      // Update button appearance
+      musicButton.material.color.set(0xf2f60d); // Yellow
+      const musicTexture = new THREE.CanvasTexture(createTextureCanvas('🎵'));
+      musicButton.userData.icon.material.map = musicTexture;
+      musicButton.userData.icon.material.needsUpdate = true;
+      
+      // Play background music
+      bgMusic.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    musicButton.userData.muted = musicMuted;
+  }
+  
+  // Toggle sound effects
+  function toggleFx() {
+    fxMuted = !fxMuted;
+    console.log("FX toggle activated, new state:", fxMuted);
+    
+    if (fxMuted) {
+      // Update button appearance
+      fxButton.material.color.set(0x969696); // Gray
+      const muteTexture = new THREE.CanvasTexture(createTextureCanvas('🔇'));
+      fxButton.userData.icon.material.map = muteTexture;
+      fxButton.userData.icon.material.needsUpdate = true;
+      
+      // Mute sound effects
+      jumpStartSound.volume = 0;
+      jumpLandSound.volume = 0;
+      collisionSound.volume = 0;
+      winSound.volume = 0;
+    } else {
+      // Update button appearance
+      fxButton.material.color.set(0xf2f60d); // Yellow
+      const fxTexture = new THREE.CanvasTexture(createTextureCanvas('🔊'));
+      fxButton.userData.icon.material.map = fxTexture;
+      fxButton.userData.icon.material.needsUpdate = true;
+      
+      // Unmute sound effects
+      jumpStartSound.volume = 1;
+      jumpLandSound.volume = 1;
+      collisionSound.volume = 1;
+      winSound.volume = 1;
+    }
+    
+    fxButton.userData.muted = fxMuted;
+  }
+
+  // Handle mouse down event
+  function handleMouseDown(e) {
+    // Check if we clicked a button
+    if (checkButtonClick(e.clientX, e.clientY)) {
+      return; // Button was clicked, don't process game action
+    }
+    
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle mouse up event
+  function handleMouseUp(e) {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Handle mouse move event for button hover
+  function handleMouseMove(e) {
+    checkButtonHover(e.clientX, e.clientY);
+  }
+
+  // Handle click event (for compatibility)
+  function handleClick(e) {
+    // Check if we clicked a button
+    if (checkButtonClick(e.clientX, e.clientY)) {
+      return; // Button was clicked, don't process game action
+    }
+    
+    // Only use this for devices that don't support mousedown/mouseup
+    if (!('ontouchstart' in window) && !('onmousedown' in window)) {
+      if (currentState === GameState.IDLE) {
+        startCharging();
+        // Simulate immediate release
+        setTimeout(releaseJump, 100);
+      }
+    }
+  }
+
+  // Handle key down event
+  function handleKeyDown(e) {
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle key up event
+  function handleKeyUp(e) {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Handle touch start event
+  function handleTouchStart(e) {
+    // Check if we touched a button
+    if (e.touches.length > 0 && checkButtonClick(e.touches[0].clientX, e.touches[0].clientY)) {
+      return; // Button was touched, don't process game action
+    }
+    
+    if (currentState === GameState.IDLE) {
+      startCharging();
+    }
+  }
+
+  // Handle touch end event
+  function handleTouchEnd(e) {
+    if (currentState === GameState.CHARGING) {
+      releaseJump();
+    }
+  }
+
+  // Handle touch move event for button hover
+  function handleTouchMove(e) {
+    if (e.touches.length > 0) {
+      checkButtonHover(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }
+
+  // Start charging the jump
+  function startCharging() {
+    currentState = GameState.CHARGING;
+    chargeStartTime = Date.now();
+    chargeStrength = 0;
+    
+    // Play jump start sound
+    if (soundsLoaded && !fxMuted) {
+      jumpStartSound.currentTime = 0;
+      jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    // Start charge animation
+    animateCharging();
+  }
+
+  // Animate the charging state
+  function animateCharging() {
+    if (currentState === GameState.CHARGING) {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - chargeStartTime;
+      
+      // Calculate charge strength (0 to 1)
+      chargeStrength = Math.min(elapsedTime / maxChargeTime, 1);
+      
+      // Update charge indicator
+      chargeIndicator.scale.set(1, chargeStrength, 1);
+      
+      // Continue animation
+      requestAnimationFrame(animateCharging);
+    }
+  }
+
+  // Release the jump
+  function releaseJump() {
+    if (currentState === GameState.CHARGING) {
+      currentState = GameState.JUMPING;
+      
+      // Reset charge indicator
+      chargeIndicator.scale.set(1, 0, 1);
+      
+      // Play jump release sound
+      if (soundsLoaded && !fxMuted) {
+        jumpLandSound.currentTime = 0;
+        jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
+      }
+      
+      // Execute jump with charge strength
+      playerJump(chargeStrength);
+    }
+  }
+
+  // Player jump function
+  function playerJump(strength = 1) {
+    if (currentState === GameState.JUMPING) {
+      // Calculate jump distance based on strength with no minimum (pixel precision)
+      const jumpDistance = strength * 1.5;
+      const targetY = giftBox.position.y + jumpDistance;
+      
+      // Animation
+      const jumpAnimation = () => {
+        const jumpSpeed = 0.1 * (1 + strength); // Faster jump for stronger charge
+        if (giftBox.position.y < targetY) {
+          giftBox.position.y += jumpSpeed;
+          requestAnimationFrame(jumpAnimation);
+        } else {
+          giftBox.position.y = Math.min(targetY, gameHeight/2 - 0.5); // Cap at top of screen
+          currentState = GameState.IDLE;
+          
+          // Check if player reached the top
+          if (giftBox.position.y >= gameHeight/2 - 1) {
+            levelComplete();
+          }
+          
+          // Check collision with obstacles
+          checkCollisions();
+        }
+      };
+      
+      requestAnimationFrame(jumpAnimation);
+    }
+  }
+
+  // Check for collisions with obstacles
+  function checkCollisions() {
+    // Create a box3 for the gift box at its current position
+    const giftBoxHitbox = giftBox.userData.hitbox.clone();
+    giftBoxHitbox.translate(giftBox.position);
+    
+    for (const obstacle of obstacles) {
+      // Get the obstacle's hitbox at its current position
+      const obstacleHitbox = obstacle.userData.hitbox.clone();
+      obstacleHitbox.translate(obstacle.position);
+      
+      // Check for intersection
+      if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
+        // Collision detected - reset the game
+        if (soundsLoaded && !fxMuted) {
+          collisionSound.currentTime = 0;
+          collisionSound.play().catch(e => console.log("Audio play failed:", e));
+        }
+        currentState = GameState.GAME_OVER;
+        resetGame();
+        break;
+      }
+    }
+  }
+
+  // Reset the game when player collides with obstacle
+  function resetGame() {
+    giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
+    currentState = GameState.IDLE;
+  }
+
+  // Complete the level
+  function levelComplete() {
+    level++;
+    currentState = GameState.LEVEL_COMPLETE;
+    
+    // Play win sound
+    if (soundsLoaded && !fxMuted) {
+      winSound.currentTime = 0;
+      winSound.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    // Show custom popup
+    document.getElementById('popup-message').textContent = `You completed level ${level-1}!`;
+    document.getElementById('custom-popup').classList.remove('hidden');
+    
+    resetGame();
+  }
+
+  // Handle window resize
+  function onWindowResize() {
+    const aspect = window.innerWidth / window.innerHeight;
+    const viewSize = 15;
+    
+    camera.left = -viewSize * aspect / 2;
+    camera.right = viewSize * aspect / 2;
+    camera.top = viewSize / 2;
+    camera.bottom = -viewSize / 2;
+    
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+    
+    // Move obstacles
+    obstacles.forEach(obstacle => {
+      obstacle.position.x += obstacle.userData.speed;
+      
+      // Wrap around screen edges
+      if (obstacle.position.x > gameWidth/2 + 1) {
+        obstacle.position.x = -gameWidth/2 - 1;
+      } else if (obstacle.position.x < -gameWidth/2 - 1) {
+        obstacle.position.x = gameWidth/2 + 1;
+      }
+      
+      // Update hitbox helper position
+      updateHitboxHelper(obstacle);
+      
+      // Check for collisions during movement
+      if (currentState !== GameState.GAME_OVER && currentState !== GameState.LEVEL_COMPLETE) {
+        const giftBoxHitbox = giftBox.userData.hitbox.clone();
+        giftBoxHitbox.translate(giftBox.position);
+        
+        const obstacleHitbox = obstacle.userData.hitbox.clone();
+        obstacleHitbox.translate(obstacle.position);
+        
+        if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
+          // Collision detected during movement
+          if (soundsLoaded && !fxMuted) {
+            collisionSound.currentTime = 0;
+            collisionSound.play().catch(e => console.log("Audio play failed:", e));
+          }
+          currentState = GameState.GAME_OVER;
+          resetGame();
+        }
       }
     });
     
-    fxToggle.addEventListener('click', function() {
-      fxMuted = !fxMuted;
-      this.classList.toggle('muted');
-      
-      if (fxMuted) {
-        jumpStartSound.volume = 0;
-        jumpLandSound.volume = 0;
-        collisionSound.volume = 0;
-        winSound.volume = 0;
-        this.textContent = '🔇';
-      } else {
-        jumpStartSound.volume = 1;
-        jumpLandSound.volume = 1;
-        collisionSound.volume = 1;
-        winSound.volume = 1;
-        this.textContent = '🔊';
+    // Rotate clock hands
+    clocksToRotate.forEach(clock => {
+      if (clock.userData.hourHand && clock.userData.minuteHand) {
+        clock.userData.hourHand.rotation.z += clock.userData.rotationSpeed.hour;
+        clock.userData.minuteHand.rotation.z += clock.userData.rotationSpeed.minute;
       }
+    });
+    
+    // Update charge indicator position to follow gift box horizontally
+    if (chargeIndicator) {
+      chargeIndicator.position.x = giftBox.position.x + 0.6;
+      chargeIndicator.position.y = giftBox.position.y;
+    }
+    
+    // Update gift box hitbox helper
+    updateHitboxHelper(giftBox);
+    
+    renderer.render(scene, camera);
+  }
+
+  // Create a visual helper for hitboxes
+  function createHitboxHelper(object) {
+    if (!object.userData.hitbox) return;
+    
+    const box = object.userData.hitbox.clone();
+    const size = box.getSize(new THREE.Vector3());
+    
+    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+    const material = new THREE.MeshBasicMaterial({ 
+      color: 0xff0000, 
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+    
+    const helper = new THREE.Mesh(geometry, material);
+    helper.visible = debugMode;
+    
+    // Store reference to the object this helper belongs to
+    helper.userData.targetObject = object;
+    
+    // Position helper at the center of the hitbox
+    const center = box.getCenter(new THREE.Vector3());
+    helper.position.copy(center);
+    
+    scene.add(helper);
+    hitboxHelpers.push(helper);
+    
+    return helper;
+  }
+  
+  // Update hitbox helper position
+  function updateHitboxHelper(object) {
+    const helper = hitboxHelpers.find(h => h.userData.targetObject === object);
+    if (!helper) return;
+    
+    const hitbox = object.userData.hitbox.clone();
+    hitbox.translate(object.position);
+    
+    const center = hitbox.getCenter(new THREE.Vector3());
+    helper.position.copy(center);
+  }
+  
+  // Toggle debug visuals
+  function updateDebugVisuals() {
+    hitboxHelpers.forEach(helper => {
+      helper.visible = debugMode;
     });
   }
 
@@ -358,6 +891,7 @@ import Layout from "../layouts/Layout.astro";
     // Add a touch/click event listener to start audio on first interaction
     const startAudioOnInteraction = () => {
       if (!musicMuted) {
+        console.log("Starting background music on first interaction");
         bgMusic.play().catch(e => console.log("Audio play failed:", e));
       }
       
@@ -644,314 +1178,6 @@ import Layout from "../layouts/Layout.astro";
     chargeIndicator.position.set(0.6, -gameHeight/2 + 0.5, 0);
     chargeIndicator.scale.set(1, 0, 1); // Start with no height
     scene.add(chargeIndicator);
-  }
-
-  // Handle mouse down event
-  function handleMouseDown(e) {
-    if (currentState === GameState.IDLE) {
-      startCharging();
-    }
-  }
-
-  // Handle mouse up event
-  function handleMouseUp(e) {
-    if (currentState === GameState.CHARGING) {
-      releaseJump();
-    }
-  }
-
-  // Handle click event (for compatibility)
-  function handleClick(e) {
-    // Only use this for devices that don't support mousedown/mouseup
-    if (!('ontouchstart' in window) && !('onmousedown' in window)) {
-      if (currentState === GameState.IDLE) {
-        startCharging();
-        // Simulate immediate release
-        setTimeout(releaseJump, 100);
-      }
-    }
-  }
-
-  // Handle key down event
-  function handleKeyDown(e) {
-    if (currentState === GameState.IDLE) {
-      startCharging();
-    }
-  }
-
-  // Handle key up event
-  function handleKeyUp(e) {
-    if (currentState === GameState.CHARGING) {
-      releaseJump();
-    }
-  }
-
-  // Handle touch start event
-  function handleTouchStart() {
-    if (currentState === GameState.IDLE) {
-      startCharging();
-    }
-  }
-
-  // Handle touch end event
-  function handleTouchEnd() {
-    if (currentState === GameState.CHARGING) {
-      releaseJump();
-    }
-  }
-
-  // Start charging the jump
-  function startCharging() {
-    currentState = GameState.CHARGING;
-    chargeStartTime = Date.now();
-    chargeStrength = 0;
-    
-    // Play jump start sound
-    if (soundsLoaded && !fxMuted) {
-      jumpStartSound.currentTime = 0;
-      jumpStartSound.play().catch(e => console.log("Audio play failed:", e));
-    }
-    
-    // Start charge animation
-    animateCharging();
-  }
-
-  // Animate the charging state
-  function animateCharging() {
-    if (currentState === GameState.CHARGING) {
-      const currentTime = Date.now();
-      const elapsedTime = currentTime - chargeStartTime;
-      
-      // Calculate charge strength (0 to 1)
-      chargeStrength = Math.min(elapsedTime / maxChargeTime, 1);
-      
-      // Update charge indicator
-      chargeIndicator.scale.set(1, chargeStrength, 1);
-      
-      // Continue animation
-      requestAnimationFrame(animateCharging);
-    }
-  }
-
-  // Release the jump
-  function releaseJump() {
-    if (currentState === GameState.CHARGING) {
-      currentState = GameState.JUMPING;
-      
-      // Reset charge indicator
-      chargeIndicator.scale.set(1, 0, 1);
-      
-      // Play jump release sound
-      if (soundsLoaded && !fxMuted) {
-        jumpLandSound.currentTime = 0;
-        jumpLandSound.play().catch(e => console.log("Audio play failed:", e));
-      }
-      
-      // Execute jump with charge strength
-      playerJump(chargeStrength);
-    }
-  }
-
-  // Player jump function
-  function playerJump(strength = 1) {
-    if (currentState === GameState.JUMPING) {
-      // Calculate jump distance based on strength with no minimum (pixel precision)
-      const jumpDistance = strength * 1.5;
-      const targetY = giftBox.position.y + jumpDistance;
-      
-      // Animation
-      const jumpAnimation = () => {
-        const jumpSpeed = 0.1 * (1 + strength); // Faster jump for stronger charge
-        if (giftBox.position.y < targetY) {
-          giftBox.position.y += jumpSpeed;
-          requestAnimationFrame(jumpAnimation);
-        } else {
-          giftBox.position.y = Math.min(targetY, gameHeight/2 - 0.5); // Cap at top of screen
-          currentState = GameState.IDLE;
-          
-          // Check if player reached the top
-          if (giftBox.position.y >= gameHeight/2 - 1) {
-            levelComplete();
-          }
-          
-          // Check collision with obstacles
-          checkCollisions();
-        }
-      };
-      
-      requestAnimationFrame(jumpAnimation);
-    }
-  }
-
-  // Check for collisions with obstacles
-  function checkCollisions() {
-    // Create a box3 for the gift box at its current position
-    const giftBoxHitbox = giftBox.userData.hitbox.clone();
-    giftBoxHitbox.translate(giftBox.position);
-    
-    for (const obstacle of obstacles) {
-      // Get the obstacle's hitbox at its current position
-      const obstacleHitbox = obstacle.userData.hitbox.clone();
-      obstacleHitbox.translate(obstacle.position);
-      
-      // Check for intersection
-      if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
-        // Collision detected - reset the game
-        if (soundsLoaded && !fxMuted) {
-          collisionSound.currentTime = 0;
-          collisionSound.play().catch(e => console.log("Audio play failed:", e));
-        }
-        currentState = GameState.GAME_OVER;
-        resetGame();
-        break;
-      }
-    }
-  }
-
-  // Reset the game when player collides with obstacle
-  function resetGame() {
-    giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
-    currentState = GameState.IDLE;
-  }
-
-  // Complete the level
-  function levelComplete() {
-    level++;
-    currentState = GameState.LEVEL_COMPLETE;
-    
-    // Play win sound
-    if (soundsLoaded && !fxMuted) {
-      winSound.currentTime = 0;
-      winSound.play().catch(e => console.log("Audio play failed:", e));
-    }
-    
-    // Show custom popup
-    document.getElementById('popup-message').textContent = `You completed level ${level-1}!`;
-    document.getElementById('custom-popup').classList.remove('hidden');
-    
-    resetGame();
-  }
-
-  // Handle window resize
-  function onWindowResize() {
-    const aspect = window.innerWidth / window.innerHeight;
-    const viewSize = 15;
-    
-    camera.left = -viewSize * aspect / 2;
-    camera.right = viewSize * aspect / 2;
-    camera.top = viewSize / 2;
-    camera.bottom = -viewSize / 2;
-    
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  // Animation loop
-  function animate() {
-    requestAnimationFrame(animate);
-    
-    // Move obstacles
-    obstacles.forEach(obstacle => {
-      obstacle.position.x += obstacle.userData.speed;
-      
-      // Wrap around screen edges
-      if (obstacle.position.x > gameWidth/2 + 1) {
-        obstacle.position.x = -gameWidth/2 - 1;
-      } else if (obstacle.position.x < -gameWidth/2 - 1) {
-        obstacle.position.x = gameWidth/2 + 1;
-      }
-      
-      // Update hitbox helper position
-      updateHitboxHelper(obstacle);
-      
-      // Check for collisions during movement
-      if (currentState !== GameState.GAME_OVER && currentState !== GameState.LEVEL_COMPLETE) {
-        const giftBoxHitbox = giftBox.userData.hitbox.clone();
-        giftBoxHitbox.translate(giftBox.position);
-        
-        const obstacleHitbox = obstacle.userData.hitbox.clone();
-        obstacleHitbox.translate(obstacle.position);
-        
-        if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
-          // Collision detected during movement
-          if (soundsLoaded && !fxMuted) {
-            collisionSound.currentTime = 0;
-            collisionSound.play().catch(e => console.log("Audio play failed:", e));
-          }
-          currentState = GameState.GAME_OVER;
-          resetGame();
-        }
-      }
-    });
-    
-    // Rotate clock hands
-    clocksToRotate.forEach(clock => {
-      if (clock.userData.hourHand && clock.userData.minuteHand) {
-        clock.userData.hourHand.rotation.z += clock.userData.rotationSpeed.hour;
-        clock.userData.minuteHand.rotation.z += clock.userData.rotationSpeed.minute;
-      }
-    });
-    
-    // Update charge indicator position to follow gift box horizontally
-    if (chargeIndicator) {
-      chargeIndicator.position.x = giftBox.position.x + 0.6;
-      chargeIndicator.position.y = giftBox.position.y;
-    }
-    
-    // Update gift box hitbox helper
-    updateHitboxHelper(giftBox);
-    
-    renderer.render(scene, camera);
-  }
-
-  // Create a visual helper for hitboxes
-  function createHitboxHelper(object) {
-    if (!object.userData.hitbox) return;
-    
-    const box = object.userData.hitbox.clone();
-    const size = box.getSize(new THREE.Vector3());
-    
-    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    const material = new THREE.MeshBasicMaterial({ 
-      color: 0xff0000, 
-      wireframe: true,
-      transparent: true,
-      opacity: 0.5
-    });
-    
-    const helper = new THREE.Mesh(geometry, material);
-    helper.visible = debugMode;
-    
-    // Store reference to the object this helper belongs to
-    helper.userData.targetObject = object;
-    
-    // Position helper at the center of the hitbox
-    const center = box.getCenter(new THREE.Vector3());
-    helper.position.copy(center);
-    
-    scene.add(helper);
-    hitboxHelpers.push(helper);
-    
-    return helper;
-  }
-  
-  // Update hitbox helper position
-  function updateHitboxHelper(object) {
-    const helper = hitboxHelpers.find(h => h.userData.targetObject === object);
-    if (!helper) return;
-    
-    const hitbox = object.userData.hitbox.clone();
-    hitbox.translate(object.position);
-    
-    const center = hitbox.getCenter(new THREE.Vector3());
-    helper.position.copy(center);
-  }
-  
-  // Toggle debug visuals
-  function updateDebugVisuals() {
-    hitboxHelpers.forEach(helper => {
-      helper.visible = debugMode;
-    });
   }
 
   // Start the game when the page loads
