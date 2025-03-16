@@ -112,6 +112,8 @@ import Layout from "../layouts/Layout.astro";
   let obstacles = [];
   let clocksToRotate = [];
   let truckSpeedChangeTimers = [];
+  let debugMode = true; // Enable debug visualization
+  let hitboxHelpers = []; // Store hitbox visualizers
   
   // Sound effects
   let jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic;
@@ -278,7 +280,7 @@ import Layout from "../layouts/Layout.astro";
     giftBoxGroup.position.set(0, -gameHeight/2 + 0.5, 0);
     
     // Add collision geometry (for better hitbox)
-    const hitboxSize = 0.7; // Slightly smaller than visual size
+    const hitboxSize = .85; // Increased from 0.7 to make hitbox bigger
     giftBoxGroup.userData.hitbox = new THREE.Box3(
       new THREE.Vector3(-hitboxSize/2, -hitboxSize/2, -hitboxSize/2),
       new THREE.Vector3(hitboxSize/2, hitboxSize/2, hitboxSize/2)
@@ -288,6 +290,9 @@ import Layout from "../layouts/Layout.astro";
     
     // Assign the group to giftBox for easier reference
     giftBox = giftBoxGroup;
+    
+    // Create debug visualization for hitbox
+    createHitboxHelper(giftBox);
   }
 
   // Create finish line (hands)
@@ -518,7 +523,7 @@ import Layout from "../layouts/Layout.astro";
     const geometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
     const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     chargeIndicator = new THREE.Mesh(geometry, material);
-    chargeIndicator.position.set(1.2, -gameHeight/2 + 0.5, 0);
+    chargeIndicator.position.set(0.6, -gameHeight/2 + 0.5, 0);
     chargeIndicator.scale.set(1, 0, 1); // Start with no height
     scene.add(chargeIndicator);
   }
@@ -737,6 +742,28 @@ import Layout from "../layouts/Layout.astro";
       } else if (obstacle.position.x < -gameWidth/2 - 1) {
         obstacle.position.x = gameWidth/2 + 1;
       }
+      
+      // Update hitbox helper position
+      updateHitboxHelper(obstacle);
+      
+      // Check for collisions during movement
+      if (currentState !== GameState.GAME_OVER && currentState !== GameState.LEVEL_COMPLETE) {
+        const giftBoxHitbox = giftBox.userData.hitbox.clone();
+        giftBoxHitbox.translate(giftBox.position);
+        
+        const obstacleHitbox = obstacle.userData.hitbox.clone();
+        obstacleHitbox.translate(obstacle.position);
+        
+        if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
+          // Collision detected during movement
+          if (soundsLoaded) {
+            collisionSound.currentTime = 0;
+            collisionSound.play().catch(e => console.log("Audio play failed:", e));
+          }
+          currentState = GameState.GAME_OVER;
+          resetGame();
+        }
+      }
     });
     
     // Rotate clock hands
@@ -749,10 +776,64 @@ import Layout from "../layouts/Layout.astro";
     
     // Update charge indicator position to follow gift box horizontally
     if (chargeIndicator) {
-      chargeIndicator.position.x = giftBox.position.x + 1.2;
+      chargeIndicator.position.x = giftBox.position.x + 0.6;
+      chargeIndicator.position.y = giftBox.position.y;
     }
     
+    // Update gift box hitbox helper
+    updateHitboxHelper(giftBox);
+    
     renderer.render(scene, camera);
+  }
+
+  // Create a visual helper for hitboxes
+  function createHitboxHelper(object) {
+    if (!object.userData.hitbox) return;
+    
+    const box = object.userData.hitbox.clone();
+    const size = box.getSize(new THREE.Vector3());
+    
+    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+    const material = new THREE.MeshBasicMaterial({ 
+      color: 0xff0000, 
+      wireframe: true,
+      transparent: true,
+      opacity: 0.5
+    });
+    
+    const helper = new THREE.Mesh(geometry, material);
+    helper.visible = debugMode;
+    
+    // Store reference to the object this helper belongs to
+    helper.userData.targetObject = object;
+    
+    // Position helper at the center of the hitbox
+    const center = box.getCenter(new THREE.Vector3());
+    helper.position.copy(center);
+    
+    scene.add(helper);
+    hitboxHelpers.push(helper);
+    
+    return helper;
+  }
+  
+  // Update hitbox helper position
+  function updateHitboxHelper(object) {
+    const helper = hitboxHelpers.find(h => h.userData.targetObject === object);
+    if (!helper) return;
+    
+    const hitbox = object.userData.hitbox.clone();
+    hitbox.translate(object.position);
+    
+    const center = hitbox.getCenter(new THREE.Vector3());
+    helper.position.copy(center);
+  }
+  
+  // Toggle debug visuals
+  function updateDebugVisuals() {
+    hitboxHelpers.forEach(helper => {
+      helper.visible = debugMode;
+    });
   }
 
   // Start the game when the page loads
