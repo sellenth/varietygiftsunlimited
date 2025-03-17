@@ -4,13 +4,6 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="Gifty Dodge - Help the gift reach its recipient!" hideHeader={true}>
   <div id="game-container"></div>
-  <div id="custom-popup" class="hidden">
-    <div class="popup-content">
-      <h2>Congratulations!</h2>
-      <p id="popup-message"></p>
-      <button id="popup-button">Next Level</button>
-    </div>
-  </div>
 </Layout>
 
 <style>
@@ -40,60 +33,6 @@ import Layout from "../layouts/Layout.astro";
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-touch-callout: none;
-  }
-
-  #custom-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .popup-content {
-    background-color: #ffe0f0;
-    border: 4px solid #ff69b4;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    max-width: 80%;
-    box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
-  }
-
-  .popup-content h2 {
-    color: #ff69b4;
-    margin-top: 0;
-    font-size: 28px;
-  }
-
-  .popup-content p {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 18px;
-  }
-
-  #popup-button {
-    background-color: #ff69b4;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  #popup-button:hover {
-    background-color: #ff4da6;
-  }
-
-  .hidden {
-    display: none !important;
   }
   
   #level-indicator {
@@ -141,6 +80,7 @@ import Layout from "../layouts/Layout.astro";
   let hitboxHelpers = []; // Store hitbox visualizers
   let levelIndicator; // DOM element for level display
   let levelIndicator3D; // Three.js level indicator
+  let congratsPopup; // Three.js popup for level completion
   
   // Three.js Audio
   let audioListener;
@@ -165,7 +105,7 @@ import Layout from "../layouts/Layout.astro";
   
   let currentState = GameState.IDLE;
   let chargeStartTime = 0;
-  let maxChargeTime = 1000; // 1 second max charge
+  let maxChargeTime = 500; // 1 second max charge
   let chargeStrength = 0;
   let chargeIndicator;
 
@@ -192,6 +132,7 @@ import Layout from "../layouts/Layout.astro";
     // Create renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById('game-container').appendChild(renderer.domElement);
 
     // Create level indicator
@@ -222,6 +163,9 @@ import Layout from "../layouts/Layout.astro";
     // Create Three.js audio control buttons
     createAudioButtons();
     
+    // Create Three.js popup (initially hidden)
+    createCongratsPopup();
+    
     // Setup raycaster for button interaction
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
@@ -247,12 +191,6 @@ import Layout from "../layouts/Layout.astro";
     window.addEventListener('touchmove', function(e) {
       e.preventDefault();
       handleTouchMove(e);
-    });
-
-    // Setup popup button
-    document.getElementById('popup-button').addEventListener('click', function() {
-      document.getElementById('custom-popup').classList.add('hidden');
-      createObstacles(); // New obstacle pattern
     });
 
     // Start the animation loop
@@ -499,8 +437,19 @@ import Layout from "../layouts/Layout.astro";
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
     
+    // Get all interactive objects
+    const interactiveObjects = [musicButton, fxButton];
+    
+    // Add popup button if popup is visible
+    if (congratsPopup && congratsPopup.visible) {
+      const popupButton = congratsPopup.children.find(child => child.userData && child.userData.isButton);
+      if (popupButton) {
+        interactiveObjects.push(popupButton);
+      }
+    }
+    
     // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects([musicButton, fxButton], true);
+    const intersects = raycaster.intersectObjects(interactiveObjects, true);
     
     console.log("Intersections found:", intersects.length);
     
@@ -509,7 +458,10 @@ import Layout from "../layouts/Layout.astro";
       console.log("Intersected object:", button);
       
       // Check if we hit a button or its child
-      const targetButton = button.userData && button.userData.type ? button : button.parent;
+      const targetButton = button.userData && (button.userData.type || button.userData.isButton || button.userData.isButtonText) 
+        ? button 
+        : button.parent;
+      
       console.log("Target button:", targetButton);
       
       if (targetButton && targetButton.userData && targetButton.userData.type === 'music') {
@@ -523,6 +475,14 @@ import Layout from "../layouts/Layout.astro";
         // Visual feedback - scale animation
         animateButtonPress(fxButton);
         toggleFx();
+        return true;
+      } else if (targetButton && (targetButton.userData.isButton || targetButton.userData.isButtonText)) {
+        console.log("Popup button clicked");
+        // Visual feedback - scale animation
+        animateButtonPress(targetButton);
+        // Hide popup and create new obstacles
+        congratsPopup.visible = false;
+        createObstacles();
         return true;
       }
     }
@@ -575,6 +535,18 @@ import Layout from "../layouts/Layout.astro";
     setTimeout(() => {
       button.scale.copy(originalScale);
     }, 100);
+    
+    // Add highlight effect for popup button
+    if (button.userData && (button.userData.isButton || button.userData.isButtonText)) {
+      // Change color temporarily
+      const originalColor = button.material.color.clone();
+      button.material.color.set(0xff4da6); // Lighter pink
+      
+      // Restore original color after delay
+      setTimeout(() => {
+        button.material.color.copy(originalColor);
+      }, 100);
+    }
   }
   
   // Toggle music
@@ -874,11 +846,43 @@ import Layout from "../layouts/Layout.astro";
       }
     }
     
-    // Show custom popup
-    document.getElementById('popup-message').textContent = `You completed level ${level-1}!`;
-    document.getElementById('custom-popup').classList.remove('hidden');
+    // Update and show Three.js popup
+    updateCongratsPopup(level - 1);
+    congratsPopup.visible = true;
     
     resetGame();
+  }
+  
+  // Update the congrats popup message
+  function updateCongratsPopup(completedLevel) {
+    // Find the message mesh
+    const messageMesh = congratsPopup.children.find(child => child.userData && child.userData.isMessageText);
+    
+    if (messageMesh) {
+      // Create new canvas for updated message
+      const messageCanvas = document.createElement('canvas');
+      messageCanvas.width = 512;
+      messageCanvas.height = 128;
+      const messageCtx = messageCanvas.getContext('2d');
+      
+      // Clear canvas
+      messageCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+      messageCtx.fillRect(0, 0, messageCanvas.width, messageCanvas.height);
+      
+      // Draw updated message
+      messageCtx.fillStyle = '#333333';
+      messageCtx.font = '40px Arial';
+      messageCtx.textAlign = 'center';
+      messageCtx.textBaseline = 'middle';
+      messageCtx.fillText(`You completed level ${completedLevel}!`, messageCanvas.width/2, messageCanvas.height/2);
+      
+      // Update texture
+      if (messageMesh.material.map) {
+        messageMesh.material.map.dispose();
+      }
+      messageMesh.material.map = new THREE.CanvasTexture(messageCanvas);
+      messageMesh.material.needsUpdate = true;
+    }
   }
 
   // Handle window resize
@@ -893,6 +897,7 @@ import Layout from "../layouts/Layout.astro";
     
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     
     // Update level indicator position
     if (levelIndicator3D) {
@@ -1466,6 +1471,140 @@ import Layout from "../layouts/Layout.astro";
       
       levelIndicator3D.add(textMesh);
     }
+  }
+
+  // Create Three.js popup (initially hidden)
+  function createCongratsPopup() {
+    // Create a new group for the popup
+    congratsPopup = new THREE.Group();
+    
+    // Create a background rectangle with pink border
+    const bgGeometry = new THREE.PlaneGeometry(6, 4);
+    const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xffe0f0 }); // Light pink
+    const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
+    congratsPopup.add(bgMesh);
+    
+    // Add border
+    const borderGeometry = new THREE.PlaneGeometry(6.2, 4.2);
+    const borderMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xff69b4, // Hot pink
+      transparent: true,
+      opacity: 0.8
+    });
+    const borderMesh = new THREE.Mesh(borderGeometry, borderMaterial);
+    borderMesh.position.z = -0.01;
+    congratsPopup.add(borderMesh);
+    
+    // Create title text
+    const titleCanvas = document.createElement('canvas');
+    titleCanvas.width = 512;
+    titleCanvas.height = 128;
+    const titleCtx = titleCanvas.getContext('2d');
+    
+    // Clear canvas
+    titleCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+    titleCtx.fillRect(0, 0, titleCanvas.width, titleCanvas.height);
+    
+    // Draw title
+    titleCtx.fillStyle = '#ff69b4'; // Hot pink
+    titleCtx.font = 'bold 60px Arial';
+    titleCtx.textAlign = 'center';
+    titleCtx.textBaseline = 'middle';
+    titleCtx.fillText('CONGRATULATIONS!', titleCanvas.width/2, titleCanvas.height/2);
+    
+    // Create texture from canvas
+    const titleTexture = new THREE.CanvasTexture(titleCanvas);
+    const titleMaterial = new THREE.MeshBasicMaterial({
+      map: titleTexture,
+      transparent: true
+    });
+    
+    // Create title mesh
+    const titlePlane = new THREE.PlaneGeometry(5, 1);
+    const titleMesh = new THREE.Mesh(titlePlane, titleMaterial);
+    titleMesh.position.set(0, 1, 0.01);
+    
+    congratsPopup.add(titleMesh);
+    
+    // Create message text (will be updated for each level)
+    const messageCanvas = document.createElement('canvas');
+    messageCanvas.width = 512;
+    messageCanvas.height = 128;
+    const messageCtx = messageCanvas.getContext('2d');
+    
+    // Clear canvas
+    messageCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+    messageCtx.fillRect(0, 0, messageCanvas.width, messageCanvas.height);
+    
+    // Draw message
+    messageCtx.fillStyle = '#333333';
+    messageCtx.font = '40px Arial';
+    messageCtx.textAlign = 'center';
+    messageCtx.textBaseline = 'middle';
+    messageCtx.fillText(`You completed level ${level}!`, messageCanvas.width/2, messageCanvas.height/2);
+    
+    // Create texture from canvas
+    const messageTexture = new THREE.CanvasTexture(messageCanvas);
+    const messageMaterial = new THREE.MeshBasicMaterial({
+      map: messageTexture,
+      transparent: true
+    });
+    
+    // Create message mesh
+    const messagePlane = new THREE.PlaneGeometry(5, 1);
+    const messageMesh = new THREE.Mesh(messagePlane, messageMaterial);
+    messageMesh.position.set(0, 0, 0.01);
+    messageMesh.userData = { isMessageText: true };
+    
+    congratsPopup.add(messageMesh);
+    
+    // Create button
+    const buttonGeometry = new THREE.PlaneGeometry(2.5, 0.8);
+    const buttonMaterial = new THREE.MeshBasicMaterial({ color: 0xff69b4 }); // Hot pink
+    const buttonMesh = new THREE.Mesh(buttonGeometry, buttonMaterial);
+    buttonMesh.position.set(0, -1, 0.01);
+    buttonMesh.userData = { isButton: true };
+    
+    congratsPopup.add(buttonMesh);
+    
+    // Create button text
+    const buttonCanvas = document.createElement('canvas');
+    buttonCanvas.width = 256;
+    buttonCanvas.height = 128;
+    const buttonCtx = buttonCanvas.getContext('2d');
+    
+    // Clear canvas
+    buttonCtx.fillStyle = 'rgba(255, 255, 255, 0)';
+    buttonCtx.fillRect(0, 0, buttonCanvas.width, buttonCanvas.height);
+    
+    // Draw button text
+    buttonCtx.fillStyle = '#ffffff';
+    buttonCtx.font = 'bold 40px Arial';
+    buttonCtx.textAlign = 'center';
+    buttonCtx.textBaseline = 'middle';
+    buttonCtx.fillText('NEXT LEVEL', buttonCanvas.width/2, buttonCanvas.height/2);
+    
+    // Create texture from canvas
+    const buttonTexture = new THREE.CanvasTexture(buttonCanvas);
+    const buttonTextMaterial = new THREE.MeshBasicMaterial({
+      map: buttonTexture,
+      transparent: true
+    });
+    
+    // Create button text mesh
+    const buttonTextPlane = new THREE.PlaneGeometry(2.4, 0.7);
+    const buttonTextMesh = new THREE.Mesh(buttonTextPlane, buttonTextMaterial);
+    buttonTextMesh.position.set(0, 0, 0.01);
+    buttonTextMesh.userData = { isButtonText: true };
+    
+    buttonMesh.add(buttonTextMesh);
+    
+    // Position the popup in front of everything
+    congratsPopup.position.set(0, 0, 5);
+    congratsPopup.visible = false;
+    
+    // Add the popup to the scene
+    scene.add(congratsPopup);
   }
 
   // Start the game when the page loads
