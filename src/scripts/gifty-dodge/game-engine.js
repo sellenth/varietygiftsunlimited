@@ -295,41 +295,48 @@ function checkCollisions() {
     
     // Check for intersection
     if (giftBoxHitbox.intersectsBox(obstacleHitbox)) {
-      // Collision detected - reset the game
+      // Collision detected - play sound
       if (soundsLoaded && !fxMuted) {
         if (!collisionSound.isPlaying) {
           collisionSound.play();
         }
       }
+      
+      // Apply knockback effect
+      applyKnockback(obstacle);
+      
+      
+      // Set game over state
       currentState = GameState.GAME_OVER;
-      resetGame();
+      
+      // Reset game after a short delay to show knockback
       break;
     }
   }
 }
 
-// Reset the game when player collides with obstacle
-function resetGame() {
-  // Reset position
-  giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
+// Apply knockback effect when player is hit
+function applyKnockback(obstacle) {
+  // Determine knockback direction based on obstacle position relative to player
+  const knockbackDirection = Math.sign(giftBox.position.x - obstacle.position.x);
   
-  // Reset all state variables
-  currentState = GameState.IDLE;
-  jumpQueued = false;
-  inputHeld = false;
-  chargeStrength = 0;
+  // Move player in the opposite direction of the collision
+  giftBox.position.x += knockbackDirection * 0.5;
   
-  // Reset charge indicator
+  // Also move slightly down
+  giftBox.position.y -= 0.2;
+  
+  // Update charge indicator position
   if (chargeIndicator) {
-    chargeIndicator.scale.set(1, 0, 1); // Reset to zero height
     chargeIndicator.position.x = giftBox.position.x + 0.6;
     chargeIndicator.position.y = giftBox.position.y;
   }
   
-  // Cancel any ongoing animations
-  // We don't need to explicitly cancel the animation frames as they will naturally stop
-  // when the conditions in the animation functions are no longer met
+  // Update hitbox helper
+  updateHitboxHelper(giftBox);
 }
+
+// Reset the game when player collides with obstacle
 
 // Complete the level
 function levelComplete() {
@@ -358,7 +365,6 @@ function levelComplete() {
   updateCongratsPopup(level - 1);
   congratsPopup.visible = true;
   
-  resetGame();
 }
 
 // Update the 3D level indicator text
@@ -473,8 +479,14 @@ function animate() {
             collisionSound.play();
           }
         }
+        
+        // Apply knockback effect
+        applyKnockback(obstacle);
+        
+        // Set game over state
         currentState = GameState.GAME_OVER;
-        resetGame();
+        
+        // Reset game after a short delay to show knockback
         return; // Exit the loop to prevent further processing
       }
     }

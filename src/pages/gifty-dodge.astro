@@ -427,13 +427,10 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
   
   // Handle button clicks
   function checkButtonClick(x, y) {
-    console.log("Checking button click at:", x, y);
     
     // Convert screen coordinates to normalized device coordinates
     mouse.x = (x / window.innerWidth) * 2 - 1;
     mouse.y = -(y / window.innerHeight) * 2 + 1;
-    
-    console.log("Normalized coordinates:", mouse.x, mouse.y);
     
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
@@ -452,11 +449,9 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
     // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(interactiveObjects, true);
     
-    console.log("Intersections found:", intersects.length);
     
     if (intersects.length > 0) {
       const button = intersects[0].object;
-      console.log("Intersected object:", button);
       
       // Check if we hit a button or its child
       const targetButton = button.userData && (button.userData.type || button.userData.isButton || button.userData.isButtonText) 
@@ -657,7 +652,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
     
     // Only use this for devices that don't support mousedown/mouseup
     if (!('ontouchstart' in window) && !('onmousedown' in window)) {
-      if (currentState === GameState.IDLE) {
+      if (currentState === GameState.IDLE || currentState === GameState.JUMPING) {
         startCharging();
         // Simulate immediate release
         setTimeout(releaseJump, 100);
@@ -667,7 +662,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 
   // Handle key down event
   function handleKeyDown(e) {
-    if (currentState === GameState.IDLE) {
+    if (currentState === GameState.IDLE || currentState === GameState.JUMPING) {
       startCharging();
     }
   }
@@ -681,6 +676,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 
   // Handle touch start event
   function handleTouchStart(e) {
+    console.log('here2')
     // Check if we touched a button
     if (e.touches.length > 0 && checkButtonClick(e.touches[0].clientX, e.touches[0].clientY)) {
       e.preventDefault();
@@ -688,7 +684,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
       return; // Button was touched, don't process game action
     }
     
-    if (currentState === GameState.IDLE) {
+    if (currentState === GameState.IDLE || currentState === GameState.JUMPING) {
       startCharging();
     }
   }
@@ -771,7 +767,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
       // Animation
       const jumpAnimation = () => {
         const jumpSpeed = 0.1 * (1 + strength); // Faster jump for stronger charge
-        if (giftBox.position.y < targetY) {
+        if (giftBox.position.y < targetY && currentState === GameState.JUMPING) {
           giftBox.position.y += jumpSpeed;
           requestAnimationFrame(jumpAnimation);
         } else {
@@ -820,8 +816,8 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 
   // Reset the game when player collides with obstacle
   function resetGame() {
-    giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
     currentState = GameState.IDLE;
+    giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
   }
 
   // Complete the level
