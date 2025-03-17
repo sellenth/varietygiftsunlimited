@@ -11,16 +11,14 @@ export function handleMouseDown(e, currentState, checkButtonClick, startCharging
     return; // Button was clicked, don't process game action
   }
   
-  if (currentState === GameState.IDLE) {
-    startCharging();
-  }
+  // Always call startCharging - it will handle the state internally
+  startCharging();
 }
 
 // Handle mouse up event
 export function handleMouseUp(e, currentState, releaseJump) {
-  if (currentState === GameState.CHARGING) {
-    releaseJump();
-  }
+  // Always call releaseJump - it will handle the state internally
+  releaseJump();
 }
 
 // Handle mouse move event for button hover
@@ -39,26 +37,24 @@ export function handleClick(e, currentState, checkButtonClick, startCharging, re
   
   // Only use this for devices that don't support mousedown/mouseup
   if (!('ontouchstart' in window) && !('onmousedown' in window)) {
-    if (currentState === GameState.IDLE) {
-      startCharging();
-      // Simulate immediate release
-      setTimeout(releaseJump, 100);
-    }
+    // Always call startCharging - it will handle the state internally
+    startCharging();
+    
+    // Simulate immediate release
+    setTimeout(releaseJump, 100);
   }
 }
 
 // Handle key down event
 export function handleKeyDown(e, currentState, startCharging) {
-  if (currentState === GameState.IDLE) {
-    startCharging();
-  }
+  // Always call startCharging - it will handle the state internally
+  startCharging();
 }
 
 // Handle key up event
 export function handleKeyUp(e, currentState, releaseJump) {
-  if (currentState === GameState.CHARGING) {
-    releaseJump();
-  }
+  // Always call releaseJump - it will handle the state internally
+  releaseJump();
 }
 
 // Handle touch start event
@@ -70,16 +66,14 @@ export function handleTouchStart(e, currentState, checkButtonClick, startChargin
     return; // Button was touched, don't process game action
   }
   
-  if (currentState === GameState.IDLE) {
-    startCharging();
-  }
+  // Always call startCharging - it will handle the state internally
+  startCharging();
 }
 
 // Handle touch end event
 export function handleTouchEnd(e, currentState, releaseJump) {
-  if (currentState === GameState.CHARGING) {
-    releaseJump();
-  }
+  // Always call releaseJump - it will handle the state internally
+  releaseJump();
 }
 
 // Handle touch move event for button hover

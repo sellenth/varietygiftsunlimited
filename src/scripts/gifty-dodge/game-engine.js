@@ -45,6 +45,8 @@ let chargeStartTime = 0;
 let maxChargeTime = 500; // 1 second max charge
 let chargeStrength = 0;
 let chargeIndicator;
+let jumpQueued = false; // Flag to track queued jump inputs
+let inputHeld = false; // Flag to track if input is being held down
 
 // Initialize the game
 export function initGame() {
@@ -163,9 +165,17 @@ function onWindowResize() {
 
 // Start charging the jump
 function startCharging() {
+  // If already jumping, queue the jump for when we land
+  if (currentState === GameState.JUMPING) {
+    jumpQueued = true;
+    inputHeld = true; // Mark that input is being held
+    return;
+  }
+  
   currentState = GameState.CHARGING;
   chargeStartTime = Date.now();
   chargeStrength = 0;
+  inputHeld = true; // Mark that input is being held
   
   // Play jump start sound
   if (soundsLoaded && !fxMuted) {
@@ -192,11 +202,18 @@ function animateCharging() {
     
     // Continue animation
     requestAnimationFrame(animateCharging);
+  } else {
+    // If state changed (e.g., player died), reset charge indicator
+    if (currentState === GameState.GAME_OVER || currentState === GameState.IDLE) {
+      chargeIndicator.scale.set(1, 0, 1);
+    }
   }
 }
 
 // Release the jump
 function releaseJump() {
+  inputHeld = false; // Mark that input is no longer held
+  
   if (currentState === GameState.CHARGING) {
     currentState = GameState.JUMPING;
     
@@ -224,6 +241,11 @@ function playerJump(strength = 1) {
     
     // Animation
     const jumpAnimation = () => {
+      // Check if game state has changed (e.g., player died)
+      if (currentState !== GameState.JUMPING) {
+        return; // Stop the animation if state changed
+      }
+      
       const jumpSpeed = 0.1 * (1 + strength); // Faster jump for stronger charge
       if (giftBox.position.y < targetY) {
         giftBox.position.y += jumpSpeed;
@@ -235,6 +257,15 @@ function playerJump(strength = 1) {
         // Check if player reached the top
         if (giftBox.position.y >= gameHeight/2 - 1) {
           levelComplete();
+        } else {
+          // Check if we have a queued jump or if input is still held
+          if (jumpQueued || inputHeld) {
+            jumpQueued = false;
+            // Small delay before starting the next jump
+            setTimeout(() => {
+              startCharging();
+            }, 50);
+          }
         }
         
         // Check collision with obstacles
@@ -248,6 +279,11 @@ function playerJump(strength = 1) {
 
 // Check for collisions with obstacles
 function checkCollisions() {
+  // Don't check collisions if already in GAME_OVER state
+  if (currentState === GameState.GAME_OVER) {
+    return;
+  }
+  
   // Create a box3 for the gift box at its current position
   const giftBoxHitbox = giftBox.userData.hitbox.clone();
   giftBoxHitbox.translate(giftBox.position);
@@ -274,8 +310,25 @@ function checkCollisions() {
 
 // Reset the game when player collides with obstacle
 function resetGame() {
+  // Reset position
   giftBox.position.set(0, -gameHeight/2 + 0.5, 0);
+  
+  // Reset all state variables
   currentState = GameState.IDLE;
+  jumpQueued = false;
+  inputHeld = false;
+  chargeStrength = 0;
+  
+  // Reset charge indicator
+  if (chargeIndicator) {
+    chargeIndicator.scale.set(1, 0, 1); // Reset to zero height
+    chargeIndicator.position.x = giftBox.position.x + 0.6;
+    chargeIndicator.position.y = giftBox.position.y;
+  }
+  
+  // Cancel any ongoing animations
+  // We don't need to explicitly cancel the animation frames as they will naturally stop
+  // when the conditions in the animation functions are no longer met
 }
 
 // Complete the level
@@ -422,9 +475,15 @@ function animate() {
         }
         currentState = GameState.GAME_OVER;
         resetGame();
+        return; // Exit the loop to prevent further processing
       }
     }
   });
+  
+  // Only continue if game is not over
+  if (currentState === GameState.GAME_OVER) {
+    return;
+  }
   
   // Rotate clock hands
   clocksToRotate.forEach(clock => {
@@ -593,5 +652,6 @@ export {
   obstacles, clocksToRotate, truckSpeedChangeTimers, hitboxHelpers, debugMode,
   audioListener, audioLoader, jumpStartSound, jumpLandSound, collisionSound, winSound, bgMusic,
   soundsLoaded, musicMuted, fxMuted, musicButton, fxButton, raycaster, mouse,
-  currentState, chargeIndicator, chargeStrength, createHitboxHelper, updateHitboxHelper
+  currentState, chargeIndicator, chargeStrength, createHitboxHelper, updateHitboxHelper,
+  inputHeld // Export the inputHeld state
 }; 
