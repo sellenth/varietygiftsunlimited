@@ -1,0 +1,69 @@
+---
+// GiftyDodgeGame.astro - Main game component
+---
+
+<div id="game-container"></div>
+<div id="level-indicator">Level: 1</div>
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  #game-container {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  #level-indicator {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(255, 105, 180, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 100;
+    display: none; /* Hide the DOM version */
+  }
+</style>
+
+<script>
+  // Import game modules
+  import { initGame } from "../../scripts/gifty-dodge/game-engine.js";
+  
+  // Initialize the game when the page loads
+  window.onload = initGame;
+  
+  // Prevent zoom and text selection on mobile
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
+  document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+</script> 

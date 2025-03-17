@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 ---
 
 <Layout title="Gifty Dodge - Help the gift reach its recipient!" hideHeader={true}>
-  <div id="game-container"></div>
+  <GiftyDodgeGame />
 </Layout>
 
 <style>
@@ -1510,7 +1511,7 @@ import Layout from "../layouts/Layout.astro";
     titleCtx.font = 'bold 60px Arial';
     titleCtx.textAlign = 'center';
     titleCtx.textBaseline = 'middle';
-    titleCtx.fillText('CONGRATULATIONS!', titleCanvas.width/2, titleCanvas.height/2);
+    titleCtx.fillText('CONGRATS!', titleCanvas.width/1.5, titleCanvas.height/1.5);
     
     // Create texture from canvas
     const titleTexture = new THREE.CanvasTexture(titleCanvas);
