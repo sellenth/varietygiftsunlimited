@@ -82,6 +82,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
   let levelIndicator; // DOM element for level display
   let levelIndicator3D; // Three.js level indicator
   let congratsPopup; // Three.js popup for level completion
+  let jumpQueued = false; // Track if a jump is queued while in the air
   
   // Three.js Audio
   let audioListener;
@@ -626,6 +627,14 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
     
     if (currentState === GameState.IDLE) {
       startCharging();
+    } else if (currentState === GameState.JUMPING) {
+      // Queue a jump for when we land
+      jumpQueued = true;
+      chargeStartTime = Date.now();
+      chargeStrength = 0;
+      
+      // Start charge animation for queued jump
+      animateCharging();
     }
   }
 
@@ -633,6 +642,12 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
   function handleMouseUp(e) {
     if (currentState === GameState.CHARGING) {
       releaseJump();
+    } else if (currentState === GameState.JUMPING && jumpQueued) {
+      // Store the charge strength for when we land
+      jumpQueued = false;
+      
+      // Reset charge indicator
+      chargeIndicator.scale.set(1, 0, 1);
     }
   }
 
@@ -662,8 +677,16 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 
   // Handle key down event
   function handleKeyDown(e) {
-    if (currentState === GameState.IDLE || currentState === GameState.JUMPING) {
+    if (currentState === GameState.IDLE) {
       startCharging();
+    } else if (currentState === GameState.JUMPING) {
+      // Queue a jump for when we land
+      jumpQueued = true;
+      chargeStartTime = Date.now();
+      chargeStrength = 0;
+      
+      // Start charge animation for queued jump
+      animateCharging();
     }
   }
 
@@ -671,12 +694,17 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
   function handleKeyUp(e) {
     if (currentState === GameState.CHARGING) {
       releaseJump();
+    } else if (currentState === GameState.JUMPING && jumpQueued) {
+      // Store the charge strength for when we land
+      jumpQueued = false;
+      
+      // Reset charge indicator
+      chargeIndicator.scale.set(1, 0, 1);
     }
   }
 
   // Handle touch start event
   function handleTouchStart(e) {
-    console.log('here2')
     // Check if we touched a button
     if (e.touches.length > 0 && checkButtonClick(e.touches[0].clientX, e.touches[0].clientY)) {
       e.preventDefault();
@@ -684,8 +712,16 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
       return; // Button was touched, don't process game action
     }
     
-    if (currentState === GameState.IDLE || currentState === GameState.JUMPING) {
+    if (currentState === GameState.IDLE) {
       startCharging();
+    } else if (currentState === GameState.JUMPING) {
+      // Queue a jump for when we land
+      jumpQueued = true;
+      chargeStartTime = Date.now();
+      chargeStrength = 0;
+      
+      // Start charge animation for queued jump
+      animateCharging();
     }
   }
 
@@ -693,6 +729,12 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
   function handleTouchEnd(e) {
     if (currentState === GameState.CHARGING) {
       releaseJump();
+    } else if (currentState === GameState.JUMPING && jumpQueued) {
+      // Store the charge strength for when we land
+      jumpQueued = false;
+      
+      // Reset charge indicator
+      chargeIndicator.scale.set(1, 0, 1);
     }
   }
 
@@ -722,7 +764,7 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
 
   // Animate the charging state
   function animateCharging() {
-    if (currentState === GameState.CHARGING) {
+    if (currentState === GameState.CHARGING || (currentState === GameState.JUMPING && jumpQueued)) {
       const currentTime = Date.now();
       const elapsedTime = currentTime - chargeStartTime;
       
@@ -781,6 +823,12 @@ import GiftyDodgeGame from "../components/gifty-dodge/GiftyDodgeGame.astro";
           
           // Check collision with obstacles
           checkCollisions();
+          
+          // If a jump was queued while in the air, start charging immediately
+          if (jumpQueued) {
+            jumpQueued = false;
+            startCharging();
+          }
         }
       };
       
