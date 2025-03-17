@@ -95,6 +95,20 @@ import Layout from "../layouts/Layout.astro";
   .hidden {
     display: none !important;
   }
+  
+  #level-indicator {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(255, 105, 180, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 100;
+    display: none; /* Hide the DOM version */
+  }
 </style>
 
 <script>
@@ -119,11 +133,14 @@ import Layout from "../layouts/Layout.astro";
   let gameWidth = 10; // Arbitrary width units
   let isJumping = false;
   let level = 1;
+  let speedMultiplier = 1.0; // Base speed multiplier
   let obstacles = [];
   let clocksToRotate = [];
   let truckSpeedChangeTimers = [];
   let debugMode = true; // Enable debug visualization
   let hitboxHelpers = []; // Store hitbox visualizers
+  let levelIndicator; // DOM element for level display
+  let levelIndicator3D; // Three.js level indicator
   
   // Three.js Audio
   let audioListener;
@@ -176,6 +193,9 @@ import Layout from "../layouts/Layout.astro";
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('game-container').appendChild(renderer.domElement);
+
+    // Create level indicator
+    createLevelIndicator();
 
     // Create grassy field
     const fieldGeometry = new THREE.PlaneGeometry(gameWidth, gameHeight);
@@ -836,6 +856,17 @@ import Layout from "../layouts/Layout.astro";
     level++;
     currentState = GameState.LEVEL_COMPLETE;
     
+    // Increase speed multiplier by 3% for each level
+    speedMultiplier = 1.0 + (level - 1) * 0.03;
+    
+    // Update level indicator
+    if (levelIndicator) {
+      levelIndicator.textContent = `Level: ${level}`;
+    }
+    
+    // Update 3D level indicator
+    updateLevelIndicator3D();
+    
     // Play win sound
     if (soundsLoaded && !fxMuted) {
       if (!winSound.isPlaying) {
@@ -862,6 +893,11 @@ import Layout from "../layouts/Layout.astro";
     
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    // Update level indicator position
+    if (levelIndicator3D) {
+      levelIndicator3D.position.set(-viewSize * aspect / 2 + 1, -viewSize / 2 + 0.5, 1);
+    }
   }
 
   // Animation loop
@@ -1138,7 +1174,7 @@ import Layout from "../layouts/Layout.astro";
       
       // Random direction (1: right, -1: left)
       const direction = i % 4 === 0 ? -1 : 1;
-      const baseSpeed = Math.random() * 0.05 + 0.02;
+      const baseSpeed = (Math.random() * 0.05 + 0.02) * speedMultiplier;
       
       obstacle.userData = {
         speed: baseSpeed * direction,
@@ -1179,8 +1215,8 @@ import Layout from "../layouts/Layout.astro";
     const createSpeedChange = () => {
       const timer = setTimeout(() => {
         // Random speed multiplier between 0.5 and 2
-        const speedMultiplier = 0.5 + Math.random() * 1.5;
-        truck.userData.speed = truck.userData.baseSpeed * truck.userData.direction * speedMultiplier;
+        const randomSpeedMultiplier = 0.5 + Math.random() * 1.5;
+        truck.userData.speed = truck.userData.baseSpeed * truck.userData.direction * randomSpeedMultiplier;
         
         // Schedule next speed change
         const nextChangeTimer = createSpeedChange();
@@ -1344,6 +1380,92 @@ import Layout from "../layouts/Layout.astro";
     chargeIndicator.position.set(0.6, -gameHeight/2 + 0.5, 0);
     chargeIndicator.scale.set(1, 0, 1); // Start with no height
     scene.add(chargeIndicator);
+  }
+
+  // Create level indicator
+  function createLevelIndicator() {
+    // Create DOM element for level indicator (keep for fallback)
+    levelIndicator = document.createElement('div');
+    levelIndicator.id = 'level-indicator';
+    levelIndicator.textContent = `Level: ${level}`;
+    document.body.appendChild(levelIndicator);
+    
+    // Create 3D level indicator
+    levelIndicator3D = new THREE.Group();
+    
+    // Background rectangle
+    const bgGeometry = new THREE.PlaneGeometry(1.6, 0.6);
+    const bgMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xff69b4,
+      transparent: true,
+      opacity: 0.8
+    });
+    const background = new THREE.Mesh(bgGeometry, bgMaterial);
+    
+    // Add border
+    const borderGeometry = new THREE.PlaneGeometry(1.65, 0.65);
+    const borderMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.5
+    });
+    const border = new THREE.Mesh(borderGeometry, borderMaterial);
+    border.position.set(0, 0, -0.01);
+    
+    levelIndicator3D.add(border);
+    levelIndicator3D.add(background);
+    
+    // Create text using canvas texture
+    updateLevelIndicator3D();
+    
+    // Position at bottom left
+    const aspect = window.innerWidth / window.innerHeight;
+    const viewSize = 15;
+    levelIndicator3D.position.set(-viewSize * aspect / 2 + 1, -viewSize / 2 + 0.5, 1);
+    
+    scene.add(levelIndicator3D);
+  }
+  
+  // Update the 3D level indicator text
+  function updateLevelIndicator3D() {
+    // Remove old text if it exists
+    if (levelIndicator3D) {
+      const oldText = levelIndicator3D.children.find(child => child.userData && child.userData.isLevelText);
+      if (oldText) {
+        levelIndicator3D.remove(oldText);
+      }
+      
+      // Create text using canvas texture
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 40px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`LEVEL: ${level}`, canvas.width/2, canvas.height/2);
+      
+      // Create texture from canvas
+      const texture = new THREE.CanvasTexture(canvas);
+      const textMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true
+      });
+      
+      const textPlane = new THREE.PlaneGeometry(1.5, 0.5);
+      const textMesh = new THREE.Mesh(textPlane, textMaterial);
+      textMesh.position.set(0, 0, 0.01);
+      textMesh.userData = { isLevelText: true };
+      
+      levelIndicator3D.add(textMesh);
+    }
   }
 
   // Start the game when the page loads
