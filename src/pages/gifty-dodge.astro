@@ -1061,15 +1061,39 @@ import Layout from "../layouts/Layout.astro";
 
   // Create finish line (hands)
   function createGoal() {
-    // Simple placeholder for now - two hands at the top
-    const handGeometry = new THREE.BoxGeometry(1, 0.5, 0.2);
-    const handMaterial = new THREE.MeshBasicMaterial({ color: 0xffcc99 }); // Skin tone
+    // Create a more detailed hand model
+    const handGroup = new THREE.Group();
     
-    const leftHand = new THREE.Mesh(handGeometry, handMaterial);
+    // Palm
+    const palmGeometry = new THREE.BoxGeometry(1, 0.6, 0.2);
+    const skinMaterial = new THREE.MeshBasicMaterial({ color: 0xffcc99 }); // Skin tone
+    const palm = new THREE.Mesh(palmGeometry, skinMaterial);
+    handGroup.add(palm);
+    
+    // Fingers
+    for (let i = 0; i < 4; i++) {
+      const fingerGeometry = new THREE.BoxGeometry(0.15, 0.4, 0.15);
+      const finger = new THREE.Mesh(fingerGeometry, skinMaterial);
+      finger.position.set(-0.35 + i * 0.23, 0.5, 0);
+      handGroup.add(finger);
+    }
+    
+    // Thumb
+    const thumbGeometry = new THREE.BoxGeometry(0.15, 0.3, 0.15);
+    const thumb = new THREE.Mesh(thumbGeometry, skinMaterial);
+    thumb.position.set(-0.55, 0.2, 0);
+    thumb.rotation.z = Math.PI / 4;
+    handGroup.add(thumb);
+    
+    // Create left and right hands
+    const leftHand = handGroup.clone();
     leftHand.position.set(-1.5, gameHeight/2 - 0.5, 0);
+    leftHand.rotation.z = Math.PI; // Rotate 180 degrees
     
-    const rightHand = new THREE.Mesh(handGeometry, handMaterial);
+    const rightHand = handGroup.clone();
+    rightHand.scale.x = -1; // Mirror for right hand
     rightHand.position.set(1.5, gameHeight/2 - 0.5, 0);
+    rightHand.rotation.z = Math.PI; // Rotate 180 degrees
     
     scene.add(leftHand);
     scene.add(rightHand);
@@ -1179,6 +1203,18 @@ import Layout from "../layouts/Layout.astro";
     const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x4285f4 }); // Blue
     const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
     
+    // Windshield - moved to the other side
+    const windshieldGeometry = new THREE.PlaneGeometry(0.6, 0.4);
+    const windshieldMaterial = new THREE.MeshBasicMaterial({ color: 0xadd8e6 }); // Light blue
+    const windshield = new THREE.Mesh(windshieldGeometry, windshieldMaterial);
+    windshield.position.set(0.5, 0.1, 0.41); // Changed from -0.5 to 0.5
+    
+    // Windshield frame
+    const frameGeometry = new THREE.BoxGeometry(0.65, 0.45, 0.02);
+    const frameMaterial = new THREE.MeshBasicMaterial({ color: 0x333333 });
+    const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+    frame.position.set(0.5, 0.1, 0.4); // Changed from -0.5 to 0.5
+    
     // Wheels
     const wheelGeometry = new THREE.CylinderGeometry(0.2, 0.2, 0.1, 16);
     wheelGeometry.rotateX(Math.PI / 2);
@@ -1191,6 +1227,8 @@ import Layout from "../layouts/Layout.astro";
     wheel2.position.set(0.6, -0.4, 0);
     
     van.add(body);
+    van.add(frame);
+    van.add(windshield);
     van.add(wheel1);
     van.add(wheel2);
     
@@ -1245,39 +1283,55 @@ import Layout from "../layouts/Layout.astro";
   function createOutOfStock() {
     const textGroup = new THREE.Group();
     
-    // Background rectangle
-    const bgGeometry = new THREE.PlaneGeometry(1.8, 0.8);
+    // Background rectangle - reduced width
+    const bgGeometry = new THREE.PlaneGeometry(1.4, 0.8); // Changed from 1.8 to 1.4
     const bgMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const background = new THREE.Mesh(bgGeometry, bgMaterial);
     
-    // Red border
-    const borderGeometry = new THREE.RingGeometry(0.85, 0.9, 32);
-    const borderMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    // Red border - reduced width
+    const borderGeometry = new THREE.PlaneGeometry(1.4, 0.8); // Changed from 1.8 to 1.4
+    const borderMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0xff0000,
+      transparent: true,
+      opacity: 0.2
+    });
     const border = new THREE.Mesh(borderGeometry, borderMaterial);
-    border.scale.set(1, 0.45, 1);
     border.position.set(0, 0, 0.01);
     
-    // Red text (simplified as red bars)
-    const line1Geometry = new THREE.PlaneGeometry(1.4, 0.1);
-    const line1Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const line1 = new THREE.Mesh(line1Geometry, line1Material);
-    line1.position.set(0, 0.15, 0.02);
+    // Create text using canvas texture
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
     
-    const line2Geometry = new THREE.PlaneGeometry(1.4, 0.1);
-    const line2Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const line2 = new THREE.Mesh(line2Geometry, line2Material);
-    line2.position.set(0, 0, 0.02);
+    // Clear canvas
+    ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    const line3Geometry = new THREE.PlaneGeometry(1.4, 0.1);
-    const line3Material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const line3 = new THREE.Mesh(line3Geometry, line3Material);
-    line3.position.set(0, -0.15, 0.02);
+    // Draw text - stacked vertically to take less horizontal space
+    ctx.fillStyle = '#ff0000';
+    ctx.font = 'bold 32px Arial'; // Slightly smaller font
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('OUT', canvas.width/2, canvas.height/2 - 30);
+    ctx.fillText('OF', canvas.width/2, canvas.height/2);
+    ctx.fillText('STOCK', canvas.width/2, canvas.height/2 + 30);
+    
+    // Create texture from canvas
+    const texture = new THREE.CanvasTexture(canvas);
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true
+    });
+    
+    // Reduced width
+    const textPlane = new THREE.PlaneGeometry(1.2, 0.7); // Changed from 1.6 to 1.2
+    const textMesh = new THREE.Mesh(textPlane, textMaterial);
+    textMesh.position.set(0, 0, 0.02);
     
     textGroup.add(background);
     textGroup.add(border);
-    textGroup.add(line1);
-    textGroup.add(line2);
-    textGroup.add(line3);
+    textGroup.add(textMesh);
     
     return textGroup;
   }

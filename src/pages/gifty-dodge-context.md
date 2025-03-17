@@ -8,10 +8,10 @@ The theme is whimsical, pink, fun.
 
 the jump happens on keyup and click. I want the jump to be two phased, first when the key or click is down but hasn't been released yet, be in the  'charging' state, then when keyup or click is released, go into the 'jump' routine
 
-[] improve hitbox for the obstacles, right now the gift can appear halfway inside the truck and no hit detected
 [] red x should be "out of stock!" text
-[] clocks should rotate
 []advertisement banner for me and my friends
+[x] improve hitbox for the obstacles, right now the gift can appear halfway inside the truck and no hit detected
+[x] clocks should rotate
 
 [x] trucks should randomly speed up and slow down
 [x] congrats alert is a custom popup themed with this project's colors
