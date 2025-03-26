@@ -5,12 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Flappy Money Bag</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body { margin: 0; padding: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; touch-action: manipulation; }
         canvas { display: block; }
+        #mute-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            z-index: 100;
+        }
+        #mute-button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
     </style>
 </head>
 <body>
+    <button id="mute-button">🔊</button>
+
     <script>
         // --- Game Configuration ---
         const GRAVITY = 0.6;
@@ -28,6 +50,229 @@
         const PASS_SCORE = 100;
         const WIN_SCORE = 10000;
 
+        // --- Three.js Audio Setup ---
+        let audioListener;
+        let audioLoader;
+        let flapSound, gameOverSound, backgroundMusic;
+        let soundsLoaded = false;
+        let soundsToLoad = 2; // Number of sounds to load
+        let soundsLoadedCount = 0;
+        let isMuted = false;
+        let audioUnlocked = false; // Track if user interaction has occurred
+
+        // --- Audio Unlock Logic (Global Scope) ---
+        let unlockAudio = () => {
+            // Only run if not already unlocked and listener exists
+            if (!audioUnlocked && audioListener && audioListener.context) {
+                console.log(`Attempting to unlock audio. Context state: ${audioListener.context.state}`);
+                if (audioListener.context.state === 'suspended') {
+                    audioListener.context.resume().then(() => {
+                        console.log("AudioContext resumed successfully.");
+                        audioUnlocked = true; // Set flag *after* successful resume
+                        // Try playing background music if ready and not muted (if applicable later)
+                        // if (!isMuted && soundsLoaded && backgroundMusic && !backgroundMusic.isPlaying) {
+                        //     playBackgroundMusic();
+                        // }
+                    }).catch(e => {
+                        console.error("AudioContext resume failed:", e);
+                        // Keep audioUnlocked false if resume fails
+                    });
+                } else {
+                     // Context is already running or in another state
+                     console.log(`AudioContext was not suspended (state: ${audioListener.context.state}). Assuming unlocked.`);
+                     audioUnlocked = true; // Assume unlocked if not suspended
+                }
+            } else if (audioUnlocked) {
+                 // console.log("Audio already unlocked."); // Optional: uncomment for verbose logging
+            } else {
+                 console.warn("Audio listener or context not ready for unlocking.");
+            }
+
+            // Remove listeners after the first interaction attempt, regardless of success
+            // This prevents multiple resume attempts
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+            console.log("Removed audio unlock listeners.");
+        };
+
+        // Initialize Three.js audio system
+        function initAudio() {
+            // Create audio listener (no camera needed for non-positional)
+            audioListener = new THREE.AudioListener();
+
+            // Create audio loader
+            audioLoader = new THREE.AudioLoader();
+
+            // Create sound objects (using THREE.Audio for non-positional sounds)
+            flapSound = new THREE.Audio(audioListener);
+            gameOverSound = new THREE.Audio(audioListener);
+            backgroundMusic = new THREE.Audio(audioListener); // Use THREE.Audio for simplicity
+
+            // Helper function to track loading progress
+            const onSoundLoaded = (soundId) => {
+                console.log(`${soundId} loaded.`);
+                soundsLoadedCount++;
+                if (soundsLoadedCount === soundsToLoad) {
+                    soundsLoaded = true;
+                    console.log("All sounds loaded.");
+                    // Attempt to unlock audio immediately (might work on desktop)
+                    unlockAudio();
+                }
+            };
+
+            // Load sound files
+            audioLoader.load('flap.mp3', function(buffer) {
+                flapSound.setBuffer(buffer);
+                flapSound.setVolume(0.5);
+                onSoundLoaded('flapSound');
+            }, 
+            (xhr) => { /* Optional progress */ }, // Added undefined placeholder for progress callback
+            function(err) { 
+                console.error('Error loading flap sound:', err); 
+                // Log more details if available
+                if (err instanceof ErrorEvent) {
+                    console.error('ErrorEvent details:', { message: err.message, filename: err.filename, lineno: err.lineno, colno: err.colno });
+                } else {
+                     console.error('Raw error object:', JSON.stringify(err));
+                }
+            });
+
+            audioLoader.load('game-over.mp3', function(buffer) {
+                gameOverSound.setBuffer(buffer);
+                gameOverSound.setVolume(0.7);
+                onSoundLoaded('gameOverSound');
+            }, 
+            (xhr) => { /* Optional progress */ }, // Added undefined placeholder for progress callback
+            function(err) { 
+                console.error('Error loading game over sound:', err); 
+                // Log more details if available
+                 if (err instanceof ErrorEvent) {
+                    console.error('ErrorEvent details:', { message: err.message, filename: err.filename, lineno: err.lineno, colno: err.colno });
+                } else {
+                     console.error('Raw error object:', JSON.stringify(err));
+                }
+            });
+
+            /*
+            audioLoader.load('background-music.mp3', function(buffer) {
+                backgroundMusic.setBuffer(buffer);
+                backgroundMusic.setVolume(0.3);
+                backgroundMusic.setLoop(true);
+                onSoundLoaded('backgroundMusic');
+            }, undefined, function(err) { console.error('Error loading background music:', err); });
+            */
+
+            // Set up mute button functionality
+            const muteButton = document.getElementById('mute-button');
+            if (muteButton) {
+                muteButton.addEventListener('click', toggleMute);
+            } else {
+                console.error("Mute button not found!");
+            }
+
+            // Add interaction listeners to unlock audio
+            // Use { once: true } if you prefer automatic removal, but manual removal in unlockAudio is also fine.
+            document.addEventListener('click', unlockAudio);
+            document.addEventListener('touchstart', unlockAudio);
+        }
+
+        // Toggle mute for all game sounds using AudioListener master volume
+        function toggleMute() {
+            isMuted = !isMuted;
+
+            // Update mute button icon
+            const muteButton = document.getElementById('mute-button');
+            if (muteButton) muteButton.textContent = isMuted ? '🔇' : '🔊';
+
+            if (isMuted) {
+                audioListener.setMasterVolume(0);
+                console.log("Audio muted.");
+                // Ensure background music actually stops if it was playing
+                if (backgroundMusic && backgroundMusic.isPlaying) {
+                    backgroundMusic.pause(); // Use pause to keep position for unmuting
+                }
+            } else {
+                audioListener.setMasterVolume(1);
+                console.log("Audio unmuted.");
+                // If unmuting and music should be playing, ensure it plays
+                if (gameState === 'PLAYING' && soundsLoaded && backgroundMusic && !backgroundMusic.isPlaying) {
+                     playBackgroundMusic();
+                }
+            }
+        }
+
+        // Safe play function for sound effects
+        function playSound(sound, soundName = 'Unknown') {
+            if (!soundsLoaded) {
+                console.warn(`Attempted to play sound (${soundName}) before loading finished.`);
+                return;
+            }
+             if (!audioUnlocked) {
+                console.log(`Audio not unlocked yet for sound (${soundName}). Interaction needed.`);
+                // Try unlocking - might not work without direct user action but worth a try
+                unlockAudio();
+                return;
+            }
+            if (!isMuted && sound) {
+                // --- Add Master Volume Check ---
+                const masterVolume = audioListener.getMasterVolume();
+                console.log(`Master Volume before playing ${soundName}: ${masterVolume}`);
+                if (masterVolume === 0) {
+                    console.warn(`!!! Master Volume is 0. Sound ${soundName} will not be audible.`);
+                    // You might want to force it back to 1 here if debugging, e.g., audioListener.setMasterVolume(1);
+                }
+
+                // --- Temporarily disable stop() ONLY for flapSound for testing ---
+                if (soundName !== 'flapSound' && sound.isPlaying) {
+                     console.log(`Stopping already playing sound (${soundName}) before retriggering.`);
+                     sound.stop();
+                } else if (soundName === 'flapSound' && sound.isPlaying) {
+                    // For flapSound, allow overlap during this test
+                    console.log(`Allowing overlapping play for ${soundName}.`);
+                    // Create a new audio source node for the same buffer to allow overlap
+                    // Note: This creates a new THREE.Audio object each time, which isn't ideal
+                    // long-term but useful for testing overlap.
+                    // A better approach for frequent sounds is pooling or using AudioBufferSourceNode directly.
+                    const tempSound = new THREE.Audio(audioListener).setBuffer(sound.buffer);
+                    tempSound.setVolume(sound.getVolume()); // Use original volume
+                    console.log(`Attempting to play overlapping sound: ${soundName}. Buffer loaded: ${tempSound.buffer !== null}`);
+                    try {
+                        tempSound.play(); // Play the temporary sound instance
+                        console.log(`Successfully called play() on overlapping sound: ${soundName}`);
+                    } catch (e) {
+                        console.error(`Error calling play() on overlapping sound (${soundName}):`, e);
+                    }
+                    return; // Exit early as we played the temp sound
+                }
+
+                console.log(`Attempting to play sound: ${soundName}. Buffer loaded: ${sound.buffer !== null}`);
+                try {
+                    sound.play();
+                    console.log(`Successfully called play() on sound: ${soundName}`); // Add success log
+                } catch (e) {
+                    console.error(`Error calling play() on sound (${soundName}):`, e); // Add error catching
+                }
+            } else if (!sound) {
+                 console.warn(`Attempted to play an undefined sound (${soundName}).`);
+            } else if (isMuted) {
+                 console.log(`Sound (${soundName}) skipped: Muted.`); // Log when muted
+            }
+        }
+
+        // Function to start background music safely
+        function playBackgroundMusic() {
+        return;
+        }
+
+        // Function to stop background music
+        function stopBackgroundMusic() {
+             if (!soundsLoaded) return;
+            if (backgroundMusic && backgroundMusic.isPlaying) {
+                backgroundMusic.stop(); // Use stop() to reset position, pause() to keep position
+                console.log("Stopping background music.");
+            }
+        }
+
         // --- Game Variables ---
         let moneyBag;
         let bills = [];
@@ -44,14 +289,23 @@
             canvasWidth = windowWidth;
             canvasHeight = windowHeight;
             createCanvas(canvasWidth, canvasHeight);
+            // Initialize audio system FIRST
+            initAudio();
+            // Then reset game state
             resetGame();
             textAlign(CENTER, CENTER);
             textFont('Arial');
-            
-            // Prevent default touch behavior
-            document.addEventListener('touchstart', function(e) {
-                e.preventDefault();
+
+            // Prevent default touch behavior (keep this)
+            document.body.addEventListener('touchstart', function(e) {
+                 // Allow interaction with the mute button
+                 if (e.target !== document.getElementById('mute-button')) {
+                    e.preventDefault();
+                 }
             }, { passive: false });
+             document.body.addEventListener('touchmove', function(e) {
+                 e.preventDefault();
+             }, { passive: false });
         }
         
         function windowResized() {
@@ -78,32 +332,77 @@
         }
 
         function mousePressed() {
+            // Check if the click was on the mute button, if so, let its handler work
+            if (event && event.target === document.getElementById('mute-button')) {
+                return;
+            }
+
+            // Ensure audio is unlocked on first click/touch if not already
+            if (!audioUnlocked) unlockAudio();
+
             if (gameState === 'START') {
-                gameState = 'PLAYING';
-                moneyBag.flap();
+                // --- Only start the game if sounds are loaded ---
+                if (soundsLoaded) {
+                    gameState = 'PLAYING';
+                    moneyBag.flap();
+                    playSound(flapSound, 'flapSound');
+                    playBackgroundMusic(); // Start background music
+                } else {
+                    console.log("Sounds not loaded yet, please wait.");
+                    // Optional: You could provide visual feedback here if needed,
+                    // but the drawStartScreen update handles the loading message.
+                }
             } else if (gameState === 'PLAYING') {
                 moneyBag.flap();
+                playSound(flapSound, 'flapSound');
+            } else if (gameState === 'GAME_OVER' || gameState === 'WIN') {
+                // Ensure resetGame stops music before setting state back to START
+                resetGame();
+                gameState = 'START';
+            }
+            // return false; // p5 already prevents default for canvas mouse events
+        }
+        
+        function touchStarted() {
+             // Check if the touch was on the mute button
+             if (event && event.target === document.getElementById('mute-button')) {
+                 return;
+             }
+            // Handle touch events the same as mouse events
+            // Ensure audio is unlocked on first click/touch if not already
+            if (!audioUnlocked) unlockAudio(); // Call unlock here too
+
+            if (gameState === 'START') {
+                 // --- Only start the game if sounds are loaded ---
+                 if (soundsLoaded) {
+                    gameState = 'PLAYING';
+                    moneyBag.flap();
+                    playSound(flapSound, 'flapSound');
+                    playBackgroundMusic(); // Start background music
+                 } else {
+                     console.log("Sounds not loaded yet, please wait.");
+                 }
+            } else if (gameState === 'PLAYING') {
+                moneyBag.flap();
+                playSound(flapSound, 'flapSound');
             } else if (gameState === 'GAME_OVER' || gameState === 'WIN') {
                 resetGame();
                 gameState = 'START';
             }
-            return false; // Prevent default behavior
-        }
-        
-        function touchStarted() {
-            // Handle touch events the same as mouse events
-            mousePressed();
-            return false; // Prevent default behavior
+            return false; // Prevent default behavior like scrolling
         }
 
         // --- Game Logic Functions ---
         function resetGame() {
+            // Stop music first
+            stopBackgroundMusic();
+            // Reset game elements
             moneyBag = new MoneyBag();
             bills = [];
             collectibles = [];
             score = 0;
             frameCounter = 0;
-            gameState = 'START';
+            // gameState = 'START'; // This is set in mousePressed/touchStarted after reset
         }
 
         function runGame() {
@@ -233,14 +532,16 @@
         function gameOver() {
             if (gameState === 'PLAYING') { // Prevent multiple calls
                gameState = 'GAME_OVER';
-               // console.log("Game Over!"); // For debugging
+               playSound(gameOverSound, 'gameOverSound');
+               // stopBackgroundMusic(); // Optional: stop music on game over
             }
         }
 
         function winGame() {
              if (gameState === 'PLAYING') { // Prevent multiple calls
                 gameState = 'WIN';
-                // console.log("You Win!"); // For debugging
+                 // playSound(winSound); // Optional: Add a win sound
+                 // stopBackgroundMusic(); // Optional: stop music on win
             }
         }
 
@@ -263,12 +564,19 @@
             fill(255);
             textSize(48);
             text("Flappy Money Bag", width / 2, height / 3);
-            textSize(24);
-            text("Click to Start & Flap!", width / 2, height / 2);
-            textSize(18);
-            text("Avoid the Bills!", width / 2, height / 2 + 40);
-             text("Collect floating cash ($) for bonus points!", width / 2, height / 2 + 70);
-            text(`Reach ${WIN_SCORE} points to win!`, width / 2, height / 2 + 100);
+
+            // --- Show loading or start message ---
+            if (!soundsLoaded) {
+                textSize(24);
+                text("Loading Sounds...", width / 2, height / 2);
+            } else {
+                textSize(24);
+                text("Click to Start & Flap!", width / 2, height / 2);
+                textSize(18);
+                text("Avoid the Bills!", width / 2, height / 2 + 40);
+                text("Collect floating cash ($) for bonus points!", width / 2, height / 2 + 70);
+                text(`Reach ${WIN_SCORE} points to win!`, width / 2, height / 2 + 100);
+            }
         }
 
         function drawGameOverScreen() {
