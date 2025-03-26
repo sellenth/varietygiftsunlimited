@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Money Bag</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; }
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <script>
+        // --- Game Configuration ---
+        const GRAVITY = 0.6;
+        const JUMP_FORCE = -10;
+        const BAG_SIZE = 40;
+        const WING_SIZE = 15;
+        const BILL_WIDTH = 80;
+        const BILL_GAP_MIN = 150;
+        const BILL_GAP_MAX = 200;
+        const BILL_SPEED = 3;
+        const BILL_SPAWN_RATE = 100; // Lower number = more frequent bills (frames)
+        const COLLECTIBLE_SPAWN_CHANCE = 0.008; // Chance per frame to spawn a collectible
+        const COLLECTIBLE_SIZE = 30;
+        const COLLECTIBLE_SCORE = 1000;
+        const PASS_SCORE = 100;
+        const WIN_SCORE = 10000;
+
+        // --- Game Variables ---
+        let moneyBag;
+        let bills = [];
+        let collectibles = [];
+        let score = 0;
+        let gameState = 'START'; // START, PLAYING, GAME_OVER, WIN
+        let frameCounter = 0;
+        let canvasWidth = 600;
+        let canvasHeight = 400;
+        let billTypes = ["Tax Bill", "Dental Bill", "Car Repair", "Rent Due", "Accountant", "Utilities"];
+
+        // --- p5.js Functions ---
+        function setup() {
+            createCanvas(canvasWidth, canvasHeight);
+            resetGame();
+            textAlign(CENTER, CENTER);
+            textFont('Arial');
+        }
+
+        function draw() {
+            background(135, 206, 250); // Sky blue
+
+            if (gameState === 'START') {
+                drawStartScreen();
+            } else if (gameState === 'PLAYING') {
+                runGame();
+            } else if (gameState === 'GAME_OVER') {
+                runGameOver(); // Still draw elements but show game over text
+                drawGameOverScreen();
+            } else if (gameState === 'WIN') {
+                 runGameOver(); // Still draw elements but show win text
+                 drawWinScreen();
+            }
+        }
+
+        function mousePressed() {
+            if (gameState === 'START') {
+                gameState = 'PLAYING';
+                moneyBag.flap();
+            } else if (gameState === 'PLAYING') {
+                moneyBag.flap();
+            } else if (gameState === 'GAME_OVER' || gameState === 'WIN') {
+                resetGame();
+                gameState = 'START';
+            }
+        }
+
+        // --- Game Logic Functions ---
+        function resetGame() {
+            moneyBag = new MoneyBag();
+            bills = [];
+            collectibles = [];
+            score = 0;
+            frameCounter = 0;
+            gameState = 'START';
+        }
+
+        function runGame() {
+            // --- Update & Draw Money Bag ---
+            moneyBag.update();
+            moneyBag.draw();
+            if (moneyBag.checkBounds()) {
+                gameOver();
+                return;
+            }
+
+            // --- Handle Bills ---
+            handleBills();
+
+            // --- Handle Collectibles ---
+            handleCollectibles();
+
+            // --- Check Collisions ---
+            checkCollisions();
+
+             // --- Draw Score ---
+             drawScore();
+
+            // --- Check Win Condition ---
+            if (score >= WIN_SCORE) {
+                winGame();
+            }
+
+            frameCounter++;
+        }
+
+        // Function to draw elements even after game over/win for context
+        function runGameOver() {
+             // Draw Bills (static)
+             for (let billPair of bills) {
+                 billPair.draw();
+             }
+             // Draw Collectibles (static)
+              for (let collectible of collectibles) {
+                  if (!collectible.collected) {
+                     collectible.draw();
+                  }
+             }
+             // Draw Money Bag (static)
+             moneyBag.draw();
+             // Draw Score
+             drawScore();
+        }
+
+
+        function handleBills() {
+            // Spawn new bills
+            if (frameCounter % BILL_SPAWN_RATE === 0) {
+                bills.push(new BillPair(width));
+            }
+
+            // Update, draw, and remove offscreen bills
+            for (let i = bills.length - 1; i >= 0; i--) {
+                bills[i].update();
+                bills[i].draw();
+
+                // Scoring
+                if (!bills[i].passed && bills[i].passedBy(moneyBag)) {
+                    score += PASS_SCORE;
+                    bills[i].passed = true;
+                }
+
+                if (bills[i].isOffscreen()) {
+                    bills.splice(i, 1);
+                }
+            }
+        }
+
+        function handleCollectibles() {
+             // Spawn new collectibles randomly
+             if (random() < COLLECTIBLE_SPAWN_CHANCE) {
+                 let yPos = random(height * 0.15, height * 0.85); // Ensure it's not too close to edges
+                 // Avoid spawning inside bills if possible (basic check)
+                 let canSpawn = true;
+                 for(let bp of bills) {
+                     if (width > bp.x - BILL_WIDTH / 2 && width < bp.x + BILL_WIDTH / 2) {
+                         if(yPos > bp.topHeight && yPos < bp.topHeight + bp.gapHeight) {
+                             // It's in a gap, that's okay
+                         } else {
+                             canSpawn = false; // Would spawn inside a bill
+                             break;
+                         }
+                     }
+                 }
+                 if (canSpawn) {
+                    collectibles.push(new Collectible(width, yPos));
+                 }
+             }
+
+            // Update, draw, and remove offscreen/collected collectibles
+            for (let i = collectibles.length - 1; i >= 0; i--) {
+                if (collectibles[i].collected) {
+                     collectibles.splice(i, 1);
+                     continue; // Skip drawing/updating if already collected this frame
+                }
+                collectibles[i].update();
+                collectibles[i].draw();
+                if (collectibles[i].isOffscreen()) {
+                    collectibles.splice(i, 1);
+                }
+            }
+        }
+
+
+        function checkCollisions() {
+             // Money Bag vs Bills
+             for (let billPair of bills) {
+                if (moneyBag.checkCollision(billPair)) {
+                    gameOver();
+                    return;
+                }
+             }
+             // Money Bag vs Collectibles
+             for (let collectible of collectibles) {
+                 if (!collectible.collected && collectible.collidesWith(moneyBag)) {
+                     collectible.collected = true;
+                     score += COLLECTIBLE_SCORE;
+                 }
+             }
+        }
+
+        function gameOver() {
+            if (gameState === 'PLAYING') { // Prevent multiple calls
+               gameState = 'GAME_OVER';
+               // console.log("Game Over!"); // For debugging
+            }
+        }
+
+        function winGame() {
+             if (gameState === 'PLAYING') { // Prevent multiple calls
+                gameState = 'WIN';
+                // console.log("You Win!"); // For debugging
+            }
+        }
+
+        // --- Drawing Functions ---
+        function drawScore() {
+            textSize(32);
+            fill(255, 255, 0); // Yellow score
+            stroke(0);
+            strokeWeight(2);
+            textAlign(LEFT, TOP);
+            text(`Score: ${score}`, 10, 10);
+            noStroke(); // Reset stroke
+        }
+
+         function drawStartScreen() {
+            textAlign(CENTER, CENTER);
+            fill(0, 102, 153, 200); // Semi-transparent dark blue overlay
+            rect(0,0, width, height);
+
+            fill(255);
+            textSize(48);
+            text("Flappy Money Bag", width / 2, height / 3);
+            textSize(24);
+            text("Click to Start & Flap!", width / 2, height / 2);
+            textSize(18);
+            text("Avoid the Bills!", width / 2, height / 2 + 40);
+             text("Collect floating cash ($) for bonus points!", width / 2, height / 2 + 70);
+            text(`Reach ${WIN_SCORE} points to win!`, width / 2, height / 2 + 100);
+        }
+
+        function drawGameOverScreen() {
+            textAlign(CENTER, CENTER);
+            fill(150, 0, 0, 200); // Semi-transparent red overlay
+            rect(0,0, width, height);
+
+            fill(255);
+            textSize(64);
+            text("GAME OVER", width / 2, height / 3);
+            textSize(32);
+            text(`Final Score: ${score}`, width / 2, height / 2);
+             textSize(24);
+            text("Click to Restart", width / 2, height / 2 + 50);
+        }
+
+        function drawWinScreen() {
+            textAlign(CENTER, CENTER);
+            fill(0, 150, 0, 220); // Semi-transparent green overlay
+            rect(0,0, width, height);
+
+            fill(255, 215, 0); // Gold color
+            textSize(72);
+            text("CONGRATS!", width / 2, height / 3);
+
+            fill(255);
+            textSize(32);
+            text(`You beat the bills with ${score} points!`, width / 2, height / 2);
+            textSize(24);
+            text("Click to Play Again", width / 2, height / 2 + 50);
+        }
+
+        // --- Classes ---
+
+        class MoneyBag {
+            constructor() {
+                this.x = width / 4;
+                this.y = height / 2;
+                this.velocity = 0;
+                this.size = BAG_SIZE;
+                this.wingAngle = 0; // For simple wing flap animation
+            }
+
+            update() {
+                this.velocity += GRAVITY;
+                this.y += this.velocity;
+
+                 // Simple wing animation
+                 this.wingAngle = map(sin(frameCount * 0.3), -1, 1, -PI / 6, PI / 6);
+            }
+
+            draw() {
+                push(); // Isolate transformations and styles
+                translate(this.x, this.y);
+
+                // Wings (behind the bag)
+                fill(255); // White wings
+                noStroke();
+                // Left Wing
+                push();
+                translate(-this.size * 0.4, 0);
+                rotate(-PI / 8 + this.wingAngle); // Add flap animation
+                triangle(-WING_SIZE, 0, WING_SIZE, -WING_SIZE * 0.8, WING_SIZE, WING_SIZE * 0.8);
+                pop();
+                // Right Wing
+                 push();
+                translate(this.size * 0.4, 0);
+                rotate(PI / 8 - this.wingAngle); // Add flap animation (opposite direction)
+                scale(-1, 1); // Flip horizontally for symmetry
+                triangle(-WING_SIZE, 0, WING_SIZE, -WING_SIZE * 0.8, WING_SIZE, WING_SIZE * 0.8);
+                pop();
+
+
+                // Bag
+                fill(139, 69, 19); // Brown color for the bag
+                rectMode(CENTER);
+                rect(0, 0, this.size * 0.8, this.size, 5); // Slightly rounded rectangle
+
+                // Dollar Sign
+                fill(0, 128, 0); // Green color for '$'
+                textSize(this.size * 0.7);
+                textAlign(CENTER, CENTER);
+                text("$", 0, this.size * 0.05); // Adjust vertical position slightly
+
+                pop(); // Restore previous drawing state
+            }
+
+            flap() {
+                this.velocity = JUMP_FORCE;
+            }
+
+            checkBounds() {
+                // Check collision with top and bottom edges
+                return (this.y + this.size / 2 > height || this.y - this.size / 2 < 0);
+            }
+
+            checkCollision(billPair) {
+                // Simple bounding box collision
+                const bagLeft = this.x - this.size / 2;
+                const bagRight = this.x + this.size / 2;
+                const bagTop = this.y - this.size / 2;
+                const bagBottom = this.y + this.size / 2;
+
+                const billLeft = billPair.x - BILL_WIDTH / 2;
+                const billRight = billPair.x + BILL_WIDTH / 2;
+
+                // Check horizontal overlap first
+                if (bagRight > billLeft && bagLeft < billRight) {
+                    // Check vertical collision with top or bottom bill
+                    if (bagTop < billPair.topHeight || bagBottom > billPair.topHeight + billPair.gapHeight) {
+                        return true; // Collision detected
+                    }
+                }
+                return false; // No collision
+            }
+        }
+
+        class BillPair {
+            constructor(x) {
+                this.x = x;
+                this.width = BILL_WIDTH;
+                this.gapHeight = random(BILL_GAP_MIN, BILL_GAP_MAX);
+                // Ensure the gap isn't too close to the top or bottom
+                this.topHeight = random(height * 0.1, height - this.gapHeight - height * 0.1);
+                this.speed = BILL_SPEED;
+                this.passed = false; // To track scoring
+                this.label = random(billTypes); // Assign a random bill type
+                 this.color = color(100, 100, 110); // Greyish color for bills
+            }
+
+            update() {
+                this.x -= this.speed;
+            }
+
+            draw() {
+                fill(this.color);
+                stroke(50);
+                strokeWeight(2);
+                rectMode(CORNER);
+
+                // Top bill
+                rect(this.x - this.width / 2, 0, this.width, this.topHeight);
+                // Bottom bill
+                let bottomY = this.topHeight + this.gapHeight;
+                rect(this.x - this.width / 2, bottomY, this.width, height - bottomY);
+
+                // Draw Bill Label (centered on the gap)
+                 fill(255); // White text
+                 noStroke();
+                 textSize(14);
+                 textAlign(CENTER, CENTER);
+                 // Draw label on top bill if there's space, otherwise bottom
+                 if (this.topHeight > 30) {
+                    text(this.label, this.x, this.topHeight - 15);
+                 } else if (height - bottomY > 30){
+                     text(this.label, this.x, bottomY + 15);
+                 }
+                 // Could also draw it in the middle of the gap if desired
+                 // text(this.label, this.x, this.topHeight + this.gapHeight / 2);
+
+            }
+
+            isOffscreen() {
+                return (this.x < -this.width);
+            }
+
+            passedBy(bag) {
+                // Check if the bag's front edge has passed the bill's center
+                 return (bag.x - bag.size / 2 > this.x + this.width / 2);
+            }
+        }
+
+        class Collectible {
+             constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = COLLECTIBLE_SIZE;
+                this.speed = BILL_SPEED; // Move at the same speed as bills
+                this.collected = false;
+                this.bobOffset = random(TWO_PI); // Start bobbing at a random phase
+            }
+
+            update() {
+                this.x -= this.speed;
+                // Add a slight bobbing motion
+                this.y += sin(frameCount * 0.1 + this.bobOffset) * 0.5;
+            }
+
+            draw() {
+                push();
+                translate(this.x, this.y);
+                fill(0, 180, 0); // Bright green
+                noStroke();
+                rectMode(CENTER);
+                rect(0, 0, this.size, this.size * 0.6, 3); // Make it rectangular like a bill
+
+                fill(255); // White dollar sign
+                textSize(this.size * 0.7);
+                textAlign(CENTER, CENTER);
+                text("$", 0, 2); // Slight offset for centering
+
+                pop();
+            }
+
+             isOffscreen() {
+                return (this.x < -this.size);
+            }
+
+            collidesWith(bag) {
+                 // Simple distance-based collision check (center to center)
+                 let distance = dist(this.x, this.y, bag.x, bag.y);
+                 // Check if distance is less than combined radii (approximate)
+                 return distance < (this.size / 2 + bag.size / 2);
+            }
+        }
+
+    </script>
+</body>
+</html>
