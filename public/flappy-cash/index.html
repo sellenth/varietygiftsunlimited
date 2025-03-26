@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Flappy Money Bag</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <style>
-        body { margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; }
-        canvas { border: 1px solid black; }
+        body { margin: 0; padding: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #333; touch-action: manipulation; }
+        canvas { display: block; }
     </style>
 </head>
 <body>
@@ -35,16 +35,30 @@
         let score = 0;
         let gameState = 'START'; // START, PLAYING, GAME_OVER, WIN
         let frameCounter = 0;
-        let canvasWidth = 600;
-        let canvasHeight = 400;
+        let canvasWidth, canvasHeight;
         let billTypes = ["Tax Bill", "Dental Bill", "Car Repair", "Rent Due", "Accountant", "Utilities"];
 
         // --- p5.js Functions ---
         function setup() {
+            // Set canvas size to window dimensions
+            canvasWidth = windowWidth;
+            canvasHeight = windowHeight;
             createCanvas(canvasWidth, canvasHeight);
             resetGame();
             textAlign(CENTER, CENTER);
             textFont('Arial');
+            
+            // Prevent default touch behavior
+            document.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+        }
+        
+        function windowResized() {
+            // Handle window resize events
+            canvasWidth = windowWidth;
+            canvasHeight = windowHeight;
+            resizeCanvas(canvasWidth, canvasHeight);
         }
 
         function draw() {
@@ -73,6 +87,13 @@
                 resetGame();
                 gameState = 'START';
             }
+            return false; // Prevent default behavior
+        }
+        
+        function touchStarted() {
+            // Handle touch events the same as mouse events
+            mousePressed();
+            return false; // Prevent default behavior
         }
 
         // --- Game Logic Functions ---
