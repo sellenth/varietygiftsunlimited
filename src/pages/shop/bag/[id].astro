@@ -1,0 +1,164 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ImageCarousel from "../../../components/ImageCarousel.astro"; // Assuming a carousel might be nice
+
+//array mapping bag number to human name
+const bagNames = [
+    "Red Lines Bag",
+    "Zig Zag Bag",
+    "Red Tassle Bag",
+    "Yellow Flower Bag",
+    "Grey Stripe Bag",
+    "Sheep Flock Bag",
+    "Red Smile Bag",
+    "Brown Bear Bag",
+    "Purple Flower Bag",
+    "Red Zig Zag Bag",
+    "Green Smile Bag",
+    "Daisy Bag",
+    "Grey Smile Bag"
+]
+
+// Define the props type for better type checking (optional but good practice)
+interface Props {
+    id: number;
+    title: string;
+    description: string;
+    images: { src: string, alt: string }[];
+    priceDisplay: string;
+    priceId: string;
+    clientReferenceId: string;
+}
+
+export async function getStaticPaths() {
+    // Generate paths for bags 1 through 13
+    const paths = Array.from({ length: 13 }, (_, i) => ({
+        params: { id: (i + 1).toString() },
+        props: {
+            id: i + 1,
+            title: bagNames[i],
+            description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
+            images: [ { src: `/bags/${i + 1}.webp`, alt: `Crochet Bag #${i + 1}` }],
+            priceDisplay: "$29.99", // Adjust if needed
+            priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
+            clientReferenceId: `bag-${i + 1}`
+        } satisfies Props // Ensure props match the interface
+    }));
+    return paths;
+}
+
+// Explicitly type Astro.props
+const { id, title, description, images, priceDisplay, priceId, clientReferenceId } = Astro.props as Props;
+const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+---
+
+
+<Layout title={title} hideHeader={false}>
+    <div class="max-w-4xl mx-auto px-4">
+        <a href="/shop" class="inline-block py-4 text-gray-600 hover:text-gray-900 transition-colors">
+            <span class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Shop
+            </span>
+        </a>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Use ImageCarousel or a simple img tag -->
+            <ImageCarousel images={images} title={title} />
+            <!-- Or: <img src={images[0]} alt={title} class="w-full h-auto object-cover rounded-lg shadow-md"/> -->
+            
+            <div class="flex flex-col gap-4">
+                <h1 class="text-3xl font-bold">{title}</h1>
+                <p class="text-gray-600">{description}</p>
+
+                <div class="space-y-4">
+                    <p class="text-xl font-semibold">{priceDisplay} w/ free shipping!</p>
+                    <button 
+                        id="buy-button"
+                        data-stripe-key={PUBLIC_STRIPE_KEY}
+                        data-stripe-price-id={priceId}
+                        data-client-reference-id={clientReferenceId}
+                        class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                    >
+                        Buy Now
+                    </button>
+                    <p class="text-sm text-center text-gray-500">Powered by Stripe</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        import { loadStripe } from "@stripe/stripe-js";
+
+        const buyButton = document.getElementById("buy-button") as HTMLButtonElement | null;
+        
+        if (!buyButton) {
+            console.error("Buy button not found.");
+        } else if (!buyButton.dataset.stripeKey || !buyButton.dataset.stripePriceId || !buyButton.dataset.clientReferenceId) {
+            console.error("Missing required Stripe configuration on button");
+            buyButton.disabled = true;
+        } else {
+            const stripeKey = buyButton.dataset.stripeKey;
+            const priceId = buyButton.dataset.stripePriceId;
+            const clientReferenceId = buyButton.dataset.clientReferenceId;
+            let stripe: any = null; // Use `any` or import Stripe types if available
+
+            const initializeStripe = async () => {
+                if (!stripe) {
+                    // Use window.Stripe if loadStripe causes issues in Astro
+                    if (typeof window.Stripe === 'function') {
+                         stripe = window.Stripe(stripeKey);
+                    } else {
+                        // Fallback to loadStripe
+                        const stripeModule = await loadStripe(stripeKey);
+                        if (!stripeModule) {
+                            throw new Error("loadStripe returned null.");
+                        }
+                        stripe = stripeModule;
+                    }
+                }
+                 if (!stripe) {
+                    console.error("Failed to initialize Stripe.");
+                    if(buyButton) buyButton.disabled = true; 
+                    throw new Error("Failed to initialize Stripe.");
+                }
+                return stripe;
+            };
+
+            buyButton.addEventListener("click", async () => {
+                try {
+                    const stripeInstance = await initializeStripe();
+                    
+                    stripeInstance.redirectToCheckout({
+                        lineItems: [{ price: priceId, quantity: 1 }],
+                        mode: "payment",
+                        successUrl: `${window.location.origin}/success`, 
+                        cancelUrl: window.location.href, 
+                        shippingAddressCollection: {
+                            allowedCountries: ["US", "CA", "MX", "TH"],
+                        },
+                        clientReferenceId: clientReferenceId,
+                    })
+                    .then(function (result: any) {
+                        if (result && result.error) {
+                            alert(result.error.message);
+                            console.error("Stripe checkout failed:", result.error);
+                        }
+                    }).catch((error: any) => {
+                        console.error("Error during redirectToCheckout promise:", error);
+                        alert("An error occurred during the checkout process. Please try again.");
+                    });
+
+                } catch (error) {
+                    console.error("Stripe initialization or checkout failed:", error);
+                     if(buyButton) buyButton.disabled = true; // Disable button on error
+                    alert("Could not initialize payment system or redirect to checkout. Please refresh the page or try again later.");
+                }
+            });
+        }
+    </script> 
+</Layout> 
