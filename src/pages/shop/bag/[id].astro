@@ -1,23 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ImageCarousel from "../../../components/ImageCarousel.astro"; // Assuming a carousel might be nice
-
-//array mapping bag number to human name
-const bagNames = [
-    "Red Lines Bag",
-    "Zig Zag Bag",
-    "Red Tassle Bag",
-    "Yellow Flower Bag",
-    "Grey Stripe Bag",
-    "Sheep Flock Bag",
-    "Red Smile Bag",
-    "Brown Bear Bag",
-    "Purple Flower Bag",
-    "Red Zig Zag Bag",
-    "Green Smile Bag",
-    "Daisy Bag",
-    "Grey Smile Bag"
-]
+import { bagNames } from "../../../data/bagsData"; // Import from the new data file
 
 // Define the props type for better type checking (optional but good practice)
 interface Props {

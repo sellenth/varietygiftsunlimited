@@ -2,17 +2,23 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import PrintifyProductCard from "../components/PrintifyProductCard.astro";
+import { bagNames } from "../data/bagsData"; // Import from the data file
 
 // Get the API key from environment variables
-const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+// const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY; // Keep if needed
 
 // Generate basic bag info for card generation (13 bags)
-const bags = Array.from({ length: 13 }, (_, i) => ({
+const allBags = Array.from({ length: 13 }, (_, i) => ({
     id: i + 1,
     img: `/bags/${i + 1}.webp`,
-    title: `Crochet Bag #${i + 1}`,
+    title: bagNames[i], // Use imported name
     href: `/shop/bag/${i + 1}` // Dynamic route link
 }));
+
+// Split bags into featured (indices 3 and 5) and others
+const featuredIndices = [3, 5];
+const featuredBags = allBags.filter((_, index) => featuredIndices.includes(index));
+const otherBags = allBags.filter((_, index) => !featuredIndices.includes(index));
 
 /*
 // Get the API key from environment variables
@@ -46,54 +52,8 @@ if (response.ok) {
             id="products"
             class="w-full max-w-3xl px-4 grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center relative z-10"
         >
-            <!--
-            <div class="md:col-span-2 md:row-span-2 w-full h-full md:px-24">
-            </div>
-            -->
-            <Card
-                img="/yoga/tote1.jpg"
-                title="Tote"
-                body="woah!!"
-                href="tote"
-            />
-
-            <Card
-                img="/chewbarka/item.webp"
-                title="Chewbarka Bandana"
-                body="woah!!"
-                href="chewbarka-bandana"
-            />
-
-            <Card
-                img="/yoga/golden1.jpg"
-                title="Golden Yoga"
-                body="woah!!"
-                href="golden-yoga"
-            />
-
-            <Card
-                img="/yoga/dane1.jpg"
-                title="Great Dane Yoga"
-                body="woah!!"
-                href="great-dane-yoga"
-            />
-
-            <Card
-                img="/yoga/corgi1.jpg"
-                title="Corgi Yoga"
-                body="woah!!"
-                href="corgi-yoga"
-            />
-
-            <Card
-                img="/yoga/husky1.jpg"
-                title="Husky Yoga"
-                body="woah!!"
-                href="husky-yoga"
-            />
-
-            <!-- Render standard Card for each bag -->
-            {bags.map(bag => (
+            <!-- Render Featured Bags First -->
+            {featuredBags.map(bag => (
                 <Card
                     img={bag.img}
                     title={bag.title}
@@ -102,31 +62,54 @@ if (response.ok) {
                 />
             ))}
 
-            <!--
-             <Card img="/tanner/tannerlogo.png" 
-            title="Tanner Sticker" 
-            body="woah!!" 
-            href="tanner-sticker"></Card>
+            <!-- Existing Static Cards -->
+            <Card
+                img="/yoga/tote1.jpg"
+                title="Tote"
+                body="woah!!"
+                href="tote"
+            />
+            <Card
+                img="/chewbarka/item.webp"
+                title="Chewbarka Bandana"
+                body="woah!!"
+                href="chewbarka-bandana"
+            />
+            <Card
+                img="/yoga/golden1.jpg"
+                title="Golden Yoga"
+                body="woah!!"
+                href="golden-yoga"
+            />
+            <Card
+                img="/yoga/dane1.jpg"
+                title="Great Dane Yoga"
+                body="woah!!"
+                href="great-dane-yoga"
+            />
+            <Card
+                img="/yoga/corgi1.jpg"
+                title="Corgi Yoga"
+                body="woah!!"
+                href="corgi-yoga"
+            />
+            <Card
+                img="/yoga/husky1.jpg"
+                title="Husky Yoga"
+                body="woah!!"
+                href="husky-yoga"
+            />
 
-             <Card img="/box/box.webp" 
-            title="Savings Box" 
-            body="woah!!" 
-            href="savings-box"></Card>
+            <!-- Render Other Bags Last -->
+            {otherBags.map(bag => (
+                <Card
+                    img={bag.img}
+                    title={bag.title}
+                    body="Handmade crochet bag."
+                    href={bag.href}
+                />
+            ))}
 
-             <Card img="/snorlax/snorlax.webp" 
-            title="Snorlax Plushie" 
-            body="woah!!" 
-            href="snorlax"></Card>
-
-             <Card img="/bags/1.webp" 
-            title="Crochet Bag" 
-            body="Perfect for your yarn!" 
-            href="crochet-bag"></Card>
-
-             <Card img="/shirt-placeholder.webp" 
-            title="Custom Shirts" 
-            body="Check out our unique shirt designs!" 
-            href="shirt"></Card> -->
         </section>
     </main>
 </Layout>
