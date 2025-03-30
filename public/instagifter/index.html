@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>Instagifter</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+body { margin: 0; padding: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #222; touch-action: manipulation; cursor: none; /* Hide default cursor */ }
+canvas { display: block; }
+#mute-button {
+position: absolute;
+top: 10px;
+right: 10px;
+background-color: rgba(255, 255, 255, 0.7);
+border: none;
+border-radius: 50%;
+width: 40px;
+height: 40px;
+cursor: pointer; /* Show pointer for button */
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 20px;
+z-index: 100;
+}
+#mute-button:hover {
+background-color: rgba(255, 255, 255, 0.9);
+}
+/* Style for custom cursor */
+.custom-cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid white;
+    border-radius: 50%;
+    pointer-events: none; /* Important: allows clicks to pass through */
+    transform: translate(-50%, -50%); /* Center the cursor */
+    z-index: 1000;
+    mix-blend-mode: difference; /* Make it visible on most backgrounds */
+}
+
+</style>
+</head>
+<body>
+<div id="custom-cursor" class="custom-cursor"></div>
+<button id="mute-button">🔊</button>
+<script>
+    // --- Game Configuration ---
+    const PLAYER_START_COUNT = 10;
+    const PLAYER_MEMBER_SIZE = 15;
+    const PLAYER_MAX_SPREAD = 200; // Max width the crowd spreads
+    const PLAYER_SPEED = 5; // Speed for following mouse/touch
+    const FORWARD_SPEED = 3; // How fast the level scrolls
+    const BULLET_SPEED = 8;
+    const BULLET_SIZE = 5;
+    const SHOOT_RATE = 10; // Frames between shots
+    const GATE_WIDTH = 120;
+    const GATE_HEIGHT = 60;
+    const GATE_SPAWN_RATE = 180; // Frames between gate spawns
+    const GATE_INTERACT_RANGE = 50; // How close bullets need to be to affect gate value
+    const ENEMY_BASIC_SIZE = 35; // Increased size
+    const ENEMY_BASIC_HEALTH = 3;
+    const ENEMY_BASIC_SPAWN_RATE = 100; // Slightly less frequent spawn to compensate speed?
+    const ENEMY_BOSS_SIZE = 100;
+    const ENEMY_BOSS_HEALTH = 100;
+    const ENEMY_BOSS_SPAWN_SCORE = 1500; // Score needed to trigger boss
+
+    const LEVEL_END_SCORE = 2000; // Score needed to "win" (can be changed)
+
+    // --- Three.js Audio Setup ---
+    let audioListener;
+    let audioLoader;
+    let shootSound, hitEnemySound, hitGateSound, changeCrowdSound, enemyDefeatSound, bossHitSound, bossDefeatSound, backgroundMusic;
+    let soundsLoaded = false;
+    let soundsToLoad = 7; // Update count for new sounds
+    let soundsLoadedCount = 0;
+    let isMuted = false;
+    let audioUnlocked = false;
+
+    // --- Audio Unlock Logic (Mostly unchanged from original) ---
+    let unlockAudio = () => {
+        if (!audioUnlocked && audioListener && audioListener.context) {
+            console.log(`Attempting to unlock audio. Context state: ${audioListener.context.state}`);
+            if (audioListener.context.state === 'suspended') {
+                audioListener.context.resume().then(() => {
+                    console.log("AudioContext resumed successfully.");
+                    audioUnlocked = true;
+                    if (!isMuted && soundsLoaded && backgroundMusic && !backgroundMusic.isPlaying && gameState === 'PLAYING') {
+                         playBackgroundMusic();
+                    }
+                }).catch(e => console.error("AudioContext resume failed:", e));
+            } else {
+                 console.log(`AudioContext was not suspended (state: ${audioListener.context.state}). Assuming unlocked.`);
+                 audioUnlocked = true;
+            }
+        }
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+        console.log("Removed audio unlock listeners.");
+    };
+
+    // Initialize Three.js audio system
+    function initAudio() {
+        audioListener = new THREE.AudioListener();
+        audioLoader = new THREE.AudioLoader();
+
+        // Create sound objects
+        shootSound = new THREE.Audio(audioListener);
+        hitEnemySound = new THREE.Audio(audioListener);
+        hitGateSound = new THREE.Audio(audioListener);
+        changeCrowdSound = new THREE.Audio(audioListener);
+        enemyDefeatSound = new THREE.Audio(audioListener);
+        bossHitSound = new THREE.Audio(audioListener);
+        bossDefeatSound = new THREE.Audio(audioListener);
+        // backgroundMusic = new THREE.Audio(audioListener); // Keep if you have music
+
+        const onSoundLoaded = (soundId) => {
+            console.log(`${soundId} loaded.`);
+            soundsLoadedCount++;
+            if (soundsLoadedCount === soundsToLoad) {
+                soundsLoaded = true;
+                console.log("All sounds loaded.");
+                unlockAudio(); // Attempt unlock right away
+            }
+        };
+        const onError = (soundId, err) => {
+            console.error(`Error loading ${soundId}:`, err);
+            // Still count it as "loaded" (but failed) to avoid blocking game start forever
+             soundsLoadedCount++;
+             if (soundsLoadedCount === soundsToLoad) {
+                soundsLoaded = true;
+                 console.warn("All sounds attempted load, some failed.");
+                 unlockAudio();
+             }
+        };
+
+        // --- Load NEW Sound Files (Replace with your actual file paths!) ---
+        // IMPORTANT: You need to provide these sound files (e.g., shoot.wav, hit.mp3)
+        audioLoader.load('shoot.wav', b => { shootSound.setBuffer(b); shootSound.setVolume(0.3); onSoundLoaded('shootSound'); }, undefined, e => onError('shootSound', e));
+        audioLoader.load('hit_enemy.wav', b => { hitEnemySound.setBuffer(b); hitEnemySound.setVolume(0.5); onSoundLoaded('hitEnemySound'); }, undefined, e => onError('hitEnemySound', e));
+        audioLoader.load('hit_gate.wav', b => { hitGateSound.setBuffer(b); hitGateSound.setVolume(0.4); onSoundLoaded('hitGateSound'); }, undefined, e => onError('hitGateSound', e));
+        audioLoader.load('change_crowd.wav', b => { changeCrowdSound.setBuffer(b); changeCrowdSound.setVolume(0.6); onSoundLoaded('changeCrowdSound'); }, undefined, e => onError('changeCrowdSound', e));
+        audioLoader.load('enemy_defeat.wav', b => { enemyDefeatSound.setBuffer(b); enemyDefeatSound.setVolume(0.7); onSoundLoaded('enemyDefeatSound'); }, undefined, e => onError('enemyDefeatSound', e));
+        audioLoader.load('boss_hit.wav', b => { bossHitSound.setBuffer(b); bossHitSound.setVolume(0.8); onSoundLoaded('bossHitSound'); }, undefined, e => onError('bossHitSound', e));
+        audioLoader.load('boss_defeat.wav', b => { bossDefeatSound.setBuffer(b); bossDefeatSound.setVolume(1.0); onSoundLoaded('bossDefeatSound'); }, undefined, e => onError('bossDefeatSound', e));
+        // audioLoader.load('background.mp3', b => { backgroundMusic.setBuffer(b); backgroundMusic.setVolume(0.3); backgroundMusic.setLoop(true); onSoundLoaded('backgroundMusic'); }, undefined, e => onError('backgroundMusic', e));
+
+
+        // Setup mute button (Unchanged)
+        const muteButton = document.getElementById('mute-button');
+        if (muteButton) muteButton.addEventListener('click', toggleMute);
+        else console.error("Mute button not found!");
+
+        // Add interaction listeners (Unchanged)
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
+    }
+
+    // Toggle mute (Unchanged)
+    function toggleMute() {
+        isMuted = !isMuted;
+        const muteButton = document.getElementById('mute-button');
+        if (muteButton) muteButton.textContent = isMuted ? '🔇' : '🔊';
+        audioListener.setMasterVolume(isMuted ? 0 : 1);
+        console.log(isMuted ? "Audio muted." : "Audio unmuted.");
+        // Handle background music pause/resume if implemented
+        if (backgroundMusic) {
+            if (isMuted && backgroundMusic.isPlaying) backgroundMusic.pause();
+            else if (!isMuted && !backgroundMusic.isPlaying && gameState === 'PLAYING' && soundsLoaded) playBackgroundMusic();
+        }
+    }
+
+    // Safe play function (Minor modification for sound overlap)
+    function playSound(sound, soundName = 'Unknown', allowOverlap = false) {
+        if (!soundsLoaded || !audioUnlocked || isMuted || !sound || !sound.buffer) {
+            // console.warn(`Cannot play sound (${soundName}): loaded=${soundsLoaded}, unlocked=${audioUnlocked}, muted=${isMuted}, sound obj=${!!sound}, buffer=${sound ? !!sound.buffer : 'N/A'}`);
+            return;
+        }
+        // Stop previous instance unless overlap is allowed (good for rapid fire)
+        if (!allowOverlap && sound.isPlaying) {
+            sound.stop();
+        }
+        // Play (potentially overlapping)
+        try {
+            // Create a new source node for overlap if needed, or just play
+             if (allowOverlap && sound.isPlaying) {
+                // Quick overlap using a temporary Audio object - not the most efficient
+                // but works for moderate amounts of overlap. Pooling would be better.
+                const tempSound = new THREE.Audio(audioListener).setBuffer(sound.buffer);
+                tempSound.setVolume(sound.getVolume());
+                tempSound.play();
+             } else {
+                 sound.play();
+             }
+            // console.log(`Playing sound: ${soundName}`);
+        } catch (e) {
+            console.error(`Error playing sound (${soundName}):`, e);
+        }
+    }
+
+    // Function to start background music safely (Unchanged conceptually)
+    function playBackgroundMusic() {
+       // Implement if you have background music loaded
+        // if (!isMuted && soundsLoaded && audioUnlocked && backgroundMusic && !backgroundMusic.isPlaying) {
+        //     backgroundMusic.play();
+        //     console.log("Playing background music.");
+        // }
+    }
+
+    // Function to stop background music (Unchanged conceptually)
+    function stopBackgroundMusic() {
+        // if (backgroundMusic && backgroundMusic.isPlaying) {
+        //     backgroundMusic.stop();
+        //     console.log("Stopping background music.");
+        // }
+    }
+
+    // --- Game Variables ---
+    let playerCrowd;
+    let bullets = [];
+    let gates = [];
+    let enemies = [];
+    let score = 0;
+    let gameState = 'START'; // START, PLAYING, GAME_OVER, LEVEL_COMPLETE
+    let frameCounter = 0;
+    let canvasWidth, canvasHeight;
+    let levelProgress = 0; // Tracks how far "down" the level we've scrolled
+    let bossSpawned = false;
+    let currentBoss = null;
+
+    // Custom cursor element
+    let customCursor;
+
+
+    // --- p5.js Functions ---
+    function setup() {
+        canvasWidth = windowWidth;
+        canvasHeight = windowHeight;
+        createCanvas(canvasWidth, canvasHeight);
+        initAudio(); // Initialize audio first
+        resetGame();
+        textAlign(CENTER, CENTER);
+        textFont('Arial');
+
+        customCursor = document.getElementById('custom-cursor');
+
+        // Prevent default touch behavior (keep this)
+        document.body.addEventListener('touchstart', function(e) {
+             if (e.target !== document.getElementById('mute-button')) e.preventDefault();
+        }, { passive: false });
+         document.body.addEventListener('touchmove', function(e) {
+             e.preventDefault();
+         }, { passive: false });
+
+         // Update custom cursor position
+         document.addEventListener('mousemove', (e) => {
+            if (customCursor) {
+                customCursor.style.left = `${e.clientX}px`;
+                customCursor.style.top = `${e.clientY}px`;
+            }
+         });
+         document.addEventListener('touchmove', (e) => {
+            if (customCursor && e.touches.length > 0) {
+                 const touch = e.touches[0];
+                customCursor.style.left = `${touch.clientX}px`;
+                customCursor.style.top = `${touch.clientY}px`;
+            }
+         });
+    }
+
+    function windowResized() {
+        canvasWidth = windowWidth;
+        canvasHeight = windowHeight;
+        resizeCanvas(canvasWidth, canvasHeight);
+    }
+
+    function draw() {
+        background(40, 40, 55); // Dark background
+
+        // Game state machine
+        switch (gameState) {
+            case 'START':
+                drawStartScreen();
+                break;
+            case 'PLAYING':
+                runGame();
+                break;
+            case 'GAME_OVER':
+                runGameOverView(); // Draw static elements
+                drawGameOverScreen();
+                break;
+            case 'LEVEL_COMPLETE':
+                 runGameOverView(); // Draw static elements
+                 drawWinScreen();
+                break;
+        }
+
+         // Always draw custom cursor if not touching mute button
+        if (!document.getElementById('mute-button').contains(event?.target)) {
+             noCursor(); // Hide p5 default cursor
+             if (customCursor) customCursor.style.display = 'block';
+         } else {
+             cursor(ARROW); // Show default cursor over button
+             if (customCursor) customCursor.style.display = 'none';
+         }
+    }
+
+    // Could also use mouseIsPressed inside draw for continuous shooting
+    function handleInput() {
+        // Called when game is PLAYING
+        // Always check shoot rate, no input needed
+        if (frameCounter % SHOOT_RATE === 0) {
+            playerCrowd.shoot();
+        }
+    }
+
+     function mousePressed() {
+         if (event && event.target === document.getElementById('mute-button')) return;
+         if (!audioUnlocked) unlockAudio();
+
+         switch (gameState) {
+             case 'START':
+                 if (soundsLoaded) {
+                     startGame();
+                 } else {
+                     console.log("Sounds not loaded yet.");
+                 }
+                 break;
+            // Shooting is handled by handleInput based on mouseIsPressed
+             case 'GAME_OVER':
+             case 'LEVEL_COMPLETE':
+                 resetGame();
+                 gameState = 'START';
+                 break;
+         }
+     }
+
+    function touchStarted() {
+         if (event && event.target === document.getElementById('mute-button')) return;
+        if (!audioUnlocked) unlockAudio(); // Call unlock here too
+
+         switch (gameState) {
+             case 'START':
+                 if (soundsLoaded) {
+                     startGame();
+                 } else {
+                     console.log("Sounds not loaded yet.");
+                 }
+                 break;
+             case 'GAME_OVER':
+             case 'LEVEL_COMPLETE':
+                 resetGame();
+                 gameState = 'START';
+                 break;
+         }
+        return false; // Prevent default behavior
+    }
+
+
+    // --- Game Logic Functions ---
+    function startGame() {
+        gameState = 'PLAYING';
+        playBackgroundMusic();
+    }
+
+    function resetGame() {
+        stopBackgroundMusic();
+        playerCrowd = new PlayerCrowd(width / 2, height * 0.8); // Start near bottom-center
+        bullets = [];
+        gates = [];
+        enemies = [];
+        score = 0;
+        frameCounter = 0;
+        levelProgress = 0;
+        bossSpawned = false;
+        currentBoss = null;
+        // gameState is set by the caller (mousePressed/touchStarted)
+    }
+
+    function runGame() {
+        levelProgress += FORWARD_SPEED; // Simulate scrolling
+
+        // --- Handle Input ---
+        handleInput(); // Check for shooting input
+
+        // --- Update Player ---
+        playerCrowd.update();
+        playerCrowd.moveTowards(mouseX); // Player follows mouse/touch X
+
+        // --- Update Bullets ---
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            bullets[i].update();
+            if (bullets[i].isOffscreen()) {
+                bullets.splice(i, 1);
+            }
+        }
+
+        // --- Spawn & Update Gates ---
+        if (!bossSpawned && frameCounter % GATE_SPAWN_RATE === 0) {
+            gates.push(new Gate(random(width * 0.1, width * 0.9), -GATE_HEIGHT));
+        }
+        for (let i = gates.length - 1; i >= 0; i--) {
+            gates[i].update();
+            if (gates[i].isOffscreen()) {
+                gates.splice(i, 1);
+            }
+        }
+
+        // --- Spawn & Update Enemies ---
+        // Basic Enemies
+        if (!bossSpawned && frameCounter % ENEMY_BASIC_SPAWN_RATE === 0) {
+            enemies.push(new BasicEnemy(random(width * 0.1, width * 0.9), -ENEMY_BASIC_SIZE));
+        }
+        // Boss Enemy
+        if (!bossSpawned && score >= ENEMY_BOSS_SPAWN_SCORE) {
+            spawnBoss();
+        }
+
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            enemies[i].update();
+            if (enemies[i].isOffscreen() || enemies[i].health <= 0) {
+                 if (enemies[i].health <= 0) {
+                    // Score points for defeating enemy
+                    score += enemies[i].scoreValue;
+                     if (enemies[i].isBoss) {
+                         playSound(bossDefeatSound, 'bossDefeatSound');
+                         levelComplete(); // Boss defeated = level complete
+                     } else {
+                         playSound(enemyDefeatSound, 'enemyDefeatSound');
+                     }
+                 }
+                 // Remove if offscreen OR defeated
+                if (enemies[i] === currentBoss) currentBoss = null; // Clear boss reference
+                enemies.splice(i, 1);
+            }
+        }
+
+
+        // --- Handle Collisions ---
+        checkCollisions();
+
+        // --- Draw Everything ---
+        drawBackgroundElements(); // Stars, etc.
+        playerCrowd.draw();
+        for (let bullet of bullets) bullet.draw();
+        for (let gate of gates) gate.draw();
+        for (let enemy of enemies) enemy.draw();
+
+        // --- Draw UI ---
+        drawUI();
+
+        // --- Check Game Over ---
+        if (playerCrowd.members.length <= 0) {
+            gameOver();
+        }
+
+        // --- Check Level Complete (alternative trigger) ---
+        // if (!bossSpawned && score >= LEVEL_END_SCORE) {
+        //     levelComplete();
+        // }
+
+        frameCounter++;
+    }
+
+    // Function to draw elements when game is over/won (no updates)
+    function runGameOverView() {
+         drawBackgroundElements();
+         playerCrowd.draw(); // Draw crowd in its final state
+         for (let bullet of bullets) bullet.draw();
+         for (let gate of gates) gate.draw();
+         for (let enemy of enemies) enemy.draw();
+         drawUI(); // Draw final score etc.
+    }
+
+    function spawnBoss() {
+         console.log("Spawning Boss!");
+         bossSpawned = true;
+         let boss = new BossEnemy(width / 2, -ENEMY_BOSS_SIZE * 2); // Spawn offscreen top
+         enemies.push(boss);
+         currentBoss = boss;
+         // Maybe stop spawning other things? Or slow them down?
+         // Clear existing gates/enemies? Optional.
+         // gates = [];
+         // enemies = enemies.filter(e => e.isBoss); // Keep only the boss
+    }
+
+
+    function checkCollisions() {
+        // Bullets vs Enemies
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            let bullet = bullets[i];
+            let hit = false;
+            for (let j = enemies.length - 1; j >= 0; j--) {
+                let enemy = enemies[j];
+                if (dist(bullet.x, bullet.y, enemy.x, enemy.y) < (bullet.size / 2 + enemy.size / 2)) {
+                    enemy.hit(bullet.damage);
+                    hit = true;
+                     if(enemy.isBoss) playSound(bossHitSound, 'bossHitSound', true);
+                     else playSound(hitEnemySound, 'hitEnemySound', true);
+                    break; // Bullet hits one enemy max
+                }
+            }
+            if (hit) {
+                bullets.splice(i, 1); // Remove bullet after hit
+            }
+        }
+
+        // Bullets vs Gates (Interaction)
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            let bullet = bullets[i];
+            let hitGate = false;
+             for (let gate of gates) {
+                 // Check if bullet is near the gate's center horizontally and vertically aligned
+                 if (abs(bullet.x - gate.x) < gate.width / 2 &&
+                     abs(bullet.y - gate.y) < gate.height / 2 + GATE_INTERACT_RANGE) { // Check y proximity
+                     if (gate.interact(bullet)) { // Let the gate handle the interaction logic
+                         hitGate = true;
+                         playSound(hitGateSound, 'hitGateSound', true);
+                         break; // Bullet interacts with one gate max
+                     }
+                 }
+             }
+             if (hitGate) {
+                 bullets.splice(i, 1); // Remove bullet after interaction
+             }
+        }
+
+
+        // Player Crowd vs Gates (Passing Through)
+        let playerBounds = playerCrowd.getBounds();
+        for (let i = gates.length - 1; i >= 0; i--) {
+            let gate = gates[i];
+            // Check for vertical overlap (player's front edge passing gate center)
+            if (playerBounds.bottom > gate.y - gate.height / 2 && playerBounds.top < gate.y + gate.height / 2) {
+                 // Check for horizontal overlap
+                 if (playerBounds.right > gate.x - gate.width / 2 && playerBounds.left < gate.x + gate.width / 2) {
+                    // Collision! Apply gate effect
+                    playerCrowd.applyGateEffect(gate);
+                    gates.splice(i, 1); // Remove gate after passing
+                    playSound(changeCrowdSound, 'changeCrowdSound');
+                 }
+            }
+        }
+
+        // Player Crowd vs Enemies
+         for (let i = enemies.length - 1; i >= 0; i--) {
+            let enemy = enemies[i];
+            // Simple check: any crowd member touches enemy?
+            let collision = false;
+            for (let member of playerCrowd.members) {
+                 if (dist(member.displayX, member.displayY, enemy.x, enemy.y) < (PLAYER_MEMBER_SIZE / 2 + enemy.size / 2)) {
+                     collision = true;
+                     break;
+                 }
+            }
+
+             if (collision) {
+                console.log("Crowd hit enemy!");
+                // Lose members based on enemy type/damage? For now, lose a fixed amount.
+                playerCrowd.removeMembers(enemy.collisionDamage || 5); // Enemy causes crowd loss
+                 // Remove the basic enemy on collision, boss takes multiple hits potentially
+                 if (!enemy.isBoss) {
+                    enemies.splice(i, 1);
+                 } else {
+                     // Maybe push player back slightly from boss?
+                     // playerCrowd.y += 20;
+                 }
+                playSound(hitEnemySound, 'hitEnemySound'); // Sound for player getting hit
+                 if (playerCrowd.members.length <= 0) {
+                    gameOver();
+                    return; // Stop checking if game over
+                 }
+             }
+        }
+    }
+
+    function gameOver() {
+        if (gameState === 'PLAYING') {
+           gameState = 'GAME_OVER';
+           stopBackgroundMusic();
+           // playSound(gameOverSound); // Add a game over sound if you have one
+           console.log("GAME OVER");
+        }
+    }
+
+    function levelComplete() {
+         if (gameState === 'PLAYING') {
+            gameState = 'LEVEL_COMPLETE';
+             stopBackgroundMusic();
+            // playSound(winSound); // Add a win sound if you have one
+            console.log("LEVEL COMPLETE");
+         }
+    }
+
+    // --- Drawing Functions ---
+     function drawBackgroundElements() {
+        // Simple moving starfield effect
+        fill(200, 200, 255, 150);
+        noStroke();
+        randomSeed(42); // Keep star pattern consistent
+        for (let i = 0; i < 100; i++) {
+            let starX = random(width);
+            // Make stars scroll with level progress, wrapping around
+            let starY = (random(height * 2) - levelProgress * 0.5) % height; // Slower scroll for parallax
+            if (starY < 0) starY += height;
+            ellipse(starX, starY, random(1, 3), random(1, 3));
+        }
+         randomSeed(); // Reset random seed
+    }
+
+
+    function drawUI() {
+        // Score Display
+        textSize(28);
+        fill(255, 220, 0);
+        stroke(0);
+        strokeWeight(3);
+        textAlign(LEFT, TOP);
+        text(`Score: ${score}`, 15, 15);
+
+        // Crowd Count Display
+        fill(100, 150, 255);
+        text(`Crowd: ${playerCrowd.members.length}`, 15, 50);
+
+        // Boss Health (if boss exists)
+        if (currentBoss) {
+             textAlign(CENTER, TOP);
+             fill(255, 0, 0);
+             text(`BOSS HEALTH`, width / 2, 15);
+             // Health bar
+             let barWidth = width * 0.4;
+             let barHeight = 20;
+             let currentHealthWidth = map(currentBoss.health, 0, currentBoss.maxHealth, 0, barWidth);
+             fill(100);
+             rectMode(CORNER);
+             rect(width / 2 - barWidth / 2, 45, barWidth, barHeight);
+             fill(255, 0, 0);
+             rect(width / 2 - barWidth / 2, 45, currentHealthWidth, barHeight);
+        }
+
+
+        noStroke(); // Reset stroke
+    }
+
+     function drawStartScreen() {
+        textAlign(CENTER, CENTER);
+        fill(0, 0, 0, 180); // Semi-transparent overlay
+        rect(0,0, width, height);
+
+        fill(50, 100, 255);
+        textSize(56);
+        text("Blue Crowd Shooter", width / 2, height / 3);
+
+        if (!soundsLoaded) {
+            fill(255);
+            textSize(24);
+            text("Loading Awesome Sounds...", width / 2, height / 2);
+        } else {
+            fill(255);
+            textSize(32);
+            text("Click or Tap to Start!", width / 2, height / 2);
+            textSize(20);
+             text("Drag to Move, Auto-Shoots!", width / 2, height / 2 + 50);
+             text("Shoot gates to change them!", width / 2, height / 2 + 80);
+             text(`Defeat the Boss after ${ENEMY_BOSS_SPAWN_SCORE} points!`, width / 2, height / 2 + 110);
+        }
+    }
+
+    function drawGameOverScreen() {
+        textAlign(CENTER, CENTER);
+        fill(150, 0, 0, 200); // Red overlay
+        rect(0,0, width, height);
+
+        fill(255);
+        textSize(64);
+        text("GAME OVER", width / 2, height / 3);
+        textSize(32);
+        text(`Final Score: ${score}`, width / 2, height / 2);
+         textSize(24);
+        text("Click or Tap to Restart", width / 2, height / 2 + 60);
+    }
+
+    function drawWinScreen() {
+        textAlign(CENTER, CENTER);
+        fill(0, 150, 50, 220); // Green overlay
+        rect(0,0, width, height);
+
+        fill(255, 215, 0); // Gold color
+        textSize(72);
+        text("VICTORY!", width / 2, height / 3);
+
+        fill(255);
+        textSize(32);
+        text(`You beat the boss with ${score} points!`, width / 2, height / 2);
+        textSize(24);
+        text("Click or Tap to Play Again", width / 2, height / 2 + 60);
+    }
+
+    // --- Classes ---
+
+    // Represents a single member of the player's crowd
+    class CrowdMember {
+        constructor(parentX, parentY) {
+            // Position relative to the parent crowd center
+            this.offsetX = random(-PLAYER_MAX_SPREAD / 4, PLAYER_MAX_SPREAD / 4);
+            this.offsetY = random(-PLAYER_MEMBER_SIZE * 1.5, PLAYER_MEMBER_SIZE * 1.5);
+            this.parentX = parentX;
+            this.parentY = parentY;
+            this.size = PLAYER_MEMBER_SIZE;
+            this.color = color(80, 120, 255, 220); // Blueish
+
+             // Store the actual display position for drawing and collision
+             this.displayX = this.parentX + this.offsetX;
+             this.displayY = this.parentY + this.offsetY;
+        }
+
+        update(parentX, parentY, crowdWidth) {
+             // Smoothly update offset based on crowd size? Or just recalculate?
+             // Let's try recalculating offsets occasionally or when size changes significantly
+             // For now, just update display position based on parent's movement
+             this.parentX = parentX;
+             this.parentY = parentY;
+
+             // Adjust offsetX based on the current spread
+            let currentSpread = min(PLAYER_MAX_SPREAD, crowdWidth); // Use calculated width
+             this.offsetX = lerp(this.offsetX, random(-currentSpread / 2, currentSpread / 2), 0.1); // Smooth readjustment
+             this.offsetY = lerp(this.offsetY, random(-PLAYER_MEMBER_SIZE * 1.5, PLAYER_MEMBER_SIZE * 1.5), 0.1);
+
+
+             this.displayX = this.parentX + this.offsetX;
+             this.displayY = this.parentY + this.offsetY;
+        }
+
+        draw() {
+            fill(this.color);
+            noStroke();
+            ellipse(this.displayX, this.displayY, this.size, this.size);
+            // Add eyes?
+             fill(255);
+             ellipse(this.displayX - this.size*0.15, this.displayY - this.size*0.1, this.size*0.2, this.size*0.2);
+             ellipse(this.displayX + this.size*0.15, this.displayY - this.size*0.1, this.size*0.2, this.size*0.2);
+        }
+    }
+
+
+    class PlayerCrowd {
+        constructor(x, y) {
+            this.x = x; // Center X of the crowd
+            this.targetX = x; // Target X for smooth movement
+            this.y = y; // Center Y of the crowd
+            this.members = [];
+            for (let i = 0; i < PLAYER_START_COUNT; i++) {
+                this.members.push(new CrowdMember(this.x, this.y));
+            }
+             this.currentSpread = this.calculateSpread();
+        }
+
+        calculateSpread() {
+            // Calculate spread based on member count, up to max spread
+            // Example: Square root scaling, capped
+             let baseSpread = sqrt(this.members.length) * PLAYER_MEMBER_SIZE * 0.8;
+             return min(baseSpread, PLAYER_MAX_SPREAD);
+        }
+
+
+        update() {
+             // Smoothly move towards the target X
+            this.x = lerp(this.x, this.targetX, 0.15); // Adjust lerp factor for responsiveness
+            this.x = constrain(this.x, this.currentSpread / 2, width - this.currentSpread / 2); // Keep crowd on screen
+
+
+            // Update current spread based on member count
+            this.currentSpread = this.calculateSpread();
+
+            // Update individual members
+            for (let member of this.members) {
+                member.update(this.x, this.y, this.currentSpread);
+            }
+        }
+
+        moveTowards(newTargetX) {
+            this.targetX = constrain(newTargetX, this.currentSpread / 2, width - this.currentSpread / 2);
+        }
+
+        draw() {
+            for (let member of this.members) {
+                member.draw();
+            }
+        }
+
+        shoot() {
+            if (this.members.length <= 0) return;
+
+             // Number of bullets based on crowd size (e.g., 1 per 5 members, min 1)
+             let numBullets = max(1, floor(this.members.length / 5));
+
+            // Distribute bullets across the crowd's width
+             let fireWidth = min(this.currentSpread, PLAYER_MAX_SPREAD * 0.8); // Don't fire from extreme edges
+
+             for (let i = 0; i < numBullets; i++) {
+                 let offsetX = map(i, 0, numBullets -1, -fireWidth / 2, fireWidth / 2);
+                 // Add slight randomness to origin
+                 let startX = this.x + offsetX + random(-5, 5);
+                 let startY = this.y - PLAYER_MEMBER_SIZE + random(-10, 10); // Start slightly above center
+                 bullets.push(new Bullet(startX, startY));
+             }
+             playSound(shootSound, 'shootSound', true); // Allow overlap for rapid fire
+        }
+
+        addMembers(count) {
+             let added = 0;
+             for (let i = 0; i < count; i++) {
+                 // Add limit? Maybe max crowd size?
+                 this.members.push(new CrowdMember(this.x, this.y));
+                 added++;
+             }
+             console.log(`Added ${added} members. Total: ${this.members.length}`);
+             // Could trigger a visual effect here
+        }
+
+        removeMembers(count) {
+            let removed = 0;
+            for (let i = 0; i < count; i++) {
+                if (this.members.length > 0) {
+                    this.members.pop(); // Remove from the end (simplest way)
+                    removed++;
+                } else {
+                    break; // Stop if crowd is empty
+                }
+            }
+             console.log(`Removed ${removed} members. Total: ${this.members.length}`);
+             // Could trigger a visual effect here
+             if (this.members.length <= 0) {
+                 gameOver();
+             }
+        }
+
+        applyGateEffect(gate) {
+             console.log(`Applying Gate: Type=${gate.type}, Value=${gate.displayValue}`);
+             let baseValue = this.members.length;
+             let change = 0;
+
+             switch (gate.type) {
+                 case 'ADD':
+                     change = gate.displayValue;
+                     this.addMembers(change);
+                     break;
+                 case 'SUBTRACT':
+                     change = gate.displayValue;
+                      this.removeMembers(change);
+                     break;
+                 case 'MULTIPLY':
+                     // Multiply by value, add the *difference*
+                     change = Math.floor(baseValue * gate.displayValue) - baseValue;
+                      if (change > 0) this.addMembers(change);
+                      else if (change < 0) this.removeMembers(abs(change)); // removeMembers takes positive count
+                     break;
+                  case 'DIVIDE':
+                     // Divide by value, remove the *difference*
+                     change = baseValue - Math.floor(baseValue / gate.displayValue);
+                      if (change > 0) this.removeMembers(change);
+                     break;
+             }
+              // Add score based on positive gate interaction? Optional.
+              // score += max(0, change * 5); // Example score bonus
+        }
+
+        getBounds() {
+             // Approximate bounds of the crowd for collision
+             let spread = this.currentSpread;
+             return {
+                 left: this.x - spread / 2,
+                 right: this.x + spread / 2,
+                 top: this.y - PLAYER_MEMBER_SIZE * 1.5, // Approx top based on member offsets
+                 bottom: this.y + PLAYER_MEMBER_SIZE * 1.5 // Approx bottom
+             };
+        }
+    }
+
+    class Bullet {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.speed = BULLET_SPEED;
+            this.size = BULLET_SIZE;
+            this.damage = 1; // Damage per bullet
+            this.color = color(255, 255, 100); // Yellowish laser
+        }
+
+        update() {
+            this.y -= this.speed; // Move upwards
+        }
+
+        draw() {
+            fill(this.color);
+            noStroke();
+            // Draw as a small line/capsule for laser effect
+            rectMode(CENTER);
+            rect(this.x, this.y, this.size * 0.5, this.size * 2);
+            // ellipse(this.x, this.y, this.size, this.size); // Alternative: simple circle
+        }
+
+        isOffscreen() {
+            return (this.y < -this.size);
+        }
+    }
+
+     class Gate {
+         constructor(x, y) {
+             this.x = x;
+             this.y = y;
+             this.width = GATE_WIDTH;
+             this.height = GATE_HEIGHT;
+             this.speed = FORWARD_SPEED; // Move down with the level
+
+             // Gate type and value
+             this.types = ['ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE'];
+             this.type = random(this.types);
+             this.baseValue = this.generateValue(this.type);
+             this.currentValue = this.baseValue; // Value affected by shooting
+             this.displayValue = this.currentValue; // Value shown and used
+
+             this.colors = { // Assign colors based on type
+                 'ADD': color(0, 200, 0, 200),      // Green
+                 'SUBTRACT': color(200, 0, 0, 200), // Red
+                 'MULTIPLY': color(0, 0, 200, 200), // Blue
+                 'DIVIDE': color(200, 150, 0, 200)  // Orange/Yellow
+             };
+             this.color = this.colors[this.type];
+
+             // Sliding motion
+             this.slideSpeed = random(1, 2.5);
+             this.slideRange = width * 0.15; // How far it slides
+             this.initialX = x; // Center point for sliding
+             this.slideOffset = random(TWO_PI); // Start sliding at random phase
+
+             this.interactionCooldown = 0; // Prevent instant value change spam
+         }
+
+         generateValue(type) {
+             switch (type) {
+                 case 'ADD': return floor(random(5, 21)); // Add 5-20
+                 case 'SUBTRACT': return floor(random(5, 21)); // Subtract 5-20
+                 case 'MULTIPLY': return floor(random(2, 4)); // Multiply x2, x3
+                 case 'DIVIDE': return floor(random(2, 4)); // Divide by 2, 3
+                 default: return 1;
+             }
+         }
+
+         update() {
+             this.y += this.speed; // Move down
+
+             // Sliding motion
+             this.x = this.initialX + sin(frameCount * 0.02 * this.slideSpeed + this.slideOffset) * this.slideRange;
+             // Constrain sliding within screen bounds
+              this.x = constrain(this.x, this.width / 2, width - this.width / 2);
+
+
+             // Gradually revert currentValue towards baseValue if not recently shot? (Optional complexity)
+              if (this.interactionCooldown > 0) {
+                  this.interactionCooldown--;
+              } else {
+                   // Slowly drift back towards base value? Or stay changed? Let's keep it changed for now.
+              }
+             // Update display value (ensure sensible values)
+             this.displayValue = max( (this.type === 'DIVIDE' || this.type === 'MULTIPLY' ? 1 : 0) , floor(this.currentValue)); // Min 1 for mult/div, min 0 for add/sub
+
+         }
+
+         draw() {
+             push();
+             translate(this.x, this.y);
+             rectMode(CENTER);
+             fill(this.color);
+             stroke(255);
+             strokeWeight(2);
+             rect(0, 0, this.width, this.height, 10); // Rounded corners
+
+             // Draw text indicating type and value
+             fill(255);
+             noStroke();
+             textSize(24);
+             let symbol = '';
+             switch (this.type) {
+                 case 'ADD': symbol = '+'; break;
+                 case 'SUBTRACT': symbol = '-'; break;
+                 case 'MULTIPLY': symbol = 'x'; break;
+                 case 'DIVIDE': symbol = '÷'; break;
+             }
+             text(`${symbol}${this.displayValue}`, 0, 0); // Text centered on gate
+             pop();
+         }
+
+         // Called when a bullet hits near the gate
+         interact(bullet) {
+             if (this.interactionCooldown <= 0) {
+                 console.log(`Bullet interacted with ${this.type} gate. Current: ${this.currentValue}`);
+                 // --- Modified Interaction Logic ---
+                 switch (this.type) {
+                    case 'ADD':
+                        // Increase addition amount logarithmically
+                        this.currentValue += Math.max(1, Math.log10(this.currentValue + 1) * 2); // Ensure at least +1 increase, scale log
+                        this.currentValue = Math.min(this.currentValue, 100); // Add a cap to prevent excessive growth
+                        break;
+                    case 'SUBTRACT':
+                        // Increase subtraction amount (make it more negative)
+                        this.currentValue += 1; // Make the number larger (subtract more)
+                        this.currentValue = Math.min(this.currentValue, 50); // Cap max subtraction
+                        break;
+                    case 'MULTIPLY':
+                         // Increase multiplier logarithmically
+                        this.currentValue += Math.max(0.1, Math.log10(this.currentValue + 1) * 0.15); // Ensure small base increase, scale log
+                        this.currentValue = Math.min(this.currentValue, 8); // Cap max multiplier
+                        break;
+                    case 'DIVIDE':
+                        // Increase divisor (make division harsher)
+                         this.currentValue += 0.2; // Make the divisor larger
+                         this.currentValue = Math.min(this.currentValue, 10); // Cap max divisor
+                        break;
+                 }
+
+                 // Ensure values remain sensible after modification
+                 if (this.type === 'MULTIPLY' || this.type === 'DIVIDE') {
+                     this.currentValue = Math.max(1, this.currentValue); // Multiplier/Divisor shouldn't go below 1
+                 } else { // ADD or SUBTRACT
+                     this.currentValue = Math.max(0, this.currentValue); // Add/Subtract value shouldn't go below 0
+                 }
+                 // --- End Modified Logic ---
+
+
+                 this.interactionCooldown = 5; // Short cooldown after interaction
+                 console.log(`   New value (rounded for display): ${this.displayValue}`); // Log the display value used
+                 return true; // Interaction happened
+             }
+             return false; // Cooldown active
+         }
+
+         isOffscreen() {
+             return (this.y > height + this.height);
+         }
+     }
+
+
+    // --- Enemy Classes ---
+     class Enemy {
+         constructor(x, y, size, health, speed, color, scoreValue = 10) {
+             this.x = x;
+             this.y = y;
+             this.size = size;
+             this.health = health;
+             this.maxHealth = health; // Store max health for potential health bars
+             this.speed = speed;
+             this.color = color;
+             this.isBoss = false;
+             this.scoreValue = scoreValue; // Points awarded for defeating
+             this.collisionDamage = 5; // How many crowd members lost on collision
+         }
+
+         update() {
+             this.y += this.speed; // Basic downward movement
+             // Add more complex movement patterns here (e.g., zig-zag)
+         }
+
+         draw() {
+             // Basic enemy shape
+             fill(this.color);
+             stroke(0);
+             strokeWeight(1);
+             rectMode(CENTER);
+             rect(this.x, this.y, this.size, this.size, this.size * 0.2); // Slightly rounded square
+
+             // Optional: Simple health bar above enemy
+             if (this.health < this.maxHealth) {
+                 let barWidth = this.size * 0.8;
+                 let barHeight = 5;
+                 let healthPercent = this.health / this.maxHealth;
+                 fill(255, 0, 0); // Red background
+                 rect(this.x, this.y - this.size * 0.7, barWidth, barHeight);
+                 fill(0, 255, 0); // Green health
+                 rectMode(CORNER); // Health bar draws from left
+                 rect(this.x - barWidth / 2, this.y - this.size * 0.7 - barHeight / 2, barWidth * healthPercent, barHeight);
+                 rectMode(CENTER); // Reset mode
+             }
+         }
+
+         hit(damage) {
+             this.health -= damage;
+             // Add hit flash effect?
+             // this.color = color(255, 255, 255); // Flash white
+             // setTimeout(() => { this.color = originalColor; }, 50);
+             console.log(`Enemy hit! Health: ${this.health}/${this.maxHealth}`);
+         }
+
+         isOffscreen() {
+             return (this.y > height + this.size);
+         }
+     }
+
+     class BasicEnemy extends Enemy {
+         constructor(x, y) {
+             super(x, y,
+                   ENEMY_BASIC_SIZE,
+                   ENEMY_BASIC_HEALTH,
+                   FORWARD_SPEED * 1.5, // Increased speed multiplier
+                   color(200, 50, 80, 220), // Reddish color
+                   50); // Score value
+             this.collisionDamage = 10; // Basic enemies hurt more on touch?
+             // Add simple side-to-side movement
+             this.baseX = x;
+             this.movePhase = random(TWO_PI);
+             this.moveRange = random(30, 80);
+             this.moveSpeed = random(0.03, 0.06);
+         }
+
+         update() {
+             super.update(); // Call parent update (moves down)
+             // Add horizontal movement
+              this.x = this.baseX + sin(frameCount * this.moveSpeed + this.movePhase) * this.moveRange;
+              this.x = constrain(this.x, this.size / 2, width - this.size / 2);
+         }
+     }
+
+     class BossEnemy extends Enemy {
+         constructor(x, y) {
+             super(x, y,
+                   ENEMY_BOSS_SIZE,
+                   ENEMY_BOSS_HEALTH,
+                   FORWARD_SPEED * 0.5, // Moves down slower
+                   color(150, 50, 200, 240), // Purple color
+                   500); // High score value
+             this.isBoss = true;
+             this.collisionDamage = 25; // Boss collision is devastating
+
+              // More complex movement pattern or attacks can be added here
+              this.movePhase = random(TWO_PI);
+              this.moveRange = width * 0.3;
+              this.moveSpeed = 0.015;
+               this.targetY = height * 0.25; // Where the boss tries to hover
+         }
+
+         update() {
+             // Move towards target Y position, then patrol
+             if (this.y < this.targetY) {
+                this.y += this.speed;
+             } else {
+                 // Patrol horizontally once in position
+                 this.x = width/2 + sin(frameCount * this.moveSpeed + this.movePhase) * this.moveRange;
+                 this.x = constrain(this.x, this.size / 2, width - this.size / 2);
+             }
+
+             // Boss specific logic: Maybe shoot back? Spawn minions? (Future features)
+         }
+
+         draw() {
+             // Draw a more distinct boss shape
+              push();
+              translate(this.x, this.y);
+              fill(this.color);
+              stroke(0);
+              strokeWeight(3);
+              rectMode(CENTER);
+              // Main body
+              rect(0, 0, this.size, this.size, this.size * 0.3);
+              // "Eyes" or features
+               fill(255, 200, 0);
+               ellipse(-this.size * 0.25, -this.size * 0.1, this.size * 0.2, this.size * 0.3);
+               ellipse(this.size * 0.25, -this.size * 0.1, this.size * 0.2, this.size * 0.3);
+               // "Mouth" or detail
+               fill(50);
+               rect(0, this.size * 0.25, this.size * 0.5, this.size * 0.1, 5);
+               pop();
+
+             // No separate health bar, rely on UI bar maybe? Or draw one here.
+             // super.draw(); // Could call parent draw if needed, but we override
+         }
+
+          // Override hit if needed (e.g., different sound, visual effect)
+          hit(damage) {
+              super.hit(damage);
+              // Add boss specific hit effect? Screen shake?
+          }
+     }
+
+
+</script>
+Use code with caution.
+</body>
+</html>
