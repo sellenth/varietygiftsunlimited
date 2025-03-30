@@ -4,122 +4,165 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Variety Gifts Unlimited - Unique and Fun Gifts" hideHeader={false}>
-    <h1>Welcome to the Game Browser</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:w-1/2 mx-auto">
-
-        <a href="/flappy-cash/index.html">
-            <div class="game mb-2">
-                <h2 class="text-white">Flappy Cash</h2>
-                <div class="wavy-container mx-auto">
-                    <div class="flappy-preview">
-                        <div class="money-symbol">$</div>
+    <div class="game-browser">
+        <h1>Game Browser</h1>
+        <div class="grid">
+            <a href="/flappy-cash/index.html" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <div class="flappy-preview">
+                            <div class="money-symbol">$</div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Flappy Cash</h2>
+                        <div class="button">Play Now</div>
                     </div>
                 </div>
-                <div class="button">
-                    Play Now
+            </a>
+            
+            <a href="/gifty-dodge" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <img src="/gifty-dodge/gifty-dodge.png" alt="Gifty Dodge Game" class="game-image" />
+                    </div>
+                    <div class="game-info">
+                        <h2>Gifty Dodge</h2>
+                        <div class="button">Play Now</div>
+                    </div>
                 </div>
-            </div>
-        </a>
-        <a href="/gifty-dodge">
-            <div class="game mb-2">
-                <h2 class="text-white">Gifty Dodge</h2>
-                <img src="/gifty-dodge/gifty-dodge.png" alt="Gifty Dodge Game" style="width: 300px; height: 300px;" class="mx-auto" />
-                <div class="button">
-                    Play Now
-                </div>
-            </div>
-        </a>
+            </a>
 
-        <a href="/hoops/index.html">
-            <div class="game mb-2 ">
-                <img src="/game/shootout.png" alt="Flappy Stacks Art" style="width: 300px; height: 300px;" class="mx-auto" />
-                <div class="button">
-                    Play Now
+            <a href="/instagifter/index.html" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <div class="instagifter-preview">
+                            <div class="gift-box">
+                                <div class="gift-box-base"></div>
+                                <div class="gift-box-lid"></div>
+                                <div class="gift-ribbon-v"></div>
+                                <div class="gift-ribbon-h"></div>
+                                <div class="gift-glow"></div>
+                                <div class="gift-particles"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>InstaGifter</h2>
+                        <div class="button">Play Now</div>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
 
-        <a href="/savings-box-anthology">
-            <div class="game mb-2 ">
-                <h2 class="text-white">Original Collection</h2>
-                <img src="/game/preview.png" alt="Flappy Stacks Art" style="width: 300px; height: 300px;" class="mx-auto" />
-                <div class="button">
-                    Play Now
+            <a href="/hoops/index.html" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <img src="/game/shootout.png" alt="Basketball Game" class="game-image" />
+                    </div>
+                    <div class="game-info">
+                        <h2>Hoops</h2>
+                        <div class="button">Play Now</div>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+
+            <a href="/savings-box-anthology" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <img src="/game/preview.png" alt="Original Collection" class="game-image" />
+                    </div>
+                    <div class="game-info">
+                        <h2>Original Collection</h2>
+                        <div class="button">Play Now</div>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 </Layout>
 
 <style>
-    h1 { 
-        text-align: center; 
-        margin-bottom: 20px; 
-        font-size: 36px; 
-    }
-    .game { 
-        border: 2px solid #fff; 
-        border-radius: 10px; 
-        padding: 20px; 
-        text-align: center; 
-        background: rgba(0, 0, 0, 0.7); 
-        transition: transform 0.3s;
-    }
-    .game h2 { 
-        margin: 0; 
-        font-size: 24px; 
-        margin-bottom: 15px; 
-    }
-    .game:hover { 
-        transform: scale(1.05); 
-    }
-    .button { 
-        margin-top: 10px; 
-        padding: 10px; 
-        background-color: #007BFF; 
-        color: white; 
-        border: none; 
-        border-radius: 5px; 
-        cursor: pointer; 
-        text-decoration: none;
-        transition: background-color 0.3s;
-    }
-    .button:hover { 
-        background-color: #0056b3; 
-    }
-    .container { 
-        display: flex; 
-        flex-direction: column;
-        justify-content: space-around; 
-        width: 80%; 
-        flex-wrap: wrap;
-    }
-    @media (max-width: 768px) {
-        .container {
-            flex-direction: column;
-            align-items: center;
-        }
-        .game {
-            margin-bottom: 20px;
-        }
+    .game-browser {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     }
 
-    .wavy-container {
-        width: 300px;
-        height: 300px;
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #2a2a72;
+        background: linear-gradient(to right, #5e72eb, #ff9190);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .game-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .game {
+        border-radius: 16px;
         overflow: hidden;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 6px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .game-image-container {
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%; /* 1:1 Aspect Ratio */
         position: relative;
+        overflow: hidden;
+    }
+
+    .game-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .game:hover .game-image {
+        transform: scale(1.1);
     }
 
     .flappy-preview {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(45deg, #4CAF50, #2196F3);
-        position: relative;
-        overflow: hidden;
+        background: linear-gradient(45deg, #00c6ff, #0072ff);
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
     }
 
     .flappy-preview::before {
@@ -150,11 +193,194 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .money-symbol {
-        font-size: 120px;
+        font-size: 5rem;
         color: rgba(255, 255, 255, 0.9);
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         z-index: 10;
         animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* InstaGifter Animation */
+    .instagifter-preview {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #ff3366, #ff6b6b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .instagifter-preview::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+        animation: rotate 10s linear infinite;
+    }
+
+    .gift-box {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        z-index: 10;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .gift-box-base {
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        bottom: 0;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        transform-origin: bottom center;
+        animation: pulse-shadow 3s ease-in-out infinite;
+    }
+
+    .gift-box-lid {
+        position: absolute;
+        width: 110%;
+        height: 30%;
+        top: -5%;
+        left: -5%;
+        background: #ff9190;
+        border-radius: 8px 8px 0 0;
+        transform-origin: top center;
+        animation: lid-bounce 4s ease-in-out infinite;
+        box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
+    }
+
+    .gift-ribbon-v {
+        position: absolute;
+        width: 20%;
+        height: 120%;
+        top: -20%;
+        left: 40%;
+        background: #5e72eb;
+        z-index: 20;
+        box-shadow: 0 0 10px rgba(94,114,235,0.6);
+    }
+
+    .gift-ribbon-h {
+        position: absolute;
+        width: 120%;
+        height: 20%;
+        top: 20%;
+        left: -10%;
+        background: #5e72eb;
+        z-index: 20;
+        box-shadow: 0 0 10px rgba(94,114,235,0.6);
+    }
+
+    .gift-glow {
+        position: absolute;
+        width: 140%;
+        height: 140%;
+        top: -20%;
+        left: -20%;
+        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        opacity: 0;
+        animation: glow-pulse 4s ease-in-out infinite;
+        z-index: 5;
+    }
+
+    .gift-particles {
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        z-index: 15;
+        pointer-events: none;
+        background-image: 
+            radial-gradient(circle, #5e72eb 50%, transparent 50%),
+            radial-gradient(circle, #ff9190 50%, transparent 50%),
+            radial-gradient(circle, #ffffff 50%, transparent 50%),
+            radial-gradient(circle, #ff3366 50%, transparent 50%),
+            radial-gradient(circle, #5e72eb 50%, transparent 50%),
+            radial-gradient(circle, #ffffff 50%, transparent 50%);
+        background-size: 10px 10px;
+        background-position: 
+            0 0,
+            25px 25px,
+            50px 50px,
+            75px 75px,
+            100px 100px,
+            125px 125px;
+        animation: particles 8s linear infinite;
+        opacity: 0.6;
+    }
+
+    @keyframes lid-bounce {
+        0%, 100% { transform: rotateX(0deg); }
+        20% { transform: rotateX(-10deg); }
+        40% { transform: rotateX(-30deg); }
+        60% { transform: rotateX(-10deg); }
+        80% { transform: rotateX(-5deg); }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse-shadow {
+        0%, 100% { box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        50% { box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+    }
+
+    @keyframes glow-pulse {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 0.6; }
+    }
+
+    @keyframes particles {
+        0% { transform: rotate(0deg); opacity: 0.6; }
+        100% { transform: rotate(360deg); opacity: 0.4; }
+    }
+
+    .game-info {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
+    }
+
+    .game h2 {
+        margin: 0 0 1rem 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(to right, #4776E6, #8E54E9);
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(71, 118, 230, 0.2);
+        cursor: pointer;
+        margin-top: auto;
+    }
+
+    .button:hover {
+        background: linear-gradient(to right, #3868e0, #7d48d6);
+        box-shadow: 0 6px 20px rgba(71, 118, 230, 0.3);
     }
 
     @keyframes rotate {
@@ -177,28 +403,30 @@ import Layout from "../layouts/Layout.astro";
         }
     }
 
-    .wavy-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        animation: wave 3s ease-in-out infinite;
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .game-browser {
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        h1 {
+            font-size: 2.25rem;
+        }
     }
 
-    @keyframes wave {
-        0% {
-            transform: translateY(0) rotate(0deg);
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
         }
-        25% {
-            transform: translateY(-10px) rotate(2deg);
-        }
-        50% {
-            transform: translateY(0) rotate(0deg);
-        }
-        75% {
-            transform: translateY(10px) rotate(-2deg);
-        }
-        100% {
-            transform: translateY(0) rotate(0deg);
+    }
+
+    @media (min-width: 1025px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 </style>
