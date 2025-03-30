@@ -620,9 +620,12 @@ background-color: rgba(255, 255, 255, 0.9);
         textAlign(LEFT, TOP);
         text(`Score: ${score}`, 15, 15);
 
-        // Crowd Count Display
+        // Crowd Count Display - MOVED to be near the player crowd
         fill(100, 150, 255);
-        text(`Crowd: ${playerCrowd.members.length}`, 15, 50);
+        stroke(0);
+        strokeWeight(2);
+        textAlign(CENTER, BOTTOM);
+        text(`Crowd: ${playerCrowd.members.length}`, playerCrowd.x, playerCrowd.y - playerCrowd.currentSpread/2 - 10);
 
         // Boss Health (if boss exists)
         if (currentBoss) {
@@ -651,7 +654,7 @@ background-color: rgba(255, 255, 255, 0.9);
 
         fill(50, 100, 255);
         textSize(56);
-        text("Blue Crowd Shooter", width / 2, height / 3);
+        text("Instagifter", width / 2, height / 3);
 
         if (!soundsLoaded) {
             fill(255);
@@ -858,9 +861,11 @@ background-color: rgba(255, 255, 255, 0.9);
                       else if (change < 0) this.removeMembers(abs(change)); // removeMembers takes positive count
                      break;
                   case 'DIVIDE':
-                     // Divide by value, remove the *difference*
-                     change = baseValue - Math.floor(baseValue / gate.displayValue);
-                      if (change > 0) this.removeMembers(change);
+                     // CHANGED: Convert DIVIDE to a power-up - gives bonus score without reducing crowd
+                     let scoreBonus = Math.floor(baseValue / gate.displayValue) * 5;
+                     score += scoreBonus;
+                     // Show floating text effect
+                     console.log(`DIVIDE gate gives ${scoreBonus} score bonus!`);
                      break;
              }
               // Add score based on positive gate interaction? Optional.
@@ -926,7 +931,7 @@ background-color: rgba(255, 255, 255, 0.9);
                  'ADD': color(0, 200, 0, 200),      // Green
                  'SUBTRACT': color(200, 0, 0, 200), // Red
                  'MULTIPLY': color(0, 0, 200, 200), // Blue
-                 'DIVIDE': color(200, 150, 0, 200)  // Orange/Yellow
+                 'DIVIDE': color(255, 215, 0, 220)  // Gold (brighter yellow)
              };
              this.color = this.colors[this.type];
 
@@ -1015,9 +1020,9 @@ background-color: rgba(255, 255, 255, 0.9);
                         this.currentValue = Math.min(this.currentValue, 8); // Cap max multiplier
                         break;
                     case 'DIVIDE':
-                        // Increase divisor (make division harsher)
-                         this.currentValue += 0.2; // Make the divisor larger
-                         this.currentValue = Math.min(this.currentValue, 10); // Cap max divisor
+                        // CHANGED: Now decreases divisor (makes division better)
+                        this.currentValue -= 0.2; // Make the divisor smaller
+                        this.currentValue = Math.max(1.2, this.currentValue); // Keep it above 1.2 to ensure it still divides
                         break;
                  }
 
