@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mini Sims 3D - Confetti Fun!</title>
+        <style>
+            body {
+                margin: 0;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                background-color: #333;
+                color: #fff;
+            }
+            #infoPanel {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                padding: 10px;
+                background-color: rgba(0, 0, 0, 0.7);
+                border-radius: 5px;
+                color: #fff;
+                font-size: 14px;
+                z-index: 10;
+            }
+            #selectedSimInfo {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                padding: 10px;
+                background-color: rgba(0, 50, 100, 0.8);
+                border-radius: 5px;
+                color: #fff;
+                font-size: 16px;
+                display: none;
+                z-index: 10;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="infoPanel">
+            Mini Sims 3D - Confetti Fun!<br />
+            - Scroll to zoom, Drag to orbit<br />
+            - Click a Sim to select.<br />
+            - If Sim selected, click ground to move.<br />
+            - If Sim selected, DOUBLE-CLICK ground to throw confetti!
+        </div>
+        <div id="selectedSimInfo">
+            Selected Sim: <span id="simName">None</span><br />
+            Status: <span id="simStatus">Idle</span>
+        </div>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+                }
+            }
+        </script>
+
+        <script type="module">
+            import * as THREE from "three";
+            import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+            let scene, camera, renderer, controls;
+            let sims = [];
+            let selectedSim = null;
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+            let groundPlane;
+
+            const HOUSE_SIZE = 20;
+            const WALL_HEIGHT = 5;
+            const SIM_SPEED = 0.05;
+            const SIM_BODY_RADIUS = 0.5;
+            const SIM_BODY_HEIGHT = 2;
+
+            const WALK_CYCLE_SPEED = 0.15;
+            const ARM_SWING_MAX = Math.PI / 4;
+            const LEG_SWING_MAX = Math.PI / 3;
+
+            // UI Elements
+            const selectedSimNameUI = document.getElementById("simName");
+            const selectedSimStatusUI = document.getElementById("simStatus");
+            const selectedSimInfoPanel =
+                document.getElementById("selectedSimInfo");
+            const simNames = ["Alice", "Bob", "Charlie", "Diana", "Edward"];
+
+            // NEW: Double Click Vars
+            let lastClickTime = 0;
+            let lastClickTargetIsGround = false;
+            const DOUBLE_CLICK_TIME_WINDOW = 300; // milliseconds
+
+            // NEW: Confetti Particle System Globals
+            const MAX_CONFETTI_PARTICLES = 1000; // Max particles in the pool
+            let confettiPointsMesh;
+            let confettiPositionsAttr, confettiColorsAttr; // BufferAttributes
+            let confettiVelocities, confettiAges, confettiMaxLifetimes; // Float32Arrays for particle logic
+            let nextConfettiParticleIndex = 0;
+            const confettiGravity = new THREE.Vector3(0, -9.8, 0);
+            let lastConfettiUpdateTime = 0;
+
+            class Sim {
+                constructor(
+                    name,
+                    color = 0xff0000,
+                    position = new THREE.Vector3(0, SIM_BODY_HEIGHT / 2, 0),
+                ) {
+                    this.name = name;
+                    this.mesh = new THREE.Group();
+
+                    const bodyGeometry = new THREE.CylinderGeometry(
+                        SIM_BODY_RADIUS,
+                        SIM_BODY_RADIUS,
+                        SIM_BODY_HEIGHT,
+                        16,
+                    );
+                    this.bodyMaterial = new THREE.MeshStandardMaterial({
+                        color: color,
+                    });
+                    const body = new THREE.Mesh(
+                        bodyGeometry,
+                        this.bodyMaterial,
+                    );
+                    body.castShadow = true;
+                    body.receiveShadow = true;
+                    this.mesh.add(body);
+
+                    const headRadius = 0.6;
+                    const headGeometry = new THREE.SphereGeometry(
+                        headRadius,
+                        16,
+                        16,
+                    );
+                    this.headMaterial = new THREE.MeshStandardMaterial({
+                        color: 0xffddaa,
+                    });
+                    const head = new THREE.Mesh(
+                        headGeometry,
+                        this.headMaterial,
+                    );
+                    head.position.y = SIM_BODY_HEIGHT / 2 + headRadius * 0.7;
+                    head.castShadow = true;
+                    head.receiveShadow = true;
+                    this.mesh.add(head);
+
+                    const limbColor = new THREE.Color(color).lerp(
+                        new THREE.Color(0x555555),
+                        0.2,
+                    ); // Slightly darker/muted
+                    const armLength = 0.9;
+                    const armRadius = 0.15;
+                    const legLength = 1.0;
+                    const legRadius = 0.18;
+
+                    const createLimb = (isArm, isLeft) => {
+                        const length = isArm ? armLength : legLength;
+                        const radius = isArm ? armRadius : legRadius;
+                        const limbGeo = new THREE.CylinderGeometry(
+                            radius,
+                            radius * 0.8,
+                            length,
+                            8,
+                        );
+                        const limbMat = new THREE.MeshStandardMaterial({
+                            color: limbColor,
+                        });
+                        const limbMesh = new THREE.Mesh(limbGeo, limbMat);
+                        limbMesh.castShadow = true;
+                        limbMesh.receiveShadow = true;
+                        limbMesh.position.y = -length / 2;
+                        const pivot = new THREE.Group();
+                        pivot.add(limbMesh);
+                        this.mesh.add(pivot);
+                        return pivot;
+                    };
+
+                    const shoulderY = SIM_BODY_HEIGHT * 0.4;
+                    const hipY = -SIM_BODY_HEIGHT * 0.45;
+                    const armXOffset = SIM_BODY_RADIUS + armRadius * 0.5;
+                    const legXOffset = SIM_BODY_RADIUS * 0.5;
+
+                    this.leftArmPivot = createLimb(true, true);
+                    this.leftArmPivot.position.set(-armXOffset, shoulderY, 0);
+                    this.rightArmPivot = createLimb(true, false);
+                    this.rightArmPivot.position.set(armXOffset, shoulderY, 0);
+                    this.leftLegPivot = createLimb(false, true);
+                    this.leftLegPivot.position.set(-legXOffset, hipY, 0);
+                    this.rightLegPivot = createLimb(false, false);
+                    this.rightLegPivot.position.set(legXOffset, hipY, 0);
+
+                    this.mesh.position.copy(position);
+                    this.mesh.userData.isSim = true;
+                    this.mesh.userData.simInstance = this;
+                    this.targetPosition = new THREE.Vector3().copy(position);
+                    this.status = "Idle";
+                    this.walkCycleTime = 0;
+                }
+
+                setRandomTarget() {
+                    const halfHouse = HOUSE_SIZE / 2 - 1;
+                    this.targetPosition.set(
+                        (Math.random() - 0.5) * HOUSE_SIZE * 0.8,
+                        SIM_BODY_HEIGHT / 2,
+                        (Math.random() - 0.5) * HOUSE_SIZE * 0.8,
+                    );
+                    this.status = "Wandering";
+                    this.updateUIStatus();
+                }
+
+                setCommandedTarget(targetPoint) {
+                    this.targetPosition.copy(targetPoint);
+                    this.targetPosition.y = SIM_BODY_HEIGHT / 2;
+                    this.status = "Moving to command";
+                    this.updateUIStatus();
+                }
+
+                updateUIStatus() {
+                    if (selectedSim === this)
+                        selectedSimStatusUI.textContent = this.status;
+                }
+
+                resetLimbsAnimation() {
+                    // NEW helper
+                    this.walkCycleTime = 0;
+                    this.leftArmPivot.rotation.x = 0;
+                    this.rightArmPivot.rotation.x = 0;
+                    this.leftLegPivot.rotation.x = 0;
+                    this.rightLegPivot.rotation.x = 0;
+                }
+
+                update() {
+                    const direction = new THREE.Vector3().subVectors(
+                        this.targetPosition,
+                        this.mesh.position,
+                    );
+                    let isMoving = false;
+
+                    if (this.status === "Stunned") {
+                        // NEW Stunned state
+                        // Do nothing for a bit, maybe a timer later
+                        if (Math.random() < 0.02) {
+                            // Chance to recover
+                            this.status = "Idle";
+                            this.updateUIStatus();
+                        }
+                        this.resetLimbsAnimation();
+                        isMoving = false;
+                    } else if (direction.lengthSq() > 0.05) {
+                        isMoving = true;
+                        direction.normalize();
+                        this.mesh.position.addScaledVector(
+                            direction,
+                            SIM_SPEED,
+                        );
+                        const lookAtTarget = new THREE.Vector3(
+                            this.targetPosition.x,
+                            this.mesh.position.y,
+                            this.targetPosition.z,
+                        );
+                        this.mesh.lookAt(lookAtTarget);
+                    } else {
+                        isMoving = false;
+                        if (this.status === "Moving to command") {
+                            this.status = "Idle";
+                            this.updateUIStatus();
+                        } else if (this.status === "Wandering") {
+                            if (Math.random() < 0.01) this.setRandomTarget();
+                        }
+                    }
+                    this.mesh.position.y = SIM_BODY_HEIGHT / 2;
+
+                    if (isMoving) {
+                        this.walkCycleTime += WALK_CYCLE_SPEED;
+                        const armSwing =
+                            Math.sin(this.walkCycleTime) * ARM_SWING_MAX;
+                        const legSwing =
+                            Math.sin(this.walkCycleTime) * LEG_SWING_MAX;
+                        this.leftArmPivot.rotation.x = armSwing;
+                        this.rightArmPivot.rotation.x = -armSwing;
+                        this.leftLegPivot.rotation.x = -legSwing;
+                        this.rightLegPivot.rotation.x = legSwing;
+                    } else if (this.status !== "Stunned") {
+                        // Don't reset if stunned, keep previous logic for that
+                        this.resetLimbsAnimation();
+                    }
+                }
+
+                doSelectVisuals() {
+                    this.mesh.children[0].material =
+                        new THREE.MeshStandardMaterial({
+                            color: this.bodyMaterial.color,
+                            emissive: new THREE.Color(0x888800),
+                            emissiveIntensity: 0.8,
+                        });
+                }
+                doDeselectVisuals() {
+                    this.mesh.children[0].material = this.bodyMaterial;
+                }
+            }
+
+            // NEW: Initialize Confetti System
+            function initConfettiSystem(sceneRef) {
+                const geometry = new THREE.BufferGeometry();
+
+                const positions = new Float32Array(MAX_CONFETTI_PARTICLES * 3);
+                const colors = new Float32Array(MAX_CONFETTI_PARTICLES * 3);
+
+                // These store the per-particle simulation data
+                confettiVelocities = new Float32Array(
+                    MAX_CONFETTI_PARTICLES * 3,
+                );
+                confettiAges = new Float32Array(MAX_CONFETTI_PARTICLES);
+                confettiMaxLifetimes = new Float32Array(MAX_CONFETTI_PARTICLES);
+
+                for (let i = 0; i < MAX_CONFETTI_PARTICLES; i++) {
+                    positions[i * 3 + 0] = 10000; // Start particles far away
+                    positions[i * 3 + 1] = 10000;
+                    positions[i * 3 + 2] = 10000;
+                }
+
+                confettiPositionsAttr = new THREE.BufferAttribute(positions, 3);
+                confettiColorsAttr = new THREE.BufferAttribute(colors, 3);
+                geometry.setAttribute("position", confettiPositionsAttr);
+                geometry.setAttribute("color", confettiColorsAttr);
+
+                const material = new THREE.PointsMaterial({
+                    size: 0.25,
+                    vertexColors: true,
+                    transparent: true,
+                    depthWrite: false, // Important for transparency layering
+                    sizeAttenuation: true,
+                });
+
+                confettiPointsMesh = new THREE.Points(geometry, material);
+                confettiPointsMesh.frustumCulled = false; // Process even if bounding box is off-screen
+                sceneRef.add(confettiPointsMesh);
+            }
+
+            // NEW: Create a Confetti Explosion
+            function createConfettiExplosion(origin, numParticles = 150) {
+                const baseColors = [
+                    new THREE.Color(0xff4444),
+                    new THREE.Color(0x44ff44),
+                    new THREE.Color(0x6666ff),
+                    new THREE.Color(0xffff44),
+                    new THREE.Color(0xff44ff),
+                    new THREE.Color(0x44ffff),
+                ];
+
+                for (let i = 0; i < numParticles; i++) {
+                    const pIdx = nextConfettiParticleIndex;
+
+                    confettiPositionsAttr.setXYZ(
+                        pIdx,
+                        origin.x,
+                        origin.y,
+                        origin.z,
+                    );
+
+                    const chosenColor =
+                        baseColors[
+                            Math.floor(Math.random() * baseColors.length)
+                        ];
+                    confettiColorsAttr.setXYZ(
+                        pIdx,
+                        chosenColor.r,
+                        chosenColor.g,
+                        chosenColor.b,
+                    );
+
+                    confettiVelocities[pIdx * 3 + 0] =
+                        (Math.random() - 0.5) * 6; // X
+                    confettiVelocities[pIdx * 3 + 1] = Math.random() * 4 + 3; // Y (upwards burst)
+                    confettiVelocities[pIdx * 3 + 2] =
+                        (Math.random() - 0.5) * 6; // Z
+
+                    confettiAges[pIdx] = 0;
+                    confettiMaxLifetimes[pIdx] = Math.random() * 2.5 + 1.5; // 1.5 to 4 seconds
+
+                    nextConfettiParticleIndex =
+                        (nextConfettiParticleIndex + 1) %
+                        MAX_CONFETTI_PARTICLES;
+                }
+                confettiPositionsAttr.needsUpdate = true;
+                confettiColorsAttr.needsUpdate = true;
+            }
+
+            // NEW: Update Confetti Logic
+            function updateConfettiParticles(currentTime) {
+                if (!confettiPointsMesh) return;
+                if (lastConfettiUpdateTime === 0)
+                    lastConfettiUpdateTime = currentTime;
+                const deltaTime =
+                    (currentTime - lastConfettiUpdateTime) / 1000.0;
+                lastConfettiUpdateTime = currentTime;
+
+                if (deltaTime <= 0) return;
+
+                let posChanged = false;
+                let colChanged = false; // For potential alpha fade via color
+
+                for (let i = 0; i < MAX_CONFETTI_PARTICLES; i++) {
+                    if (confettiAges[i] < confettiMaxLifetimes[i]) {
+                        // If particle is alive
+                        confettiAges[i] += deltaTime;
+
+                        if (confettiAges[i] >= confettiMaxLifetimes[i]) {
+                            // Particle just died
+                            confettiPositionsAttr.setXYZ(
+                                i,
+                                10000,
+                                10000,
+                                10000,
+                            ); // Move far away
+                            // Optionally set alpha to 0 if using a material that supports it via color attribute
+                        } else {
+                            // Update position
+                            let px =
+                                confettiPositionsAttr.getX(i) +
+                                confettiVelocities[i * 3 + 0] * deltaTime;
+                            let py =
+                                confettiPositionsAttr.getY(i) +
+                                confettiVelocities[i * 3 + 1] * deltaTime;
+                            let pz =
+                                confettiPositionsAttr.getZ(i) +
+                                confettiVelocities[i * 3 + 2] * deltaTime;
+                            confettiPositionsAttr.setXYZ(i, px, py, pz);
+
+                            // Apply gravity
+                            confettiVelocities[i * 3 + 1] +=
+                                confettiGravity.y * deltaTime;
+
+                            // Simple ground collision
+                            if (py < 0.05) {
+                                confettiPositionsAttr.setY(i, 0.05);
+                                confettiVelocities[i * 3 + 1] *= -0.4; // Bounce with damping
+                                confettiVelocities[i * 3 + 0] *= 0.7; // Friction
+                                confettiVelocities[i * 3 + 2] *= 0.7;
+                            }
+
+                            // Fade out alpha (by modifying color alpha if supported, or just let them vanish)
+                            // For PointsMaterial vertexColors, if you need alpha, you often make a texture.
+                            // Or a custom shader. Here, they'll just pop out of existence.
+                        }
+                        posChanged = true;
+                    }
+                }
+
+                if (posChanged) confettiPositionsAttr.needsUpdate = true;
+                // if (colChanged) confettiColorsAttr.needsUpdate = true; // If doing color-based alpha
+            }
+
+            // NEW: Trigger Confetti Grenade action
+            function triggerConfettiGrenade(blastPoint) {
+                const blastOrigin = blastPoint.clone();
+                blastOrigin.y = 0.5; // Detonate slightly above ground
+
+                createConfettiExplosion(blastOrigin);
+
+                const BLAST_RADIUS = 6;
+                const PUSH_STRENGTH = 40; // Max displacement magnitude
+
+                sims.forEach((sim) => {
+                    if (sim === selectedSim) return; // The thrower is immune
+
+                    const simPosition = sim.mesh.position.clone();
+                    const distanceToBlast = simPosition.distanceTo(blastOrigin);
+
+                    if (
+                        distanceToBlast < BLAST_RADIUS &&
+                        distanceToBlast > 0.01
+                    ) {
+                        const pushDirection = new THREE.Vector3().subVectors(
+                            simPosition,
+                            blastOrigin,
+                        );
+                        pushDirection.y *= 0.2; // Less vertical push
+                        pushDirection.normalize();
+
+                        const falloff = 1 - distanceToBlast / BLAST_RADIUS; // 1 at center, 0 at edge
+                        const displacementMagnitude =
+                            PUSH_STRENGTH * falloff * falloff; // Stronger effect closer
+
+                        sim.mesh.position.addScaledVector(
+                            pushDirection,
+                            displacementMagnitude,
+                        );
+
+                        // Clamp position within bounds
+                        const halfPlayArea = HOUSE_SIZE / 2 - SIM_BODY_RADIUS;
+                        sim.mesh.position.x = THREE.MathUtils.clamp(
+                            sim.mesh.position.x,
+                            -halfPlayArea,
+                            halfPlayArea,
+                        );
+                        sim.mesh.position.z = THREE.MathUtils.clamp(
+                            sim.mesh.position.z,
+                            -halfPlayArea,
+                            halfPlayArea,
+                        );
+                        sim.mesh.position.y = SIM_BODY_HEIGHT / 2; // Keep on ground
+
+                        sim.targetPosition.copy(sim.mesh.position); // Stop current movement
+                        sim.status = "Stunned"; // NEW status
+                        sim.updateUIStatus();
+                        sim.resetLimbsAnimation(); // Stop walking animation
+                    }
+                });
+            }
+
+            function init() {
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x87ceeb);
+                scene.fog = new THREE.Fog(0x87ceeb, 50, 150);
+
+                camera = new THREE.PerspectiveCamera(
+                    75,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    1000,
+                );
+                camera.position.set(15, 15, 15);
+                camera.lookAt(0, SIM_BODY_HEIGHT / 2, 0);
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                document.body.appendChild(renderer.domElement);
+
+                controls = new OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.minDistance = 3;
+                controls.maxDistance = 50;
+                controls.maxPolarAngle = Math.PI / 2 - 0.05;
+                controls.target.set(0, SIM_BODY_HEIGHT / 2, 0);
+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+                scene.add(ambientLight);
+                const directionalLight = new THREE.DirectionalLight(
+                    0xffffff,
+                    1.2,
+                );
+                directionalLight.position.set(20, 30, 10);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.mapSize.width = 2048;
+                directionalLight.shadow.mapSize.height = 2048;
+                const shadowCamSize = HOUSE_SIZE * 0.8;
+                directionalLight.shadow.camera.left = -shadowCamSize;
+                directionalLight.shadow.camera.right = shadowCamSize;
+                directionalLight.shadow.camera.top = shadowCamSize;
+                directionalLight.shadow.camera.bottom = -shadowCamSize;
+                scene.add(directionalLight);
+
+                const groundGeometry = new THREE.PlaneGeometry(
+                    HOUSE_SIZE * 2,
+                    HOUSE_SIZE * 2,
+                );
+                const groundMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x77b077,
+                    side: THREE.DoubleSide,
+                });
+                groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
+                groundPlane.rotation.x = -Math.PI / 2;
+                groundPlane.receiveShadow = true;
+                groundPlane.userData.isGround = true;
+                scene.add(groundPlane);
+
+                createWalls(); // Defined below
+
+                // NEW: Initialize confetti after scene is ready
+                initConfettiSystem(scene);
+
+                const simColors = [
+                    0xcc0000, 0x00cc00, 0x0000cc, 0xcccc00, 0xcc00cc,
+                ];
+                for (let i = 0; i < 3; i++) {
+                    const sim = new Sim(
+                        simNames[i % simNames.length],
+                        simColors[i % simColors.length],
+                        new THREE.Vector3(
+                            (Math.random() - 0.5) * (HOUSE_SIZE - 4),
+                            SIM_BODY_HEIGHT / 2,
+                            (Math.random() - 0.5) * (HOUSE_SIZE - 4),
+                        ),
+                    );
+                    sims.push(sim);
+                    scene.add(sim.mesh);
+                }
+                if (sims.length > 0) sims[0].setRandomTarget();
+
+                window.addEventListener("resize", onWindowResize);
+                window.addEventListener("pointerdown", onPointerDown);
+                animate();
+            }
+
+            function createWalls() {
+                /* ... (same as before, kept for brevity) ... */
+                const wallMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xd0d0d0,
+                });
+                const wallThickness = 0.5;
+
+                function createWall(width, height, depth, x, y, z) {
+                    const geometry = new THREE.BoxGeometry(
+                        width,
+                        height,
+                        depth,
+                    );
+                    const wall = new THREE.Mesh(geometry, wallMaterial);
+                    wall.position.set(x, y, z);
+                    wall.castShadow = true;
+                    wall.receiveShadow = true;
+                    scene.add(wall);
+                }
+                const halfSize = HOUSE_SIZE / 2;
+                const wallY = WALL_HEIGHT / 2;
+                createWall(
+                    HOUSE_SIZE,
+                    WALL_HEIGHT,
+                    wallThickness,
+                    0,
+                    wallY,
+                    -halfSize,
+                );
+                createWall(
+                    HOUSE_SIZE / 3,
+                    WALL_HEIGHT,
+                    wallThickness,
+                    -HOUSE_SIZE / 3,
+                    wallY,
+                    halfSize,
+                );
+                createWall(
+                    HOUSE_SIZE / 3,
+                    WALL_HEIGHT,
+                    wallThickness,
+                    HOUSE_SIZE / 3,
+                    wallY,
+                    halfSize,
+                );
+                createWall(
+                    wallThickness,
+                    WALL_HEIGHT,
+                    HOUSE_SIZE + wallThickness,
+                    -halfSize,
+                    wallY,
+                    0,
+                ); // Adjusted for better corner
+                createWall(
+                    wallThickness,
+                    WALL_HEIGHT,
+                    HOUSE_SIZE + wallThickness,
+                    halfSize,
+                    wallY,
+                    0,
+                ); // Adjusted for better corner
+
+                const tableGeo = new THREE.BoxGeometry(3, 1, 2);
+                const tableMat = new THREE.MeshStandardMaterial({
+                    color: 0x8b4513,
+                });
+                const table = new THREE.Mesh(tableGeo, tableMat);
+                table.position.set(0, 0.5, 0);
+                table.castShadow = true;
+                table.receiveShadow = true;
+                scene.add(table);
+                const bedGeo = new THREE.BoxGeometry(2, 0.8, 4);
+                const bedMat = new THREE.MeshStandardMaterial({
+                    color: 0xadd8e6,
+                });
+                const bed = new THREE.Mesh(bedGeo, bedMat);
+                bed.position.set(-halfSize + 3, 0.4, -halfSize + 3);
+                bed.castShadow = true;
+                bed.receiveShadow = true;
+                scene.add(bed);
+            }
+
+            function onWindowResize() {
+                /* ... (same as before) ... */
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            // CHANGED: onPointerDown to include double-click logic
+            function onPointerDown(event) {
+                if (event.target !== renderer.domElement) {
+                    if (
+                        event.target.id &&
+                        (event.target.id === "infoPanel" ||
+                            event.target.id === "selectedSimInfo" ||
+                            event.target.closest("#infoPanel") ||
+                            event.target.closest("#selectedSimInfo"))
+                    ) {
+                        return; // Clicked UI
+                    }
+                }
+
+                pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+                pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(pointer, camera);
+                const intersects = raycaster.intersectObjects(
+                    scene.children,
+                    true,
+                );
+
+                let clickedSimInstance = null;
+                let clickedGroundPoint = null;
+
+                if (intersects.length > 0) {
+                    for (const intersect of intersects) {
+                        let obj = intersect.object;
+                        while (obj.parent && !obj.userData.isSim)
+                            obj = obj.parent;
+                        if (obj.userData.isSim) {
+                            clickedSimInstance = obj.userData.simInstance;
+                            break;
+                        }
+                        if (
+                            intersect.object.userData.isGround &&
+                            !clickedGroundPoint
+                        )
+                            clickedGroundPoint = intersect.point.clone();
+                    }
+                }
+
+                const now = Date.now();
+
+                if (clickedSimInstance) {
+                    // Clicked on a Sim
+                    if (selectedSim && selectedSim !== clickedSimInstance)
+                        selectedSim.doDeselectVisuals();
+                    selectedSim = clickedSimInstance;
+                    selectedSim.doSelectVisuals();
+                    selectedSimInfoPanel.style.display = "block";
+                    selectedSimNameUI.textContent = selectedSim.name;
+                    selectedSimStatusUI.textContent = selectedSim.status;
+
+                    lastClickTime = now; // A Sim click resets double-click sequence for ground
+                    lastClickTargetIsGround = false;
+                } else if (selectedSim && clickedGroundPoint) {
+                    // A Sim is selected, and ground was clicked
+                    if (
+                        now - lastClickTime < DOUBLE_CLICK_TIME_WINDOW &&
+                        lastClickTargetIsGround
+                    ) {
+                        // DOUBLE CLICK ACTION!
+                        triggerConfettiGrenade(clickedGroundPoint);
+                        lastClickTime = 0;
+                        lastClickTargetIsGround = false; // Consume double click
+                    } else {
+                        // SINGLE CLICK: Move command
+                        const halfPlayArea = HOUSE_SIZE / 2 - SIM_BODY_RADIUS;
+                        if (
+                            Math.abs(clickedGroundPoint.x) <= halfPlayArea &&
+                            Math.abs(clickedGroundPoint.z) <= halfPlayArea
+                        ) {
+                            selectedSim.setCommandedTarget(clickedGroundPoint);
+                        }
+                        lastClickTime = now;
+                        lastClickTargetIsGround = true; // Mark this click was on ground
+                    }
+                } else {
+                    // Clicked on empty space or non-interactive
+                    if (selectedSim) {
+                        selectedSim.doDeselectVisuals();
+                        selectedSim = null;
+                    }
+                    selectedSimInfoPanel.style.display = "none";
+                    lastClickTime = 0;
+                    lastClickTargetIsGround = false; // Reset
+                }
+            }
+
+            function animate(currentTime) {
+                // CHANGED: Pass currentTime for particle system
+                requestAnimationFrame(animate);
+                controls.update();
+                sims.forEach((sim) => sim.update());
+
+                // NEW: Update confetti
+                updateConfettiParticles(currentTime); // Pass performance.now() or timestamp from requestAnimationFrame
+
+                renderer.render(scene, camera);
+            }
+
+            init();
+        </script>
+    </body>
+</html>
