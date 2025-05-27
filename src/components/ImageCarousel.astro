@@ -13,7 +13,7 @@ const { images, title } = Astro.props;
 ---
 
 <div class="relative group aspect-square overflow-hidden rounded-lg">
-    <div class="carousel w-full h-full touch-none">
+    <div class="carousel bg-white w-full h-full touch-none">
         {images.map((image, index) => (
             <img 
                 src={image.src} 

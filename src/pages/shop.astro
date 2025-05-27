@@ -10,7 +10,7 @@ import { bagNames } from "../data/bagsData"; // Import from the data file
 // Generate basic bag info for card generation (13 bags)
 const allBags = Array.from({ length: 13 }, (_, i) => ({
     id: i + 1,
-    img: `/bags/${i + 1}.webp`,
+    img: `/bags/bags/${i + 1}.png`,
     title: bagNames[i], // Use imported name
     href: `/shop/bag/${i + 1}` // Dynamic route link
 }));
