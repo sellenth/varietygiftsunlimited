@@ -1,0 +1,124 @@
+
+> vgu-2@0.0.1 start
+> astro dev --host
+
+21:51:25 [types] Generated 0ms
+21:51:25 [content] Syncing content
+21:51:25 [content] Synced content
+21:51:25 [vite] Port 4321 is in use, trying another one...
+21:51:25 [vite] Port 4322 is in use, trying another one...
+
+ astro  v5.5.2 ready in 252 ms
+
+┃ Local    https://localhost:4323/
+           https://localhost.localdomain:4323/
+           https://lvh.me:4323/
+           https://vite.lvh.me:4323/
+┃ Network  https://192.168.0.101:4323/
+           https://10.5.0.2:4323/
+
+21:51:25 watching for file changes...
+
+🌼   daisyUI 4.12.24
+├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
+╰─ ❤︎ Support daisyUI project:	https://opencollective.com/daisyui
+
+
+🌼   daisyUI 4.12.24
+├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
+╰─ ★ Star daisyUI on GitHub	https://github.com/saadeghi/daisyui
+
+
+🌼   daisyUI 4.12.24
+├─ ✔︎ 1 theme added		https://daisyui.com/docs/themes
+╰─ ❤︎ Support daisyUI project:	https://opencollective.com/daisyui
+
+21:52:16 [200] / 143ms
+21:53:05 [200] / 5ms
+21:54:47 [404] /sounds/pop.mp3 2ms
+22:03:27 [watch] src/pages/index.astro
+22:03:27 [200] / 57ms
+22:03:47 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+22:03:47 [200] / 30ms
+22:04:59 [200] / 10ms
+22:05:15 [200] /shop 5ms
+22:05:16 [200] /shop/bag/6 6ms
+22:05:18 [200] / 7ms
+22:08:31 [200] / 5ms
+22:08:56 [watch] src/pages/index.astro
+22:08:57 [200] / 42ms
+22:08:57 [200] / 42ms
+22:09:34 [watch] src/pages/index.astro
+22:09:35 [200] / 27ms
+22:09:35 [200] / 27ms
+22:09:37 [200] / 7ms
+22:09:39 [200] / 6ms
+22:10:03 [watch] src/pages/index.astro
+22:10:03 [200] / 39ms
+22:10:03 [200] / 40ms
+22:10:08 [404] /sounds/pop.mp3 1ms
+22:10:10 [404] /sounds/pop.mp3 2ms
+22:10:29 [200] / 7ms
+22:13:22 [watch] src/pages/index.astro
+22:13:22 [200] / 30ms
+22:13:22 [200] / 30ms
+22:14:22 [watch] src/components/ContactForm.astro
+22:14:22 [200] / 27ms
+22:14:22 [200] / 27ms
+22:30:22 [watch] /src/components/ContactForm.astro?astro&type=style&index=0&lang.css
+22:30:22 [200] / 26ms
+22:30:22 [200] / 26ms
+22:33:21 [200] / 10ms
+22:35:31 [200] / 11ms
+22:35:53 [watch] src/pages/index.astro
+22:35:53 [200] / 57ms
+22:35:53 [200] / 57ms
+22:35:56 [watch] src/pages/index.astro
+22:35:56 [200] / 26ms
+22:35:56 [200] / 26ms
+22:37:01 [watch] src/components/ContactForm.astro
+22:37:01 [200] / 23ms
+22:37:01 [200] / 24ms
+22:37:12 [watch] src/components/ContactForm.astro
+22:37:12 [200] / 25ms
+22:37:12 [200] / 26ms
+22:37:17 [watch] src/components/ContactForm.astro
+22:37:17 [200] / 24ms
+22:37:17 [200] / 24ms
+22:37:40 [200] / 6ms
+22:38:20 [watch] /src/components/ContactForm.astro?astro&type=style&index=0&lang.css
+22:38:21 [200] / 22ms
+22:38:21 [200] / 22ms
+22:38:36 [200] / 7ms
+22:38:47 [200] / 5ms
+22:39:05 [watch] src/components/ContactForm.astro
+22:39:05 [200] / 25ms
+22:39:05 [200] / 25ms
+22:40:18 [watch] src/pages/index.astro
+22:40:18 [200] / 35ms
+22:40:18 [200] / 35ms
+22:40:25 [watch] src/pages/index.astro
+22:40:26 [200] / 31ms
+22:40:26 [200] / 32ms
+22:40:34 [watch] src/pages/index.astro
+22:40:34 [200] / 32ms
+22:40:34 [200] / 32ms
+22:41:10 [watch] src/pages/index.astro
+22:41:10 [200] / 21ms
+22:41:10 [200] / 21ms
+22:41:14 [watch] src/pages/index.astro
+22:41:14 [200] / 26ms
+22:41:14 [200] / 26ms
+22:41:34 [200] /game-browser 7ms
+22:41:46 [404] /instagifter/shoot.wav 2ms
+22:41:46 [404] /instagifter/hit_enemy.wav 1ms
+22:41:46 [404] /instagifter/hit_gate.wav 2ms
+22:41:46 [404] /instagifter/change_crowd.wav 2ms
+22:41:46 [404] /instagifter/enemy_defeat.wav 2ms
+22:41:46 [404] /instagifter/boss_hit.wav 2ms
+22:41:46 [404] /instagifter/boss_defeat.wav 1ms
+22:41:51 [200] /shop 7ms
+22:41:52 [200] / 7ms
+22:41:53 [200] /shop 6ms
+22:41:54 [200] /shop/bag/4 8ms
+22:41:56 [200] / 7ms

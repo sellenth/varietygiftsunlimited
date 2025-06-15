@@ -13,6 +13,7 @@ import '@fontsource-variable/comfortaa';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '@vercel/analytics/astro';
+import '../styles/animations.css';
 ---
 
 <!doctype html>
@@ -105,6 +106,54 @@ import Analytics from '@vercel/analytics/astro';
 			<slot />
 		</div>
 		{ !hideFooter && <Footer /> }
+		<script>
+			// Scroll reveal functionality
+			const observerOptions = {
+				threshold: 0.1,
+				rootMargin: '0px 0px -50px 0px'
+			};
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('revealed');
+						// Optional: stop observing after reveal
+						observer.unobserve(entry.target);
+					}
+				});
+			}, observerOptions);
+
+			// Observe all elements with scroll-reveal class
+			document.addEventListener('DOMContentLoaded', () => {
+				const elements = document.querySelectorAll('.scroll-reveal');
+				elements.forEach(el => observer.observe(el));
+			});
+
+			// Smooth parallax scrolling
+			let ticking = false;
+			function updateParallax() {
+				const scrolled = window.pageYOffset;
+				const parallaxElements = document.querySelectorAll('.parallax-element');
+				
+				parallaxElements.forEach(element => {
+					const el = element as HTMLElement;
+					const speed = parseFloat(el.dataset.speed || '0.5');
+					const yPos = -(scrolled * speed);
+					el.style.transform = `translateY(${yPos}px)`;
+				});
+				
+				ticking = false;
+			}
+
+			function requestTick() {
+				if (!ticking) {
+					window.requestAnimationFrame(updateParallax);
+					ticking = true;
+				}
+			}
+
+			window.addEventListener('scroll', requestTick);
+		</script>
 	</body>
 	<Analytics />
 </html>

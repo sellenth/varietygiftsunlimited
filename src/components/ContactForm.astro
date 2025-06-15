@@ -1,54 +1,133 @@
 <form id="contactForm" class="contact-form-container" method="POST">
   <input type="hidden" name="access_key" value="f9b3bda3-a117-47c8-8061-93e764d89830">
-  <div class="grid grid-cols-2 gap-4 mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div class="input-wrapper w-full">
+      <input
+        type="text"
+        name="first_name"
+        placeholder="FIRST NAME"
+        class="form-input focus-ring w-full"
+        required
+      />
+    </div>
+    <div class="input-wrapper w-full">
+      <input
+        type="text"
+        name="last_name"
+        placeholder="LAST NAME"
+        class="form-input focus-ring w-full"
+        required
+      />
+    </div>
+  </div>
+  <div class="input-wrapper mb-4 w-full">
     <input
-      type="text"
-      name="first_name"
-      placeholder="FIRST NAME"
-      class="form-input"
-      required
-    />
-    <input
-      type="text"
-      name="last_name"
-      placeholder="LAST NAME"
-      class="form-input"
+      type="email"
+      name="email"
+      placeholder="EMAIL"
+      class="form-input focus-ring w-full"
       required
     />
   </div>
-  <input
-    type="email"
-    name="email"
-    placeholder="EMAIL"
-    class="form-input mb-4"
-    required
-  />
-  <input
-    type="text"
-    name="subject"
-    placeholder="SUBJECT"
-    class="form-input mb-4"
-    required
-  />
-  <textarea
-    name="message"
-    placeholder="HOW CAN WE HELP?"
-    class="form-textarea mb-4"
-    required></textarea>
+  <div class="input-wrapper mb-4 w-full">
+    <input
+      type="text"
+      name="subject"
+      placeholder="SUBJECT"
+      class="form-input focus-ring w-full"
+      required
+    />
+  </div>
+  <div class="input-wrapper mb-4 w-full">
+    <textarea
+      name="message"
+      placeholder="HOW CAN WE HELP?"
+      class="form-textarea focus-ring w-full"
+      required></textarea>
+  </div>
   <div class="flex justify-center">
-    <button type="submit" class="max-w-fit send-btn">SEND</button>
+    <button type="submit" class="send-btn">
+      <span class="btn-text">SEND</span>
+      <div class="btn-loader" style="display: none;">
+        <div class="spinner"></div>
+      </div>
+    </button>
   </div>
-  <div id="result" class="text-center mt-4 text-white"></div>
+  <div id="result" class="result-message text-center mt-4"></div>
 </form>
 
 <style>
+  .contact-form-container {
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+
   .form-input,
   .form-textarea {
     width: 100%;
+    min-width: 0;
     padding: 0.75rem;
     border-radius: 8px;
-    border: none;
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
     background-color: white;
+    border-color: #6366f1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+  }
+
+  /* Mobile responsive fix */
+  @media (max-width: 767px) {
+    .contact-form-container {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    .input-wrapper {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
+    
+    .form-input,
+    .form-textarea {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+    }
+    
+    /* Force grid children to be full width */
+    .contact-form-container > * {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* Override any Tailwind grid constraints */
+    .grid {
+      width: 100% !important;
+    }
+    
+    .grid > * {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
   }
 
   .form-textarea {
@@ -58,51 +137,162 @@
 
   .send-btn {
     display: inline-block;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem 3rem;
     font-weight: bold;
     text-transform: uppercase;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.875rem;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    background-color: #3730a3;
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
     color: white;
+    border: none;
+    min-width: 200px;
+  }
+
+  .send-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
     width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .send-btn:hover::before {
+    left: 100%;
   }
 
   .send-btn:hover {
-    background-color: #4338ca;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
   }
 
   .send-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+  }
+
+  .send-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-text {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+  }
+
+  .btn-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Result message styles */
+  .result-message {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .result-message.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .result-message.success {
+    color: #10b981;
+    text-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  }
+
+  .result-message.error {
+    color: #ef4444;
+    text-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  }
+
+  /* Form validation effects */
+  .form-input:valid,
+  .form-textarea:valid {
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .form-input:invalid:not(:placeholder-shown),
+  .form-textarea:invalid:not(:placeholder-shown) {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
 <script>
-  // Contact form handling
+  // Contact form handling with enhanced UX
   document.addEventListener("DOMContentLoaded", () => {
-    const contactForm = document.getElementById(
-      "contactForm",
-    ) as HTMLFormElement;
-    const result = document.getElementById("result");
+    const contactForm = document.getElementById("contactForm") as HTMLFormElement;
+    const result = document.getElementById("result") as HTMLElement;
+    const submitBtn = contactForm?.querySelector(".send-btn") as HTMLButtonElement;
+    const btnText = submitBtn?.querySelector(".btn-text") as HTMLElement;
+    const btnLoader = submitBtn?.querySelector(".btn-loader") as HTMLElement;
+
+    // Add floating label effect
+    const inputs = contactForm?.querySelectorAll(".form-input, .form-textarea");
+    inputs?.forEach(input => {
+      const inputEl = input as HTMLInputElement | HTMLTextAreaElement;
+      inputEl.addEventListener("focus", function() {
+        this.parentElement?.classList.add("focused");
+      });
+      
+      inputEl.addEventListener("blur", function() {
+        if (!this.value) {
+          this.parentElement?.classList.remove("focused");
+        }
+      });
+    });
 
     if (contactForm) {
       contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        // Start loading state
+        submitBtn.disabled = true;
+        btnText.style.opacity = "0";
+        btnLoader.style.display = "block";
+        result.classList.remove("show", "success", "error");
+
         const formData = new FormData(contactForm);
         const formObject = Object.fromEntries(formData.entries());
         const json = JSON.stringify(formObject);
-        
-        if (result) {
-          result.innerHTML = "Sending...";
-        }
 
         try {
           const response = await fetch(
@@ -120,24 +310,43 @@
           const responseData = await response.json();
           
           if (response.status == 200) {
-            if (result) {
-              result.innerHTML = "Thank you for your message! We will get back to you soon.";
+            result.innerHTML = "✨ Thank you for your message! We'll get back to you soon.";
+            result.classList.add("show", "success");
+            
+            // Animate form reset
+            contactForm.style.opacity = "0.5";
+            setTimeout(() => {
+              contactForm.reset();
+              contactForm.style.opacity = "1";
+            }, 300);
+            
+            // Success haptic feedback (if supported)
+            if ('vibrate' in navigator) {
+              navigator.vibrate(200);
             }
-            contactForm.reset();
           } else {
             throw new Error(responseData.message || "Failed to submit form");
           }
         } catch (error) {
           console.error("Error:", error);
-          if (result) {
-            result.innerHTML = "Something went wrong. Please try again later.";
-          }
+          result.innerHTML = "❌ Something went wrong. Please try again later.";
+          result.classList.add("show", "error");
         } finally {
-          if (result) {
-            setTimeout(() => { 
-              result.innerHTML = ""; 
-            }, 3000);
-          }
+          // Reset button state
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            btnLoader.style.display = "none";
+            btnText.style.opacity = "1";
+          }, 300);
+
+          // Hide result message after delay
+          setTimeout(() => { 
+            result.classList.remove("show");
+            setTimeout(() => {
+              result.innerHTML = "";
+              result.classList.remove("success", "error");
+            }, 300);
+          }, 5000);
         }
       });
     }
