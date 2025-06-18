@@ -1,3 +1,5 @@
+astro.log
+
 # build output
 .env.development
 dist/
