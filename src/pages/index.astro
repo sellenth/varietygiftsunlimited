@@ -561,16 +561,17 @@ import ContactForm from "../components/ContactForm.astro";
     const magneticButtons = document.querySelectorAll('.btn-ripple, .hover-lift, .hover-grow');
     
     magneticButtons.forEach(button => {
-      button.addEventListener('mousemove', (e) => {
-        const rect = button.getBoundingClientRect();
+      const btnElement = button as HTMLElement;
+      btnElement.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = btnElement.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
         
-        button.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        btnElement.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
       });
       
-      button.addEventListener('mouseleave', () => {
-        button.style.transform = '';
+      btnElement.addEventListener('mouseleave', () => {
+        btnElement.style.transform = '';
       });
     });
   });
