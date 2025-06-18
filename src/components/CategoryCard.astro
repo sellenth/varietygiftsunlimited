@@ -1,0 +1,38 @@
+---
+export interface Props {
+    href: string;
+    title: string;
+    body: string;
+    img: string;
+    productCount?: number;
+}
+
+const { href, title, body, img, productCount } = Astro.props;
+---
+
+<a href={href} class="block group">
+    <div class="bg-white relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl">
+        <div class="aspect-square relative">
+            <img
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src={img}
+                alt={title}
+                loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+            <div class="relative z-10">
+                <h3 class="text-2xl font-bold mb-2 text-white drop-shadow-lg">{title}</h3>
+                <p class="text-sm mb-2 text-white/90 drop-shadow">{body}</p>
+                {productCount && (
+                    <p class="text-xs text-white/80 drop-shadow">{productCount} {productCount === 1 ? 'product' : 'products'}</p>
+                )}
+            </div>
+        </div>
+        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="text-sm font-medium text-gray-800">View Collection →</span>
+        </div>
+    </div>
+</a>

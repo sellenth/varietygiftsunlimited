@@ -1,0 +1,39 @@
+{
+  "redirects": [
+    {
+      "source": "/corgi-yoga",
+      "destination": "/shop/product/corgi-yoga",
+      "permanent": true
+    },
+    {
+      "source": "/golden-yoga",
+      "destination": "/shop/product/golden-yoga",
+      "permanent": true
+    },
+    {
+      "source": "/great-dane-yoga",
+      "destination": "/shop/product/great-dane-yoga",
+      "permanent": true
+    },
+    {
+      "source": "/husky-yoga",
+      "destination": "/shop/product/husky-yoga",
+      "permanent": true
+    },
+    {
+      "source": "/chewbarka-bandana",
+      "destination": "/shop/product/chewbarka-bandana",
+      "permanent": true
+    },
+    {
+      "source": "/tote",
+      "destination": "/shop/product/tote",
+      "permanent": true
+    },
+    {
+      "source": "/shop/bag/:id",
+      "destination": "/shop/product/bag-:id",
+      "permanent": true
+    }
+  ]
+}

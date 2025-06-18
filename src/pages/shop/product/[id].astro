@@ -1,0 +1,32 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ProductDetail from "../../../components/ProductDetail.astro";
+import { products } from "../../../data/products";
+
+export function getStaticPaths() {
+    return products.map(product => ({
+        params: { id: product.slug },
+        props: { product }
+    }));
+}
+
+const { product } = Astro.props;
+
+// Prepare props for ProductDetail component
+const productDetailProps = product.priceIds ? {
+    title: product.name,
+    description: product.description,
+    priceIds: product.priceIds,
+    images: product.images
+} : {
+    title: product.name,
+    description: product.description,
+    singlePrice: product.price.replace('$', ''),
+    singlePriceId: product.priceId,
+    images: product.images
+};
+---
+
+<Layout title={`${product.name} - Variety Gifts Unlimited`} hideHeader={false}>
+    <ProductDetail {...productDetailProps} />
+</Layout>
