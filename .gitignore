@@ -29,3 +29,4 @@ pnpm-debug.log*
 new_price_ids.txt
 script.sh
 .vercel/
+astro.log
