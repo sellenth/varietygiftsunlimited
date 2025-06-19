@@ -17,16 +17,25 @@ const productDetailProps = product.priceIds ? {
     title: product.name,
     description: product.description,
     priceIds: product.priceIds,
-    images: product.images
+    images: product.images,
+    colorImages: product.colorImages
 } : {
     title: product.name,
     description: product.description,
     singlePrice: product.price.replace('$', ''),
     singlePriceId: product.priceId,
-    images: product.images
+    images: product.images,
+    colorImages: product.colorImages
 };
 ---
 
 <Layout title={`${product.name} - Variety Gifts Unlimited`} hideHeader={false}>
     <ProductDetail {...productDetailProps} />
+    
+    {product.priceIds && product.colorImages && (
+        <script is:inline define:vars={{ priceIds: product.priceIds, colorImages: product.colorImages }}>
+            window.priceIds = priceIds;
+            window.colorImages = colorImages;
+        </script>
+    )}
 </Layout>

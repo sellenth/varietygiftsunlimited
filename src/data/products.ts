@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   category: 'bags' | 'shirts' | 'bandana' | 'tote';
   images: { src: string; alt: string }[];
+  colorImages?: { [color: string]: { src: string; alt: string }[] }; // For color variants
   price: string;
   priceId?: string; // For single price products
   priceIds?: { [size: string]: string }; // For multi-size products
@@ -141,10 +142,32 @@ export const products: Product[] = [
     description: 'Show your aunt pride with this stylish and comfortable t-shirt. Available in multiple colors and sizes.',
     category: 'shirts',
     images: [
-      { src: '/webpshirts/Front.webp', alt: 'Cool Aunts Club T-Shirt Front' },
-      { src: '/webpshirts/Back.webp', alt: 'Cool Aunts Club T-Shirt Back' },
-      { src: '/webpshirts/Folded.webp', alt: 'Cool Aunts Club T-Shirt Folded' }
+      { src: '/webpshirts/aunts_club_front_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Front' },
+      { src: '/webpshirts/aunts_club_back_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Back' },
+      { src: '/webpshirts/aunts_club_folded_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Folded' }
     ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/aunts_club_front_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Front' },
+        { src: '/webpshirts/aunts_club_back_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Back' },
+        { src: '/webpshirts/aunts_club_folded_green.webp', alt: 'Cool Aunts Club T-Shirt - Green Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/aunts_club_front_pink.webp', alt: 'Cool Aunts Club T-Shirt - Pink Front' },
+        { src: '/webpshirts/aunts_club_back_pink.webp', alt: 'Cool Aunts Club T-Shirt - Pink Back' },
+        { src: '/webpshirts/aunts_club_folded_pink.webp', alt: 'Cool Aunts Club T-Shirt - Pink Folded' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/aunts_club_front_natural.webp', alt: 'Cool Aunts Club T-Shirt - Natural Front' },
+        { src: '/webpshirts/aunts_club_back_natural.webp', alt: 'Cool Aunts Club T-Shirt - Natural Back' },
+        { src: '/webpshirts/aunts_club_folded_natural.webp', alt: 'Cool Aunts Club T-Shirt - Natural Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/aunts_club_front_yellow.webp', alt: 'Cool Aunts Club T-Shirt - Yellow Front' },
+        { src: '/webpshirts/aunts_club_back_yellow.webp', alt: 'Cool Aunts Club T-Shirt - Yellow Back' },
+        { src: '/webpshirts/aunts_club_folded_yellow.webp', alt: 'Cool Aunts Club T-Shirt - Yellow Folded' }
+      ]
+    },
     price: '$29.99',
     priceIds: coolAuntsClubPriceIds,
     sizes: Object.keys(coolAuntsClubPriceIds),

@@ -12,7 +12,7 @@ interface Props {
 const { images, title } = Astro.props;
 ---
 
-<div class="relative group aspect-square overflow-hidden rounded-lg">
+<div class="relative group aspect-square overflow-hidden rounded-lg image-carousel">
     <div class="carousel bg-white w-full h-full touch-none">
         {images.map((image, index) => (
             <img 
