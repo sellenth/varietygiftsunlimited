@@ -62,6 +62,26 @@ const coolAuntsClubPriceIds = {
   "Yellow - X-Large": "price_1RbDCHAp2D4XT14xEgIg5RY3"
 };
 
+// What The T-Shirt price IDs
+const whatTheTShirtPriceIds = {
+  "Green - Small": "price_1RbYCZAp2D4XT14xnwLXQQk5",
+  "Green - Medium": "price_1RbYCdAp2D4XT14xHXxrRyOP",
+  "Green - Large": "price_1RbYChAp2D4XT14xis9XlrP1",
+  "Green - X-Large": "price_1RbYCnAp2D4XT14xJSHyuIOO",
+  "Pink - Small": "price_1RbYCsAp2D4XT14x3DyI07Cz",
+  "Pink - Medium": "price_1RbYCxAp2D4XT14xE721yRMs",
+  "Pink - Large": "price_1RbYD1Ap2D4XT14xVdjACcDp",
+  "Pink - X-Large": "price_1RbYD6Ap2D4XT14xyiw6HyhV",
+  "Natural - Small": "price_1RbYDBAp2D4XT14xOokpUBGy",
+  "Natural - Medium": "price_1RbYDGAp2D4XT14xbUIQgWW8",
+  "Natural - Large": "price_1RbYDLAp2D4XT14xcDAeUAPM",
+  "Natural - X-Large": "price_1RbYDQAp2D4XT14xZWaWplyE",
+  "Yellow - Small": "price_1RbYDWAp2D4XT14xtfDA4KYz",
+  "Yellow - Medium": "price_1RbYDcAp2D4XT14x8W6V2bOa",
+  "Yellow - Large": "price_1RbYDfAp2D4XT14xIj8dIigl",
+  "Yellow - X-Large": "price_1RbYDlAp2D4XT14xkQYUeisy"
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 13 }, (_, i) => ({
@@ -172,6 +192,42 @@ export const products: Product[] = [
     priceIds: coolAuntsClubPriceIds,
     sizes: Object.keys(coolAuntsClubPriceIds),
     slug: 'cool-aunts-club'
+  },
+  {
+    id: 'what-the',
+    name: 'What The T-Shirt',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+        { src: '/webpshirts/what_the_front_natural.webp', alt: 'What The T-Shirt - Natural Front' },
+        { src: '/webpshirts/what_the_hanging_natural.webp', alt: 'What The T-Shirt - Natural Hanging' },
+    ],
+    colorImages: {
+      /*
+      'Green': [
+        { src: '/webpshirts/what_the_front_green.webp', alt: 'What The T-Shirt - Green Front' },
+        { src: '/webpshirts/what_the_back_green.webp', alt: 'What The T-Shirt - Green Back' },
+        { src: '/webpshirts/what_the_folded_green.webp', alt: 'What The T-Shirt - Green Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/what_the_front_pink.webp', alt: 'What The T-Shirt - Pink Front' },
+        { src: '/webpshirts/what_the_back_pink.webp', alt: 'What The T-Shirt - Pink Back' },
+        { src: '/webpshirts/what_the_folded_pink.webp', alt: 'What The T-Shirt - Pink Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/what_the_front_yellow.webp', alt: 'What The T-Shirt - Yellow Front' },
+        { src: '/webpshirts/what_the_back_yellow.webp', alt: 'What The T-Shirt - Yellow Back' },
+        { src: '/webpshirts/what_the_folded_yellow.webp', alt: 'What The T-Shirt - Yellow Folded' }
+      ],*/
+      'Natural': [
+        { src: '/webpshirts/what_the_front_natural.webp', alt: 'What The T-Shirt - Natural Front' },
+        { src: '/webpshirts/what_the_hanging_natural.webp', alt: 'What The T-Shirt - Natural Hanging' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: whatTheTShirtPriceIds,
+    sizes: Object.keys(whatTheTShirtPriceIds),
+    slug: 'what-the'
   },
   
   // Bandana

@@ -5,10 +5,13 @@ const { title, description, priceIds, singlePrice, singlePriceId, images, colorI
 const availableSizes = priceIds ? Object.keys(priceIds) : [];
 const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
 
-// Check if this is a color/size variant product (Cool Aunts Club)
-const isColorSizeVariant = availableSizes.some(size => size.includes(' - '));
-const colorOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.split(' - ')[0]))] : [];
+// Check if this is a color/size variant product (has colorImages defined)
+const isColorSizeVariant = colorImages && Object.keys(colorImages).length > 0;
+const colorOptions = isColorSizeVariant ? Object.keys(colorImages) : [];
 const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.split(' - ')[1]))] : availableSizes;
+
+// Use first color's images as default if color variants exist
+const displayImages = isColorSizeVariant && colorOptions.length > 0 ? colorImages[colorOptions[0]] : images;
 
 // Get the API key from environment variables
 const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
@@ -26,29 +29,51 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 </div>
 <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="grid md:grid-cols-2 gap-8">
-        <ImageCarousel images={images} title={title} />
+        <ImageCarousel images={displayImages} title={title} />
         <div class="flex flex-col gap-4">
             <h1 class="text-3xl font-bold">{title}</h1>
             <p class="text-gray-600">{description}</p>
 
             {priceIds ? (
                 <div class="space-y-4">
-                    <p class="text-xl font-semibold">{title.includes('Cool Aunts') ? '$29.99' : '$19.99'} w/ free shipping!</p>
+                    <p class="text-xl font-semibold">{(title.includes('Cool Aunts') || title.includes('What The')) ? '$29.99' : '$19.99'} w/ free shipping!</p>
                     {isColorSizeVariant ? (
                         <>
                             <div>
-                                <label for="color-select" class="block text-sm font-medium text-gray-700 mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">
                                     Select Color:
                                 </label>
-                                <select 
-                                    id="color-select" 
-                                    name="color" 
-                                    class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                                >
-                                    {colorOptions.map((color) => (
-                                        <option value={color}>{color}</option>
-                                    ))}
-                                </select>
+                                <div class="flex gap-3 flex-wrap">
+                                    {colorOptions.map((color, index) => {
+                                        const colorMap = {
+                                            'Green': '#22c55e',
+                                            'Pink': '#ec4899',
+                                            'Natural': '#f5f5dc',
+                                            'Yellow': '#fbbf24',
+                                            'Blue': '#3b82f6',
+                                            'Purple': '#a855f7',
+                                            'Red': '#ef4444',
+                                            'Black': '#000000',
+                                            'White': '#ffffff',
+                                            'Gray': '#6b7280',
+                                            'Orange': '#f97316'
+                                        };
+                                        const bgColor = colorMap[color] || '#e5e7eb';
+                                        const isLight = color === 'Natural' || color === 'White' || color === 'Yellow';
+                                        return (
+                                            <button
+                                                type="button"
+                                                data-color={color}
+                                                class={`color-orb ${index === 0 ? 'active' : ''}`}
+                                                style={`background-color: ${bgColor};`}
+                                                aria-label={`Select ${color} color`}
+                                            >
+                                                <span class="color-name">{color}</span>
+                                                {isLight && <span class="orb-border"></span>}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
                             </div>
                             <div>
                                 <label for="size-select" class="block text-sm font-medium text-gray-700 mb-2">
@@ -116,7 +141,6 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
     const buyButton = document.getElementById("buy-button");
     const sizeSelect = document.getElementById("size-select") as HTMLSelectElement;
-    const colorSelect = document.getElementById("color-select") as HTMLSelectElement;
     const isColorSize = buyButton?.dataset?.isColorSize === "true";
     
     if (!buyButton?.dataset?.stripeKey || !buyButton?.dataset?.stripePaymentId) {
@@ -134,8 +158,9 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
     // For color/size variants, find the price ID based on selection
     const getPriceId = () => {
-        if (isColorSize && colorSelect && sizeSelect) {
-            const color = colorSelect.value;
+        if (isColorSize && sizeSelect) {
+            const activeOrb = document.querySelector('.color-orb.active');
+            const color = activeOrb?.getAttribute('data-color') || '';
             const size = sizeSelect.value;
             const key = `${color} - ${size}`;
             // Get price IDs from the page's script data
@@ -147,42 +172,61 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
     // Handle color selection changes
     function setupColorImageSwitching() {
-        const colorSelectElement = document.getElementById("color-select") as HTMLSelectElement;
+        const colorOrbs = document.querySelectorAll('.color-orb');
+        let currentColor = colorOrbs[0]?.getAttribute('data-color') || '';
         
-        if (colorSelectElement && (window as any).colorImages) {
-            colorSelectElement.addEventListener("change", () => {
-                const selectedColor = colorSelectElement.value;
-                const colorImagesData = (window as any).colorImages[selectedColor];
-                
-                if (colorImagesData) {
-                    const carousel = document.querySelector('.carousel');
-                    const existingImages = carousel?.querySelectorAll('.carousel-item');
+        if (colorOrbs.length > 0 && (window as any).colorImages) {
+            colorOrbs.forEach(orb => {
+                orb.addEventListener('click', () => {
+                    const selectedColor = orb.getAttribute('data-color') || '';
+                    if (selectedColor === currentColor) return;
                     
-                    if (carousel && existingImages) {
-                        // Remove existing images
-                        existingImages.forEach(img => img.remove());
+                    // Update active state
+                    colorOrbs.forEach(o => o.classList.remove('active'));
+                    orb.classList.add('active');
+                    currentColor = selectedColor;
+                    
+                    const colorImagesData = (window as any).colorImages[selectedColor];
+                    
+                    if (colorImagesData) {
+                        const carousel = document.querySelector('.carousel');
+                        const existingImages = carousel?.querySelectorAll('.carousel-item');
                         
-                        // Add new images for the selected color
-                        colorImagesData.forEach((image: any, index: number) => {
-                            const img = document.createElement('img');
-                            img.src = image.src;
-                            img.alt = image.alt;
-                            img.loading = index === 0 ? "eager" : "lazy";
-                            img.className = `w-full h-full object-cover carousel-item select-none ${index === 0 ? '' : 'hidden'}`;
-                            img.setAttribute('data-index', (index + 1).toString());
-                            carousel.appendChild(img);
-                        });
-                        
-                        // Reset carousel to first image
-                        const firstImage = carousel.querySelector('[data-index="1"]');
-                        if (firstImage) {
-                            carousel.querySelectorAll('.carousel-item').forEach(item => {
-                                item.classList.add('hidden');
+                        if (carousel && existingImages) {
+                            // Fade out current images
+                            existingImages.forEach(img => {
+                                img.classList.add('opacity-0', 'transition-opacity', 'duration-200');
                             });
-                            firstImage.classList.remove('hidden');
+                            
+                            setTimeout(() => {
+                                // Remove existing images
+                                existingImages.forEach(img => img.remove());
+                                
+                                // Add new images for the selected color
+                                colorImagesData.forEach((image: any, index: number) => {
+                                    const img = document.createElement('img');
+                                    img.src = image.src;
+                                    img.alt = image.alt;
+                                    img.loading = index === 0 ? "eager" : "lazy";
+                                    img.className = `w-full h-full object-cover carousel-item select-none opacity-0 transition-opacity duration-200 ${index === 0 ? '' : 'hidden'}`;
+                                    img.setAttribute('data-index', (index + 1).toString());
+                                    carousel.appendChild(img);
+                                    
+                                    // Fade in new images
+                                    setTimeout(() => {
+                                        img.classList.remove('opacity-0');
+                                    }, 50);
+                                });
+                                
+                                // Reset carousel counter
+                                const counter = carousel.parentElement?.querySelector('.carousel-counter');
+                                if (counter) {
+                                    counter.textContent = `1 / ${colorImagesData.length}`;
+                                }
+                            }, 200);
                         }
                     }
-                }
+                });
             });
         }
     }
@@ -212,4 +256,107 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
             }
         });
     });
-</script> 
+</script>
+
+<style>
+    .color-orb {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .color-orb:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .color-orb:active {
+        transform: scale(0.95);
+    }
+    
+    .color-orb.active {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .color-orb.active::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .color-orb.active[data-color="Natural"]::after,
+    .color-orb.active[data-color="White"]::after,
+    .color-orb.active[data-color="Yellow"]::after {
+        color: #374151;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .color-name {
+        position: absolute;
+        bottom: -24px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: #6b7280;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        pointer-events: none;
+    }
+    
+    .color-orb:hover .color-name {
+        opacity: 1;
+    }
+    
+    .orb-border {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+    }
+    
+    /* Ripple effect on click */
+    @keyframes ripple {
+        0% {
+            transform: scale(0);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+    
+    .color-orb::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transform: translate(-50%, -50%);
+    }
+    
+    .color-orb:active::before {
+        width: 100%;
+        height: 100%;
+        animation: ripple 0.6s ease-out;
+    }
+</style> 
