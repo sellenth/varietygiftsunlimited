@@ -12,6 +12,14 @@ export function getStaticPaths() {
 
 const { product } = Astro.props;
 
+// Get the canonical URL for this product
+const canonicalUrl = `https://varietygiftsunlimited.com/shop/product/${product.slug}`;
+
+// Get the first image for social media preview
+const ogImageUrl = product.images[0]?.src.startsWith('http') 
+    ? product.images[0].src 
+    : `https://varietygiftsunlimited.com${product.images[0]?.src}`;
+
 // Prepare props for ProductDetail component
 const productDetailProps = product.priceIds ? {
     title: product.name,
@@ -31,7 +39,37 @@ const productDetailProps = product.priceIds ? {
 };
 ---
 
-<Layout title={`${product.name} - Variety Gifts Unlimited`} hideHeader={false}>
+<Layout 
+    title={`${product.name} - Variety Gifts Unlimited`} 
+    hideHeader={false}
+    description={product.description}
+    ogTitle={`${product.name} - ${product.price}`}
+    ogDescription={product.description}
+    ogImage={ogImageUrl}
+    ogUrl={canonicalUrl}
+>
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": product.images.map(img => img.src.startsWith('http') ? img.src : `https://varietygiftsunlimited.com${img.src}`),
+        "description": product.description,
+        "brand": {
+            "@type": "Brand",
+            "name": "Variety Gifts Unlimited"
+        },
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "USD",
+            "price": product.price.replace(/[^0-9.]/g, ''),
+            "availability": "https://schema.org/InStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "Variety Gifts Unlimited"
+            }
+        }
+    })} />
+    
     <ProductDetail {...productDetailProps} />
     
     {product.priceIds && product.colorImages && (

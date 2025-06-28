@@ -3,9 +3,23 @@ interface Props {
 	title: string;
 	hideHeader: boolean;
 	hideFooter?: boolean;
+	description?: string;
+	ogTitle?: string;
+	ogDescription?: string;
+	ogImage?: string;
+	ogUrl?: string;
 }
 
-const { title, hideHeader, hideFooter = false } = Astro.props;
+const { 
+	title, 
+	hideHeader, 
+	hideFooter = false,
+	description = "Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!",
+	ogTitle,
+	ogDescription,
+	ogImage,
+	ogUrl
+} = Astro.props;
 //import '@fontsource/creepster';
 //import '@fontsource-variable/roboto-slab';
 import '@fontsource/eagle-lake';
@@ -27,7 +41,7 @@ import '../styles/animations.css';
 
 		<meta
 			name="description"
-			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+			content={description}
 		/>
 		<meta
 			name="keywords"
@@ -39,19 +53,19 @@ import '../styles/animations.css';
 		<meta property="og:type" content="website" />
 		<meta
 			property="og:url"
-			content="https://www.varietygiftsunlimited.com/"
+			content={ogUrl || "https://www.varietygiftsunlimited.com/"}
 		/>
 		<meta
 			property="og:title"
-			content="Fun gifts for you and your loved ones 😄"
+			content={ogTitle || "Fun gifts for you and your loved ones 😄"}
 		/>
 		<meta
 			property="og:description"
-			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+			content={ogDescription || description}
 		/>
 		<meta
 			property="og:image"
-			content="https://www.varietygiftsunlimited.com/logos/bg-min.png"
+			content={ogImage || "https://www.varietygiftsunlimited.com/logos/bg-min.png"}
 		/>
 
 		<!-- Microsoft Teams App Sharing -->
@@ -78,22 +92,25 @@ import '../styles/animations.css';
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta
 			property="twitter:url"
-			content="https://www.varietygiftsunlimited.com/"
+			content={ogUrl || "https://www.varietygiftsunlimited.com/"}
 		/>
 		<meta
 			property="twitter:title"
-			content="Variety Gifts Unlimited - Unique and Fun Gifts"
+			content={ogTitle || "Variety Gifts Unlimited - Unique and Fun Gifts"}
 		/>
 		<meta
 			property="twitter:description"
-			content="Discover unique and fun gifts at Variety Gifts Unlimited. From savings boxes to giant Snorlax plushies, we have something for everyone!"
+			content={ogDescription || description}
 		/>
 		<meta
 			property="twitter:image"
-			content="https://www.varietygiftsunlimited.com/logos/new_logo.jpg"
+			content={ogImage || "https://www.varietygiftsunlimited.com/logos/new_logo.jpg"}
 		/>
 
-		<link rel="canonical" href="https://www.varietygiftsunlimited.com/" />
+		<link rel="canonical" href={ogUrl || "https://www.varietygiftsunlimited.com/"} />
+		
+		<slot name="head" />
+		
 		<script is:inline>
 			const isDark = JSON.parse(localStorage.getItem('isDark') ?? 'true');
 			document.documentElement.setAttribute('data-theme', isDark ? 'leaf-blue' : 'light');
