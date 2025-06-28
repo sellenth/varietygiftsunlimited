@@ -137,23 +137,38 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
 
 <script>
-    import { loadStripe } from "@stripe/stripe-js";
-
     const buyButton = document.getElementById("buy-button");
     const sizeSelect = document.getElementById("size-select") as HTMLSelectElement;
     const isColorSize = buyButton?.dataset?.isColorSize === "true";
     
-    if (!buyButton?.dataset?.stripeKey || !buyButton?.dataset?.stripePaymentId) {
-        console.error("Missing required Stripe configuration");
-        throw new Error("Missing required Stripe configuration");
-    }
+    let stripe: any = null;
+    let stripeLoadError = false;
+    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-    const stripeKey = buyButton.dataset.stripeKey;
-    const stripe = await loadStripe(stripeKey);
-
-    if (!stripe) {
-        console.error("Failed to initialize Stripe.");
-        throw new Error("Failed to initialize Stripe.");
+    // Only load Stripe in production
+    if (!isDev) {
+        const { loadStripe } = await import("@stripe/stripe-js");
+        
+        // Initialize Stripe if configuration is available
+        if (buyButton?.dataset?.stripeKey && buyButton?.dataset?.stripePaymentId) {
+            const stripeKey = buyButton.dataset.stripeKey;
+            try {
+                stripe = await loadStripe(stripeKey);
+                if (!stripe) {
+                    console.error("Failed to initialize Stripe.");
+                    stripeLoadError = true;
+                }
+            } catch (error) {
+                console.error("Error loading Stripe:", error);
+                stripeLoadError = true;
+            }
+        } else {
+            console.error("Missing required Stripe configuration");
+            stripeLoadError = true;
+        }
+    } else {
+        console.log("Stripe disabled in development mode");
+        stripeLoadError = true;
     }
 
     // For color/size variants, find the price ID based on selection
@@ -165,9 +180,9 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
             const key = `${color} - ${size}`;
             // Get price IDs from the page's script data
             const priceData = (window as any).priceIds || {};
-            return priceData[key] || buyButton.dataset.stripePaymentId;
+            return priceData[key] || buyButton?.dataset?.stripePaymentId;
         }
-        return sizeSelect ? sizeSelect.value : buyButton.dataset.stripePaymentId;
+        return sizeSelect ? sizeSelect.value : buyButton?.dataset?.stripePaymentId;
     };
 
     // Handle color selection changes
@@ -238,24 +253,37 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
         setupColorImageSwitching();
     }
 
-    buyButton.addEventListener("click", () => {
-        const priceId = getPriceId();
-
-        stripe.redirectToCheckout({
-            lineItems: [{ price: priceId, quantity: 1 }],
-            mode: "payment",
-            successUrl: "https://varietygiftsunlimited.com/success",
-            cancelUrl: "https://varietygiftsunlimited.com/",
-            shippingAddressCollection: {
-                allowedCountries: ["US", "CA", "MX", "TH"],
-            },
-        })
-        .then(function (result) {
-            if (result.error) {
-                alert(result.error.message);
+    // Only add click handler if buy button exists
+    if (buyButton) {
+        buyButton.addEventListener("click", () => {
+            if (isDev) {
+                alert("Stripe checkout is disabled in development mode.");
+                return;
             }
+            
+            if (stripeLoadError || !stripe) {
+                alert("Payment system is currently unavailable. Please try again later.");
+                return;
+            }
+
+            const priceId = getPriceId();
+
+            stripe.redirectToCheckout({
+                lineItems: [{ price: priceId, quantity: 1 }],
+                mode: "payment",
+                successUrl: "https://varietygiftsunlimited.com/success",
+                cancelUrl: "https://varietygiftsunlimited.com/",
+                shippingAddressCollection: {
+                    allowedCountries: ["US", "CA", "MX", "TH"],
+                },
+            })
+            .then(function (result: any) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
         });
-    });
+    }
 </script>
 
 <style>
