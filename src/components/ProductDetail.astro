@@ -185,6 +185,65 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
         return sizeSelect ? sizeSelect.value : buyButton?.dataset?.stripePaymentId;
     };
 
+    // Initialize carousel functionality
+    function initializeCarousel() {
+        const carousel = document.querySelector('.carousel');
+        const items = carousel?.querySelectorAll('.carousel-item');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (carousel && items && prevBtn && nextBtn) {
+            let currentIndex = 1;
+            const maxIndex = items.length;
+
+            // Hide navigation buttons if there's only one image
+            if (maxIndex <= 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = '';
+                nextBtn.style.display = '';
+            }
+
+            function showImage(index: number) {
+                items.forEach((item) => {
+                    item.classList.add('hidden');
+                });
+                const targetItem = carousel.querySelector(`[data-index="${index}"]`);
+                if (targetItem) {
+                    targetItem.classList.remove('hidden');
+                }
+            }
+
+            function nextImage() {
+                currentIndex = currentIndex === maxIndex ? 1 : currentIndex + 1;
+                showImage(currentIndex);
+            }
+
+            function prevImage() {
+                currentIndex = currentIndex === 1 ? maxIndex : currentIndex - 1;
+                showImage(currentIndex);
+            }
+
+            // Remove existing listeners before adding new ones
+            const newPrevBtn = prevBtn.cloneNode(true);
+            const newNextBtn = nextBtn.cloneNode(true);
+            prevBtn.parentNode?.replaceChild(newPrevBtn, prevBtn);
+            nextBtn.parentNode?.replaceChild(newNextBtn, nextBtn);
+
+            // Add click event listeners to the buttons
+            newNextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                nextImage();
+            });
+            
+            newPrevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                prevImage();
+            });
+        }
+    }
+
     // Handle color selection changes
     function setupColorImageSwitching() {
         const colorOrbs = document.querySelectorAll('.color-orb');
@@ -238,6 +297,9 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                 if (counter) {
                                     counter.textContent = `1 / ${colorImagesData.length}`;
                                 }
+                                
+                                // Reinitialize carousel functionality
+                                initializeCarousel();
                             }, 200);
                         }
                     }
