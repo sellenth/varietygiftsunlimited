@@ -16,12 +16,14 @@ const { product } = Astro.props;
 const productDetailProps = product.priceIds ? {
     title: product.name,
     description: product.description,
+    price: product.price,
     priceIds: product.priceIds,
     images: product.images,
     colorImages: product.colorImages
 } : {
     title: product.name,
     description: product.description,
+    price: product.price,
     singlePrice: product.price.replace('$', ''),
     singlePriceId: product.priceId,
     images: product.images,

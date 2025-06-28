@@ -82,6 +82,14 @@ const whatTheTShirtPriceIds = {
   "Yellow - X-Large": "price_1RbYDlAp2D4XT14xkQYUeisy"
 };
 
+// Freudian Tank price IDs
+const freudianTankPriceIds = {
+  "Black - Small": "price_1Rf628Ap2D4XT14xcynwN9k0",
+  "Black - Medium": "price_1Rf628Ap2D4XT14x2YwO9h13",
+  "Black - Large": "price_1Rf628Ap2D4XT14xoWhwVJKb",
+  "Black - X-Large": "price_1Rf629Ap2D4XT14xnRkc53ul"
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 13 }, (_, i) => ({
@@ -228,6 +236,26 @@ export const products: Product[] = [
     priceIds: whatTheTShirtPriceIds,
     sizes: Object.keys(whatTheTShirtPriceIds),
     slug: 'what-the'
+  },
+  {
+    id: 'freudian-tank',
+    name: 'Freudian Tank',
+    description: 'Show your V.G. x Freudian French support with this tank top. Available in black.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/swole_tank_front.webp', alt: 'Freudian Tank - Black Front' },
+      { src: '/webpshirts/swole_tank_back.webp', alt: 'Freudian Tank - Black Back' }
+    ],
+    colorImages: {
+      'Black': [
+        { src: '/webpshirts/swole_tank_front.webp', alt: 'Freudian Tank - Black Front' },
+        { src: '/webpshirts/swole_tank_back.webp', alt: 'Freudian Tank - Black Back' }
+      ]
+    },
+    price: '$30',
+    priceIds: freudianTankPriceIds,
+    sizes: Object.keys(freudianTankPriceIds),
+    slug: 'freudian-tank'
   },
   
   // Bandana

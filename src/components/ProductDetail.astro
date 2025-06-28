@@ -1,7 +1,7 @@
 ---
 import ImageCarousel from './ImageCarousel.astro';
 
-const { title, description, priceIds, singlePrice, singlePriceId, images, colorImages } = Astro.props;
+const { title, description, priceIds, singlePrice, singlePriceId, images, colorImages, price } = Astro.props;
 const availableSizes = priceIds ? Object.keys(priceIds) : [];
 const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
 
@@ -36,7 +36,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
             {priceIds ? (
                 <div class="space-y-4">
-                    <p class="text-xl font-semibold">{(title.includes('Cool Aunts') || title.includes('What The')) ? '$29.99' : '$19.99'} w/ free shipping!</p>
+                    <p class="text-xl font-semibold">{price || '$19.99'} w/ free shipping!</p>
                     {isColorSizeVariant ? (
                         <>
                             <div>
@@ -119,7 +119,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                 </div>
             ) : (
                 <div class="space-y-4">
-                    <p class="text-xl font-semibold">${singlePrice} w/ free shipping!</p>
+                    <p class="text-xl font-semibold">{price || `$${singlePrice}`} w/ free shipping!</p>
                     <button 
                         id="buy-button"
                         data-stripe-key={PUBLIC_STRIPE_KEY}

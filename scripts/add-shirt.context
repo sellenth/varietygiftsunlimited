@@ -1,0 +1,171 @@
+### Process Summary
+1. **Create Stripe Product**: Use `mcp__stripe__create_product`
+2. **Create Prices**: Use Task tool to batch create 16 prices
+3. **Update Code**: Add price IDs object and product entry to `src/data/products.ts`
+4. **Add Images**: Place product images in `/public/webpshirts/`
+
+## Running Commands
+- Build: `npm run build`
+- Dev: `npm run dev`
+- Lint: `npm run lint`
+- Typecheck: `npm run typecheck`
+
+## Key Files
+- Product data: `src/data/products.ts`
+- Product detail page: `src/components/ProductDetail.astro`
+- Shop page: `src/pages/shop.astro`
+
+## Stripe Integration
+- Products are managed in Stripe
+- Each shirt has 16 price variants
+- Price IDs are stored in products.ts
+- Uses Stripe Checkout for payments
+
+/**
+ * Script to add a new shirt product to Stripe and the website
+ * Usage: node scripts/add-shirt.js "Product Name" 29.99 "product_slug"
+ * 
+ * Example: node scripts/add-shirt.js "Cool New Shirt" 29.99 "cool_new"
+ * 
+ * This will:
+ * 1. Create a Stripe product
+ * 2. Create 16 price variants (4 colors × 4 sizes)
+ * 3. Generate the code to add to products.ts
+ */
+
+const COLORS = ['Green', 'Pink', 'Natural', 'Yellow'];
+const SIZES = ['Small', 'Medium', 'Large', 'X-Large'];
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+if (args.length < 3) {
+  console.error('Usage: node scripts/add-shirt.js "Product Name" price "slug"');
+  console.error('Example: node scripts/add-shirt.js "Cool New Shirt" 29.99 "cool_new"');
+  process.exit(1);
+}
+
+const [productName, priceStr, slug] = args;
+const price = parseFloat(priceStr);
+const priceInCents = Math.round(price * 100);
+
+// Generate the variable name from the product name
+const varName = productName
+  .replace(/[^a-zA-Z0-9\s]/g, '')
+  .split(' ')
+  .map((word, index) => 
+    index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  )
+  .join('') + 'PriceIds';
+
+console.log(`
+=== ADD SHIRT INSTRUCTIONS ===
+
+Product: ${productName}
+Price: $${price}
+Slug: ${slug}
+Variable Name: ${varName}
+
+STEP 1: Create the Stripe product
+---------------------------------
+Run this MCP command:
+mcp__stripe__create_product name="${productName}" description="Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes."
+
+Save the returned product ID: prod_XXXXXXXXX
+
+STEP 2: Create 16 prices in Stripe
+-----------------------------------
+Use the Task tool with this prompt:
+
+"Create 16 prices in Stripe for the '${productName}' product (product ID: [INSERT PRODUCT ID HERE]). Each price should be $${price} USD (${priceInCents} cents).
+
+Create prices for these color/size combinations:
+${COLORS.flatMap(color => 
+  SIZES.map(size => `- ${color} - ${size}`)
+).join('\n')}
+
+Use the mcp__stripe__create_price tool for each combination. After creating all prices, provide a formatted object with the price IDs."
+
+STEP 3: Add to products.ts
+--------------------------
+Add this price IDs object after the other price ID objects:
+
+// ${productName} price IDs
+const ${varName} = {
+  "Green - Small": "price_XXXXXXXXX",
+  "Green - Medium": "price_XXXXXXXXX",
+  "Green - Large": "price_XXXXXXXXX",
+  "Green - X-Large": "price_XXXXXXXXX",
+  "Pink - Small": "price_XXXXXXXXX",
+  "Pink - Medium": "price_XXXXXXXXX",
+  "Pink - Large": "price_XXXXXXXXX",
+  "Pink - X-Large": "price_XXXXXXXXX",
+  "Natural - Small": "price_XXXXXXXXX",
+  "Natural - Medium": "price_XXXXXXXXX",
+  "Natural - Large": "price_XXXXXXXXX",
+  "Natural - X-Large": "price_XXXXXXXXX",
+  "Yellow - Small": "price_XXXXXXXXX",
+  "Yellow - Medium": "price_XXXXXXXXX",
+  "Yellow - Large": "price_XXXXXXXXX",
+  "Yellow - X-Large": "price_XXXXXXXXX"
+};
+
+STEP 4: Add product entry
+-------------------------
+Add this to the products array in products.ts:
+
+{
+  id: '${slug}',
+  name: '${productName}',
+  description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+  category: 'shirts',
+  images: [
+    { src: '/webpshirts/${slug}_front_green.webp', alt: '${productName} - Green Front' },
+    { src: '/webpshirts/${slug}_back_green.webp', alt: '${productName} - Green Back' },
+    { src: '/webpshirts/${slug}_folded_green.webp', alt: '${productName} - Green Folded' }
+  ],
+  colorImages: {
+    'Green': [
+      { src: '/webpshirts/${slug}_front_green.webp', alt: '${productName} - Green Front' },
+      { src: '/webpshirts/${slug}_back_green.webp', alt: '${productName} - Green Back' },
+      { src: '/webpshirts/${slug}_folded_green.webp', alt: '${productName} - Green Folded' }
+    ],
+    'Pink': [
+      { src: '/webpshirts/${slug}_front_pink.webp', alt: '${productName} - Pink Front' },
+      { src: '/webpshirts/${slug}_back_pink.webp', alt: '${productName} - Pink Back' },
+      { src: '/webpshirts/${slug}_folded_pink.webp', alt: '${productName} - Pink Folded' }
+    ],
+    'Natural': [
+      { src: '/webpshirts/${slug}_front_natural.webp', alt: '${productName} - Natural Front' },
+      { src: '/webpshirts/${slug}_back_natural.webp', alt: '${productName} - Natural Back' },
+      { src: '/webpshirts/${slug}_folded_natural.webp', alt: '${productName} - Natural Folded' }
+    ],
+    'Yellow': [
+      { src: '/webpshirts/${slug}_front_yellow.webp', alt: '${productName} - Yellow Front' },
+      { src: '/webpshirts/${slug}_back_yellow.webp', alt: '${productName} - Yellow Back' },
+      { src: '/webpshirts/${slug}_folded_yellow.webp', alt: '${productName} - Yellow Folded' }
+    ]
+  },
+  price: '$${price}',
+  priceIds: ${varName},
+  sizes: Object.keys(${varName}),
+  slug: '${slug}'
+},
+
+STEP 5: Update price display logic (if needed)
+----------------------------------------------
+If this is NOT a $29.99 shirt, update the price display logic in ProductDetail.astro:
+
+Find: title.includes('Cool Aunts') || title.includes('What The')
+Add: || title.includes('${productName}')
+
+STEP 6: Add images
+-----------------
+Add these image files to /public/webpshirts/:
+${COLORS.flatMap(color => [
+  `${slug}_front_${color.toLowerCase()}.webp`,
+  `${slug}_back_${color.toLowerCase()}.webp`,  
+  `${slug}_folded_${color.toLowerCase()}.webp`
+]).join('\n')}
+
+=== END INSTRUCTIONS ===
+`);
