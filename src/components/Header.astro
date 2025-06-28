@@ -43,26 +43,12 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    animation: slideDown 0.6s ease-out;
-  }
-
-  @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
   }
 
   /* Navigation */
   .navbar {
     background: linear-gradient(135deg, #7c4dff 0%, #6366f1 100%);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px rgba(124, 77, 255, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .nav-link {
@@ -70,50 +56,10 @@
     text-decoration: none;
     font-weight: 500;
     letter-spacing: 0.05em;
-    position: relative;
-    transition: all 0.3s ease;
-    padding: 0.5rem 0;
-  }
-
-  .nav-link::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: white;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .nav-link:hover::before {
-    width: 100%;
   }
 
   .nav-link:hover {
-    transform: translateY(-2px);
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Icon animations */
-  nav svg {
-    transition: all 0.3s ease;
-  }
-
-  nav a:hover svg {
-    transform: scale(1.2) rotate(5deg);
-  }
-
-  /* Add padding to main content to account for fixed header */
-  :global(main) {
-    padding-top: 60px;
-  }
-
-  /* Scroll effect */
-  .scrolled {
-    background: rgba(124, 77, 255, 0.95);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 40px rgba(124, 77, 255, 0.3);
+    opacity: 0.8;
   }
 </style>
 
@@ -131,27 +77,4 @@
       document.documentElement.setAttribute('data-theme', newIsDark ? 'leaf-blue' : 'mytheme');
     });
   }
-
-  // Scroll effect
-  const navbar = document.querySelector('.navbar') as HTMLElement;
-  let lastScroll = 0;
-
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 100) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-
-    // Hide/show navbar on scroll
-    if (currentScroll > lastScroll && currentScroll > 200) {
-      navbar.style.transform = 'translateY(-100%)';
-    } else {
-      navbar.style.transform = 'translateY(0)';
-    }
-    
-    lastScroll = currentScroll;
-  });
 </script>

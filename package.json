@@ -7,7 +7,10 @@
     "build": "npm i && astro check && astro build --config astro.config-server.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "ehhh": "set NODE_OPTIONS=--max-old-space-size=4096"
+    "ehhh": "set NODE_OPTIONS=--max-old-space-size=4096",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -29,13 +32,23 @@
     "phaser": "^3.87.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "stripe": "^18.2.1",
     "tailwindcss": "^3.4.13",
     "three": "^0.169.0",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.0.3",
+    "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/ui": "^3.2.4",
     "daisyui": "^4.12.10",
-    "vite-plugin-wasm": "^3.3.0"
+    "happy-dom": "^18.0.1",
+    "jsdom": "^26.1.0",
+    "vite-plugin-wasm": "^3.3.0",
+    "vitest": "^3.2.4"
   }
 }

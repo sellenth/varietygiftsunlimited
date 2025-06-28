@@ -103,7 +103,9 @@ import '../styles/animations.css';
 	<body>
 		<div class="min-h-screen bg-gradient-radial from-[#f0dafd] to-[#f9dcfe]">
 			{ !hideHeader && <Header /> }
-			<slot />
+			<main class={!hideHeader ? 'pt-16' : ''}>
+				<slot />
+			</main>
 		</div>
 		{ !hideFooter && <Footer /> }
 		<script>
