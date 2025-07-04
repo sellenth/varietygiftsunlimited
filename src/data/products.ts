@@ -23,22 +23,22 @@ const yogaShirtPriceIds = {
     XL: "price_1QrEmeAp2D4XT14xaWTzR6UK"
   },
   golden: {
-    S: "price_1QrEmgAp2D4XT14xBWnCN8hN",
-    M: "price_1QrEmhAp2D4XT14x5CvzJIIT",
-    L: "price_1QrEmiAp2D4XT14xJDUNI4hG",
-    XL: "price_1QrEmjAp2D4XT14xBxyLdCDF"
+    S: "price_1RhDUYAp2D4XT14xQBPFDFyR",
+    M: "price_1RhDUYAp2D4XT14xCpfJPA22",
+    L: "price_1RhDUYAp2D4XT14xNGDpFyBN",
+    XL: "price_1RhDUZAp2D4XT14xQ2123Nfz"
   },
   greatDane: {
-    S: "price_1QrEmjAp2D4XT14x0LKzSNKi",
-    M: "price_1QrEmkAp2D4XT14xfBaLjhhw",
-    L: "price_1QrEmkAp2D4XT14xK8OSBV9W",
-    XL: "price_1QrEmlAp2D4XT14x80BCQWrU"
+    S: "price_1RhDUiAp2D4XT14x3SXNGkmW",
+    M: "price_1RhDUiAp2D4XT14xTDv63i8s",
+    L: "price_1RhDUiAp2D4XT14xsN6YjZSn",
+    XL: "price_1RhDUjAp2D4XT14x1QIfmH4w"
   },
   husky: {
-    S: "price_1QrEmnAp2D4XT14x5LJBGhhE",
-    M: "price_1QrEmnAp2D4XT14x8b1BgxLV",
-    L: "price_1QrEmoAp2D4XT14xilKhihLZ",
-    XL: "price_1QrEmpAp2D4XT14xzZS3PU5B"
+    S: "price_1RhDPIAp2D4XT14xp5rGXrpd",
+    M: "price_1RhDPIAp2D4XT14xzdCfgYud",
+    L: "price_1RhDPIAp2D4XT14xTgms5Hi1",
+    XL: "price_1RhDPJAp2D4XT14xq2CgjKI4"
   }
 };
 
