@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
-import ProductDetailEnhanced from "../../../components/ProductDetail-Enhanced.astro";
-import { products, StripeProductManager } from "../../../data/products";
+import ProductDetail from "../../../components/ProductDetail.astro";
+import { products } from "../../../data/products";
 
 export function getStaticPaths() {
     return products.map(product => ({
@@ -19,6 +19,24 @@ const canonicalUrl = `https://varietygiftsunlimited.com/shop/product/${product.s
 const ogImageUrl = product.images[0]?.src.startsWith('http') 
     ? product.images[0].src 
     : `https://varietygiftsunlimited.com${product.images[0]?.src}`;
+
+// Prepare props for ProductDetail component
+const productDetailProps = product.priceIds ? {
+    title: product.name,
+    description: product.description,
+    price: product.price,
+    priceIds: product.priceIds,
+    images: product.images,
+    colorImages: product.colorImages
+} : {
+    title: product.name,
+    description: product.description,
+    price: product.price,
+    singlePrice: product.price.replace('$', ''),
+    singlePriceId: product.priceId,
+    images: product.images,
+    colorImages: product.colorImages
+};
 ---
 
 <Layout 
@@ -52,7 +70,7 @@ const ogImageUrl = product.images[0]?.src.startsWith('http')
         }
     })} />
     
-    <ProductDetailEnhanced productId={product.id} />
+    <ProductDetail {...productDetailProps} />
     
     {product.priceIds && product.colorImages && (
         <script is:inline define:vars={{ priceIds: product.priceIds, colorImages: product.colorImages }}>
