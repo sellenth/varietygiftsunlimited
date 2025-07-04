@@ -121,7 +121,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                         successUrl: `${window.location.origin}/success`, 
                         cancelUrl: window.location.href, 
                         shippingAddressCollection: {
-                            allowedCountries: ["US", "CA", "MX", "TH"],
+                            allowedCountries: [],
                         },
                         clientReferenceId: clientReferenceId,
                     })
