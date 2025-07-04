@@ -137,22 +137,18 @@ const dogeMoonPriceIds = {
 
 // Tabby price IDs
 const tabbyPriceIds = {
-  "Green - Small": "price_1Rh1jcAp2D4XT14xiJsCMaa9",
-  "Green - Medium": "price_1Rh1jcAp2D4XT14xMwbonX13",
-  "Green - Large": "price_1Rh1jdAp2D4XT14xJZzsgvex",
-  "Green - X-Large": "price_1Rh1jdAp2D4XT14xbQ1pf5cl",
-  "Pink - Small": "price_1Rh1jdAp2D4XT14xXLVH1TPh",
-  "Pink - Medium": "price_1Rh1jdAp2D4XT14xdwKDylVV",
-  "Pink - Large": "price_1Rh1jdAp2D4XT14xo7C6xiDN",
-  "Pink - X-Large": "price_1Rh1jeAp2D4XT14x5cqwRLmU",
-  "Natural - Small": "price_1Rh1jeAp2D4XT14xbBLSvowg",
-  "Natural - Medium": "price_1Rh1jeAp2D4XT14xae4CvFEr",
-  "Natural - Large": "price_1Rh1jeAp2D4XT14xPpqPDtMt",
-  "Natural - X-Large": "price_1Rh1jfAp2D4XT14x7m2hDSY3",
-  "Yellow - Small": "price_1Rh1jfAp2D4XT14xC4hm4EOP",
-  "Yellow - Medium": "price_1Rh1jfAp2D4XT14xBJipav05",
-  "Yellow - Large": "price_1Rh1jfAp2D4XT14xJRffzG1U",
-  "Yellow - X-Large": "price_1Rh1jfAp2D4XT14xlmUixWdl"
+  "Olive - Small": "price_1RhCkQAp2D4XT14x4j7KVNz7",
+  "Olive - Medium": "price_1RhCkRAp2D4XT14xtICsfhEd",
+  "Olive - Large": "price_1RhCkRAp2D4XT14xPxn8Yhcp",
+  "Olive - X-Large": "price_1RhCkRAp2D4XT14x2gVNHGKu",
+  "Brown - Small": "price_1RhCkRAp2D4XT14xfs0cRknu",
+  "Brown - Medium": "price_1RhCkSAp2D4XT14xubKGGtoD",
+  "Brown - Large": "price_1RhCkSAp2D4XT14xwTaErx5H",
+  "Brown - X-Large": "price_1RhCkSAp2D4XT14xXu8TRr1x",
+  "Tan - Small": "price_1RhCkSAp2D4XT14xfScI5zyb",
+  "Tan - Medium": "price_1RhCkTAp2D4XT14x2QzmO4HA",
+  "Tan - Large": "price_1RhCkTAp2D4XT14xlXMvasmY",
+  "Tan - X-Large": "price_1RhCkTAp2D4XT14x5WAkBirJ"
 };
 
 // Tanner price IDs (single color)
@@ -432,21 +428,17 @@ export const products: Product[] = [
       { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Folded' }
     ],
     colorImages: {
-      'Green': [
+      'Olive': [
         { src: '/webpshirts/tabby_front_olive.webp', alt: 'Tabby - Olive Front' },
         { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
       ],
-      'Pink': [
+      'Brown': [
         { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
         { src: '/webpshirts/tabby_folded_brown.webp', alt: 'Tabby - Brown Folded' }
       ],
-      'Natural': [
-        { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
-        { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Folded' }
-      ],
-      'Yellow': [
-        { src: '/webpshirts/tabby_front_olive.webp', alt: 'Tabby - Olive Front' },
-        { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
+      'Tan': [
+        { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Tan Front' },
+        { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Tan Folded' }
       ]
     },
     price: '$29.99',
