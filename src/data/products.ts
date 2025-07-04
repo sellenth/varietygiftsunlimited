@@ -130,44 +130,20 @@ const catsPriceIds = {
   "Yellow - X-Large": "price_1Rh1gLAp2D4XT14xowikCWeW"
 };
 
-// Doge price IDs
+// Doge price IDs (single color)
 const dogePriceIds = {
-  "Green - Small": "price_1Rh1hKAp2D4XT14x5OpneG79",
-  "Green - Medium": "price_1Rh1hKAp2D4XT14xIOltOpWP",
-  "Green - Large": "price_1Rh1hLAp2D4XT14xyxyfLqcj",
-  "Green - X-Large": "price_1Rh1hLAp2D4XT14xFZJcQTS0",
-  "Pink - Small": "price_1Rh1hLAp2D4XT14xKpqNVWQ7",
-  "Pink - Medium": "price_1Rh1hLAp2D4XT14xoks39b0q",
-  "Pink - Large": "price_1Rh1hLAp2D4XT14xRw5cyWIM",
-  "Pink - X-Large": "price_1Rh1hMAp2D4XT14xRPqTM6Nk",
-  "Natural - Small": "price_1Rh1hMAp2D4XT14x36lozAfd",
-  "Natural - Medium": "price_1Rh1hMAp2D4XT14xudnaYpwX",
-  "Natural - Large": "price_1Rh1hMAp2D4XT14xqDzKs5xp",
-  "Natural - X-Large": "price_1Rh1hMAp2D4XT14xQp1u6EHz",
-  "Yellow - Small": "price_1Rh1hNAp2D4XT14xwFnN7xL4",
-  "Yellow - Medium": "price_1Rh1hNAp2D4XT14xXbuM5919",
-  "Yellow - Large": "price_1Rh1hNAp2D4XT14xX2fcyHJf",
-  "Yellow - X-Large": "price_1Rh1hNAp2D4XT14xNlXjoGz4"
+  "S": "price_1Rh25QAp2D4XT14xpb6xBZyP",
+  "M": "price_1Rh25WAp2D4XT14xTZDXkBVh",
+  "L": "price_1Rh25WAp2D4XT14xeo6dOVn0",
+  "XL": "price_1Rh25XAp2D4XT14x1czMgrMx"
 };
 
-// Doge Moon price IDs
+// Doge Moon price IDs (single color)
 const dogeMoonPriceIds = {
-  "Green - Small": "price_1Rh1iqAp2D4XT14xGi16xawS",
-  "Green - Medium": "price_1Rh1irAp2D4XT14xlttoDp94",
-  "Green - Large": "price_1Rh1irAp2D4XT14xbYDugHcx",
-  "Green - X-Large": "price_1Rh1irAp2D4XT14xZAfidEWK",
-  "Pink - Small": "price_1Rh1irAp2D4XT14xsC7BLi1A",
-  "Pink - Medium": "price_1Rh1irAp2D4XT14xfT8bbvXR",
-  "Pink - Large": "price_1Rh1isAp2D4XT14x3lWVhDD3",
-  "Pink - X-Large": "price_1Rh1isAp2D4XT14xDdG3wa0F",
-  "Natural - Small": "price_1Rh1isAp2D4XT14xtSe1Zz5s",
-  "Natural - Medium": "price_1Rh1isAp2D4XT14xoiBkVR5e",
-  "Natural - Large": "price_1Rh1isAp2D4XT14xvu0lvirm",
-  "Natural - X-Large": "price_1Rh1itAp2D4XT14xqBroSG9f",
-  "Yellow - Small": "price_1Rh1itAp2D4XT14x2LtmQoI9",
-  "Yellow - Medium": "price_1Rh1itAp2D4XT14xiX4mjVoH",
-  "Yellow - Large": "price_1Rh1itAp2D4XT14xM4OCQeBJ",
-  "Yellow - X-Large": "price_1Rh1itAp2D4XT14x1ivdbGmS"
+  "S": "price_1Rh28yAp2D4XT14xEMeY5jFe",
+  "M": "price_1Rh28yAp2D4XT14xWXDru9MI",
+  "L": "price_1Rh28zAp2D4XT14xbJNmbsfa",
+  "XL": "price_1Rh28zAp2D4XT14xxLG6OdQL"
 };
 
 // Tabby price IDs
@@ -190,44 +166,20 @@ const tabbyPriceIds = {
   "Yellow - X-Large": "price_1Rh1jfAp2D4XT14xlmUixWdl"
 };
 
-// Tanner price IDs
+// Tanner price IDs (single color)
 const tannerPriceIds = {
-  "Green - Small": "price_1Rh1kPAp2D4XT14xa3z32GCN",
-  "Green - Medium": "price_1Rh1kPAp2D4XT14xyLjFlTLM",
-  "Green - Large": "price_1Rh1kQAp2D4XT14xeKHQCxNe",
-  "Green - X-Large": "price_1Rh1kQAp2D4XT14xWDTcdOCL",
-  "Pink - Small": "price_1Rh1kQAp2D4XT14x3dPx45Rd",
-  "Pink - Medium": "price_1Rh1kQAp2D4XT14xgx5sLOz2",
-  "Pink - Large": "price_1Rh1kQAp2D4XT14xMOWgSOlA",
-  "Pink - X-Large": "price_1Rh1kRAp2D4XT14x2OfKFKCz",
-  "Natural - Small": "price_1Rh1kRAp2D4XT14xzXEG3Apr",
-  "Natural - Medium": "price_1Rh1kRAp2D4XT14x7vda2hPS",
-  "Natural - Large": "price_1Rh1kRAp2D4XT14x77Nu28JL",
-  "Natural - X-Large": "price_1Rh1kSAp2D4XT14xZrJvCarw",
-  "Yellow - Small": "price_1Rh1kSAp2D4XT14xkePSp2Sp",
-  "Yellow - Medium": "price_1Rh1kSAp2D4XT14xyISHPZgA",
-  "Yellow - Large": "price_1Rh1kSAp2D4XT14xIn8xmyV1",
-  "Yellow - X-Large": "price_1Rh1kSAp2D4XT14xP4amN9ID"
+  "S": "price_1Rh28rAp2D4XT14xZ0elSLc6",
+  "M": "price_1Rh28rAp2D4XT14xmzZq3CTH",
+  "L": "price_1Rh28rAp2D4XT14xfbE4Ircu",
+  "XL": "price_1Rh28sAp2D4XT14xtnzr1gy2"
 };
 
-// Tong price IDs
+// Tong price IDs (single color)
 const tongPriceIds = {
-  "Green - Small": "price_1Rh1l9Ap2D4XT14xtZOtQGdz",
-  "Green - Medium": "price_1Rh1lAAp2D4XT14xL2WPrPrV",
-  "Green - Large": "price_1Rh1lAAp2D4XT14xWH18niLq",
-  "Green - X-Large": "price_1Rh1lAAp2D4XT14xHeP1tKRa",
-  "Pink - Small": "price_1Rh1lAAp2D4XT14xEyzOdKvs",
-  "Pink - Medium": "price_1Rh1lAAp2D4XT14xqQxWpySY",
-  "Pink - Large": "price_1Rh1lBAp2D4XT14xiymd287v",
-  "Pink - X-Large": "price_1Rh1lBAp2D4XT14xoUWiBUhH",
-  "Natural - Small": "price_1Rh1lBAp2D4XT14xgqtt34Xf",
-  "Natural - Medium": "price_1Rh1lBAp2D4XT14xQnIxfg52",
-  "Natural - Large": "price_1Rh1lBAp2D4XT14xYpuxpUvv",
-  "Natural - X-Large": "price_1Rh1lCAp2D4XT14xddyV9wEL",
-  "Yellow - Small": "price_1Rh1lCAp2D4XT14xMd5L3wsX",
-  "Yellow - Medium": "price_1Rh1lCAp2D4XT14xyUabC1rI",
-  "Yellow - Large": "price_1Rh1lCAp2D4XT14xUIv3GkFA",
-  "Yellow - X-Large": "price_1Rh1lCAp2D4XT14xPDQPgvft"
+  "S": "price_1Rh28kAp2D4XT14xBeJwSf2i",
+  "M": "price_1Rh28kAp2D4XT14xYVl6Q46w",
+  "L": "price_1Rh28kAp2D4XT14xaDxgI7Y0",
+  "XL": "price_1Rh28kAp2D4XT14xpFVb969T"
 };
 
 export const products: Product[] = [
@@ -464,60 +416,28 @@ export const products: Product[] = [
   {
     id: 'doge',
     name: 'Doge',
-    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt.',
     category: 'shirts',
     images: [
       { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
       { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
     ],
-    colorImages: {
-      'Green': [
-        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
-        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
-      ],
-      'Pink': [
-        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
-        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
-      ],
-      'Natural': [
-        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
-        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
-      ],
-      'Yellow': [
-        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
-        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
-      ]
-    },
     price: '$29.99',
     priceIds: dogePriceIds,
-    sizes: Object.keys(dogePriceIds),
+    sizes: ['S', 'M', 'L', 'XL'],
     slug: 'doge'
   },
   {
     id: 'doge-moon',
     name: 'Doge Moon',
-    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt.',
     category: 'shirts',
     images: [
       { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
     ],
-    colorImages: {
-      'Green': [
-        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
-      ],
-      'Pink': [
-        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
-      ],
-      'Natural': [
-        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
-      ],
-      'Yellow': [
-        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
-      ]
-    },
     price: '$29.99',
     priceIds: dogeMoonPriceIds,
-    sizes: Object.keys(dogeMoonPriceIds),
+    sizes: ['S', 'M', 'L', 'XL'],
     slug: 'doge-moon'
   },
   {
@@ -555,55 +475,27 @@ export const products: Product[] = [
   {
     id: 'tanner',
     name: 'Tanner',
-    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt.',
     category: 'shirts',
     images: [
       { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
     ],
-    colorImages: {
-      'Green': [
-        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
-      ],
-      'Pink': [
-        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
-      ],
-      'Natural': [
-        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
-      ],
-      'Yellow': [
-        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
-      ]
-    },
     price: '$29.99',
     priceIds: tannerPriceIds,
-    sizes: Object.keys(tannerPriceIds),
+    sizes: ['S', 'M', 'L', 'XL'],
     slug: 'tanner'
   },
   {
     id: 'tong',
     name: 'Tong',
-    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt.',
     category: 'shirts',
     images: [
       { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
     ],
-    colorImages: {
-      'Green': [
-        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
-      ],
-      'Pink': [
-        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
-      ],
-      'Natural': [
-        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
-      ],
-      'Yellow': [
-        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
-      ]
-    },
     price: '$29.99',
     priceIds: tongPriceIds,
-    sizes: Object.keys(tongPriceIds),
+    sizes: ['S', 'M', 'L', 'XL'],
     slug: 'tong'
   },
   
