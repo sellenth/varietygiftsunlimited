@@ -27,8 +27,7 @@ const productDetailProps = product.priceIds ? {
     price: product.price,
     priceIds: product.priceIds,
     images: product.images,
-    colorImages: product.colorImages,
-    category: product.category
+    colorImages: product.colorImages
 } : {
     title: product.name,
     description: product.description,
@@ -36,8 +35,7 @@ const productDetailProps = product.priceIds ? {
     singlePrice: product.price.replace('$', ''),
     singlePriceId: product.priceId,
     images: product.images,
-    colorImages: product.colorImages,
-    category: product.category
+    colorImages: product.colorImages
 };
 ---
 

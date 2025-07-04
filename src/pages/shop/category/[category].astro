@@ -18,14 +18,14 @@ const categoryProducts = products.filter(p => p.category === category.id);
 <Layout title={`${category.name} - Variety Gifts Unlimited`} hideHeader={false}>
     <main class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8">
         <div class="max-w-6xl mx-auto px-4 w-full">
-            <a href="/shop" class="inline-block py-4 text-gray-600 hover:text-gray-900 transition-colors">
+            <button onclick="history.back()" class="inline-block py-4 text-gray-600 hover:text-gray-900 transition-colors">
                 <span class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Back to Shop
+                    Back
                 </span>
-            </a>
+            </button>
         </div>
         
         <section class="text-center my-10">
