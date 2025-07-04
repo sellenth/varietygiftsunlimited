@@ -2,6 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import Bubbles from "../components/Bubbles.astro";
 import ContactForm from "../components/ContactForm.astro";
+
+// Environment-aware base URL
+const isLocalhost = import.meta.env.DEV || Astro.url.hostname === 'localhost';
+const baseUrl = isLocalhost ? '' : 'https://variety.gifts';
 ---
 
 <Layout
@@ -35,7 +39,7 @@ import ContactForm from "../components/ContactForm.astro";
         </div>
 
         <div class="flex gap-4 justify-center">
-          <a href="https://variety.gifts/shop" class="shop-now-btn btn-ripple hover-lift">SHOP NOW</a>
+          <a href={`${baseUrl}/shop`} class="shop-now-btn btn-ripple hover-lift">SHOP NOW</a>
           <a href="/contact" class="learn-more-btn btn-ripple hover-grow">LEARN MORE</a>
         </div>
       </div>
@@ -50,7 +54,7 @@ import ContactForm from "../components/ContactForm.astro";
       </h2>
 
       <div class="product-grid max-w-7xl mx-auto px-4">
-        <a href="https://variety.gifts/chewbarka-bandana" class="product-card hover-lift">
+        <a href={`${baseUrl}/shop/product/chewbarka-bandana`} class="product-card hover-lift">
           <div class="product-image-wrapper">
             <img
               src="/chewbarka/dog_zoom.png"
@@ -68,7 +72,7 @@ import ContactForm from "../components/ContactForm.astro";
           </div>
         </a>
 
-        <a href="https://variety.gifts/shop/bag/5" class="product-card hover-lift">
+        <a href={`${baseUrl}/shop/product/bag-5`} class="product-card hover-lift">
           <div class="product-image-wrapper">
             <img
               src="bags/bags/5.webp"
@@ -85,7 +89,7 @@ import ContactForm from "../components/ContactForm.astro";
           </div>
         </a>
 
-        <a href="https://variety.gifts/husky-yoga" class="product-card hover-lift">
+        <a href={`${baseUrl}/shop/product/husky-yoga`} class="product-card hover-lift">
           <div class="product-image-wrapper">
             <img
               src="https://variety.gifts/yoga/husky1.jpg"
@@ -105,7 +109,7 @@ import ContactForm from "../components/ContactForm.astro";
       </div>
 
       <div class="text-center mt-12">
-        <a href="https://variety.gifts/shop" class="shop-all-btn btn-ripple hover-lift">SHOP ALL</a>
+        <a href={`${baseUrl}/shop`} class="shop-all-btn btn-ripple hover-lift">SHOP ALL</a>
       </div>
     </section>
 
