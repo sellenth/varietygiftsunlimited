@@ -46,6 +46,7 @@ const categoryProducts = products.filter(p => p.category === category.id);
                         title={product.name}
                         body={product.description.substring(0, 80) + '...'}
                         href={`/shop/product/${product.slug}`}
+                        price={product.price}
                     />
                 ))}
             </div>

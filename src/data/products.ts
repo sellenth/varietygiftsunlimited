@@ -84,10 +84,10 @@ const whatTheTShirtPriceIds = {
 
 // Freudian Tank price IDs
 const freudianTankPriceIds = {
-  "Black - Small": "price_1Rf628Ap2D4XT14xcynwN9k0",
-  "Black - Medium": "price_1Rf628Ap2D4XT14x2YwO9h13",
-  "Black - Large": "price_1Rf628Ap2D4XT14xoWhwVJKb",
-  "Black - X-Large": "price_1Rf629Ap2D4XT14xnRkc53ul"
+  "Black - Small": "price_1RhI2DAp2D4XT14x5IO7bbia",
+  "Black - Medium": "price_1RhI2DAp2D4XT14xtNdoXmIk",
+  "Black - Large": "price_1RhI2DAp2D4XT14xAzvQumRj",
+  "Black - X-Large": "price_1RhI2DAp2D4XT14xzfjgGS5u"
 };
 
 // Cat Yoga price IDs
@@ -329,7 +329,7 @@ export const products: Product[] = [
         { src: '/webpshirts/swole_tank_back.webp', alt: 'Freudian Tank - Black Back' }
       ]
     },
-    price: '$30',
+    price: '$29.99',
     priceIds: freudianTankPriceIds,
     sizes: Object.keys(freudianTankPriceIds),
     slug: 'freudian-tank'
