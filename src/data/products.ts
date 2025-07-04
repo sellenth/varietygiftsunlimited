@@ -90,9 +90,149 @@ const freudianTankPriceIds = {
   "Black - X-Large": "price_1Rf629Ap2D4XT14xnRkc53ul"
 };
 
+// Cat Yoga price IDs
+const catYogaPriceIds = {
+  "Green - Small": "price_1Rh1fHAp2D4XT14xONNWIgmY",
+  "Green - Medium": "price_1Rh1fHAp2D4XT14xaUwSSvfZ",
+  "Green - Large": "price_1Rh1fHAp2D4XT14xemRpRpQc",
+  "Green - X-Large": "price_1Rh1fIAp2D4XT14xiz0k3Iwr",
+  "Pink - Small": "price_1Rh1fIAp2D4XT14xZ9NYSQRa",
+  "Pink - Medium": "price_1Rh1fIAp2D4XT14xRwtKBcgu",
+  "Pink - Large": "price_1Rh1fIAp2D4XT14xBxQ6XjjY",
+  "Pink - X-Large": "price_1Rh1fIAp2D4XT14xpBEZZEWk",
+  "Natural - Small": "price_1Rh1fJAp2D4XT14xJ12UFT9N",
+  "Natural - Medium": "price_1Rh1fJAp2D4XT14x6FTXYFch",
+  "Natural - Large": "price_1Rh1fJAp2D4XT14xvpsRan4X",
+  "Natural - X-Large": "price_1Rh1fJAp2D4XT14xpthLSpQm",
+  "Yellow - Small": "price_1Rh1fJAp2D4XT14xthKaHRtN",
+  "Yellow - Medium": "price_1Rh1fKAp2D4XT14xpLh8yIYL",
+  "Yellow - Large": "price_1Rh1fKAp2D4XT14xqJOgbsgf",
+  "Yellow - X-Large": "price_1Rh1fKAp2D4XT14xj4Tg4KNx"
+};
+
+// Cats price IDs
+const catsPriceIds = {
+  "Green - Small": "price_1Rh1gHAp2D4XT14xfKI4Epb6",
+  "Green - Medium": "price_1Rh1gIAp2D4XT14xQnvxTTQV",
+  "Green - Large": "price_1Rh1gIAp2D4XT14xrIse9SjX",
+  "Green - X-Large": "price_1Rh1gIAp2D4XT14x0steYjvi",
+  "Pink - Small": "price_1Rh1gIAp2D4XT14xeYFXJGY0",
+  "Pink - Medium": "price_1Rh1gIAp2D4XT14xJ04NAYN4",
+  "Pink - Large": "price_1Rh1gJAp2D4XT14x7wvQ3Rbb",
+  "Pink - X-Large": "price_1Rh1gJAp2D4XT14xfn3eRiTX",
+  "Natural - Small": "price_1Rh1gJAp2D4XT14xNBBHO0oy",
+  "Natural - Medium": "price_1Rh1gJAp2D4XT14xMvz3rXaa",
+  "Natural - Large": "price_1Rh1gKAp2D4XT14x0fsw9YRY",
+  "Natural - X-Large": "price_1Rh1gKAp2D4XT14xNDslIdPi",
+  "Yellow - Small": "price_1Rh1gKAp2D4XT14xhST0OTGR",
+  "Yellow - Medium": "price_1Rh1gKAp2D4XT14xJWg70Rij",
+  "Yellow - Large": "price_1Rh1gKAp2D4XT14xcqPNrWPi",
+  "Yellow - X-Large": "price_1Rh1gLAp2D4XT14xowikCWeW"
+};
+
+// Doge price IDs
+const dogePriceIds = {
+  "Green - Small": "price_1Rh1hKAp2D4XT14x5OpneG79",
+  "Green - Medium": "price_1Rh1hKAp2D4XT14xIOltOpWP",
+  "Green - Large": "price_1Rh1hLAp2D4XT14xyxyfLqcj",
+  "Green - X-Large": "price_1Rh1hLAp2D4XT14xFZJcQTS0",
+  "Pink - Small": "price_1Rh1hLAp2D4XT14xKpqNVWQ7",
+  "Pink - Medium": "price_1Rh1hLAp2D4XT14xoks39b0q",
+  "Pink - Large": "price_1Rh1hLAp2D4XT14xRw5cyWIM",
+  "Pink - X-Large": "price_1Rh1hMAp2D4XT14xRPqTM6Nk",
+  "Natural - Small": "price_1Rh1hMAp2D4XT14x36lozAfd",
+  "Natural - Medium": "price_1Rh1hMAp2D4XT14xudnaYpwX",
+  "Natural - Large": "price_1Rh1hMAp2D4XT14xqDzKs5xp",
+  "Natural - X-Large": "price_1Rh1hMAp2D4XT14xQp1u6EHz",
+  "Yellow - Small": "price_1Rh1hNAp2D4XT14xwFnN7xL4",
+  "Yellow - Medium": "price_1Rh1hNAp2D4XT14xXbuM5919",
+  "Yellow - Large": "price_1Rh1hNAp2D4XT14xX2fcyHJf",
+  "Yellow - X-Large": "price_1Rh1hNAp2D4XT14xNlXjoGz4"
+};
+
+// Doge Moon price IDs
+const dogeMoonPriceIds = {
+  "Green - Small": "price_1Rh1iqAp2D4XT14xGi16xawS",
+  "Green - Medium": "price_1Rh1irAp2D4XT14xlttoDp94",
+  "Green - Large": "price_1Rh1irAp2D4XT14xbYDugHcx",
+  "Green - X-Large": "price_1Rh1irAp2D4XT14xZAfidEWK",
+  "Pink - Small": "price_1Rh1irAp2D4XT14xsC7BLi1A",
+  "Pink - Medium": "price_1Rh1irAp2D4XT14xfT8bbvXR",
+  "Pink - Large": "price_1Rh1isAp2D4XT14x3lWVhDD3",
+  "Pink - X-Large": "price_1Rh1isAp2D4XT14xDdG3wa0F",
+  "Natural - Small": "price_1Rh1isAp2D4XT14xtSe1Zz5s",
+  "Natural - Medium": "price_1Rh1isAp2D4XT14xoiBkVR5e",
+  "Natural - Large": "price_1Rh1isAp2D4XT14xvu0lvirm",
+  "Natural - X-Large": "price_1Rh1itAp2D4XT14xqBroSG9f",
+  "Yellow - Small": "price_1Rh1itAp2D4XT14x2LtmQoI9",
+  "Yellow - Medium": "price_1Rh1itAp2D4XT14xiX4mjVoH",
+  "Yellow - Large": "price_1Rh1itAp2D4XT14xM4OCQeBJ",
+  "Yellow - X-Large": "price_1Rh1itAp2D4XT14x1ivdbGmS"
+};
+
+// Tabby price IDs
+const tabbyPriceIds = {
+  "Green - Small": "price_1Rh1jcAp2D4XT14xiJsCMaa9",
+  "Green - Medium": "price_1Rh1jcAp2D4XT14xMwbonX13",
+  "Green - Large": "price_1Rh1jdAp2D4XT14xJZzsgvex",
+  "Green - X-Large": "price_1Rh1jdAp2D4XT14xbQ1pf5cl",
+  "Pink - Small": "price_1Rh1jdAp2D4XT14xXLVH1TPh",
+  "Pink - Medium": "price_1Rh1jdAp2D4XT14xdwKDylVV",
+  "Pink - Large": "price_1Rh1jdAp2D4XT14xo7C6xiDN",
+  "Pink - X-Large": "price_1Rh1jeAp2D4XT14x5cqwRLmU",
+  "Natural - Small": "price_1Rh1jeAp2D4XT14xbBLSvowg",
+  "Natural - Medium": "price_1Rh1jeAp2D4XT14xae4CvFEr",
+  "Natural - Large": "price_1Rh1jeAp2D4XT14xPpqPDtMt",
+  "Natural - X-Large": "price_1Rh1jfAp2D4XT14x7m2hDSY3",
+  "Yellow - Small": "price_1Rh1jfAp2D4XT14xC4hm4EOP",
+  "Yellow - Medium": "price_1Rh1jfAp2D4XT14xBJipav05",
+  "Yellow - Large": "price_1Rh1jfAp2D4XT14xJRffzG1U",
+  "Yellow - X-Large": "price_1Rh1jfAp2D4XT14xlmUixWdl"
+};
+
+// Tanner price IDs
+const tannerPriceIds = {
+  "Green - Small": "price_1Rh1kPAp2D4XT14xa3z32GCN",
+  "Green - Medium": "price_1Rh1kPAp2D4XT14xyLjFlTLM",
+  "Green - Large": "price_1Rh1kQAp2D4XT14xeKHQCxNe",
+  "Green - X-Large": "price_1Rh1kQAp2D4XT14xWDTcdOCL",
+  "Pink - Small": "price_1Rh1kQAp2D4XT14x3dPx45Rd",
+  "Pink - Medium": "price_1Rh1kQAp2D4XT14xgx5sLOz2",
+  "Pink - Large": "price_1Rh1kQAp2D4XT14xMOWgSOlA",
+  "Pink - X-Large": "price_1Rh1kRAp2D4XT14x2OfKFKCz",
+  "Natural - Small": "price_1Rh1kRAp2D4XT14xzXEG3Apr",
+  "Natural - Medium": "price_1Rh1kRAp2D4XT14x7vda2hPS",
+  "Natural - Large": "price_1Rh1kRAp2D4XT14x77Nu28JL",
+  "Natural - X-Large": "price_1Rh1kSAp2D4XT14xZrJvCarw",
+  "Yellow - Small": "price_1Rh1kSAp2D4XT14xkePSp2Sp",
+  "Yellow - Medium": "price_1Rh1kSAp2D4XT14xyISHPZgA",
+  "Yellow - Large": "price_1Rh1kSAp2D4XT14xIn8xmyV1",
+  "Yellow - X-Large": "price_1Rh1kSAp2D4XT14xP4amN9ID"
+};
+
+// Tong price IDs
+const tongPriceIds = {
+  "Green - Small": "price_1Rh1l9Ap2D4XT14xtZOtQGdz",
+  "Green - Medium": "price_1Rh1lAAp2D4XT14xL2WPrPrV",
+  "Green - Large": "price_1Rh1lAAp2D4XT14xWH18niLq",
+  "Green - X-Large": "price_1Rh1lAAp2D4XT14xHeP1tKRa",
+  "Pink - Small": "price_1Rh1lAAp2D4XT14xEyzOdKvs",
+  "Pink - Medium": "price_1Rh1lAAp2D4XT14xqQxWpySY",
+  "Pink - Large": "price_1Rh1lBAp2D4XT14xiymd287v",
+  "Pink - X-Large": "price_1Rh1lBAp2D4XT14xoUWiBUhH",
+  "Natural - Small": "price_1Rh1lBAp2D4XT14xgqtt34Xf",
+  "Natural - Medium": "price_1Rh1lBAp2D4XT14xQnIxfg52",
+  "Natural - Large": "price_1Rh1lBAp2D4XT14xYpuxpUvv",
+  "Natural - X-Large": "price_1Rh1lCAp2D4XT14xddyV9wEL",
+  "Yellow - Small": "price_1Rh1lCAp2D4XT14xMd5L3wsX",
+  "Yellow - Medium": "price_1Rh1lCAp2D4XT14xyUabC1rI",
+  "Yellow - Large": "price_1Rh1lCAp2D4XT14xUIv3GkFA",
+  "Yellow - X-Large": "price_1Rh1lCAp2D4XT14xPDQPgvft"
+};
+
 export const products: Product[] = [
   // Bags
-  ...Array.from({ length: 13 }, (_, i) => ({
+  ...Array.from({ length: 11 }, (_, i) => ({
     id: `bag-${i + 1}`,
     name: bagNames[i],
     description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
@@ -256,6 +396,215 @@ export const products: Product[] = [
     priceIds: freudianTankPriceIds,
     sizes: Object.keys(freudianTankPriceIds),
     slug: 'freudian-tank'
+  },
+  {
+    id: 'cat-yoga',
+    name: 'Cat Yoga',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/cat_yoga_front_green.webp', alt: 'Cat Yoga - Green Front' },
+      { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/cat_yoga_front_green.webp', alt: 'Cat Yoga - Green Front' },
+        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
+        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
+        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
+        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: catYogaPriceIds,
+    sizes: Object.keys(catYogaPriceIds),
+    slug: 'cat-yoga'
+  },
+  {
+    id: 'cats',
+    name: 'Cats',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
+      { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
+        { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
+        { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
+        { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
+        { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: catsPriceIds,
+    sizes: Object.keys(catsPriceIds),
+    slug: 'cats'
+  },
+  {
+    id: 'doge',
+    name: 'Doge',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
+      { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
+        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
+        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
+        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/doge_front.webp', alt: 'Doge - Front' },
+        { src: '/webpshirts/doge_folded.webp', alt: 'Doge - Folded' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: dogePriceIds,
+    sizes: Object.keys(dogePriceIds),
+    slug: 'doge'
+  },
+  {
+    id: 'doge-moon',
+    name: 'Doge Moon',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/dogemoon_front.webp', alt: 'Doge Moon - Front' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: dogeMoonPriceIds,
+    sizes: Object.keys(dogeMoonPriceIds),
+    slug: 'doge-moon'
+  },
+  {
+    id: 'tabby',
+    name: 'Tabby',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
+      { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Folded' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/tabby_front_olive.webp', alt: 'Tabby - Olive Front' },
+        { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
+        { src: '/webpshirts/tabby_folded_brown.webp', alt: 'Tabby - Brown Folded' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
+        { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Folded' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/tabby_front_olive.webp', alt: 'Tabby - Olive Front' },
+        { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: tabbyPriceIds,
+    sizes: Object.keys(tabbyPriceIds),
+    slug: 'tabby'
+  },
+  {
+    id: 'tanner',
+    name: 'Tanner',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/tanner_front_black.webp', alt: 'Tanner - Black Front' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: tannerPriceIds,
+    sizes: Object.keys(tannerPriceIds),
+    slug: 'tanner'
+  },
+  {
+    id: 'tong',
+    name: 'Tong',
+    description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
+      ],
+      'Pink': [
+        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
+      ],
+      'Natural': [
+        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
+      ],
+      'Yellow': [
+        { src: '/webpshirts/tong_front.webp', alt: 'Tong - Front' }
+      ]
+    },
+    price: '$29.99',
+    priceIds: tongPriceIds,
+    sizes: Object.keys(tongPriceIds),
+    slug: 'tong'
   },
   
   // Bandana

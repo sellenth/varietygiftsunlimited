@@ -219,12 +219,7 @@
 
 /* Shimmer Effect */
 .shimmer {
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.7) 50%,
-    transparent 60%
-  );
+  background: rgba(255, 255, 255, 0.7);
   background-size: 200% 100%;
   animation: shimmer 2s linear infinite;
 }
@@ -250,7 +245,7 @@ html {
 
 /* Text Animations */
 .text-gradient {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  background: #6366f1;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -272,7 +267,7 @@ html {
 
 /* Loading States */
 .skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: #f0f0f0;
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 }
