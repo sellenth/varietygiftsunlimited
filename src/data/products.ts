@@ -145,10 +145,10 @@ const tabbyPriceIds = {
   "Brown - Medium": "price_1RhCkSAp2D4XT14xubKGGtoD",
   "Brown - Large": "price_1RhCkSAp2D4XT14xwTaErx5H",
   "Brown - X-Large": "price_1RhCkSAp2D4XT14xXu8TRr1x",
-  "Tan - Small": "price_1RhCkSAp2D4XT14xfScI5zyb",
-  "Tan - Medium": "price_1RhCkTAp2D4XT14x2QzmO4HA",
-  "Tan - Large": "price_1RhCkTAp2D4XT14xlXMvasmY",
-  "Tan - X-Large": "price_1RhCkTAp2D4XT14x5WAkBirJ"
+  "Grey - Small": "price_1RhCkSAp2D4XT14xfScI5zyb",
+  "Grey - Medium": "price_1RhCkTAp2D4XT14x2QzmO4HA",
+  "Grey - Large": "price_1RhCkTAp2D4XT14xlXMvasmY",
+  "Grey - X-Large": "price_1RhCkTAp2D4XT14x5WAkBirJ"
 };
 
 // Tanner price IDs (single color)
@@ -430,15 +430,15 @@ export const products: Product[] = [
     colorImages: {
       'Olive': [
         { src: '/webpshirts/tabby_front_olive.webp', alt: 'Tabby - Olive Front' },
-        { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
+        { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Olive Folded' }
       ],
       'Brown': [
         { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Brown Front' },
         { src: '/webpshirts/tabby_folded_brown.webp', alt: 'Tabby - Brown Folded' }
       ],
-      'Tan': [
-        { src: '/webpshirts/tabby_front_brown.webp', alt: 'Tabby - Tan Front' },
-        { src: '/webpshirts/tabby_folded.webp', alt: 'Tabby - Tan Folded' }
+      'Grey': [
+        { src: '/webpshirts/tabby_front_grey.webp', alt: 'Tabby - Grey Front' },
+        { src: '/webpshirts/tabby_folded_grey.webp', alt: 'Tabby - Grey Folded' }
       ]
     },
     price: '$29.99',
