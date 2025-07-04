@@ -116,18 +116,7 @@ const catsPriceIds = {
   "Green - Medium": "price_1Rh1gIAp2D4XT14xQnvxTTQV",
   "Green - Large": "price_1Rh1gIAp2D4XT14xrIse9SjX",
   "Green - X-Large": "price_1Rh1gIAp2D4XT14x0steYjvi",
-  "Pink - Small": "price_1Rh1gIAp2D4XT14xeYFXJGY0",
-  "Pink - Medium": "price_1Rh1gIAp2D4XT14xJ04NAYN4",
-  "Pink - Large": "price_1Rh1gJAp2D4XT14x7wvQ3Rbb",
-  "Pink - X-Large": "price_1Rh1gJAp2D4XT14xfn3eRiTX",
-  "Natural - Small": "price_1Rh1gJAp2D4XT14xNBBHO0oy",
-  "Natural - Medium": "price_1Rh1gJAp2D4XT14xMvz3rXaa",
-  "Natural - Large": "price_1Rh1gKAp2D4XT14x0fsw9YRY",
-  "Natural - X-Large": "price_1Rh1gKAp2D4XT14xNDslIdPi",
-  "Yellow - Small": "price_1Rh1gKAp2D4XT14xhST0OTGR",
-  "Yellow - Medium": "price_1Rh1gKAp2D4XT14xJWg70Rij",
-  "Yellow - Large": "price_1Rh1gKAp2D4XT14xcqPNrWPi",
-  "Yellow - X-Large": "price_1Rh1gLAp2D4XT14xowikCWeW"
+
 };
 
 // Doge price IDs (single color)
@@ -363,18 +352,9 @@ export const products: Product[] = [
         { src: '/webpshirts/cat_yoga_front_green.webp', alt: 'Cat Yoga - Green Front' },
         { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
       ],
-      'Pink': [
-        { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
-        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
-      ],
       'Natural': [
         { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
-        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
       ],
-      'Yellow': [
-        { src: '/webpshirts/cat_yoga_front.webp', alt: 'Cat Yoga - Front' },
-        { src: '/webpshirts/cat_yoga_folded.webp', alt: 'Cat Yoga - Folded' }
-      ]
     },
     price: '$29.99',
     priceIds: catYogaPriceIds,
@@ -395,6 +375,7 @@ export const products: Product[] = [
         { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
         { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
       ],
+      /*
       'Pink': [
         { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
         { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
@@ -407,6 +388,7 @@ export const products: Product[] = [
         { src: '/webpshirts/cats_front.webp', alt: 'Cats - Front' },
         { src: '/webpshirts/cats_folded.webp', alt: 'Cats - Folded' }
       ]
+    */
     },
     price: '$29.99',
     priceIds: catsPriceIds,
@@ -510,7 +492,7 @@ export const products: Product[] = [
       { src: '/chewbarka/dog.webp', alt: 'Dog wearing Chewbarka Bandana' }
     ],
     price: '$22.99',
-    priceId: 'price_1QDqJLAp2D4XT14xONZm2HgC',
+    priceId: 'price_1Rh2HtAp2D4XT14x51zjcjnJ',
     slug: 'chewbarka-bandana'
   },
 ];
