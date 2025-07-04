@@ -5,9 +5,10 @@ interface Props {
 	title: string;
 	body: string;
 	href: string;
+	price?: string;
 }
 
-const { img, href, title, body, sticker } = Astro.props;
+const { img, href, title, body, sticker, price } = Astro.props;
 ---
 
 <a href={href} class="block group">
@@ -22,6 +23,7 @@ const { img, href, title, body, sticker } = Astro.props;
         </div>
         <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
             <h3 class="text-xl font-bold text-black text-center">{title}</h3>
+            {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
         </div>
     </div>
 </a>
