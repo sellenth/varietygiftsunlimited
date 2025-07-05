@@ -2,10 +2,18 @@
 import Layout from "../layouts/Layout.astro";
 import Bubbles from "../components/Bubbles.astro";
 import ContactForm from "../components/ContactForm.astro";
+import { products } from "../data/products";
 
 // Environment-aware base URL
 const isLocalhost = import.meta.env.DEV || Astro.url.hostname === 'localhost';
 const baseUrl = isLocalhost ? '' : 'https://variety.gifts';
+
+// Get featured products from product data
+const featuredProducts = [
+  products.find(p => p.id === 'chewbarka-bandana'),
+  products.find(p => p.id === 'bag-5'), // Sheep Flock Bag
+  products.find(p => p.id === 'freudian-tank') // Replace Husky Yoga with Freudian Tank
+].filter(Boolean);
 ---
 
 <Layout
@@ -54,58 +62,24 @@ const baseUrl = isLocalhost ? '' : 'https://variety.gifts';
       </h2>
 
       <div class="product-grid max-w-7xl mx-auto px-4">
-        <a href={`${baseUrl}/shop/product/chewbarka-bandana`} class="product-card hover-lift">
-          <div class="product-image-wrapper">
-            <img
-              src="/chewbarka/dog_zoom.png"
-              alt="Chewbarka Bandana"
-              class="product-image"
-              style="object-fit: cover; object-position: center top;"
-            />
-            <div class="product-overlay">
-              <span class="view-text">VIEW PRODUCT</span>
+        {featuredProducts.map(product => (
+          <a href={`${baseUrl}/shop/product/${product.slug}`} class="product-card hover-lift">
+            <div class="product-image-wrapper">
+              <img
+                src={product.images[0].src}
+                alt={product.images[0].alt}
+                class="product-image"
+              />
+              <div class="product-overlay">
+                <span class="view-text">VIEW PRODUCT</span>
+              </div>
             </div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">CHEWBARKA BANDANA</h3>
-            <p class="product-price">$25.99</p>
-          </div>
-        </a>
-
-        <a href={`${baseUrl}/shop/product/bag-5`} class="product-card hover-lift">
-          <div class="product-image-wrapper">
-            <img
-              src="bags/bags/5.webp"
-              alt="Sheep Flock Bag"
-              class="product-image"
-            />
-            <div class="product-overlay">
-              <span class="view-text">VIEW PRODUCT</span>
+            <div class="product-info">
+              <h3 class="product-title">{product.name.toUpperCase()}</h3>
+              <p class="product-price">{product.price}</p>
             </div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">SHEEP FLOCK BAG</h3>
-            <p class="product-price">$29.99</p>
-          </div>
-        </a>
-
-        <a href={`${baseUrl}/shop/product/husky-yoga`} class="product-card hover-lift">
-          <div class="product-image-wrapper">
-            <img
-              src="https://variety.gifts/yoga/husky1.jpg"
-              alt="Husky Yoga Tee"
-              class="product-image"
-              style="object-position: center;"
-            />
-            <div class="product-overlay">
-              <span class="view-text">VIEW PRODUCT</span>
-            </div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-title">HUSKY YOGA TEE</h3>
-            <p class="product-price">$19.99</p>
-          </div>
-        </a>
+          </a>
+        ))}
       </div>
 
       <div class="text-center mt-12">
