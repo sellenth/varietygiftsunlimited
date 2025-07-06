@@ -90,9 +90,15 @@
   .form-textarea:focus {
     outline: none;
     background-color: white;
+    color: #374151;
     border-color: #6366f1;
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+  }
+
+  .form-input:focus::placeholder,
+  .form-textarea:focus::placeholder {
+    color: rgba(55, 65, 81, 0.6);
   }
 
   /* Mobile responsive fix */
