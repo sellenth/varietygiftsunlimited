@@ -39,30 +39,36 @@ const featuredProducts = [
         </p>
       </div>
 
-      <a href={`${baseUrl}/shop/product/freudian-tank`} class="tank-link-wrapper">
-        <div class="max-w-6xl mx-auto flex flex-row items-center gap-4 md:gap-8">
+      <a href={`${baseUrl}/shop/product/freudian-tank`} class="tank-link-wrapper 
+                                                          w-full bg-secondary rounded-2xl overflow-hidden">
+        <div class="mx-auto flex flex-row items-center gap-4 md:gap-8">
           <div class="w-1/2 flex justify-center">
-            <div class="tank-display-wrapper">
+            <div class="tank-display-wrapper ml-auto">
               <div class="tank-display-container">
                 <img
-                  src="/webpshirts/swole_tank_front.webp"
+                  src="/freudian_section/no_bg_front.webp"
                   alt="Swole Tank Top"
                   class="tank-product-image"
                 />
               </div>
-              <div class="zoom-circle">
+              <div class="zoom-circle absolute -bottom-0 -right-5 md:-bottom-7 md:-right-5 
+                          w-[300px] h-[300px] md:w-[150px] md:h-[150px] 
+                          border-4 border-white rounded-full overflow-hidden z-10 
+      scale-150
+                          shadow-2xl bg-white transition-transform duration-300
+                          hover:scale-[1.65]">
                 <img
-                  src="/fruedian_section/zoomin.webp"
+                  src="/freudian_section/zoomin.webp"
                   alt="Swole Tank Top Logo Zoom"
-                  class="zoom-image"
+                  class="zoom-image absolute scale-105 object-contain"
                 />
               </div>
             </div>
           </div>
           <div class="w-1/2 flex justify-center">
-            <div class="model-container">
+            <div class="model-container mr-auto">
               <img
-                src="/fruedian_section/model_nobg.png"
+                src="/freudian_section/model_nobg.png"
                 alt="Model wearing tank top"
                 class="model-image"
               />
@@ -587,21 +593,14 @@ const featuredProducts = [
     transition: all 0.3s ease;
   }
 
-  .tank-link-wrapper:hover .tank-display-container {
-    transform: scale(1.05);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  .tank-display-wrapper:hover .zoom-circle {
+    transform: scale(1.65);
   }
 
-  .tank-link-wrapper:hover .model-image {
-    transform: scale(1.05);
+  .model-container:hover .model-image {
+    transform: scale(1.65);
   }
 
-  /* Swole Tank Section */
-  .swole-tank-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    position: relative;
-    overflow: hidden;
-  }
 
   .tank-display-wrapper {
     position: relative;
@@ -610,11 +609,8 @@ const featuredProducts = [
 
   .tank-display-container {
     position: relative;
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    transform: scale(1.3);
   }
 
   .tank-product-image {
@@ -625,26 +621,6 @@ const featuredProducts = [
     transition: transform 0.3s ease;
   }
 
-  .zoom-circle {
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    width: 150px;
-    height: 150px;
-    border: 4px solid white;
-    border-radius: 50%;
-    overflow: hidden;
-    z-index: 10;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    background: white;
-  }
-
-  .zoom-image {
-    position: absolute;
-    top: 3px;
-    transform: scale(1.05);
-    object-fit: contain;
-  }
 
   .collab-announcement {
     text-align: center;
@@ -667,6 +643,7 @@ const featuredProducts = [
   }
 
   .model-image {
+    transform: scale(1.5);
     width: 100%;
     max-width: 400px;
     height: auto;
