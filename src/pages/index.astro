@@ -588,6 +588,7 @@ const featuredProducts = [
   }
 
   .tank-link-wrapper:hover .tank-display-container {
+    transform: scale(1.05);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
   }
 
@@ -681,21 +682,26 @@ const featuredProducts = [
   }
 
   .shop-now-overlay .shop-now-btn {
-    background: #3730a3;
+    background-color: #3730a3;
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    font-weight: bold;
+    padding: 0.75rem 3rem;
+    font-size: 0.875rem;
+    display: inline-block;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    box-shadow: 0 10px 30px rgba(55, 48, 163, 0.3);
-    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .shop-now-overlay .shop-now-btn:hover {
-    background: #4338ca;
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(55, 48, 163, 0.4);
+    background-color: #4338ca;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   @media (max-width: 767px) {
