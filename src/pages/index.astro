@@ -556,6 +556,27 @@ const featuredProducts = [
     }
   }
 
+  /* Simple hover effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .hover-grow {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-grow:hover {
+    transform: scale(1.05);
+  }
+
+  .btn-ripple {
+    transition: all 0.3s ease;
+  }
+
   /* Swole Tank Section */
   .swole-tank-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -705,23 +726,5 @@ const featuredProducts = [
 </style>
 
 <script>
-  // Magnetic button effect
-  document.addEventListener('DOMContentLoaded', () => {
-    const magneticButtons = document.querySelectorAll('.btn-ripple, .hover-lift, .hover-grow');
-    
-    magneticButtons.forEach(button => {
-      const btnElement = button as HTMLElement;
-      btnElement.addEventListener('mousemove', (e: MouseEvent) => {
-        const rect = btnElement.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        
-        btnElement.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-      });
-      
-      btnElement.addEventListener('mouseleave', () => {
-        btnElement.style.transform = '';
-      });
-    });
-  });
+  // Simple hover effects are handled by CSS
 </script>
