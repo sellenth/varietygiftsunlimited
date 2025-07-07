@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Bubbles from "../components/Bubbles.astro";
 import ContactForm from "../components/ContactForm.astro";
 import { products } from "../data/products";
+import { socials } from "../data/socials";
 
 // Environment-aware base URL
 const isLocalhost = import.meta.env.DEV || Astro.url.hostname === 'localhost';
@@ -157,7 +158,7 @@ const featuredProducts = [
             </h2>
 
             <div class="flex gap-4 w-full justify-center md:justify-start">
-              <a href="https://www.instagram.com/wvw.variety.gifts/" class="social-icon-link hover-grow">
+              <a href={socials.instagram} class="social-icon-link hover-grow">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   style="fill: white"
@@ -172,7 +173,7 @@ const featuredProducts = [
                   ></path>
                 </svg>
               </a>
-              <a href="https://www.youtube.com/@varietygifts" class="social-icon-link hover-grow">
+              <a href={socials.youtube} class="social-icon-link hover-grow">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   style="fill: white"
@@ -187,7 +188,7 @@ const featuredProducts = [
                   ></path>
                 </svg>
               </a>
-              <a href="https://www.tiktok.com/@varietygiftsunlimited" class="social-icon-link hover-grow">
+              <a href={socials.tiktok} class="social-icon-link hover-grow">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   style="fill: white"
