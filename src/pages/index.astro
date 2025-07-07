@@ -13,7 +13,7 @@ const baseUrl = isLocalhost ? '' : 'https://variety.gifts';
 const featuredProducts = [
   products.find(p => p.id === 'chewbarka-bandana'),
   products.find(p => p.id === 'bag-5'), // Sheep Flock Bag
-  products.find(p => p.id === 'freudian-tank') // Replace Husky Yoga with Freudian Tank
+  products.find(p => p.id === 'cool-aunts-club') // Replace Husky Yoga with Freudian Tank
 ].filter(Boolean);
 ---
 
@@ -25,9 +25,8 @@ const featuredProducts = [
   <main class="w-full overflow-x-hidden relative">
     <!-- Hero Section -->
     <section
-      class="hero-section relative py-16 px-8 md:px-12 lg:px-24 flex flex-col items-center justify-center text-center min-h-[80vh]"
+      class="relative pt-16 px-4 sm:px-8 md:px-12 lg:px-24 flex flex-col items-center justify-center text-center"
     >
-      <Bubbles />
 
       <!-- Content (above bubbles) -->
       <div class="relative z-10">
@@ -38,18 +37,38 @@ const featuredProducts = [
           Bringing happiness through every gift, we are your destination for
           playful surprises and joyous moments.
         </p>
+      </div>
 
-        <div class="variety-gifts-logo mb-8">
-          <img
-            src="/logos/logo_cropped.svg"
-            alt="Variety Gifts"
-            class="w-full max-w-md mx-auto scale-125 py-8 animate-float"
-          />
+      <div class="max-w-6xl mx-auto flex flex-row items-center gap-4 md:gap-8">
+        <div class="w-1/2 flex justify-center">
+          <div class="tank-display-wrapper">
+            <div class="tank-display-container">
+              <img
+                src="/webpshirts/swole_tank_front.webp"
+                alt="Swole Tank Top"
+                class="tank-product-image"
+              />
+            </div>
+            <div class="zoom-circle">
+              <img
+                src="/webpshirts/swole_tank_front.webp"
+                alt="Swole Tank Top Logo Zoom"
+                class="zoom-image"
+              />
+            </div>
+          </div>
         </div>
-
-        <div class="flex gap-4 justify-center">
-          <a href={`${baseUrl}/shop`} class="shop-now-btn btn-ripple hover-lift">SHOP NOW</a>
-          <a href="/contact" class="learn-more-btn btn-ripple hover-grow">LEARN MORE</a>
+        <div class="w-1/2 flex justify-center">
+          <div class="model-container">
+            <img
+              src="/fruedian_section/model_nobg.png"
+              alt="Model wearing tank top"
+              class="model-image"
+            />
+            <div class="shop-now-overlay">
+              <a href={`${baseUrl}/shop/product/freudian-tank`} class="shop-now-btn btn-ripple hover-lift">SHOP NOW</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -87,6 +106,8 @@ const featuredProducts = [
         <a href={`${baseUrl}/shop`} class="shop-all-btn btn-ripple hover-lift">SHOP ALL</a>
       </div>
     </section>
+
+    <!-- Swole Tank Section -->
 
     <!-- About Us Section -->
     <section
@@ -532,6 +553,156 @@ const featuredProducts = [
     .product-overlay {
       backdrop-filter: blur(10px);
       background: rgba(99, 102, 241, 0.7);
+    }
+  }
+
+  /* Swole Tank Section */
+  .swole-tank-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tank-display-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tank-display-container {
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .tank-product-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .zoom-circle {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 150px;
+    height: 150px;
+    border: 4px solid white;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    background: white;
+  }
+
+  .zoom-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    transform: translate(-50%, -42%) scale(3.5);
+    object-fit: contain;
+  }
+
+  .collab-announcement {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  .collab-announcement h2 {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .model-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .model-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .shop-now-overlay {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+
+  .shop-now-overlay .shop-now-btn {
+    background: #3730a3;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    box-shadow: 0 10px 30px rgba(55, 48, 163, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .shop-now-overlay .shop-now-btn:hover {
+    background: #4338ca;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(55, 48, 163, 0.4);
+  }
+
+  @media (max-width: 767px) {
+    .tank-display-container {
+      padding: 1.5rem;
+    }
+    
+    .tank-product-image {
+      max-width: 200px;
+      min-height: 200px;
+      object-fit: contain;
+    }
+    
+    .model-image {
+      max-width: 250px;
+      min-height: 300px;
+      object-fit: contain;
+    }
+    
+    .zoom-circle {
+      width: 100px;
+      height: 100px;
+      bottom: -15px;
+      right: -15px;
+      border-width: 3px;
+    }
+    
+    .shop-now-overlay {
+      bottom: 10px;
+      right: 10px;
+    }
+    
+    .shop-now-overlay .shop-now-btn {
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8rem;
+    }
+    
+    .tank-display-wrapper {
+      margin: 0;
+    }
+    
+    .model-container {
+      margin: 0;
     }
   }
 </style>
