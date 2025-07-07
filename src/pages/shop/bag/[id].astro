@@ -34,10 +34,26 @@ export async function getStaticPaths() {
 // Explicitly type Astro.props
 const { id, title, description, images, priceDisplay, priceId, clientReferenceId } = Astro.props as Props;
 const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+
+// Get the canonical URL for this bag
+const canonicalUrl = `https://www.variety.gifts/shop/bag/${id}`;
+
+// Get the first image for social media preview
+const ogImageUrl = images[0]?.src.startsWith('http') 
+    ? images[0].src 
+    : `https://www.variety.gifts${images[0]?.src}`;
 ---
 
 
-<Layout title={title} hideHeader={false}>
+<Layout 
+    title={`${title} - Variety Gifts Unlimited`} 
+    hideHeader={false}
+    description={description}
+    ogTitle={`${title} - ${priceDisplay}`}
+    ogDescription={description}
+    ogImage={ogImageUrl}
+    ogUrl={canonicalUrl}
+>
     <div class="max-w-6xl mx-auto px-4 py-8">
         <button onclick="history.back()" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
             <span class="flex items-center gap-1">

@@ -13,9 +13,19 @@ export function getStaticPaths() {
 
 const { category } = Astro.props;
 const categoryProducts = products.filter(p => p.category === category.id);
+
+// Get the canonical URL for this category
+const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;
 ---
 
-<Layout title={`${category.name} - Variety Gifts Unlimited`} hideHeader={false}>
+<Layout 
+    title={`${category.name} - Variety Gifts Unlimited`} 
+    hideHeader={false}
+    description={category.description}
+    ogTitle={`${category.name} - Variety Gifts Unlimited`}
+    ogDescription={category.description}
+    ogUrl={canonicalUrl}
+>
     <main class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8">
         <div class="max-w-6xl mx-auto px-4 py-8 w-full">
             <button onclick="history.back()" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
