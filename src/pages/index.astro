@@ -44,7 +44,7 @@ const featuredProducts = [
         <div class="mx-auto flex flex-row items-center gap-4 md:gap-8">
           <div class="w-1/2 flex justify-center">
             <div class="tank-display-wrapper ml-auto">
-              <div class="tank-display-container">
+              <div class="scale-[1.7] tank-display-container">
                 <img
                   src="/freudian_section/no_bg_front.webp"
                   alt="Swole Tank Top"
@@ -610,7 +610,6 @@ const featuredProducts = [
   .tank-display-container {
     position: relative;
     transition: all 0.3s ease;
-    transform: scale(1.3);
   }
 
   .tank-product-image {
@@ -643,7 +642,9 @@ const featuredProducts = [
   }
 
   .model-image {
-    transform: scale(1.5);
+    position: relative;
+    bottom: 45px;
+    transform: scale(1.3);
     width: 100%;
     max-width: 400px;
     height: auto;
