@@ -1,50 +1,241 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Bubbles from '../components/Bubbles.astro';
 ---
 
-<Layout title="Variety Gifts Unlimited - Privacy Policy" hideHeader={true}>
-    <main class="w-full bg-white text-black prose max-w-none p-4">
-    <h1 class="text-black">Privacy Policy</h1>
-    <a class="text-black" href="/">Back to Home</a>
+<Layout title="Variety Gifts Unlimited - Privacy Policy" hideHeader={false}>
+    <main class="min-h-screen bg-white relative overflow-hidden">
+        <Bubbles />
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-6 py-16">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold text-indigo-900 mb-4 animate-float">
+                    Privacy Policy 🛡️
+                </h1>
+                <p class="text-lg text-indigo-800 mb-8">
+                    We keep your data safe and sound, just like our gift wrapping!
+                </p>
+                <a href="/" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg">
+                    ← Back to Home
+                </a>
+            </div>
 
-    <p>Last updated: 2024-09-17</p>
-    
-    <p>Variety Gifts Unlimited ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and share information about you when you use our website (varietygiftsunlimited.com) and services.</p>
-    
-    <h2>Information We Collect</h2>
-    <p>We collect information you provide directly to us, such as when you make a purchase, contact us, or participate in any interactive features of our services. This may include your name, email address, postal address, phone number, and payment information.</p>
-    
-    <h2>How We Use Your Information</h2>
-    <p>We use the information we collect to:</p>
-    <ul>
-        <li>Process your orders and send you order confirmations</li>
-        <li>Communicate with you about your orders, products, and services</li>
-        <li>Provide customer support</li>
-        <li>Improve and develop our website and services</li>
-        <li>Comply with legal obligations</li>
-    </ul>
-    
-    <h2>Sharing of Information</h2>
-    <p>We may share your information with:</p>
-    <ul>
-        <li>Service providers who perform services on our behalf</li>
-        <li>Law enforcement or other government entities when required by law</li>
-    </ul>
-    
-    <h2>Security</h2>
-    <p>We take reasonable measures to help protect your information from loss, theft, misuse, unauthorized access, disclosure, alteration, and destruction.</p>
-    
-    <h2>Your Choices</h2>
-    <p>You may opt out of receiving promotional communications from us by following the instructions in those communications. You may also request to access, correct, or delete your personal information by contacting us.</p>
-    
-    <h2>Changes to This Privacy Policy</h2>
-    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
-    
-    <h2>Contact Us</h2>
-    <p>If you have any questions about this Privacy Policy, please contact us at halston (at) sellent .in</p>
-    
-    <p><a href="/">Back to Home</a></p>
+            <!-- Last Updated Badge -->
+            <div class="bg-lavender p-4 rounded-xl mb-8 border-l-4 border-indigo-500">
+                <p class="text-sm text-indigo-800">
+                    📅 <strong>Last updated:</strong> September 17, 2024
+                </p>
+            </div>
+
+            <!-- Interactive Cards -->
+            <div class="space-y-6">
+                <!-- Introduction Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">👋 Hello There!</h2>
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            Variety Gifts Unlimited ("we", "our", or "us") is committed to protecting your privacy. 
+                            This Privacy Policy explains how we collect, use, and share information about you when you 
+                            use our website and services. Think of us as the guardians of your digital gift box!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Information Collection Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">📦 What We Collect</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="mb-4">
+                            We collect information you share with us directly, like when you:
+                        </p>
+                        <ul class="privacy-list">
+                            <li>🛍️ Make a purchase (name, email, address, payment info)</li>
+                            <li>📧 Contact us with questions</li>
+                            <li>🎮 Play our games or use interactive features</li>
+                            <li>📱 Subscribe to our newsletter</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- How We Use Information Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">🎯 How We Use Your Info</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="mb-4">We use your information to make your experience amazing:</p>
+                        <ul class="privacy-list">
+                            <li>📦 Process and ship your orders</li>
+                            <li>💌 Send you order confirmations and updates</li>
+                            <li>🎧 Provide stellar customer support</li>
+                            <li>✨ Improve our website and services</li>
+                            <li>⚖️ Comply with legal requirements</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Sharing Information Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">🤝 When We Share</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="mb-4">We only share your information with:</p>
+                        <ul class="privacy-list">
+                            <li>🚚 Service providers (like shipping companies)</li>
+                            <li>🏛️ Government entities when legally required</li>
+                            <li>🚫 <strong>Never</strong> with random third parties for marketing!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Security Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">🔒 Security First</h2>
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            We take reasonable measures to protect your information from loss, theft, misuse, 
+                            unauthorized access, disclosure, alteration, and destruction. Your data is locked 
+                            up tighter than our gift vault!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Your Choices Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">🎛️ Your Control Panel</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="mb-4">You're in charge! You can:</p>
+                        <ul class="privacy-list">
+                            <li>📬 Opt out of promotional emails</li>
+                            <li>👀 Request to see your data</li>
+                            <li>✏️ Ask us to correct your information</li>
+                            <li>🗑️ Request deletion of your data</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Changes Card -->
+                <div class="privacy-card group">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">🔄 Policy Updates</h2>
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            We may update this Privacy Policy from time to time. When we do, we'll post 
+                            the new version right here and let you know about any significant changes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Card -->
+                <div class="privacy-card group bg-gradient-to-r from-indigo-50 to-purple-50">
+                    <div class="card-header">
+                        <h2 class="text-2xl font-bold text-indigo-900">📞 Questions? We're Here!</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="mb-4">
+                            If you have any questions about this Privacy Policy, don't hesitate to reach out:
+                        </p>
+                        <div class="contact-info">
+                            <p class="text-indigo-700 font-semibold">
+                                📧 varietygiftsunlimited (at) gmail .com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div class="text-center mt-12">
+                <a href="/shop" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg text-lg font-semibold">
+                    Ready to Shop? Let's Go! 🛍️
+                </a>
+            </div>
+        </div>
     </main>
 </Layout>
 
-<style></style>
+<style>
+    .bg-lavender {
+        background-color: #f3f4f6;
+    }
+
+    .privacy-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .privacy-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 1.5rem;
+        border-radius: 16px 16px 0 0;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .card-content {
+        padding: 1.5rem;
+    }
+
+    .privacy-list {
+        space-y: 0.75rem;
+    }
+
+    .privacy-list li {
+        padding: 0.75rem;
+        background: rgba(99, 102, 241, 0.05);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .privacy-list li:hover {
+        background: rgba(99, 102, 241, 0.1);
+        transform: translateX(4px);
+    }
+
+    .contact-info {
+        background: rgba(99, 102, 241, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #6366f1;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .privacy-card {
+            margin: 0 1rem;
+        }
+        
+        .card-header, .card-content {
+            padding: 1rem;
+        }
+    }
+</style>

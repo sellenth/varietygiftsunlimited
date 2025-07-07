@@ -1,72 +1,302 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Bubbles from '../components/Bubbles.astro';
 import { socials } from '../data/socials';
 
 const links = [
   {
-    name: 'Games',
+    name: 'Shop Now',
+    url: '/shop',
+    icon: 'M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z',
+    description: 'Browse our amazing collection of gifts!',
+    color: 'from-purple-400 to-pink-400',
+    featured: true
+  },
+  {
+    name: 'Free Games',
     url: '/game-browser',
     icon: '🎮',
-    description: 'Check out our FREE games 😄'
+    description: 'Play our collection of FREE browser games!',
+    color: 'from-green-400 to-blue-400'
   },
   {
     name: 'Instagram',
     url: socials.instagram,
     icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z',
-    description: 'Follow us for regular updates and reels'
+    description: 'Daily posts, reels, and behind-the-scenes content',
+    color: 'from-pink-400 to-purple-400'
   },
   {
     name: 'YouTube',
     url: socials.youtube,
     icon: 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z',
-    description: 'Watch our latest short and long form videos'
+    description: 'Subscribe for product showcases and tutorials',
+    color: 'from-red-400 to-orange-400'
   },
   {
     name: 'TikTok',
     url: socials.tiktok,
     icon: 'M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z',
-    description: 'Watch our tiktoks'
+    description: 'Fun short videos and trending content',
+    color: 'from-black to-gray-600'
+  },
+  {
+    name: 'Contact Us',
+    url: '/contact',
+    icon: '📧',
+    description: 'Get in touch with our friendly team',
+    color: 'from-blue-400 to-indigo-400'
   }
 ];
 ---
 
 <Layout title="Variety Gifts Unlimited - Links" hideHeader={false}>
-  <main class="bg-[#ddd0fc] min-h-screen py-8 px-4">
-    <div class="container mx-auto max-w-2xl">
-      <img src="/logos/logo_cropped.svg" alt="Variety Gifts Logo" class="w-1/2 mx-auto" />
-      
-      <div class="space-y-4 mt-8">
-        {links.map(link => (
+  <main class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+    <Bubbles />
+    
+    <div class="relative z-10 container mx-auto max-w-4xl px-6 py-16">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <div class="mb-8">
+          <img 
+            src="/logos/logo_cropped.svg" 
+            alt="Variety Gifts Logo" 
+            class="w-64 mx-auto animate-float"
+          />
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-4">
+          All Our Links ✨
+        </h1>
+        <p class="text-lg text-indigo-700 max-w-2xl mx-auto">
+          Your one-stop destination for gifts, games, and good vibes! 
+          Click any link below to explore our world of surprises.
+        </p>
+      </div>
+
+      <!-- Links Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        {links.map((link, index) => (
           <a
             href={link.url}
-            class="block backdrop-blur-sm bg-white/10 p-4 rounded-xl border border-white/20 shadow-lg hover:scale-[1.02] transition-transform duration-200"
+            class={`link-card group ${link.featured ? 'featured-card' : ''}`}
+            style={`animation-delay: ${index * 0.1}s`}
           >
-            <div class="flex items-center gap-4">
-              {link.icon.length <= 2 ? (
-                <span class="text-2xl">{link.icon}</span>
-              ) : (
-                <svg
-                  viewBox="0 0 24 24"
-                  class="w-8 h-8 fill-current"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d={link.icon} />
+            <div class="link-card-inner">
+              <div class="icon-wrapper">
+                {link.icon.length <= 2 ? (
+                  <span class="text-4xl">{link.icon}</span>
+                ) : (
+                  <svg
+                    viewBox="0 0 24 24"
+                    class="w-10 h-10 fill-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d={link.icon} />
+                  </svg>
+                )}
+              </div>
+              <div class="content">
+                <h2 class="text-xl font-bold text-indigo-900 mb-2 group-hover:text-white transition-colors">
+                  {link.name}
+                </h2>
+                <p class="text-sm text-indigo-700 group-hover:text-white/90 transition-colors">
+                  {link.description}
+                </p>
+              </div>
+              <div class="arrow">
+                <svg class="w-5 h-5 fill-indigo-400 group-hover:fill-white transition-colors" viewBox="0 0 24 24">
+                  <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"/>
                 </svg>
-              )}
-              <div>
-                <h2 class="font-bold text-lg text-accent">{link.name}</h2>
-                <p class="text-sm text-black/70">{link.description}</p>
               </div>
             </div>
+            <div class={`gradient-overlay bg-gradient-to-r ${link.color || 'from-indigo-400 to-purple-400'}`}></div>
           </a>
         ))}
+      </div>
+
+      <!-- Fun Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        <div class="stat-card">
+          <div class="text-2xl font-bold text-indigo-900">500+</div>
+          <div class="text-sm text-indigo-700">Happy Customers</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-2xl font-bold text-indigo-900">5</div>
+          <div class="text-sm text-indigo-700">Free Games</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-2xl font-bold text-indigo-900">24/7</div>
+          <div class="text-sm text-indigo-700">Support</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-2xl font-bold text-indigo-900">💯</div>
+          <div class="text-sm text-indigo-700">Satisfaction</div>
+        </div>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="text-center">
+        <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
+          <h2 class="text-3xl font-bold text-indigo-900 mb-4">
+            Ready to Discover Amazing Gifts? 🎁
+          </h2>
+          <p class="text-indigo-700 mb-6">
+            Join thousands of happy customers who've found their perfect gifts with us!
+          </p>
+          <a 
+            href="/shop" 
+            class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg text-lg font-semibold"
+          >
+            Start Shopping Now! 🛍️
+          </a>
+        </div>
       </div>
     </div>
   </main>
 </Layout>
 
 <style>
-  a:hover {
-    transform: translateY(-2px);
+  .link-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInUp 0.6s ease-out forwards;
+  }
+
+  .link-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+  }
+
+  .link-card:hover .gradient-overlay {
+    opacity: 1;
+  }
+
+  .link-card-inner {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .link-card:hover .icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .arrow {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .link-card:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  .featured-card {
+    border: 2px solid #6366f1;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+  }
+
+  .featured-card::after {
+    content: '✨ FEATURED';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #6366f1;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 3;
+  }
+
+  .stat-card {
+    background: white/70;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+  }
+
+  @keyframes slideInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .link-card-inner {
+      padding: 1rem;
+    }
+    
+    .icon-wrapper {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .icon-wrapper span {
+      font-size: 1.5rem;
+    }
+    
+    .icon-wrapper svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
 </style>
