@@ -4,7 +4,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  category: 'bags' | 'shirts' | 'bandana' | 'tote';
+  category: 'bags' | 'shirts' | 'bandana' | 'tote' | 'hats';
   images: { src: string; alt: string }[];
   colorImages?: { [color: string]: { src: string; alt: string }[] }; // For color variants
   price: string;
@@ -165,6 +165,18 @@ const tongPriceIds = {
   "M": "price_1Rh28kAp2D4XT14xYVl6Q46w",
   "L": "price_1Rh28kAp2D4XT14xaDxgI7Y0",
   "XL": "price_1Rh28kAp2D4XT14xpFVb969T"
+};
+
+// Gym Brat Cropped Shirt price IDs
+const gymBratCroppedShirtPriceIds = {
+  "Black - Small": "price_1RiQJ7Ap2D4XT14xBTyx3ikL",
+  "Black - Medium": "price_1RiQJBAp2D4XT14xmtKdHkk8",
+  "Black - Large": "price_1RiQJFAp2D4XT14x8VSCMbbA",
+  "Black - X-Large": "price_1RiQJIAp2D4XT14xLWViSUXx",
+  "Ivory - Small": "price_1RiQJMAp2D4XT14xggJtK55W",
+  "Ivory - Medium": "price_1RiQJRAp2D4XT14xSoXWX67m",
+  "Ivory - Large": "price_1RiQJVAp2D4XT14x8JaB0TvK",
+  "Ivory - X-Large": "price_1RiQJZAp2D4XT14xTDTWs3Qx"
 };
 
 export const products: Product[] = [
@@ -486,5 +498,44 @@ export const products: Product[] = [
     price: '$22.99',
     priceId: 'price_1Rh2HtAp2D4XT14x51zjcjnJ',
     slug: 'chewbarka-bandana'
+  },
+  
+  // Gym Brat Collection
+  {
+    id: 'gym-brat-cropped-shirt',
+    name: 'Gym Brat Cropped Shirt',
+    description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in black and ivory.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
+      { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Back' }
+    ],
+    colorImages: {
+      'Ivory': [
+        { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
+        { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Back' },
+      ],
+      'Black': [
+        { src: '/gym-brat-croptop/brat_crop_front_black.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
+        { src: '/gym-brat-croptop/brat_crop_back_black.webp', alt: 'Gym Brat Cropped Shirt - Black Back' },
+      ]
+    },
+    price: '$30.00',
+    priceIds: gymBratCroppedShirtPriceIds,
+    sizes: Object.keys(gymBratCroppedShirtPriceIds),
+    slug: 'gym-brat-cropped-shirt'
+  },
+  {
+    id: 'gym-brat-hat',
+    name: 'Gym Brat Hat',
+    description: 'Complete your gym look with this stylish Gym Brat hat. Premium quality, comfortable fit, available in tan.',
+    category: 'hats',
+    images: [
+      { src: '/gym-brat-hat/brat_hate_product.webp', alt: 'Gym Brat Hat - Tan Front' },
+      { src: '/gym-brat-hat/brat_hate_model.webp', alt: 'Gym Brat Hat - Tan Side' }
+    ],
+    price: '$32.99',
+    priceId: 'price_1RiQK9Ap2D4XT14xFDTIxfPM',
+    slug: 'gym-brat-hat'
   },
 ];

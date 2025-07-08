@@ -53,6 +53,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                             'Red': '#ef4444',
                                             'Black': '#000000',
                                             'White': '#ffffff',
+                                            'Ivory': '#fffff0',
                                             'Gray': '#6b7280',
                                             'Grey': '#6b7280',
                                             'Brown': '#8b4513',
@@ -61,7 +62,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                             'Orange': '#f97316'
                                         };
                                         const bgColor = colorMap[color] || '#e5e7eb';
-                                        const isLight = color === 'Natural' || color === 'White' || color === 'Yellow' || color === 'Tan';
+                                        const isLight = color === 'Natural' || color === 'White' || color === 'Yellow' || color === 'Tan' || color === 'Ivory';
                                         return (
                                             <button
                                                 type="button"
@@ -393,7 +394,8 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
     .color-orb.active[data-color="Natural"]::after,
     .color-orb.active[data-color="White"]::after,
     .color-orb.active[data-color="Yellow"]::after,
-    .color-orb.active[data-color="Tan"]::after {
+    .color-orb.active[data-color="Tan"]::after,
+    .color-orb.active[data-color="Ivory"]::after {
         color: #374151;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
