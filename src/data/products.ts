@@ -531,8 +531,8 @@ export const products: Product[] = [
     description: 'Complete your gym look with this stylish Gym Brat hat. Premium quality, comfortable fit, available in tan.',
     category: 'hats',
     images: [
-      { src: '/gym-brat-hat/brat_hate_product.webp', alt: 'Gym Brat Hat - Tan Front' },
-      { src: '/gym-brat-hat/brat_hate_model.webp', alt: 'Gym Brat Hat - Tan Side' }
+      { src: '/gym-brat-hat/brat_hat_product.webp', alt: 'Gym Brat Hat - Tan Front' },
+      { src: '/gym-brat-hat/brat_hat_model.webp', alt: 'Gym Brat Hat - Tan Side' }
     ],
     price: '$32.99',
     priceId: 'price_1RiQK9Ap2D4XT14xFDTIxfPM',
