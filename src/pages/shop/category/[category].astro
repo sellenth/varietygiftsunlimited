@@ -28,7 +28,7 @@ const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;
 >
     <main class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8">
         <div class="max-w-6xl mx-auto px-4 py-8 w-full">
-            <button onclick="history.back()" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
+            <button onclick="window.history.length > 1 ? history.back() : window.location.href = '/'" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
                 <span class="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
