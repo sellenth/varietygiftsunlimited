@@ -6,8 +6,9 @@ tags: ["AI", "Development", "Tools", "Claude Code", "Programming", "Productivity
 readTime: "1 min read"
 ---
 
-My problem was just that claude wasn't updated. I always saw the auto update notification at the bottom right of claude so I assumed I didn't have to manually do it. Maybe my setup is broken or whatever but running: `claude update` fixed it. This is assuming you have a settings.json file properly configured for a hook. Here's an example of mine at ~/.claude/settings.json
+My problem was just that claude wasn't updated. I always saw the auto update notification at the bottom right of claude so I assumed I didn't have to manually do it. Maybe my setup is broken or whatever but running `claude update` fixed it. This is assuming you have a settings.json file properly configured for a hook. Here's an example of mine at ~/.claude/settings.json
 
+```json
 {
   "hooks": {
     "PreToolUse": [
@@ -16,7 +17,7 @@ My problem was just that claude wasn't updated. I always saw the auto update not
         "hooks": [
           {
             "type": "command",
-            "command": "afplay /Users/hal/Music/bing.mp3"
+            "command": "afplay /Users/me/Music/bing.mp3"
           }
         ]
       }
@@ -27,16 +28,22 @@ My problem was just that claude wasn't updated. I always saw the auto update not
         "hooks": [
           {
             "type": "command",
-            "command": "afplay /Users/hal/Music/bing2.mp3"
+            "command": "afplay /Users/me/Music/bing2.mp3"
           }
         ]
       }
     ]
   }
 }
+```
 
-Claude Code has revolutionized how developers approach coding tasks, but like any powerful tool, it comes with its own set of challenges and limitations that every user should understand.
+Everything below this lines is for SEO gravy points. If you're a human, you can disregard it 😎
 
+## .
+## .
+## .
+## .
+## 
 ## The Promise vs. Reality
 
 When Claude Code first emerged, it promised to be the ultimate coding companion—a tool that could understand context, write clean code, and help developers be more productive than ever before. And in many ways, it delivers on this promise. However, the reality is more nuanced.
