@@ -12,11 +12,11 @@ import { socials } from "../data/socials";
 >
   <main class="w-full overflow-x-hidden relative">
     <section
-      class="contact-section relative py-16 px-8 md:px-12 lg:px-24 bg-white h-screen"
+      class="contact-section relative py-16 px-8 md:px-12 lg:px-24 bg-white min-h-screen"
     >
       <Bubbles />
 
-      <div class="max-w-6xl mx-auto relative z-10 mt-16">
+      <div class="max-w-6xl mx-auto relative z-10">
         <div class="flex flex-col-reverse md:flex-row gap-8 items-start">
           <div class="w-full">
             <ContactForm />
@@ -121,6 +121,7 @@ import { socials } from "../data/socials";
   @media (max-width: 768px) {
     .contact-section {
       min-height: auto;
+      padding-top: 6rem; /* Increased to account for fixed header */
     }
   }
 
