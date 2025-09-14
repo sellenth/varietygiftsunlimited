@@ -1,7 +1,7 @@
 ---
 import ImageCarousel from './ImageCarousel.astro';
 
-const { title, description, priceIds, singlePrice, singlePriceId, images, colorImages, price } = Astro.props;
+const { title, description, priceIds, singlePrice, singlePriceId, images, colorImages, price, disabled = false } = Astro.props;
 const availableSizes = priceIds ? Object.keys(priceIds) : [];
 const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
 
@@ -32,7 +32,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
             <h1 class="text-3xl font-bold">{title}</h1>
             <p class="text-gray-600">{description}</p>
 
-            {priceIds ? (
+{priceIds ? (
                 <div class="space-y-4">
                     <p class="text-xl font-semibold">{price || '$19.99'} w/ free shipping!</p>
                     {isColorSizeVariant ? (
@@ -109,29 +109,59 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                             </select>
                         </div>
                     )}
-                    <button 
-                        id="buy-button"
-                        data-stripe-key={PUBLIC_STRIPE_KEY}
-                        data-stripe-payment-id={priceIds[defaultSize]}
-                        data-is-color-size={isColorSizeVariant}
-                        class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
-                    >
-                        Buy Now
-                    </button>
-                    <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                    {disabled ? (
+                        <>
+                            <button 
+                                class="w-full bg-gray-300 text-gray-600 py-3 px-6 rounded-md cursor-not-allowed"
+                                disabled
+                                aria-disabled="true"
+                            >
+                                Unavailable
+                            </button>
+                            <p class="text-sm text-center text-gray-500">This item is currently unavailable.</p>
+                        </>
+                    ) : (
+                        <>
+                            <button 
+                                id="buy-button"
+                                data-stripe-key={PUBLIC_STRIPE_KEY}
+                                data-stripe-payment-id={priceIds[defaultSize]}
+                                data-is-color-size={isColorSizeVariant}
+                                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                            >
+                                Buy Now
+                            </button>
+                            <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div class="space-y-4">
                     <p class="text-xl font-semibold">{price || `$${singlePrice}`} w/ free shipping!</p>
-                    <button 
-                        id="buy-button"
-                        data-stripe-key={PUBLIC_STRIPE_KEY}
-                        data-stripe-payment-id={singlePriceId}
-                        class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
-                    >
-                        Buy Now
-                    </button>
-                    <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                    {disabled ? (
+                        <>
+                            <button 
+                                class="w-full bg-gray-300 text-gray-600 py-3 px-6 rounded-md cursor-not-allowed"
+                                disabled
+                                aria-disabled="true"
+                            >
+                                Unavailable
+                            </button>
+                            <p class="text-sm text-center text-gray-500">This item is currently unavailable.</p>
+                        </>
+                    ) : (
+                        <>
+                            <button 
+                                id="buy-button"
+                                data-stripe-key={PUBLIC_STRIPE_KEY}
+                                data-stripe-payment-id={singlePriceId}
+                                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                            >
+                                Buy Now
+                            </button>
+                            <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                        </>
+                    )}
                 </div>
             )}
         </div>

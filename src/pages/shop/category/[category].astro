@@ -57,6 +57,7 @@ const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;
                         body={product.description.substring(0, 80) + '...'}
                         href={`/shop/product/${product.slug}`}
                         price={product.price}
+                        disabled={product.disabled}
                     />
                 ))}
             </div>

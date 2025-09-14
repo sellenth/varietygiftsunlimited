@@ -64,6 +64,7 @@ const featuredProducts = [
                         body={product.description.substring(0, 50) + '...'}
                         href={`/shop/product/${product.slug}`}
                         price={product.price}
+                        disabled={product.disabled}
                     />
                 ))}
             </div>

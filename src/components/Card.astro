@@ -6,27 +6,50 @@ interface Props {
 	body: string;
 	href: string;
 	price?: string;
+    disabled?: boolean;
 }
 
-const { img, href, title, body, sticker, price } = Astro.props;
+const { img, href, title, body, sticker, price, disabled = false } = Astro.props;
 ---
 
-<a href={href} class="block group">
-    <div class="bg-white relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl">
-        <div class="aspect-square relative">
-            <img
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                src={img}
-                alt={title}
-                loading="lazy"
-            />
+{!disabled ? (
+    <a href={href} class="block group">
+        <div class="bg-white relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl">
+            <div class="aspect-square relative">
+                <img
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    src={img}
+                    alt={title}
+                    loading="lazy"
+                />
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
+                <h3 class="text-xl font-bold text-black text-center">{title}</h3>
+                {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
+            </div>
         </div>
-        <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
-            <h3 class="text-xl font-bold text-black text-center">{title}</h3>
-            {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
+    </a>
+) : (
+    <div class="block group cursor-not-allowed">
+        <div class="bg-white relative overflow-hidden rounded-lg shadow-md opacity-60 ">
+            <div class="aspect-square relative">
+                <img
+                    class="w-full h-full object-cover select-none"
+                    src={img}
+                    alt={title}
+                    loading="lazy"
+                />
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="px-3 py-1 rounded-md text-sm font-semibold bg-gray-800 text-white/90">Unavailable</span>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
+                <h3 class="text-xl font-bold text-black text-center">{title}</h3>
+                {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
+            </div>
         </div>
     </div>
-</a>
+)}
 
 <style>
   @keyframes vertical-scroll {

@@ -1,4 +1,4 @@
-import { bagNames } from './bagsData';
+import { bagNames, disabledBags } from './bagsData';
 
 export interface Product {
   id: string;
@@ -12,6 +12,7 @@ export interface Product {
   priceIds?: { [size: string]: string }; // For multi-size products
   sizes?: string[];
   slug: string;
+  disabled?: boolean;
 }
 
 // Shirt price IDs
@@ -189,7 +190,8 @@ export const products: Product[] = [
     images: [{ src: `/bags/bags/${i + 1}.webp`, alt: bagNames[i] }],
     price: "$29.99",
     priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
-    slug: `bag-${i + 1}`
+    slug: `bag-${i + 1}`,
+    disabled: disabledBags.includes(i + 1)
   })),
   
   // Shirts

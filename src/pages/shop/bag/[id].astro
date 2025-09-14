@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import ImageCarousel from "../../../components/ImageCarousel.astro"; // Assuming a carousel might be nice
-import { bagNames } from "../../../data/bagsData"; // Import from the new data file
+import { bagNames, disabledBags } from "../../../data/bagsData"; // Import from the new data file
 
 // Define the props type for better type checking (optional but good practice)
 interface Props {
@@ -34,6 +34,7 @@ export async function getStaticPaths() {
 // Explicitly type Astro.props
 const { id, title, description, images, priceDisplay, priceId, clientReferenceId } = Astro.props as Props;
 const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
+const isDisabled = disabledBags.includes(id);
 
 // Get the canonical URL for this bag
 const canonicalUrl = `https://www.variety.gifts/shop/bag/${id}`;
@@ -74,16 +75,25 @@ const ogImageUrl = images[0]?.src.startsWith('http')
 
                 <div class="space-y-4">
                     <p class="text-xl font-semibold">{priceDisplay} w/ free shipping!</p>
-                    <button 
-                        id="buy-button"
-                        data-stripe-key={PUBLIC_STRIPE_KEY}
-                        data-stripe-price-id={priceId}
-                        data-client-reference-id={clientReferenceId}
-                        class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
-                    >
-                        Buy Now
-                    </button>
-                    <p class="text-sm text-center text-gray-500">Powered by Stripe</p>
+                    {isDisabled ? (
+                        <>
+                            <button class="w-full bg-gray-300 text-gray-600 py-3 px-6 rounded-md cursor-not-allowed" disabled aria-disabled="true">Unavailable</button>
+                            <p class="text-sm text-center text-gray-500">This item is currently unavailable.</p>
+                        </>
+                    ) : (
+                        <>
+                            <button 
+                                id="buy-button"
+                                data-stripe-key={PUBLIC_STRIPE_KEY}
+                                data-stripe-price-id={priceId}
+                                data-client-reference-id={clientReferenceId}
+                                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                            >
+                                Buy Now
+                            </button>
+                            <p class="text-sm text-center text-gray-500">Powered by Stripe</p>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

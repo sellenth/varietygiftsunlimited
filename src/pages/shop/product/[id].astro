@@ -27,7 +27,8 @@ const productDetailProps = product.priceIds ? {
     price: product.price,
     priceIds: product.priceIds,
     images: product.images,
-    colorImages: product.colorImages
+    colorImages: product.colorImages,
+    disabled: product.disabled
 } : {
     title: product.name,
     description: product.description,
@@ -35,7 +36,8 @@ const productDetailProps = product.priceIds ? {
     singlePrice: product.price.replace('$', ''),
     singlePriceId: product.priceId,
     images: product.images,
-    colorImages: product.colorImages
+    colorImages: product.colorImages,
+    disabled: product.disabled
 };
 ---
 
@@ -62,7 +64,7 @@ const productDetailProps = product.priceIds ? {
             "@type": "Offer",
             "priceCurrency": "USD",
             "price": product.price.replace(/[^0-9.]/g, ''),
-            "availability": "https://schema.org/InStock",
+            "availability": product.disabled ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "seller": {
                 "@type": "Organization",
                 "name": "Variety Gifts Unlimited"
