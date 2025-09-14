@@ -180,6 +180,28 @@ const gymBratCroppedShirtPriceIds = {
   "Ivory - X-Large": "price_1RiQk2Ap2D4XT14xtV45PIFs"
 };
 
+// Halloween Ghosts T-Shirt price IDs ($29.99)
+// Keys must follow the pattern "Color - Size" with sizes written out.
+// Replace REPLACE_ME with real Stripe Price IDs after running the Stripe script.
+const halloweenGhostsPriceIds = {
+  "Orange - Small": "price_1S77jfAp2D4XT14xhHcBP8rl",
+  "Orange - Medium": "price_1S77jfAp2D4XT14xHzQwrafu",
+  "Orange - Large": "price_1S77jgAp2D4XT14xRdKzEf4s",
+  "Orange - X-Large": "price_1S77jgAp2D4XT14x0ja1jFyf",
+  "Brown - Small": "price_1S77jgAp2D4XT14xPFlONOUI",
+  "Brown - Medium": "price_1S77jhAp2D4XT14xnjspsmUi",
+  "Brown - Large": "price_1S77jhAp2D4XT14xK9zfkZ5e",
+  "Brown - X-Large": "price_1S77jiAp2D4XT14xhFdTX9uY",
+  "Gray - Small": "price_1S77jiAp2D4XT14xJKWcm9vO",
+  "Gray - Medium": "price_1S77jjAp2D4XT14xQL7j3LRN",
+  "Gray - Large": "price_1S77jjAp2D4XT14xr0petYUV",
+  "Gray - X-Large": "price_1S77jkAp2D4XT14xdeueZIxW",
+  "Green - Small": "price_1S77jkAp2D4XT14xi3JTHwlu",
+  "Green - Medium": "price_1S77jlAp2D4XT14xSJEdAX2C",
+  "Green - Large": "price_1S77jlAp2D4XT14xKb9MFzkI",
+  "Green - X-Large": "price_1S77jmAp2D4XT14xsEKwFtCr",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -485,6 +507,38 @@ export const products: Product[] = [
     priceIds: tongPriceIds,
     sizes: ['S', 'M', 'L', 'XL'],
     slug: 'tong'
+  },
+  {
+    id: 'halloween-ghosts',
+    name: 'Halloween Ghosts T-Shirt',
+    description: 'Spooky-season tee featuring three ghosties and pumpkins. Four colors (Orange, Brown, Gray, Green). Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+      { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+    ],
+    colorImages: {
+      'Orange': [
+        { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+      ],
+      'Brown': [
+        { src: '/webpshirts/halloween_ghosts_front_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Folded' },
+      ],
+      'Gray': [
+        { src: '/webpshirts/halloween_ghosts_front_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/webpshirts/halloween_ghosts_front_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: halloweenGhostsPriceIds,
+    slug: 'halloween-ghosts',
+    disabled: false,
   },
   
   // Bandana
