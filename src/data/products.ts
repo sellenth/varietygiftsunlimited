@@ -230,6 +230,54 @@ const keepGoingPriceIds = {
   "Green - X-Large": "price_1S7KbkAp2D4XT14x1ZTQXpkI",
 };
 
+// Hustle For The Muscle - Blue Print price IDs ($29.99)
+const hustleBluePriceIds = {
+  "Cream - Small": "price_1S7KsVAp2D4XT14xJMdPar4G",
+  "Cream - Medium": "price_1S7KsVAp2D4XT14xbZTnPEff",
+  "Cream - Large": "price_1S7KsWAp2D4XT14xiqgM9om0",
+  "Cream - X-Large": "price_1S7KsWAp2D4XT14xqS9KdZ48",
+  "Gray - Small": "price_1S7KsWAp2D4XT14xRIfgakzL",
+  "Gray - Medium": "price_1S7KsXAp2D4XT14xrB9RAEMd",
+  "Gray - Large": "price_1S7KsXAp2D4XT14xfB71zDWM",
+  "Gray - X-Large": "price_1S7KsXAp2D4XT14xs7eEE7xe",
+  "Green - Small": "price_1S7KsYAp2D4XT14xF1iD7bAF",
+  "Green - Medium": "price_1S7KsYAp2D4XT14xomefaqkW",
+  "Green - Large": "price_1S7KsZAp2D4XT14xwaq6edy2",
+  "Green - X-Large": "price_1S7KsZAp2D4XT14xUgNhszue",
+};
+
+// Hustle For The Muscle - Orange Print price IDs ($29.99)
+const hustleOrangePriceIds = {
+  "Cream - Small": "price_1S7KspAp2D4XT14xsUW38vxc",
+  "Cream - Medium": "price_1S7KspAp2D4XT14xSOtZgfVc",
+  "Cream - Large": "price_1S7KspAp2D4XT14xnd1zKZwc",
+  "Cream - X-Large": "price_1S7KsqAp2D4XT14xpIYNtEI0",
+  "Espresso - Small": "price_1S7KsqAp2D4XT14xMqWH4Mr8",
+  "Espresso - Medium": "price_1S7KsqAp2D4XT14xh9cx8mKF",
+  "Espresso - Large": "price_1S7KsrAp2D4XT14xcd5dc6JK",
+  "Espresso - X-Large": "price_1S7KsrAp2D4XT14xd9RhVHzQ",
+  "Gray - Small": "price_1S7KsrAp2D4XT14xfryd75g9",
+  "Gray - Medium": "price_1S7KssAp2D4XT14xeCDVfddT",
+  "Gray - Large": "price_1S7KssAp2D4XT14xJiFvLIQN",
+  "Gray - X-Large": "price_1S7KssAp2D4XT14xQUOO1Q0q",
+  "Green - Small": "price_1S7KstAp2D4XT14xFVRlk282",
+  "Green - Medium": "price_1S7KstAp2D4XT14xXEuGcV1N",
+  "Green - Large": "price_1S7KstAp2D4XT14xS0CLfh8F",
+  "Green - X-Large": "price_1S7KsuAp2D4XT14xvWvZGbT5",
+};
+
+// Hustle For The Muscle - Pink Print price IDs ($29.99)
+const hustlePinkPriceIds = {
+  "Black - Small": "price_1S7KtAAp2D4XT14xjyWWdIWw",
+  "Black - Medium": "price_1S7KtAAp2D4XT14xAm9oTq2L",
+  "Black - Large": "price_1S7KtAAp2D4XT14xPNpjofXt",
+  "Black - X-Large": "price_1S7KtBAp2D4XT14x9bREZ9Aq",
+  "Red - Small": "price_1S7KtBAp2D4XT14xKO3ECDTc",
+  "Red - Medium": "price_1S7KtBAp2D4XT14xZ2tSCuWU",
+  "Red - Large": "price_1S7KtCAp2D4XT14x25d2rtnm",
+  "Red - X-Large": "price_1S7KtCAp2D4XT14xRnx0wcjO",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -333,6 +381,99 @@ export const products: Product[] = [
     price: '$29.99',
     priceIds: keepGoingPriceIds,
     slug: 'keep-going'
+  },
+  {
+    id: 'hustle-blue-print',
+    name: 'Hustle For The Muscle (Blue Print) T-Shirt',
+    description: 'Gym Brat tee – Hustle For The Muscle with Blue print. Cream, Gray, and Green. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_back_cream.webp', alt: 'Hustle (Blue Print) - Cream Back' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_front_cream.webp', alt: 'Hustle (Blue Print) - Cream Front' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_folded_cream.webp', alt: 'Hustle (Blue Print) - Cream Folded' },
+    ],
+    colorImages: {
+      'Cream': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_front_cream.webp', alt: 'Hustle (Blue Print) - Cream Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_back_cream.webp', alt: 'Hustle (Blue Print) - Cream Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_folded_cream.webp', alt: 'Hustle (Blue Print) - Cream Folded' },
+      ],
+      'Gray': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_front_gray.webp', alt: 'Hustle (Blue Print) - Gray Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_back_gray.webp', alt: 'Hustle (Blue Print) - Gray Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_folded_gray.webp', alt: 'Hustle (Blue Print) - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_front_green.webp', alt: 'Hustle (Blue Print) - Green Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_back_green.webp', alt: 'Hustle (Blue Print) - Green Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (BLUE)/hustle_folded_green.webp', alt: 'Hustle (Blue Print) - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: hustleBluePriceIds,
+    slug: 'hustle-blue-print'
+  },
+  {
+    id: 'hustle-orange-print',
+    name: 'Hustle For The Muscle (Orange Print) T-Shirt',
+    description: 'Gym Brat tee – Hustle For The Muscle with Orange print. Cream, Espresso, Gray, and Green. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_back_cream.webp', alt: 'Hustle (Orange Print) - Cream Back' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_front_cream.webp', alt: 'Hustle (Orange Print) - Cream Front' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_folded_cream.webp', alt: 'Hustle (Orange Print) - Cream Folded' },
+    ],
+    colorImages: {
+      'Cream': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_front_cream.webp', alt: 'Hustle (Orange Print) - Cream Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_back_cream.webp', alt: 'Hustle (Orange Print) - Cream Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_folded_cream.webp', alt: 'Hustle (Orange Print) - Cream Folded' },
+      ],
+      'Espresso': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_front_espresso.webp', alt: 'Hustle (Orange Print) - Espresso Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_back_espresso.webp', alt: 'Hustle (Orange Print) - Espresso Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_folded_espresso.webp', alt: 'Hustle (Orange Print) - Espresso Folded' },
+      ],
+      'Gray': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_front_gray.webp', alt: 'Hustle (Orange Print) - Gray Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_back_gray.webp', alt: 'Hustle (Orange Print) - Gray Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_folded_gray.webp', alt: 'Hustle (Orange Print) - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_front_green.webp', alt: 'Hustle (Orange Print) - Green Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_back_green.webp', alt: 'Hustle (Orange Print) - Green Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (Orange)/hustle_folded_green.webp', alt: 'Hustle (Orange Print) - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: hustleOrangePriceIds,
+    slug: 'hustle-orange-print'
+  },
+  {
+    id: 'hustle-pink-print',
+    name: 'Hustle For The Muscle (Pink Print) T-Shirt',
+    description: 'Gym Brat tee – Hustle For The Muscle with Pink print. Black and Red. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_back_black.webp', alt: 'Hustle (Pink Print) - Black Back' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_front_black.webp', alt: 'Hustle (Pink Print) - Black Front' },
+      { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_black_folded.webp', alt: 'Hustle (Pink Print) - Black Folded' },
+    ],
+    colorImages: {
+      'Black': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_front_black.webp', alt: 'Hustle (Pink Print) - Black Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_back_black.webp', alt: 'Hustle (Pink Print) - Black Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_black_folded.webp', alt: 'Hustle (Pink Print) - Black Folded' },
+      ],
+      'Red': [
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_front_red.webp', alt: 'Hustle (Pink Print) - Red Front' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_back_red.webp', alt: 'Hustle (Pink Print) - Red Back' },
+        { src: '/gym-brat-t-shirt/hustle for the muscle (pink)/hustle_folded_red.webp', alt: 'Hustle (Pink Print) - Red Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: hustlePinkPriceIds,
+    slug: 'hustle-pink-print'
   },
   {
     id: 'gym-brat-cropped-shirt',
