@@ -202,6 +202,14 @@ const halloweenGhostsPriceIds = {
   "Green - X-Large": "price_1S77jmAp2D4XT14xsEKwFtCr",
 };
 
+// Too Cute To Quit (Cream only) price IDs ($29.99)
+const tooCutePriceIds = {
+  "Cream - Small": "price_1S7KSiAp2D4XT14xDvw61Z7Z",
+  "Cream - Medium": "price_1S7KSjAp2D4XT14x5aUCe2Ka",
+  "Cream - Large": "price_1S7KSjAp2D4XT14xv8ObT5YT",
+  "Cream - X-Large": "price_1S7KSjAp2D4XT14xprbsxi2l",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -248,6 +256,27 @@ export const products: Product[] = [
     priceIds: halloweenGhostsPriceIds,
     slug: 'halloween-ghosts',
     disabled: false,
+  },
+  {
+    id: 'too-cute-to-quit',
+    name: 'Too Cute To Quit T-Shirt',
+    description: 'Gym Brat tee – Too Cute To Quit.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-t-shirt/too cute to quit/too_cute_front_cream.webp', alt: 'Too Cute To Quit - Cream Front' },
+      { src: '/gym-brat-t-shirt/too cute to quit/too_cute_back_cream.webp', alt: 'Too Cute To Quit - Cream Back' },
+      { src: '/gym-brat-t-shirt/too cute to quit/too_cute_folded_cream.webp', alt: 'Too Cute To Quit - Cream Folded' },
+    ],
+    colorImages: {
+      'Cream': [
+        { src: '/gym-brat-t-shirt/too cute to quit/too_cute_front_cream.webp', alt: 'Too Cute To Quit - Cream Front' },
+        { src: '/gym-brat-t-shirt/too cute to quit/too_cute_back_cream.webp', alt: 'Too Cute To Quit - Cream Back' },
+        { src: '/gym-brat-t-shirt/too cute to quit/too_cute_folded_cream.webp', alt: 'Too Cute To Quit - Cream Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: tooCutePriceIds,
+    slug: 'too-cute-to-quit',
   },
   {
     id: 'gym-brat-cropped-shirt',

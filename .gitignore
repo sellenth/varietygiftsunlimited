@@ -31,3 +31,4 @@ script.sh
 .vercel/
 astro.log
 scripts/
+.config/

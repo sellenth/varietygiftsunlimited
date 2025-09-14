@@ -44,8 +44,8 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                 <div class="flex gap-3 flex-wrap">
                                     {colorOptions.map((color, index) => {
                                         const colorMap = {
-                                            'Green': '#22c55e',
-                                            'Pink': '#ec4899',
+                                            'Green': '#6b8671',
+                                            'Pink': '#eec6d8',
                                             'Natural': '#f5f5dc',
                                             'Yellow': '#fbbf24',
                                             'Blue': '#3b82f6',
@@ -54,6 +54,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                             'Black': '#000000',
                                             'White': '#ffffff',
                                             'Ivory': '#fffff0',
+                                            'Cream': '#f6f0e0',
                                             'Gray': '#6b7280',
                                             'Grey': '#6b7280',
                                             'Brown': '#8b4513',
@@ -62,7 +63,7 @@ const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
                                             'Orange': '#f97316'
                                         };
                                         const bgColor = colorMap[color] || '#e5e7eb';
-                                        const isLight = color === 'Natural' || color === 'White' || color === 'Yellow' || color === 'Tan' || color === 'Ivory';
+                                        const isLight = color === 'Natural' || color === 'White' || color === 'Yellow' || color === 'Tan' || color === 'Ivory' || color === 'Cream';
                                         return (
                                             <button
                                                 type="button"
