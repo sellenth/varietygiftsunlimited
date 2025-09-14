@@ -210,6 +210,26 @@ const tooCutePriceIds = {
   "Cream - X-Large": "price_1S7KSjAp2D4XT14xprbsxi2l",
 };
 
+// Keep Going T-Shirt price IDs ($29.99)
+const keepGoingPriceIds = {
+  "Brown - Small": "price_1S7KbeAp2D4XT14xyReCju9a",
+  "Brown - Medium": "price_1S7KbfAp2D4XT14xF5CQEQ4t",
+  "Brown - Large": "price_1S7KbfAp2D4XT14x3Qw4VA0L",
+  "Brown - X-Large": "price_1S7KbgAp2D4XT14xTKOzbngX",
+  "Gray - Small": "price_1S7KbgAp2D4XT14xSyNHqgGa",
+  "Gray - Medium": "price_1S7KbgAp2D4XT14xKgFv0Efv",
+  "Gray - Large": "price_1S7KbhAp2D4XT14x5AO3SxFy",
+  "Gray - X-Large": "price_1S7KbhAp2D4XT14xenqmQDiJ",
+  "Cream - Small": "price_1S7KbiAp2D4XT14x6aM2S8uL",
+  "Cream - Medium": "price_1S7KbiAp2D4XT14xN6tJphWu",
+  "Cream - Large": "price_1S7KbiAp2D4XT14x7kq6Po1I",
+  "Cream - X-Large": "price_1S7KbjAp2D4XT14xFoKatOfC",
+  "Green - Small": "price_1S7KbjAp2D4XT14x20bxwFpm",
+  "Green - Medium": "price_1S7KbjAp2D4XT14xLNtMAB0S",
+  "Green - Large": "price_1S7KbkAp2D4XT14xu5zmlwVW",
+  "Green - X-Large": "price_1S7KbkAp2D4XT14x1ZTQXpkI",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -263,8 +283,8 @@ export const products: Product[] = [
     description: 'Gym Brat tee – Too Cute To Quit.',
     category: 'shirts',
     images: [
-      { src: '/gym-brat-t-shirt/too cute to quit/too_cute_front_cream.webp', alt: 'Too Cute To Quit - Cream Front' },
       { src: '/gym-brat-t-shirt/too cute to quit/too_cute_back_cream.webp', alt: 'Too Cute To Quit - Cream Back' },
+      { src: '/gym-brat-t-shirt/too cute to quit/too_cute_front_cream.webp', alt: 'Too Cute To Quit - Cream Front' },
       { src: '/gym-brat-t-shirt/too cute to quit/too_cute_folded_cream.webp', alt: 'Too Cute To Quit - Cream Folded' },
     ],
     colorImages: {
@@ -277,6 +297,42 @@ export const products: Product[] = [
     price: '$29.99',
     priceIds: tooCutePriceIds,
     slug: 'too-cute-to-quit',
+  },
+  {
+    id: 'keep-going',
+    name: 'Keep Going T-Shirt',
+    description: 'Gym Brat tee – Keep Going. Brown, Gray, Cream, and Green. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-t-shirt/Keep Going/keep_going_back_gray.webp', alt: 'Keep Going - Gray Back' },
+      { src: '/gym-brat-t-shirt/Keep Going/keep_going_front_gray.webp', alt: 'Keep Going - Gray Front' },
+      { src: '/gym-brat-t-shirt/Keep Going/keep_going_folded_gray.webp', alt: 'Keep Going - Gray Folded' },
+    ],
+    colorImages: {
+      'Gray': [
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_front_gray.webp', alt: 'Keep Going - Gray Front' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_back_gray.webp', alt: 'Keep Going - Gray Back' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_folded_gray.webp', alt: 'Keep Going - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_front_green.webp', alt: 'Keep Going - Green Front' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_back_green.webp', alt: 'Keep Going - Green Back' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_folded_green.webp', alt: 'Keep Going - Green Folded' },
+      ],
+      'Brown': [
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_front_brown.webp', alt: 'Keep Going - Brown Front' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_back_brown.webp', alt: 'Keep Going - Brown Back' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_folded_brown.webp', alt: 'Keep Going - Brown Folded' },
+      ],
+      'Cream': [
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_front_cream.webp', alt: 'Keep Going - Cream Front' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_back_cream.webp', alt: 'Keep Going - Cream Back' },
+        { src: '/gym-brat-t-shirt/Keep Going/keep_going_folded_cream.webp', alt: 'Keep Going - Cream Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: keepGoingPriceIds,
+    slug: 'keep-going'
   },
   {
     id: 'gym-brat-cropped-shirt',
