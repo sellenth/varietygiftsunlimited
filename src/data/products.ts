@@ -511,7 +511,7 @@ export const products: Product[] = [
   {
     id: 'halloween-ghosts',
     name: 'Halloween Ghosts T-Shirt',
-    description: 'Spooky-season tee featuring three ghosties and pumpkins. Four colors (Orange, Brown, Gray, Green). Sizes Small–X-Large.',
+    description: 'Spooky-season tee featuring three cute ghosties and some pumpkins.',
     category: 'shirts',
     images: [
       { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
