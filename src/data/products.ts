@@ -218,6 +218,62 @@ export const products: Product[] = [
   
   // Shirts
   {
+    id: 'halloween-ghosts',
+    name: 'Halloween Ghosts T-Shirt',
+    description: 'Spooky-season tee featuring three cute ghosties and some pumpkins.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+      { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+    ],
+    colorImages: {
+      'Orange': [
+        { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+      ],
+      'Brown': [
+        { src: '/webpshirts/halloween_ghosts_front_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Folded' },
+      ],
+      'Gray': [
+        { src: '/webpshirts/halloween_ghosts_front_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/webpshirts/halloween_ghosts_front_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: halloweenGhostsPriceIds,
+    slug: 'halloween-ghosts',
+    disabled: false,
+  },
+  {
+    id: 'gym-brat-cropped-shirt',
+    name: 'Gym Brat Cropped Shirt',
+    description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in black and ivory.',
+    category: 'shirts',
+    images: [
+      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
+      { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Back' }
+    ],
+    colorImages: {
+      'Ivory': [
+        { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
+        { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Back' },
+      ],
+      'Black': [
+        { src: '/gym-brat-croptop/brat_crop_front_black.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
+        { src: '/gym-brat-croptop/brat_crop_back_black.webp', alt: 'Gym Brat Cropped Shirt - Black Back' },
+      ]
+    },
+    price: '$29.99',
+    priceIds: gymBratCroppedShirtPriceIds,
+    sizes: Object.keys(gymBratCroppedShirtPriceIds),
+    slug: 'gym-brat-cropped-shirt'
+  },
+  {
     id: 'corgi-yoga',
     name: 'Corgi Yoga T-Shirt',
     description: 'Comfortable and stylish t-shirt featuring our adorable Corgi Yoga design.',
@@ -508,38 +564,6 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     slug: 'tong'
   },
-  {
-    id: 'halloween-ghosts',
-    name: 'Halloween Ghosts T-Shirt',
-    description: 'Spooky-season tee featuring three cute ghosties and some pumpkins.',
-    category: 'shirts',
-    images: [
-      { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
-      { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
-    ],
-    colorImages: {
-      'Orange': [
-        { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
-      ],
-      'Brown': [
-        { src: '/webpshirts/halloween_ghosts_front_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Folded' },
-      ],
-      'Gray': [
-        { src: '/webpshirts/halloween_ghosts_front_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Folded' },
-      ],
-      'Green': [
-        { src: '/webpshirts/halloween_ghosts_front_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Folded' },
-      ],
-    },
-    price: '$29.99',
-    priceIds: halloweenGhostsPriceIds,
-    slug: 'halloween-ghosts',
-    disabled: false,
-  },
   
   // Bandana
   {
@@ -555,32 +579,7 @@ export const products: Product[] = [
     priceId: 'price_1Rh2HtAp2D4XT14x51zjcjnJ',
     slug: 'chewbarka-bandana'
   },
-  
   // Gym Brat Collection
-  {
-    id: 'gym-brat-cropped-shirt',
-    name: 'Gym Brat Cropped Shirt',
-    description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in black and ivory.',
-    category: 'shirts',
-    images: [
-      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
-      { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Back' }
-    ],
-    colorImages: {
-      'Ivory': [
-        { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
-        { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Back' },
-      ],
-      'Black': [
-        { src: '/gym-brat-croptop/brat_crop_front_black.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
-        { src: '/gym-brat-croptop/brat_crop_back_black.webp', alt: 'Gym Brat Cropped Shirt - Black Back' },
-      ]
-    },
-    price: '$29.99',
-    priceIds: gymBratCroppedShirtPriceIds,
-    sizes: Object.keys(gymBratCroppedShirtPriceIds),
-    slug: 'gym-brat-cropped-shirt'
-  },
   {
     id: 'gym-brat-hat',
     name: 'Gym Brat Hat',
