@@ -4,17 +4,17 @@ import { kvGet, kvSet, type PetStatus, type PetMeta } from '../../lib/server/kv'
 import { processPet } from '../../lib/server/process';
 
 async function triggerProcess(origin: string, id: string, gender?: string) {
-  // In dev, call directly to avoid HTTPS self-signed issues
+  // Run processing synchronously to ensure it actually starts in serverless
   if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
-    setTimeout(() => { processPet(id, gender).catch(() => {}); }, 0);
+    await processPet(id, gender);
     return;
   }
-  // Otherwise trigger a background route
+  // Otherwise call a background route and wait for it to complete
   const url = new URL('/api/_process', origin);
   const body = new URLSearchParams();
   body.set('id', id);
   if (gender) body.set('gender', gender);
-  fetch(url.toString(), { method: 'POST', body }).catch(() => {});
+  await fetch(url.toString(), { method: 'POST', body }).catch(() => {});
 }
 
 export const POST: APIRoute = async ({ request, url }) => {
@@ -35,9 +35,16 @@ export const POST: APIRoute = async ({ request, url }) => {
 
     // If first time or still processing, make sure a worker is triggered
     if (!status || status.state === 'uploaded' || status.state === 'processing') {
-      // mark as processing
       await kvSet(`pet:${id}:status`, { state: 'processing' });
-      triggerProcess(url.origin, id, gender);
+      await triggerProcess(url.origin, id, gender);
+      // refresh status after processing attempt
+      const after = (await kvGet(`pet:${id}:status`)) as PetStatus | null;
+      if (after && after.state === 'done' && after.url) {
+        return new Response(JSON.stringify(after.url), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      }
+      if (after && after.state === 'error') {
+        return new Response(after.error || 'processing error', { status: 500, headers: { 'Content-Type': 'text/plain' } });
+      }
     }
 
     // Not ready yet; return non-2xx so client keeps polling
