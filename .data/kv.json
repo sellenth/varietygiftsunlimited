@@ -1,0 +1,21 @@
+{
+  "pet:bbc160e8-e506-4b7d-9eac-c7d0159d7b48:meta": {
+    "gender": "unknown",
+    "src": "/api/pet-image?id=bbc160e8-e506-4b7d-9eac-c7d0159d7b48",
+    "ext": "png",
+    "contentType": "image/png"
+  },
+  "pet:bbc160e8-e506-4b7d-9eac-c7d0159d7b48:status": {
+    "state": "processing"
+  },
+  "pet:6cdad4ad-ec1f-435c-b963-570b042fe0b1:meta": {
+    "gender": "unknown",
+    "src": "/api/pet-image?id=6cdad4ad-ec1f-435c-b963-570b042fe0b1",
+    "ext": "png",
+    "contentType": "image/png"
+  },
+  "pet:6cdad4ad-ec1f-435c-b963-570b042fe0b1:status": {
+    "state": "done",
+    "url": "/api/pet-image?id=6cdad4ad-ec1f-435c-b963-570b042fe0b1"
+  }
+}

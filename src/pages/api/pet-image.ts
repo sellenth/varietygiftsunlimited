@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+export const prerender = false;
 import { promises as fs } from 'fs';
 import path from 'path';
 import { kvGet, type PetMeta } from '../../lib/server/kv';
@@ -37,4 +38,3 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response('Not found', { status: 404 });
   }
 };
-

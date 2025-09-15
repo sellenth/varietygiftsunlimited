@@ -1,8 +1,15 @@
 import type { APIRoute } from 'astro';
+export const prerender = false;
 import { kvGet, kvSet, type PetStatus, type PetMeta } from '../../lib/server/kv';
+import { processPet } from '../../lib/server/process';
 
 async function triggerProcess(origin: string, id: string, gender?: string) {
-  // Fire-and-forget trigger; don't await
+  // In dev, call directly to avoid HTTPS self-signed issues
+  if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    setTimeout(() => { processPet(id, gender).catch(() => {}); }, 0);
+    return;
+  }
+  // Otherwise trigger a background route
   const url = new URL('/api/_process', origin);
   const body = new URLSearchParams();
   body.set('id', id);
@@ -36,4 +43,3 @@ export const POST: APIRoute = async ({ request, url }) => {
     return new Response(`Error: ${err?.message || 'unknown error'}`, { status: 500 });
   }
 };
-

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+export const prerender = false;
 import crypto from 'node:crypto';
 import { kvSet } from '../../lib/server/kv';
 import { pickExtFromFileLike, saveUpload } from '../../lib/server/storage';
@@ -33,4 +34,3 @@ export const POST: APIRoute = async ({ request, url }) => {
     return new Response(`Upload failed: ${err?.message || 'unknown error'}`, { status: 500 });
   }
 };
-

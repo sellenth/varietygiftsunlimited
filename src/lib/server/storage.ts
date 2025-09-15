@@ -19,6 +19,7 @@ function extFromType(type?: string, fallback = 'png') {
   if (type.includes('png')) return 'png';
   if (type.includes('webp')) return 'webp';
   if (type.includes('gif')) return 'gif';
+  if (type.includes('heic') || type.includes('heif')) return 'heic';
   return fallback;
 }
 
@@ -105,4 +106,3 @@ export function pickExtFromFileLike(file: { name?: string; type?: string }): str
   const byName = file.name && file.name.includes('.') ? file.name.split('.').pop() : undefined;
   return (byName as string) || extFromType(file.type);
 }
-
