@@ -187,7 +187,7 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 
 					// Upload thumbnail image to API endpoint
 					const response = await fetch(
-						"https://api.varietygiftsunlimited.com/upload-img",
+						"/api/upload-img",
 						{
 							method: "POST",
 							body: formData,
@@ -214,7 +214,7 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 					formData.append("gender", getUrlParameter("gender"));
 					formData.append("filename", imageId);
 					var filenameResponse = await fetch(
-						`https://api.varietygiftsunlimited.com/pet-converter`,
+						`/api/pet-converter`,
 						{
 							method: "POST",
 							body: formData,
@@ -224,8 +224,7 @@ const PUBLIC_PET_5 = import.meta.env.PUBLIC_PET_5;
 						.text()
 						.then((text) => text.replace(/^"|"$/g, ""));
 					console.log(filename);
-					thumbnail.src =
-						"https://api.varietygiftsunlimited.com/" + filename;
+					thumbnail.src = filename;
 				}
 			}
 			main();
