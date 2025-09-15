@@ -94,16 +94,49 @@ export async function saveProcessed(
   return { url: `/api/pet-image?id=${id}`, path: filePath };
 }
 
-export async function readUploadBytes(id: string, ext: string, keyFromMeta?: string): Promise<Uint8Array> {
-  if (BLOB_TOKEN) {
-    const key = keyFromMeta || `pets/uploads/${id}.${ext}`;
-    const res = await fetch(`${BLOB_BASE}/${key}`, {
-      headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
-    });
-    if (!res.ok) throw new Error(`Read upload from blob failed: ${res.status}`);
-    const ab = await res.arrayBuffer();
-    return new Uint8Array(ab);
+export async function readUploadBytes(
+  id: string,
+  ext: string,
+  keyFromMeta?: string,
+  srcUrl?: string,
+): Promise<Uint8Array> {
+  // 1) If a public src URL is available, try it first (works regardless of token)
+  if (srcUrl) {
+    try {
+      const res = await fetch(srcUrl);
+      if (res.ok) {
+        const ab = await res.arrayBuffer();
+        return new Uint8Array(ab);
+      }
+    } catch {}
   }
+
+  // 2) If we have a blob token, try authenticated blob paths
+  if (BLOB_TOKEN) {
+    const attempts: Array<{ url: string; headers?: Record<string, string> }> = [];
+    if (keyFromMeta) {
+      attempts.push({ url: `${BLOB_BASE}/${keyFromMeta}`, headers: { Authorization: `Bearer ${BLOB_TOKEN}` } });
+    }
+    attempts.push({ url: `${BLOB_BASE}/pets/uploads/${id}.${ext}`, headers: { Authorization: `Bearer ${BLOB_TOKEN}` } });
+
+    const errors: string[] = [];
+    for (const attempt of attempts) {
+      try {
+        const res = await fetch(attempt.url, { headers: attempt.headers });
+        if (!res.ok) {
+          errors.push(`${res.status} @ ${attempt.url}`);
+          continue;
+        }
+        const ab = await res.arrayBuffer();
+        return new Uint8Array(ab);
+      } catch (e: any) {
+        errors.push(`fetch error @ ${attempt.url}: ${e?.message || 'unknown'}`);
+      }
+    }
+    throw new Error(`Read upload failed; tried ${errors.join('; ')}`);
+  }
+
+  // 3) Fallback to local dev storage
   await ensureDirs();
   const filePath = path.join(UPLOADS_DIR, `${id}.${ext}`);
   const buf = await fs.readFile(filePath);

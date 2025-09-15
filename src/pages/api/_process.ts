@@ -3,9 +3,9 @@ export const prerender = false;
 import { processPet } from '../../lib/server/process';
 
 export const POST: APIRoute = async ({ request, url }) => {
+  let id = '';
   try {
     const contentType = request.headers.get('content-type') || '';
-    let id = '';
     let gender: string | undefined;
     if (contentType.includes('application/x-www-form-urlencoded')) {
       const body = await request.formData();
@@ -27,8 +27,10 @@ export const POST: APIRoute = async ({ request, url }) => {
   } catch (err: any) {
     try {
       // best-effort mark as error so polling can stop
-      const u = new URL(request.url);
-      const id = u.searchParams.get('id') || '';
+      if (!id) {
+        const u = new URL(request.url);
+        id = u.searchParams.get('id') || '';
+      }
       if (id) {
         const { kvSet } = await import('../../lib/server/kv');
         await kvSet(`pet:${id}:status`, { state: 'error', error: err?.message || 'unknown' });
