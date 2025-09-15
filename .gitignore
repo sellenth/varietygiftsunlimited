@@ -32,3 +32,4 @@ script.sh
 astro.log
 scripts/
 .config/
+.data/

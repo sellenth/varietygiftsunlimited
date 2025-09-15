@@ -29,6 +29,9 @@ export const POST: APIRoute = async ({ request, url }) => {
       // Return quoted path to match existing client parsing
       return new Response(JSON.stringify(status.url), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
+    if (status && status.state === 'error') {
+      return new Response(status.error || 'processing error', { status: 500, headers: { 'Content-Type': 'text/plain' } });
+    }
 
     // If first time or still processing, make sure a worker is triggered
     if (!status || status.state === 'uploaded' || status.state === 'processing') {
