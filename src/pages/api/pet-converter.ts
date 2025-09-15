@@ -10,7 +10,7 @@ async function triggerProcess(origin: string, id: string, gender?: string) {
     return;
   }
   // Otherwise call a background route and wait for it to complete
-  const url = new URL('/api/_process', origin);
+  const url = new URL('/api/process', origin);
   const body = new URLSearchParams();
   body.set('id', id);
   if (gender) body.set('gender', gender);

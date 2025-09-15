@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 import { processPet } from '../../lib/server/process';
 
-export const POST: APIRoute = async ({ request, url }) => {
+export const POST: APIRoute = async ({ request }) => {
   let id = '';
   try {
     const contentType = request.headers.get('content-type') || '';
