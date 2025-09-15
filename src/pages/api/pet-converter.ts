@@ -14,7 +14,15 @@ async function triggerProcess(origin: string, id: string, gender?: string) {
   const body = new URLSearchParams();
   body.set('id', id);
   if (gender) body.set('gender', gender);
-  await fetch(url.toString(), { method: 'POST', body }).catch(() => {});
+  let invoked = false;
+  try {
+    const res = await fetch(url.toString(), { method: 'POST', body });
+    invoked = res.ok;
+  } catch {}
+  // Fallback: if background route is missing or failed, run inline
+  if (!invoked) {
+    await processPet(id, gender);
+  }
 }
 
 export const POST: APIRoute = async ({ request, url }) => {
