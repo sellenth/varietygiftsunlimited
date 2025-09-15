@@ -23,6 +23,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     await kvSet(`pet:${id}:meta`, {
       gender,
       src: saved.url,
+      key: saved.key,
       ext,
       contentType,
     });

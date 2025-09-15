@@ -25,6 +25,15 @@ export const POST: APIRoute = async ({ request, url }) => {
     await processPet(id, gender);
     return new Response('ok', { status: 200 });
   } catch (err: any) {
+    try {
+      // best-effort mark as error so polling can stop
+      const u = new URL(request.url);
+      const id = u.searchParams.get('id') || '';
+      if (id) {
+        const { kvSet } = await import('../../lib/server/kv');
+        await kvSet(`pet:${id}:status`, { state: 'error', error: err?.message || 'unknown' });
+      }
+    } catch {}
     return new Response(`worker error: ${err?.message || 'unknown'}`, { status: 500 });
   }
 };

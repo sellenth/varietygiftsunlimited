@@ -11,8 +11,7 @@ export async function processPet(id: string, _gender?: string) {
   }
   // Simulate some processing time
   await sleep(1500);
-  const bytes = await readUploadBytes(id, meta.ext);
+  const bytes = await readUploadBytes(id, meta.ext, meta.key);
   const saved = await saveProcessed(id, meta.ext, bytes, meta.contentType);
   await kvSet(`pet:${id}:status`, { state: 'done', url: saved.url });
 }
-

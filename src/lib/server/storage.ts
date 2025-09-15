@@ -28,7 +28,7 @@ export async function saveUpload(
   ext: string,
   bytes: Uint8Array,
   contentType?: string,
-): Promise<{ url: string; path: string }> {
+): Promise<{ url: string; path: string; key?: string }> {
   if (BLOB_TOKEN) {
     const key = `pets/uploads/${id}.${ext}`;
     const res = await fetch(`${BLOB_BASE}/${key}`, {
@@ -45,7 +45,11 @@ export async function saveUpload(
     }
     const data = await res.json().catch(() => ({} as any));
     const url = data.url || `${BLOB_BASE}/${key}`;
-    return { url, path: `/${key}` };
+    let storedKey: string | undefined = undefined;
+    try {
+      storedKey = data.pathname || data.key || new URL(url).pathname.replace(/^\//, '');
+    } catch {}
+    return { url, path: `/${key}`, key: storedKey };
   }
 
   await ensureDirs();
@@ -60,7 +64,7 @@ export async function saveProcessed(
   ext: string,
   bytes: Uint8Array,
   contentType?: string,
-): Promise<{ url: string; path: string }> {
+): Promise<{ url: string; path: string; key?: string }> {
   if (BLOB_TOKEN) {
     const key = `pets/processed/${id}.${ext}`;
     const res = await fetch(`${BLOB_BASE}/${key}`, {
@@ -77,7 +81,11 @@ export async function saveProcessed(
     }
     const data = await res.json().catch(() => ({} as any));
     const url = data.url || `${BLOB_BASE}/${key}`;
-    return { url, path: `/${key}` };
+    let storedKey: string | undefined = undefined;
+    try {
+      storedKey = data.pathname || data.key || new URL(url).pathname.replace(/^\//, '');
+    } catch {}
+    return { url, path: `/${key}`, key: storedKey };
   }
 
   await ensureDirs();
@@ -86,9 +94,9 @@ export async function saveProcessed(
   return { url: `/api/pet-image?id=${id}`, path: filePath };
 }
 
-export async function readUploadBytes(id: string, ext: string): Promise<Uint8Array> {
+export async function readUploadBytes(id: string, ext: string, keyFromMeta?: string): Promise<Uint8Array> {
   if (BLOB_TOKEN) {
-    const key = `pets/uploads/${id}.${ext}`;
+    const key = keyFromMeta || `pets/uploads/${id}.${ext}`;
     const res = await fetch(`${BLOB_BASE}/${key}`, {
       headers: { Authorization: `Bearer ${BLOB_TOKEN}` },
     });

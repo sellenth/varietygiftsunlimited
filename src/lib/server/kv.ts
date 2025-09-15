@@ -107,5 +107,4 @@ export async function kvDel(key: string): Promise<void> {
 }
 
 export type PetStatus = { state: 'uploaded' | 'processing' | 'done' | 'error'; url?: string; error?: string };
-export type PetMeta = { gender?: string; src?: string; ext?: string; contentType?: string };
-
+export type PetMeta = { gender?: string; src?: string; key?: string; ext?: string; contentType?: string };
