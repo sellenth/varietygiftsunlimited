@@ -10,6 +10,7 @@ const isLocalhost = import.meta.env.DEV || Astro.url.hostname === "localhost";
 const baseUrl = isLocalhost ? "" : "https://variety.gifts";
 
 // Featured products shared with the shop page for consistency
+const isFourFeatured = featuredProducts.length === 4;
 
 ---
 
@@ -96,7 +97,9 @@ const baseUrl = isLocalhost ? "" : "https://variety.gifts";
         FEATURED PRODUCTS
       </h2>
 
-      <div class="product-grid max-w-7xl mx-auto px-4">
+      <div
+        class={`product-grid ${isFourFeatured ? "product-grid--four" : ""} max-w-7xl mx-auto px-4`}
+      >
         {
           featuredProducts.map((product) => (
             <a
@@ -397,6 +400,10 @@ const baseUrl = isLocalhost ? "" : "https://variety.gifts";
     .product-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
+    }
+
+    .product-grid.product-grid--four {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
