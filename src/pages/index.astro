@@ -2,19 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import Bubbles from "../components/Bubbles.astro";
 import ContactForm from "../components/ContactForm.astro";
-import { products } from "../data/products";
+import { featuredProducts } from "../data/featuredProducts";
 import { socials } from "../data/socials";
 
 // Environment-aware base URL
 const isLocalhost = import.meta.env.DEV || Astro.url.hostname === "localhost";
 const baseUrl = isLocalhost ? "" : "https://variety.gifts";
 
-// Get featured products from product data
-const featuredProducts = [
-  products.find((p) => p.id === "chewbarka-bandana"),
-  products.find((p) => p.id === "bag-7"), // Sheep Flock Bag
-  products.find((p) => p.id === "gym-brat-cropped-shirt"), // Replace Husky Yoga with Freudian Tank
-].filter(Boolean);
+// Featured products shared with the shop page for consistency
+
 ---
 
 <Layout

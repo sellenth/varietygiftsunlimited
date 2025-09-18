@@ -4,20 +4,13 @@ import CategoryCard from "../components/CategoryCard.astro";
 import Card from "../components/Card.astro";
 import { categories } from "../data/categories";
 import { products } from "../data/products";
+import { featuredProducts } from "../data/featuredProducts";
 
 // Calculate product counts for each category
 const categoryProductCounts = categories.map(category => ({
     ...category,
     productCount: products.filter(p => p.category === category.id).length
 }));
-
-// Get featured products (one from each category)
-const featuredProducts = [
-    products.find(p => p.id === 'halloween-ghosts'),
-    products.find(p => p.id === 'cats-pumpkins-t-shirt'),
-    products.find(p => p.id === 'cats-pumpkins-crewneck'),
-    products.find(p => p.id === 'freudian-tank')
-].filter(Boolean);
 ---
 
 <Layout title="Shop - Variety Gifts Unlimited" hideHeader={false}>
