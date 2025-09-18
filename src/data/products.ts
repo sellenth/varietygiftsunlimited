@@ -202,6 +202,50 @@ const halloweenGhostsPriceIds = {
   "Green - X-Large": "price_1S77jmAp2D4XT14xsEKwFtCr",
 };
 
+// Cats + Pumpkins Crewneck price IDs ($35.00)
+const catsPumpkinsCrewneckPriceIds = {
+  "Gray - Small": "price_1S8Zm0Ap2D4XT14x9IrAv0Gr",
+  "Gray - Medium": "price_1S8Zm1Ap2D4XT14xzQBUWUtx",
+  "Gray - Large": "price_1S8Zm2Ap2D4XT14xijXlnEPV",
+  "Gray - X-Large": "price_1S8Zm2Ap2D4XT14xFVDIIsNu",
+  "Green - Small": "price_1S8Zm3Ap2D4XT14xcax1rqzN",
+  "Green - Medium": "price_1S8Zm4Ap2D4XT14xVdK1fezQ",
+  "Green - Large": "price_1S8Zm5Ap2D4XT14xdbA81gTk",
+  "Green - X-Large": "price_1S8Zm6Ap2D4XT14xNRjSsysV",
+  "Orange - Small": "price_1S8Zm7Ap2D4XT14xfxxl0BSC",
+  "Orange - Medium": "price_1S8Zm7Ap2D4XT14xwLgd7O7I",
+  "Orange - Large": "price_1S8Zm8Ap2D4XT14xyDw40RxW",
+  "Orange - X-Large": "price_1S8Zm9Ap2D4XT14xmwqnDamA",
+  "White - Small": "price_1S8ZmAAp2D4XT14xIHQeZ7Sv",
+  "White - Medium": "price_1S8ZmBAp2D4XT14xiHXreyNf",
+  "White - Large": "price_1S8ZmCAp2D4XT14xXBwQXr1F",
+  "White - X-Large": "price_1S8ZmCAp2D4XT14xD7fOJOlh",
+};
+
+// Cats + Pumpkins T-Shirt price IDs ($30.00)
+const catsPumpkinsTShirtPriceIds = {
+  "Dark Gray - Small": "price_1S8ZmDAp2D4XT14xTXRm0MRG",
+  "Dark Gray - Medium": "price_1S8ZmEAp2D4XT14xd7D6zVIg",
+  "Dark Gray - Large": "price_1S8ZmFAp2D4XT14xpSEkZoSd",
+  "Dark Gray - X-Large": "price_1S8ZmGAp2D4XT14xs5XDtYn4",
+  "Espresso - Small": "price_1S8ZmGAp2D4XT14x4mBaEWP2",
+  "Espresso - Medium": "price_1S8ZmHAp2D4XT14xE0s5LgNE",
+  "Espresso - Large": "price_1S8ZmIAp2D4XT14xIE03fIfV",
+  "Espresso - X-Large": "price_1S8ZmJAp2D4XT14xcpReJ68p",
+  "Gray - Small": "price_1S8ZmKAp2D4XT14xRAZO1BuC",
+  "Gray - Medium": "price_1S8ZmLAp2D4XT14xAR1kTeJX",
+  "Gray - Large": "price_1S8ZmMAp2D4XT14xl8Dp3INV",
+  "Gray - X-Large": "price_1S8ZmMAp2D4XT14xnyoKh0aA",
+  "Green - Small": "price_1S8ZmNAp2D4XT14xIs51wE9c",
+  "Green - Medium": "price_1S8ZmOAp2D4XT14xmyaCbopX",
+  "Green - Large": "price_1S8ZmPAp2D4XT14xdFa67qXX",
+  "Green - X-Large": "price_1S8ZmQAp2D4XT14xcB4FfH2x",
+  "White - Small": "price_1S8ZmRAp2D4XT14xqhspVYCh",
+  "White - Medium": "price_1S8ZmSAp2D4XT14xpseZWDlF",
+  "White - Large": "price_1S8ZmSAp2D4XT14xlJccNM83",
+  "White - X-Large": "price_1S8ZmTAp2D4XT14xH3yfEF20",
+};
+
 // Too Cute To Quit (Cream only) price IDs ($29.99)
 const tooCutePriceIds = {
   "Cream - Small": "price_1S7KSiAp2D4XT14xDvw61Z7Z",
@@ -324,6 +368,72 @@ export const products: Product[] = [
     priceIds: halloweenGhostsPriceIds,
     slug: 'halloween-ghosts',
     disabled: false,
+  },
+  {
+    id: 'cats-pumpkins-t-shirt',
+    name: 'Cats + Pumpkins T-Shirt',
+    description: 'Cats + Pumpkins graphic tee.',
+    category: 'shirts',
+    images: [
+      { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
+      { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
+    ],
+    colorImages: {
+      'White': [
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
+      ],
+      'Dark Gray': [
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Front' },
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Folded' },
+      ],
+      'Espresso': [
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Front' },
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Folded' },
+      ],
+      'Gray': [
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Front' },
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Front' },
+        { src: '/halloween/Cats+Pumpkins T-shirts/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Folded' },
+      ],
+    },
+    price: '$30.00',
+    priceIds: catsPumpkinsTShirtPriceIds,
+    slug: 'cats-pumpkins-t-shirt',
+  },
+  {
+    id: 'cats-pumpkins-crewneck',
+    name: 'Cats + Pumpkins Crewneck',
+    description: 'Cats + Pumpkins cozy crewneck in Gray, Green, Orange, and White. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
+      { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
+      ],
+      'Gray': [
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Front' },
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Folded' },
+      ],
+      'Orange': [
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-front-orange.webp', alt: 'Cats + Pumpkins Crewneck - Orange Front' },
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-folded-orange.webp', alt: 'Cats + Pumpkins Crewneck - Orange Folded' },
+      ],
+      'White': [
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins Crewneck - White Front' },
+        { src: '/halloween/Cats+Pumpkins Crewnecks/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins Crewneck - White Folded' },
+      ],
+    },
+    price: '$35.00',
+    priceIds: catsPumpkinsCrewneckPriceIds,
+    slug: 'cats-pumpkins-crewneck',
   },
   {
     id: 'too-cute-to-quit',
