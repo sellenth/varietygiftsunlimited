@@ -13,10 +13,10 @@ const categoryProductCounts = categories.map(category => ({
 
 // Get featured products (one from each category)
 const featuredProducts = [
-    products.find(p => p.id === 'bag-5'), // Featured bag
-    products.find(p => p.id === 'freudian-tank'), // Featured shirt
-    products.find(p => p.id === 'chewbarka-bandana'), // Bandana
-    products.find(p => p.id === 'halloween-ghosts') // Bandana
+    products.find(p => p.id === 'halloween-ghosts'),
+    products.find(p => p.id === 'cats-pumpkins-t-shirt'),
+    products.find(p => p.id === 'cats-pumpkins-crewneck'),
+    products.find(p => p.id === 'freudian-tank')
 ].filter(Boolean);
 ---
 
