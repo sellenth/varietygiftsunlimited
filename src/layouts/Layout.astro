@@ -27,7 +27,11 @@ import '@fontsource-variable/comfortaa';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '@vercel/analytics/astro';
+import { activeTheme, themeClasses } from "../config/theme";
 import '../styles/animations.css';
+import '../styles/themes.css';
+
+const themeClass = themeClasses[activeTheme];
 ---
 
 <!doctype html>
@@ -117,7 +121,7 @@ import '../styles/animations.css';
 		</script>
 	</head>
 
-	<body>
+	<body class={themeClass}>
 		<div class="min-h-screen bg-white">
 			{ !hideHeader && <Header /> }
 			<main class={!hideHeader ? 'pt-16' : ''}>
