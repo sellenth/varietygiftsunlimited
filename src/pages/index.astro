@@ -22,19 +22,31 @@ const isFourFeatured = featuredProducts.length === 4;
   <main class="w-full overflow-x-hidden relative">
     <!-- Hero Section -->
     <section
-      class="relative pt-16 px-4 sm:px-8 md:px-12 lg:px-24 flex flex-col items-center justify-center text-center"
+      class="hero-section relative pt-16 px-4 sm:px-8 md:px-12 lg:px-24 flex flex-col items-center justify-center text-center"
     >
       <!-- Content (above bubbles) -->
-      <div class="relative z-10">
+      <div class="relative z-10 flex flex-col items-center gap-4">
+        <span class="season-badge">Crisp Air, Cozy Gifts</span>
         <h1
-          class="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 mb-2"
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-fall-ember text-center"
         >
-          DISCOVER JOYFUL SURPRISES
+          FALL INTO FUN FINDS
         </h1>
-        <p class="text-indigo-800 mb-8 text-lg">
-          Bringing happiness through every gift, we are your destination for
-          playful surprises and joyous moments.
+        <p class="text-fall-text max-w-2xl text-lg md:text-xl">
+          Celebrate sweater weather with playful surprises, pumpkin-spiced
+          treasures, and joyful moments made for leaf-peeping season.
         </p>
+        <div class="fall-badges">
+          <span class="fall-badge">Whimsical décor</span>
+          <span class="fall-badge">Limited-run drops</span>
+          <span class="fall-badge">Cozy game nights</span>
+        </div>
+      </div>
+
+      <div class="floating-leaves" aria-hidden="true">
+        <span class="leaf leaf-one"></span>
+        <span class="leaf leaf-two"></span>
+        <span class="leaf leaf-three"></span>
       </div>
 
       <a
@@ -79,22 +91,19 @@ const isFourFeatured = featuredProducts.length === 4;
           </div>
         </div>
       </a>
-      <a
-        href={`${baseUrl}/shop/product/freudian-tank`}
-        class="shop-now-overlay"
-      >
+      <a href={`${baseUrl}/shop/product/freudian-tank`} class="shop-now-overlay">
         <div class="shop-now-overlay">
-          <span class="shop-now-btn btn-ripple hover-lift">SHOP NOW</span>
+          <span class="shop-now-btn btn-ripple hover-lift">EXPLORE FALL DROP</span>
         </div>
       </a>
     </section>
 
     <!-- Featured Products Section -->
-    <section class="featured-products py-24 px-8 md:px-12 lg:px-24 bg-white">
+    <section class="featured-products py-24 px-8 md:px-12 lg:px-24 bg-fall-cream">
       <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-bold text-indigo-900 text-center mb-16"
+        class="text-3xl md:text-4xl lg:text-5xl font-bold text-fall-ember text-center mb-16"
       >
-        FEATURED PRODUCTS
+        FALL FAVORITES
       </h2>
 
       <div
@@ -127,7 +136,7 @@ const isFourFeatured = featuredProducts.length === 4;
 
       <div class="text-center mt-12">
         <a href={`${baseUrl}/shop`} class="shop-all-btn btn-ripple hover-lift"
-          >SHOP ALL</a
+          >SHOP THE SEASON</a
         >
       </div>
     </section>
@@ -136,7 +145,7 @@ const isFourFeatured = featuredProducts.length === 4;
 
     <!-- About Us Section -->
     <section
-      class="about-us py-20 px-8 md:px-12 lg:px-24 bg-lavender relative overflow-hidden parallax"
+      class="about-us py-20 px-8 md:px-12 lg:px-24 bg-fall-mist relative overflow-hidden parallax"
     >
       <!-- Animated Bubbles -->
       <Bubbles />
@@ -152,13 +161,14 @@ const isFourFeatured = featuredProducts.length === 4;
           />
         </div>
         <div class="md:w-1/2 text-center md:text-right">
-          <h2 class="text-4xl lg:text-5xl font-[700] text-indigo-900 mb-6">
+          <h2 class="text-4xl lg:text-5xl font-[700] text-fall-ember mb-6">
             ABOUT US
           </h2>
-          <p class="text-indigo-800 mb-8 text-lg font-[400]">
+          <p class="text-fall-text mb-8 text-lg font-[400]">
             Hey there! We're Halston and Matchima. We created Variety Gifts to
-            bring a bit more joy into everyday life through fun products and
-            digital experiences. We hope you enjoy.
+            wrap everyday life in delight—especially when the leaves change.
+            From playful presents to digital experiences, we love making cozy
+            days brighter.
           </p>
           <a href="/contact" class="learn-more-btn btn-ripple hover-grow"
             >LEARN MORE</a
@@ -181,15 +191,15 @@ const isFourFeatured = featuredProducts.length === 4;
         </div>
         <div class="md:w-1/2 text-center md:text-left px-4">
           <h2 class="text-4xl lg:text-5xl font-bold text-gradient mb-6">
-            FREE GAMES
+            COZY GAMES
           </h2>
-          <p class="text-indigo-800 mb-8 text-lg">
-            Take a break and enjoy our collection of free browser games! We are
-            steadily adding new titles to our lineup, with more exciting games
-            on the way. Let us know what you'd like to play next!
+          <p class="text-fall-text mb-8 text-lg">
+            Take a break and enjoy our collection of free browser games! We’re
+            steadily adding new titles to the lineup—perfect for warm drinks,
+            fuzzy socks, and friendly competition.
           </p>
           <a href="/game-browser" class="learn-more-btn btn-ripple hover-grow"
-            >CHECK IT OUT</a
+            >PLAY & GET COZY</a
           >
         </div>
       </div>
@@ -197,7 +207,7 @@ const isFourFeatured = featuredProducts.length === 4;
 
     <!-- Contact Form Section -->
     <section
-      class="contact-form py-20 px-8 md:px-12 lg:px-24 bg-lavender relative overflow-hidden"
+      class="contact-form py-20 px-8 md:px-12 lg:px-24 bg-fall-mist relative overflow-hidden"
     >
       <Bubbles />
       <div class="max-w-6xl mx-auto relative z-10">
@@ -289,16 +299,191 @@ const isFourFeatured = featuredProducts.length === 4;
     animation-delay: 0.6s;
   }
 
+  :root {
+    --fall-amber: #ea580c;
+    --fall-ember: #b45309;
+    --fall-cream: #fff7ed;
+    --fall-mist: #fef3c7;
+    --fall-text: #7c2d12;
+    --fall-deep: #9a3412;
+  }
+
   /* Base Styles */
-  .bg-lavender {
-    background: white;
+  .bg-fall-cream {
+    background: var(--fall-cream);
+  }
+
+  .bg-fall-mist {
+    background: linear-gradient(150deg, rgba(255, 247, 237, 0.95), rgba(254, 243, 199, 0.9));
+  }
+
+  .text-fall-ember {
+    color: var(--fall-ember);
+  }
+
+  .text-fall-text {
+    color: var(--fall-text);
+  }
+
+  .season-badge {
+    background: rgba(234, 88, 12, 0.1);
+    color: var(--fall-ember);
+    border-radius: 9999px;
+    padding: 0.35rem 1.25rem;
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 6px 16px rgba(180, 83, 9, 0.15);
+  }
+
+  .fall-badges {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .fall-badge {
+    background: rgba(255, 237, 213, 0.8);
+    border: 1px dashed rgba(234, 88, 12, 0.35);
+    border-radius: 9999px;
+    color: var(--fall-text);
+    font-size: 0.875rem;
+    padding: 0.4rem 1.15rem;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #ea580c 0%, #f97316 50%, #facc15 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease infinite;
   }
 
   /* Hero Section */
   .hero-section {
-    background: white;
+    background: linear-gradient(180deg, rgba(255, 247, 237, 0.95) 0%, rgba(255, 228, 196, 0.85) 100%);
     position: relative;
     overflow: hidden;
+    padding-bottom: 6rem;
+  }
+
+  .hero-section::before,
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.45), rgba(251, 146, 60, 0));
+    filter: blur(0.5px);
+    opacity: 0.75;
+    border-radius: 45% 55% 60% 40%;
+    animation: leafFloat 22s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .hero-section::before {
+    left: -80px;
+    animation-delay: -4s;
+  }
+
+  .hero-section::after {
+    right: -60px;
+    top: 45%;
+    animation-delay: -11s;
+  }
+
+  @keyframes leafFloat {
+    0% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    33% {
+      transform: translateY(-20px) rotate(5deg) scale(1.05);
+    }
+    66% {
+      transform: translateY(10px) rotate(-6deg) scale(0.98);
+    }
+    100% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  .floating-leaves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .leaf {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, rgba(251, 191, 36, 0.6), rgba(234, 88, 12, 0));
+    border-radius: 45% 55% 55% 45%;
+    filter: blur(0.3px);
+    animation: leafDrift 18s infinite ease-in-out;
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+  }
+
+  .leaf-one {
+    top: 5%;
+    left: 12%;
+    animation-delay: -6s;
+    transform: rotate(-8deg);
+  }
+
+  .leaf-two {
+    top: 48%;
+    left: 42%;
+    animation-delay: -3s;
+    transform: rotate(12deg);
+  }
+
+  .leaf-three {
+    bottom: 6%;
+    right: 10%;
+    animation-delay: -12s;
+    transform: rotate(-4deg);
+  }
+
+  @keyframes leafDrift {
+    0% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translate3d(-10px, 10px, 0) rotate(-6deg) scale(1.05);
+    }
+    50% {
+      transform: translate3d(8px, 20px, 0) rotate(4deg) scale(0.95);
+    }
+    75% {
+      transform: translate3d(-6px, 10px, 0) rotate(6deg) scale(1.02);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .leaf {
+      width: 80px;
+      height: 80px;
+    }
+
+    .season-badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 1rem;
+    }
+
+    .fall-badge {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.9rem;
+    }
   }
 
   .shop-now-btn,
@@ -320,54 +505,57 @@ const isFourFeatured = featuredProducts.length === 4;
   .shop-now-btn:hover,
   .shop-all-btn:hover,
   .send-btn:hover {
-    background-color: #4338ca;
+    background-color: var(--fall-deep);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 16px 30px rgba(180, 83, 9, 0.2);
   }
 
   .shop-now-btn:active,
   .shop-all-btn:active,
   .send-btn:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(180, 83, 9, 0.2);
   }
 
   .learn-more-btn:hover {
-    background-color: rgba(55, 48, 163, 0.1);
+    background-color: rgba(234, 88, 12, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 20px rgba(234, 88, 12, 0.15);
   }
 
   .learn-more-btn:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
   }
 
   .shop-now-btn {
-    background-color: #3730a3;
+    background-color: var(--fall-amber);
     color: white;
+    box-shadow: 0 12px 24px rgba(234, 88, 12, 0.25);
   }
 
   .learn-more-btn {
     background-color: transparent;
-    color: #3730a3;
-    border: 2px solid #3730a3;
+    color: var(--fall-amber);
+    border: 2px solid var(--fall-amber);
   }
 
   .shop-all-btn {
-    background-color: #3730a3;
+    background-color: var(--fall-amber);
     color: white;
     padding: 0.75rem 3rem;
     font-size: 0.875rem;
     display: inline-block;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    box-shadow: 0 12px 24px rgba(234, 88, 12, 0.25);
   }
 
   .send-btn {
-    background-color: #3730a3;
+    background-color: var(--fall-amber);
     color: white;
     width: 100%;
+    box-shadow: 0 8px 20px rgba(234, 88, 12, 0.2);
   }
 
   /* Featured Products */
@@ -420,7 +608,7 @@ const isFourFeatured = featuredProducts.length === 4;
   }
 
   .product-card:hover {
-    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 20px 40px rgba(234, 88, 12, 0.25);
   }
 
   .product-image-wrapper {
@@ -446,7 +634,7 @@ const isFourFeatured = featuredProducts.length === 4;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(99, 102, 241, 0.9);
+    background: rgba(234, 88, 12, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -479,7 +667,7 @@ const isFourFeatured = featuredProducts.length === 4;
   .product-title {
     font-size: 0.75rem;
     font-weight: bold;
-    color: #3730a3;
+    color: var(--fall-ember);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -488,7 +676,7 @@ const isFourFeatured = featuredProducts.length === 4;
   .product-price {
     font-size: 1.25rem;
     font-weight: bold;
-    color: #6366f1;
+    color: var(--fall-text);
     margin: 0;
   }
 
@@ -572,12 +760,12 @@ const isFourFeatured = featuredProducts.length === 4;
     padding: 8px;
     border-radius: 50%;
     /* background: rgba(255, 255, 255, 0.1); */
-    background: #6366f1;
+    background: var(--fall-amber);
     transition: all 0.3s ease;
   }
 
   .social-icon-link:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(234, 88, 12, 0.6);
     transform: translateY(-4px) scale(1.1);
   }
 
@@ -593,7 +781,7 @@ const isFourFeatured = featuredProducts.length === 4;
   @supports (backdrop-filter: blur(10px)) {
     .product-overlay {
       backdrop-filter: blur(10px);
-      background: rgba(99, 102, 241, 0.7);
+      background: rgba(234, 88, 12, 0.75);
     }
   }
 
@@ -626,6 +814,9 @@ const isFourFeatured = featuredProducts.length === 4;
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(254, 215, 170, 0.85), rgba(251, 146, 60, 0.9));
+    box-shadow: 0 30px 50px rgba(180, 83, 9, 0.25);
+    border: 1px solid rgba(234, 88, 12, 0.35);
   }
 
   .tank-display-wrapper:hover .zoom-circle {
@@ -661,7 +852,7 @@ const isFourFeatured = featuredProducts.length === 4;
   }
 
   .collab-announcement h2 {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #ea580c, #f97316);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -692,25 +883,25 @@ const isFourFeatured = featuredProducts.length === 4;
 
   /* Soft Plastic Button Style */
   .shop-now-overlay .shop-now-btn {
-    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    background: linear-gradient(135deg, #ea580c, #f97316);
     color: white;
     padding: 0.75rem 3rem;
     font-size: 0.875rem;
     display: inline-block;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-radius: 8px;
+    border-radius: 9999px;
     font-weight: bold;
     transition: all 0.2s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     box-shadow:
-      0 4px 15px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+      0 12px 24px rgba(234, 88, 12, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 rgba(194, 65, 12, 0.45);
+    text-shadow: 0 1px 1px rgba(194, 65, 12, 0.4);
+    border: 1px solid rgba(234, 88, 12, 0.4);
   }
 
   .shop-now-overlay .shop-now-btn::before {
@@ -730,20 +921,20 @@ const isFourFeatured = featuredProducts.length === 4;
   }
 
   .shop-now-overlay .shop-now-btn:hover {
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    background: linear-gradient(135deg, #f97316, #ea580c);
     transform: translateY(-2px);
     box-shadow:
-      0 6px 20px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+      0 16px 28px rgba(234, 88, 12, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(194, 65, 12, 0.45);
   }
 
   .shop-now-overlay .shop-now-btn:active {
     transform: translateY(0);
     box-shadow:
-      0 2px 10px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(0, 0, 0, 0.2),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+      0 6px 16px rgba(161, 98, 7, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 rgba(194, 65, 12, 0.3);
   }
 
   @media (max-width: 767px) {
