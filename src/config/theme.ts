@@ -38,7 +38,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
         heroBadge: "Crisp Air, Cozy Gifts",
         heroHeadline: "FALL INTO FUN FINDS",
         heroDescription:
-          "Celebrate sweater weather with playful surprises, pumpkin-spiced treasures, and joyful moments made for leaf-peeping season.",
+          "Celebrate sweater weather with playful surprises, pumpkin-spiced treasures, and other joyful moments.",
         heroBadges: [],
     heroCtaLabel: "EXPLORE FALL DROP",
     featuredHeading: "FALL FAVORITES",
@@ -49,7 +49,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     gamesDescription:
       "Take a break and enjoy our collection of free browser games! We’re steadily adding new titles to the lineup—perfect for warm drinks, fuzzy socks, and friendly competition.",
     gamesCtaLabel: "PLAY & GET COZY",
-    showFloatingLeaves: true,
+    showFloatingLeaves: false,
   },
 };
 
