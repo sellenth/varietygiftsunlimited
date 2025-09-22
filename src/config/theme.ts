@@ -34,12 +34,12 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     gamesCtaLabel: "CHECK IT OUT",
     showFloatingLeaves: false,
   },
-  fall: {
-    heroBadge: "Crisp Air, Cozy Gifts",
-    heroHeadline: "FALL INTO FUN FINDS",
-    heroDescription:
-      "Celebrate sweater weather with playful surprises, pumpkin-spiced treasures, and joyful moments made for leaf-peeping season.",
-    heroBadges: ["Whimsical décor", "Limited-run drops", "Cozy game nights"],
+      fall: {
+        heroBadge: "Crisp Air, Cozy Gifts",
+        heroHeadline: "FALL INTO FUN FINDS",
+        heroDescription:
+          "Celebrate sweater weather with playful surprises, pumpkin-spiced treasures, and joyful moments made for leaf-peeping season.",
+        heroBadges: [],
     heroCtaLabel: "EXPLORE FALL DROP",
     featuredHeading: "FALL FAVORITES",
     featuredCtaLabel: "SHOP THE SEASON",

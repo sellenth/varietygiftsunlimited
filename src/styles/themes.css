@@ -408,6 +408,100 @@
   }
 }
 
+/* Navbar */
+.navbar {
+  background: var(--season-accent) !important;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-nav .nav-link {
+  color: var(--season-accent-contrast) !important;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Contact Form */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 2px solid var(--season-accent-tint);
+  background-color: var(--season-surface);
+  color: var(--season-text-secondary);
+  transition: all 0.3s ease;
+}
+
+.form-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--season-accent);
+  box-shadow: 0 0 0 3px var(--season-accent-tint);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--season-text-secondary);
+  opacity: 0.7;
+}
+
+/* Custom Scrollbar - More specific selectors */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 12px !important;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: var(--season-surface) !important;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: var(--season-accent) !important;
+  border-radius: 6px !important;
+  border: 2px solid var(--season-surface) !important;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--season-accent-strong) !important;
+}
+
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--season-accent) var(--season-surface) !important;
+}
+
+body {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--season-accent) var(--season-surface) !important;
+}
+
+/* More specific Firefox scrollbar targeting */
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--season-accent) var(--season-surface) !important;
+}
+
+/* Apply to document root for Firefox */
+:root {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--season-accent) var(--season-surface) !important;
+}
+
 /* Mobile adjustments */
 @media (max-width: 640px) {
   .leaf {

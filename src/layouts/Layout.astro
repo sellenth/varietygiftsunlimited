@@ -175,7 +175,53 @@ const themeClass = themeClasses[activeTheme];
 				}
 			}
 
-			window.addEventListener('scroll', requestTick);
+		window.addEventListener('scroll', requestTick);
+		
+		// Force scrollbar styling with exact fall theme colors
+		document.addEventListener('DOMContentLoaded', () => {
+			// Use exact fall theme colors to override any purple
+			const fallAccent = '#ea580c'; // Fall orange
+			const fallSurface = '#fff7ed'; // Fall surface
+			const fallAccentStrong = '#b45309'; // Fall orange dark
+			
+			// Apply directly with exact colors
+			document.documentElement.style.setProperty('scrollbar-width', 'thin', 'important');
+			document.documentElement.style.setProperty('scrollbar-color', `${fallAccent} ${fallSurface}`, 'important');
+			document.body.style.setProperty('scrollbar-width', 'thin', 'important');
+			document.body.style.setProperty('scrollbar-color', `${fallAccent} ${fallSurface}`, 'important');
+			
+			// Create aggressive override style
+			const style = document.createElement('style');
+			style.textContent = `
+				/* Aggressive scrollbar override - kill all purple */
+				html, body, *, :root {
+					scrollbar-width: thin !important;
+					scrollbar-color: ${fallAccent} ${fallSurface} !important;
+				}
+				/* WebKit scrollbars with exact colors */
+				html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { 
+					width: 12px !important; 
+					height: 12px !important;
+				}
+				html::-webkit-scrollbar-track, body::-webkit-scrollbar-track, *::-webkit-scrollbar-track { 
+					background: ${fallSurface} !important; 
+				}
+				html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb { 
+					background: ${fallAccent} !important; 
+					border-radius: 6px !important; 
+					border: 2px solid ${fallSurface} !important; 
+				}
+				html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover, *::-webkit-scrollbar-thumb:hover { 
+					background: ${fallAccentStrong} !important; 
+				}
+				/* Kill any purple scrollbar colors */
+				html::-webkit-scrollbar-thumb:not(:hover) {
+					background: ${fallAccent} !important;
+				}
+			`;
+			style.setAttribute('data-scrollbar-override', 'true');
+			document.head.appendChild(style);
+		});
 		</script>
 	</body>
 	<Analytics />
@@ -183,6 +229,23 @@ const themeClass = themeClasses[activeTheme];
 
 
 <style is:global>
+	/* Firefox scrollbar styling - highest priority */
+	html {
+		scrollbar-width: thin !important;
+		scrollbar-color:  red !important;
+	}
+	
+	body {
+		scrollbar-width: thin !important;
+		scrollbar-color:  red !important;
+	}
+	
+	/* Force Firefox scrollbar on all elements */
+	* {
+		scrollbar-width: thin !important;
+		scrollbar-color: red !important;
+	}
+
 	html,
 	body {
 		overflow-y: auto;

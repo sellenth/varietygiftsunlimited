@@ -73,8 +73,8 @@
     min-width: 0;
     padding: 0.75rem;
     border-radius: 8px;
-    border: 2px solid transparent;
-    background-color: #8b7bd8;
+    border: 2px solid var(--season-accent-tint);
+    background-color: var(--season-accent);
     color: white;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -89,16 +89,17 @@
   .form-input:focus,
   .form-textarea:focus {
     outline: none;
-    background-color: white;
-    color: #374151;
-    border-color: #6366f1;
+    background-color: var(--season-surface);
+    color: var(--season-text-secondary);
+    border-color: var(--season-accent-strong);
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 20px var(--season-accent-shadow);
   }
 
   .form-input:focus::placeholder,
   .form-textarea:focus::placeholder {
-    color: rgba(55, 65, 81, 0.6);
+    color: var(--season-text-secondary);
+    opacity: 0.6;
   }
 
   /* Mobile responsive fix */
@@ -158,7 +159,7 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #6366f1, #7c3aed);
+    background: linear-gradient(135deg, var(--season-accent), var(--season-accent-strong));
     color: white;
     border: none;
     min-width: 200px;
@@ -181,12 +182,12 @@
 
   .send-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 10px 30px var(--season-accent-shadow-strong);
   }
 
   .send-btn:active {
     transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 5px 15px var(--season-accent-shadow-strong);
   }
 
   .send-btn:disabled {

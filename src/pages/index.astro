@@ -36,16 +36,9 @@ const seasonCopy = landingCopy[activeTheme];
         >
           {seasonCopy.heroHeadline}
         </h1>
-        <p class="text-theme-secondary max-w-2xl text-lg md:text-xl">
+        <p class="text-theme-secondary max-w-2xl text-lg md:text-xl mb-8">
           {seasonCopy.heroDescription}
         </p>
-        {seasonCopy.heroBadges && seasonCopy.heroBadges.length > 0 && (
-          <div class="season-badges">
-            {seasonCopy.heroBadges.map((badge) => (
-              <span class="season-pill">{badge}</span>
-            ))}
-          </div>
-        )}
       </div>
 
       {seasonCopy.showFloatingLeaves && (
@@ -460,20 +453,6 @@ const seasonCopy = landingCopy[activeTheme];
     border-radius: 4px;
   }
 
-  /* Contact Form */
-  .form-input,
-  .form-textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: none;
-    background-color: white;
-  }
-
-  .form-textarea {
-    min-height: 150px;
-    resize: vertical;
-  }
 
   .social-links {
     color: white;
