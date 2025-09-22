@@ -33,6 +33,10 @@
   --season-social-bg: #6366f1;
   --season-social-hover: rgba(99, 102, 241, 0.6);
   --season-model-shadow: rgba(99, 102, 241, 0.25);
+  /* Navbar colors (default theme uses accent colors) */
+  --season-navbar-bg: var(--season-accent);
+  --season-navbar-text: var(--season-accent-contrast);
+  --season-navbar-shadow: var(--season-accent-shadow);
 }
 
 .theme-fall {
@@ -69,6 +73,10 @@
   --season-social-bg: #ea580c;
   --season-social-hover: rgba(234, 88, 12, 0.6);
   --season-model-shadow: rgba(180, 83, 9, 0.25);
+  /* Brown navbar colors for fall theme */
+  --season-navbar-bg: #8b4513;
+  --season-navbar-text: #fff8dc;
+  --season-navbar-shadow: rgba(139, 69, 19, 0.3);
 }
 
 /* Base Theme Classes */
@@ -410,16 +418,17 @@
 
 /* Navbar */
 .navbar {
-  background: var(--season-accent) !important;
+  background: var(--season-navbar-bg) !important;
+  box-shadow: 0 2px 4px var(--season-navbar-shadow);
 }
 
 .navbar .navbar-brand,
 .navbar .navbar-nav .nav-link {
-  color: var(--season-accent-contrast) !important;
+  color: var(--season-navbar-text) !important;
 }
 
 .navbar .navbar-nav .nav-link:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
+  opacity: 0.8 !important;
 }
 
 /* Contact Form */
