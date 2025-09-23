@@ -485,6 +485,25 @@ body {
   scrollbar-color: var(--season-accent) var(--season-surface) !important;
 }
 
+/* iOS overscroll styling - ensure viewport background matches theme */
+.theme-fall html,
+.theme-fall body {
+  background: var(--season-mist) !important;
+}
+
+/* iOS Safari overscroll bounce area */
+.theme-fall {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure iOS overscroll area uses theme colors */
+@supports (-webkit-overflow-scrolling: touch) {
+  .theme-fall html,
+  .theme-fall body {
+    background: var(--season-mist);
+  }
+}
+
 /* Mobile adjustments */
 @media (max-width: 640px) {
   .leaf {
