@@ -4,26 +4,26 @@ import Bubbles from '../components/Bubbles.astro';
 ---
 
 <Layout title="Variety Gifts Unlimited - Privacy Policy" hideHeader={false}>
-    <main class="min-h-screen bg-white relative overflow-hidden">
+    <main class="min-h-screen bg-theme-mist relative overflow-hidden">
         <Bubbles />
         
         <div class="relative z-10 max-w-4xl mx-auto px-6 py-16">
             <!-- Header -->
             <div class="text-center mb-12">
-                <h1 class="text-5xl md:text-6xl font-bold text-indigo-900 mb-4 animate-float">
+                <h1 class="text-5xl md:text-6xl font-bold text-theme-primary mb-4 animate-float">
                     Privacy Policy 🛡️
                 </h1>
-                <p class="text-lg text-indigo-800 mb-8">
+                <p class="text-lg text-theme-secondary mb-8">
                     We keep your data safe and sound, just like our gift wrapping!
                 </p>
-                <a href="/" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg">
+                <a href="/" class="shop-all-btn">
                     ← Back to Home
                 </a>
             </div>
 
             <!-- Last Updated Badge -->
-            <div class="bg-lavender p-4 rounded-xl mb-8 border-l-4 border-indigo-500">
-                <p class="text-sm text-indigo-800">
+            <div class="bg-theme-surface p-4 rounded-xl mb-8 border-l-4 border-theme-accent">
+                <p class="text-sm text-theme-secondary">
                     📅 <strong>Last updated:</strong> September 17, 2024
                 </p>
             </div>
@@ -33,7 +33,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Introduction Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">👋 Hello There!</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">👋 Hello There!</h2>
                     </div>
                     <div class="card-content">
                         <p>
@@ -47,7 +47,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Information Collection Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">📦 What We Collect</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">📦 What We Collect</h2>
                     </div>
                     <div class="card-content">
                         <p class="mb-4">
@@ -65,7 +65,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- How We Use Information Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">🎯 How We Use Your Info</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">🎯 How We Use Your Info</h2>
                     </div>
                     <div class="card-content">
                         <p class="mb-4">We use your information to make your experience amazing:</p>
@@ -82,13 +82,13 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Sharing Information Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">🤝 When We Share</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">🤝 When We Share</h2>
                     </div>
                     <div class="card-content">
                         <p class="mb-4">We only share your information with:</p>
                         <ul class="privacy-list">
                             <li>🚚 Service providers (like shipping companies)</li>
-                            <li>🏛️ Government entities when legally required</li>
+                            <li>🏦 Government entities when legally required</li>
                             <li>🚫 <strong>Never</strong> with random third parties for marketing!</li>
                         </ul>
                     </div>
@@ -97,7 +97,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Security Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">🔒 Security First</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">🔒 Security First</h2>
                     </div>
                     <div class="card-content">
                         <p>
@@ -111,7 +111,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Your Choices Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">🎛️ Your Control Panel</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">🎛️ Your Control Panel</h2>
                     </div>
                     <div class="card-content">
                         <p class="mb-4">You're in charge! You can:</p>
@@ -127,7 +127,7 @@ import Bubbles from '../components/Bubbles.astro';
                 <!-- Changes Card -->
                 <div class="privacy-card group">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">🔄 Policy Updates</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">🔄 Policy Updates</h2>
                     </div>
                     <div class="card-content">
                         <p>
@@ -138,16 +138,16 @@ import Bubbles from '../components/Bubbles.astro';
                 </div>
 
                 <!-- Contact Card -->
-                <div class="privacy-card group bg-gradient-to-r from-indigo-50 to-purple-50">
+                <div class="privacy-card group bg-theme-surface">
                     <div class="card-header">
-                        <h2 class="text-2xl font-bold text-indigo-900">📞 Questions? We're Here!</h2>
+                        <h2 class="text-2xl font-bold text-theme-primary">📞 Questions? We're Here!</h2>
                     </div>
                     <div class="card-content">
                         <p class="mb-4">
                             If you have any questions about this Privacy Policy, don't hesitate to reach out:
                         </p>
                         <div class="contact-info">
-                            <p class="text-indigo-700 font-semibold">
+                            <p class="text-theme-secondary font-semibold">
                                 📧 varietygiftsunlimited (at) gmail .com
                             </p>
                         </div>
@@ -157,7 +157,7 @@ import Bubbles from '../components/Bubbles.astro';
 
             <!-- Footer Action -->
             <div class="text-center mt-12">
-                <a href="/shop" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg text-lg font-semibold">
+                <a href="/shop" class="shop-all-btn text-lg font-semibold">
                     Ready to Shop? Let's Go! 🛍️
                 </a>
             </div>
@@ -175,20 +175,20 @@ import Bubbles from '../components/Bubbles.astro';
         border-radius: 16px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(99, 102, 241, 0.1);
+        border: 1px solid var(--season-accent-tint);
     }
 
     .privacy-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
-        border-color: rgba(99, 102, 241, 0.2);
+        box-shadow: 0 20px 40px var(--season-accent-shadow);
+        border-color: var(--season-accent-shadow);
     }
 
     .card-header {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        background: var(--season-surface);
         padding: 1.5rem;
         border-radius: 16px 16px 0 0;
-        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        border-bottom: 1px solid var(--season-accent-tint);
     }
 
     .card-content {
@@ -201,22 +201,22 @@ import Bubbles from '../components/Bubbles.astro';
 
     .privacy-list li {
         padding: 0.75rem;
-        background: rgba(99, 102, 241, 0.05);
+        background: var(--season-accent-tint);
         border-radius: 8px;
         margin-bottom: 0.5rem;
         transition: all 0.2s ease;
     }
 
     .privacy-list li:hover {
-        background: rgba(99, 102, 241, 0.1);
+        background: var(--season-badge-bg);
         transform: translateX(4px);
     }
 
     .contact-info {
-        background: rgba(99, 102, 241, 0.1);
+        background: var(--season-badge-bg);
         padding: 1rem;
         border-radius: 8px;
-        border-left: 4px solid #6366f1;
+        border-left: 4px solid var(--season-accent);
     }
 
     @keyframes float {
