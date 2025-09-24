@@ -51,7 +51,7 @@ const links = [
 ---
 
 <Layout title="Variety Gifts Unlimited - Links" hideHeader={false}>
-  <main class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+  <main class="min-h-screen bg-theme-mist relative overflow-hidden">
     <Bubbles />
     
     <div class="relative z-10 container mx-auto max-w-4xl px-6 py-16">
@@ -64,10 +64,10 @@ const links = [
             class="w-64 mx-auto animate-float"
           />
         </div>
-        <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-theme-primary mb-4">
           All Our Links ✨
         </h1>
-        <p class="text-lg text-indigo-700 max-w-2xl mx-auto">
+        <p class="text-lg text-theme-secondary max-w-2xl mx-auto">
           Your one-stop destination for gifts, games, and good vibes! 
           Click any link below to explore our world of surprises.
         </p>
@@ -96,15 +96,15 @@ const links = [
                 )}
               </div>
               <div class="content">
-                <h2 class="text-xl font-bold text-indigo-900 mb-2 group-hover:text-white transition-colors">
+                <h2 class="text-xl font-bold text-theme-primary mb-2 group-hover:text-white transition-colors">
                   {link.name}
                 </h2>
-                <p class="text-sm text-indigo-700 group-hover:text-white/90 transition-colors">
+                <p class="text-sm text-theme-secondary group-hover:text-white/90 transition-colors">
                   {link.description}
                 </p>
               </div>
               <div class="arrow">
-                <svg class="w-5 h-5 fill-indigo-400 group-hover:fill-white transition-colors" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 fill-theme-secondary group-hover:fill-white transition-colors" viewBox="0 0 24 24">
                   <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"/>
                 </svg>
               </div>
@@ -117,35 +117,35 @@ const links = [
       <!-- Fun Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
         <div class="stat-card">
-          <div class="text-2xl font-bold text-indigo-900">500+</div>
-          <div class="text-sm text-indigo-700">Happy Customers</div>
+          <div class="text-2xl font-bold text-theme-primary">500+</div>
+          <div class="text-sm text-theme-secondary">Happy Customers</div>
         </div>
         <div class="stat-card">
-          <div class="text-2xl font-bold text-indigo-900">5</div>
-          <div class="text-sm text-indigo-700">Free Games</div>
+          <div class="text-2xl font-bold text-theme-primary">5</div>
+          <div class="text-sm text-theme-secondary">Free Games</div>
         </div>
         <div class="stat-card">
-          <div class="text-2xl font-bold text-indigo-900">24/7</div>
-          <div class="text-sm text-indigo-700">Support</div>
+          <div class="text-2xl font-bold text-theme-primary">24/7</div>
+          <div class="text-sm text-theme-secondary">Support</div>
         </div>
         <div class="stat-card">
-          <div class="text-2xl font-bold text-indigo-900">💯</div>
-          <div class="text-sm text-indigo-700">Satisfaction</div>
+          <div class="text-2xl font-bold text-theme-primary">💯</div>
+          <div class="text-sm text-theme-secondary">Satisfaction</div>
         </div>
       </div>
 
       <!-- Call to Action -->
       <div class="text-center">
         <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-xl">
-          <h2 class="text-3xl font-bold text-indigo-900 mb-4">
+          <h2 class="text-3xl font-bold text-theme-primary mb-4">
             Ready to Discover Amazing Gifts? 🎁
           </h2>
-          <p class="text-indigo-700 mb-6">
+          <p class="text-theme-secondary mb-6">
             Join thousands of happy customers who've found their perfect gifts with us!
           </p>
           <a 
             href="/shop" 
-            class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105 hover:shadow-lg text-lg font-semibold"
+            class="shop-all-btn text-lg font-semibold"
           >
             Start Shopping Now! 🛍️
           </a>
@@ -163,7 +163,7 @@ const links = [
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(99, 102, 241, 0.1);
+    border: 1px solid var(--season-accent-tint);
     opacity: 0;
     transform: translateY(20px);
     animation: slideInUp 0.6s ease-out forwards;
@@ -171,7 +171,7 @@ const links = [
 
   .link-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 20px 40px var(--season-accent-shadow-strong);
   }
 
   .link-card:hover .gradient-overlay {
@@ -191,7 +191,7 @@ const links = [
     width: 60px;
     height: 60px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, var(--season-accent) 0%, var(--season-accent-strong) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -230,8 +230,8 @@ const links = [
   }
 
   .featured-card {
-    border: 2px solid #6366f1;
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+    border: 2px solid var(--season-accent);
+    box-shadow: 0 8px 25px var(--season-accent-shadow);
   }
 
   .featured-card::after {
@@ -239,7 +239,7 @@ const links = [
     position: absolute;
     top: 12px;
     right: 12px;
-    background: #6366f1;
+    background: var(--season-accent);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
@@ -259,7 +259,7 @@ const links = [
 
   .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+    box-shadow: 0 8px 25px var(--season-accent-shadow);
   }
 
   @keyframes slideInUp {
