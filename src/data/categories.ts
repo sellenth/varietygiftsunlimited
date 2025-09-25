@@ -21,4 +21,18 @@ export const categories: Category[] = [
     image: '/yoga/corgi1.jpg', // Featured shirt image
     slug: 'shirts'
   },
+  {
+    id: 'accessories',
+    name: 'Accessories',
+    description: 'Pet accessories including bandanas, bow ties, and more',
+    image: '/chewbarka/item.webp', // Featured accessory image
+    slug: 'accessories'
+  },
+  {
+    id: 'hats',
+    name: 'Hats',
+    description: 'Stylish hats to complete your look',
+    image: '/gym-brat-hat/brat_hat_product.webp', // Featured hat image
+    slug: 'hats'
+  },
 ];

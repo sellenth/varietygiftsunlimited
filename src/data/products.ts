@@ -4,7 +4,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  category: 'bags' | 'shirts' | 'bandana' | 'tote' | 'hats';
+  category: 'bags' | 'shirts' | 'bandana' | 'tote' | 'hats' | 'accessories';
   images: { src: string; alt: string }[];
   colorImages?: { [color: string]: { src: string; alt: string }[] }; // For color variants
   price: string;
@@ -906,7 +906,7 @@ export const products: Product[] = [
     id: 'chewbarka-bandana',
     name: 'Chewbarka Bandana',
     description: 'The perfect accessory for your furry friend. Stylish and comfortable pet bandana.',
-    category: 'bandana',
+    category: 'accessories',
     images: [
       { src: '/chewbarka/item.webp', alt: 'Chewbarka Bandana' },
       { src: '/chewbarka/dog.webp', alt: 'Dog wearing Chewbarka Bandana' }
@@ -914,6 +914,41 @@ export const products: Product[] = [
     price: '$22.99',
     priceId: 'price_1Rh2HtAp2D4XT14x51zjcjnJ',
     slug: 'chewbarka-bandana'
+  },
+  {
+    id: 'halloween-bandana',
+    name: 'Halloween Bandana',
+    description: 'Spooky and stylish bandana for pets. Perfect for Halloween festivities.',
+    category: 'accessories',
+    images: [
+      { src: '/halloween-bandana/halloween-bandana-1.webp', alt: 'Halloween Bandana' },
+      { src: '/halloween-bandana/hero.webp', alt: 'Halloween Bandana Hero' }
+    ],
+    price: '$22.99',
+    priceIds: {
+      'S': 'price_1SB8EJAp2D4XT14x6JtGCCto',
+      'M': 'price_1SB8EJAp2D4XT14xo5itB9xE',
+      'LG': 'price_1SB8EKAp2D4XT14xsG5wWE9j'
+    },
+    sizes: ['S', 'M', 'LG'],
+    slug: 'halloween-bandana'
+  },
+  {
+    id: 'halloween-bow-tie',
+    name: 'Halloween Bow Tie',
+    description: 'Elegant bow tie for pets with a Halloween twist.',
+    category: 'accessories',
+    images: [
+      { src: '/halloween-bandana/hero.webp', alt: 'Halloween Bow Tie' }
+    ],
+    price: '$22.99',
+    priceIds: {
+      'S': 'price_1SB8EKAp2D4XT14xAnvilhT9',
+      'M': 'price_1SB8ELAp2D4XT14x7RWgGzke',
+      'LG': 'price_1SB8ELAp2D4XT14xkSQgYKfM'
+    },
+    sizes: ['S', 'M', 'LG'],
+    slug: 'halloween-bow-tie'
   },
   // Gym Brat Collection
   {
