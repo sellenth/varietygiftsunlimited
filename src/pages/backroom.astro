@@ -50,21 +50,26 @@ import Layout from "../layouts/Layout.astro";
              </select>
           </div>
 
-           <!-- Reference Images -->
-           <div class="mb-6">
-             <label for="referenceImages" class="block text-amber-900 text-lg font-semibold mb-2 drop-shadow-sm">
-               🖼️ Reference Images (Required)
-             </label>
-             <input
-               type="file"
-               id="referenceImages"
-               multiple
-               accept="image/*"
-               class="w-full p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-200 file:text-amber-900 hover:file:bg-amber-300"
-             />
-             <p class="text-amber-700 text-sm mt-2 drop-shadow-sm">
-               Upload 1-4 reference images for editing. Both models require reference images. 🌟
-             </p>
+            <!-- Reference Images -->
+            <div class="mb-6">
+              <label for="referenceImages" class="block text-amber-900 text-lg font-semibold mb-2 drop-shadow-sm">
+                🖼️ Reference Images (Required)
+              </label>
+              <div class="flex items-center gap-4">
+                <input
+                  type="file"
+                  id="referenceImages"
+                  multiple
+                  accept="image/*"
+                  class="flex-shrink-0 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-200 file:text-amber-900 hover:file:bg-amber-300"
+                />
+                <div class="paste-area flex-1 p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 shadow-lg text-center">
+                  📎 Or paste images from clipboard here
+                </div>
+              </div>
+              <p class="text-amber-700 text-sm mt-2 drop-shadow-sm">
+                Upload 1-4 reference images for editing, or paste images from clipboard. Both models require reference images. 🌟
+              </p>
             <!-- Reference Images Preview -->
             <div id="referencePreview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               <!-- Reference images will be displayed here -->
@@ -84,21 +89,38 @@ import Layout from "../layouts/Layout.astro";
              ></textarea>
           </div>
 
-          <!-- Image Count -->
-          <div class="mb-8">
-            <label for="imageCount" class="block text-amber-900 text-lg font-semibold mb-2 drop-shadow-sm">
-              🎃 Number of Images (1-4)
-            </label>
-            <select
-              id="imageCount"
-              class="w-full p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg"
-            >
-              <option value="1">🍁 1 Image</option>
-              <option value="2">🍂 2 Images</option>
-              <option value="3">🌰 3 Images</option>
-              <option value="4">🎃 4 Images</option>
-            </select>
-          </div>
+           <!-- Image Count -->
+           <div class="mb-6">
+             <label for="imageCount" class="block text-amber-900 text-lg font-semibold mb-2 drop-shadow-sm">
+               🎃 Number of Images (1-4)
+             </label>
+             <select
+               id="imageCount"
+               class="w-full p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg"
+             >
+               <option value="1">🍁 1 Image</option>
+               <option value="2">🍂 2 Images</option>
+               <option value="3">🌰 3 Images</option>
+               <option value="4">🎃 4 Images</option>
+             </select>
+           </div>
+
+           <!-- Aspect Ratio -->
+           <div class="mb-8">
+             <label for="aspectRatio" class="block text-amber-900 text-lg font-semibold mb-2 drop-shadow-sm">
+               📐 Aspect Ratio
+             </label>
+             <select
+               id="aspectRatio"
+               class="w-full p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg"
+             >
+               <option value="16:9">📺 16:9 (Landscape)</option>
+               <option value="4:3">📷 4:3 (Standard)</option>
+               <option value="1:1">🎯 1:1 (Square)</option>
+               <option value="3:4">📱 3:4 (Portrait)</option>
+               <option value="9:16">📱 9:16 (Vertical)</option>
+             </select>
+           </div>
 
           <!-- Generate Button -->
           <div class="text-center mb-8">
@@ -334,6 +356,35 @@ import Layout from "../layouts/Layout.astro";
     displayReferenceImages();
   };
 
+  // Handle clipboard paste
+  const handlePaste = async (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        event.preventDefault();
+
+        // Check if we already have 4 images
+        if (referenceImages.length >= 4) {
+          showStatus('Maximum 4 reference images allowed', 'error');
+          return;
+        }
+
+        const blob = item.getAsFile();
+        if (blob) {
+          // Create a File object with a generic name
+          const file = new File([blob], `pasted-image-${Date.now()}.png`, { type: blob.type });
+          referenceImages.push(file);
+          displayReferenceImages();
+          showStatus('Image pasted from clipboard! 🎨', 'success');
+        }
+        break; // Only handle the first image found
+      }
+    }
+  };
+
   // Convert file to base64
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -342,6 +393,27 @@ import Layout from "../layouts/Layout.astro";
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
+  };
+
+  // Calculate image dimensions based on aspect ratio
+  const getImageDimensions = (aspectRatio: string): { width: number; height: number } => {
+    const [widthRatio, heightRatio] = aspectRatio.split(':').map(Number);
+    const baseResolution = 2048; // Base resolution for calculations
+
+    if (widthRatio > heightRatio) {
+      // Landscape orientation
+      const width = baseResolution;
+      const height = Math.round((heightRatio / widthRatio) * baseResolution);
+      return { width, height };
+    } else if (heightRatio > widthRatio) {
+      // Portrait orientation
+      const height = baseResolution;
+      const width = Math.round((widthRatio / heightRatio) * baseResolution);
+      return { width, height };
+    } else {
+      // Square
+      return { width: baseResolution, height: baseResolution };
+    }
   };
 
   // Generate images using Fal API
@@ -365,6 +437,7 @@ import Layout from "../layouts/Layout.astro";
     }
 
     const imageCount = parseInt((document.getElementById('imageCount') as HTMLSelectElement).value);
+    const aspectRatio = (document.getElementById('aspectRatio') as HTMLSelectElement).value;
 
     const generateBtn = document.getElementById('generateBtn') as HTMLButtonElement;
     generateBtn.disabled = true;
@@ -374,11 +447,12 @@ import Layout from "../layouts/Layout.astro";
 
     try {
       // Prepare request body
+      const dimensions = getImageDimensions(aspectRatio);
       const requestBody: any = {
         prompt: prompt,
         image_size: {
-          height: 2160,
-          width: 3840
+          width: dimensions.width,
+          height: dimensions.height
         },
         num_images: imageCount,
         max_images: imageCount,
@@ -470,6 +544,7 @@ import Layout from "../layouts/Layout.astro";
   document.getElementById('generateBtn')!.addEventListener('click', generateImages);
   document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
   document.getElementById('referenceImages')!.addEventListener('change', handleReferenceImageSelect);
+  document.querySelector('.paste-area')!.addEventListener('paste', handlePaste);
 
   // Make remove function globally accessible
   (window as any).removeReferenceImage = removeReferenceImage;
