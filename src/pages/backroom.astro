@@ -38,13 +38,13 @@ import Layout from "../layouts/Layout.astro";
             <label for="model" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
               🎨 Model
             </label>
-             <select
-               id="model"
-               class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
-             >
-               <option value="fal-ai/nano-banana/edit">🍌 nano banana</option>
-               <option value="fal-ai/bytedance/seedream/v4/edit">🌟 seedream v4 edit</option>
-             </select>
+              <select
+                id="model"
+                class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+              >
+                <option value="fal-ai/nano-banana/edit">🍌 nano banana</option>
+                <option value="fal-ai/bytedance/seedream/v4/edit" selected>🌟 seedream v4 edit</option>
+              </select>
           </div>
 
             <!-- Reference Images -->
@@ -132,31 +132,47 @@ import Layout from "../layouts/Layout.astro";
           <!-- Status Message -->
           <div id="status" class="text-center mb-4 sm:mb-6 text-amber-900 font-semibold drop-shadow-sm text-sm sm:text-base"></div>
 
-          <!-- Generated Images -->
-          <div id="imagesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <!-- Images will be inserted here -->
-          </div>
+           <!-- Generated Images -->
+           <div id="imagesContainer" class="mb-6 sm:mb-8">
+             <!-- Images will be inserted here -->
+           </div>
 
-          <!-- Image History -->
-          <div class="border-t-4 border-amber-300 pt-4 sm:pt-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0">
-              <h3 class="text-amber-900 text-lg sm:text-xl font-semibold drop-shadow-sm">🍁 Recent Cozy Creations</h3>
-              <button
-                id="clearHistoryBtn"
-                class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
-              >
-                🗑️ Clear History
-              </button>
-            </div>
-            <div id="historyContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              <!-- History images will be inserted here -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-</Layout>
+           <!-- Image History -->
+           <div class="border-t-4 border-amber-300 pt-4 sm:pt-6">
+             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0">
+               <h3 class="text-amber-900 text-lg sm:text-xl font-semibold drop-shadow-sm">🍁 Recent Cozy Creations</h3>
+               <button
+                 id="clearHistoryBtn"
+                 class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
+               >
+                 🗑️ Clear History
+               </button>
+             </div>
+             <div id="historyContainer" class="space-y-6">
+               <!-- History batches will be inserted here -->
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+
+     <!-- Fullscreen Modal -->
+     <div id="fullscreenModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center">
+       <div class="relative max-w-4xl max-h-full p-4">
+         <img id="fullscreenImage" src="" alt="" class="max-w-full max-h-full object-contain" />
+         <button id="closeFullscreen" class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
+           ×
+         </button>
+         <button id="prevImage" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
+           ‹
+         </button>
+         <button id="nextImage" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
+           ›
+         </button>
+       </div>
+     </div>
+   </main>
+ </Layout>
 
 <style>
   .backroom-section {
@@ -268,6 +284,16 @@ import Layout from "../layouts/Layout.astro";
       animation-delay: 2s;
     }
   }
+
+  /* Fullscreen modal styles */
+  #fullscreenModal {
+    backdrop-filter: blur(4px);
+  }
+
+  #fullscreenImage {
+    max-width: 90vw;
+    max-height: 90vh;
+  }
 </style>
 
 <script>
@@ -335,29 +361,66 @@ import Layout from "../layouts/Layout.astro";
     localStorage.setItem('imageHistory', JSON.stringify(limitedHistory));
   };
 
-  // Display image history
-  const displayImageHistory = () => {
-    const history = loadImageHistory();
-    const historyContainer = document.getElementById('historyContainer')!;
-    historyContainer.innerHTML = '';
+   // Display image history grouped by generation batch
+   const displayImageHistory = () => {
+     const history = loadImageHistory();
+     const historyContainer = document.getElementById('historyContainer')!;
+     historyContainer.innerHTML = '';
 
-    history.reverse().forEach((image) => {
-      const imgElement = document.createElement('img');
-      imgElement.src = image.url;
-      imgElement.className = 'history-image';
-      imgElement.title = image.prompt;
-      imgElement.addEventListener('click', () => {
-        // Copy prompt to input when clicked
-        const promptInput = document.getElementById('prompt') as HTMLTextAreaElement;
-        promptInput.value = image.prompt;
+     // Group images by timestamp (generation batch)
+     const batches: { [timestamp: number]: GeneratedImage[] } = {};
+     history.forEach((image) => {
+       if (!batches[image.timestamp]) {
+         batches[image.timestamp] = [];
+       }
+       batches[image.timestamp].push(image);
+     });
 
-        // Set model
-        const modelSelect = document.getElementById('model') as HTMLSelectElement;
-        modelSelect.value = image.model;
-      });
-      historyContainer.appendChild(imgElement);
-    });
-  };
+     // Sort batches by timestamp (newest first)
+     const sortedTimestamps = Object.keys(batches).map(Number).sort((a, b) => b - a);
+
+     sortedTimestamps.forEach((timestamp) => {
+       const batch = batches[timestamp];
+       const batchDiv = document.createElement('div');
+       batchDiv.className = 'bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg';
+
+       // Batch header with prompt and model
+       const headerDiv = document.createElement('div');
+       headerDiv.className = 'mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2';
+       headerDiv.innerHTML = `
+         <div class="flex-1">
+           <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
+             🎨 ${batch[0].model.split('/').pop()} • ${new Date(timestamp).toLocaleString()}
+           </div>
+           <div class="text-amber-800 text-xs sm:text-sm italic">
+             "${batch[0].prompt}"
+           </div>
+         </div>
+         <button class="clear-batch-btn bg-red-500 hover:bg-red-600 text-white py-1 px-2 sm:px-3 rounded-lg transition duration-300 shadow-md transform hover:scale-105 text-xs sm:text-sm" data-timestamp="${timestamp}">
+           🗑️ Clear Batch
+         </button>
+       `;
+       batchDiv.appendChild(headerDiv);
+
+       // Images grid
+       const imagesDiv = document.createElement('div');
+       imagesDiv.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3';
+
+       batch.forEach((image, index) => {
+         const imgElement = document.createElement('img');
+         imgElement.src = image.url;
+         imgElement.className = 'history-image';
+         imgElement.title = `${image.prompt} (${image.model})`;
+         imgElement.addEventListener('click', () => {
+           openFullscreen(batch, index);
+         });
+         imagesDiv.appendChild(imgElement);
+       });
+
+       batchDiv.appendChild(imagesDiv);
+       historyContainer.appendChild(batchDiv);
+     });
+   };
 
   // Handle reference image selection
   const handleReferenceImageSelect = (event: Event) => {
@@ -547,22 +610,56 @@ import Layout from "../layouts/Layout.astro";
     }
   };
 
-  // Display generated images
-  const displayGeneratedImages = (images: any[]) => {
-    const container = document.getElementById('imagesContainer')!;
-    container.innerHTML = '';
+    // Display generated images
+    const displayGeneratedImages = (images: any[]) => {
+      const container = document.getElementById('imagesContainer')!;
+      container.innerHTML = '';
 
-    images.forEach((image) => {
-      const imgElement = document.createElement('img');
-      imgElement.src = image.url;
-      imgElement.className = 'generated-image';
-      imgElement.addEventListener('click', () => {
-        // Open image in new tab
-        window.open(image.url, '_blank');
+      if (images.length === 0) return;
+
+      // Create a batch container for newly generated images
+      const batchDiv = document.createElement('div');
+      batchDiv.className = 'bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg';
+
+      // Batch header with prompt and model
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'mb-3';
+      const model = (document.getElementById('model') as HTMLSelectElement).value;
+      const prompt = (document.getElementById('prompt') as HTMLTextAreaElement).value.trim();
+      headerDiv.innerHTML = `
+        <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
+          🎨 ${model.split('/').pop()} • Just now
+        </div>
+        <div class="text-amber-800 text-xs sm:text-sm italic">
+          "${prompt}"
+        </div>
+      `;
+      batchDiv.appendChild(headerDiv);
+
+      // Images grid
+      const imagesDiv = document.createElement('div');
+      imagesDiv.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4';
+
+      images.forEach((image, index) => {
+        const imgElement = document.createElement('img');
+        imgElement.src = image.url;
+        imgElement.className = 'generated-image';
+        imgElement.addEventListener('click', () => {
+          // Create a temporary batch for the current generation
+          const batch = images.map(img => ({
+            url: img.url,
+            prompt: prompt,
+            model: model,
+            timestamp: Date.now()
+          }));
+          openFullscreen(batch, index);
+        });
+        imagesDiv.appendChild(imgElement);
       });
-      container.appendChild(imgElement);
-    });
-  };
+
+      batchDiv.appendChild(imagesDiv);
+      container.appendChild(batchDiv);
+    };
 
   // Show status message
   const showStatus = (message: string, type: 'info' | 'success' | 'error') => {
@@ -575,22 +672,112 @@ import Layout from "../layouts/Layout.astro";
     }`;
   };
 
-  // Clear history
-  const clearHistory = () => {
-    localStorage.removeItem('imageHistory');
-    displayImageHistory();
-    showStatus('🧹 History cleared - fresh autumn canvas! 🍁', 'info');
-  };
+   // Fullscreen modal state
+   let allImages: GeneratedImage[] = [];
+   let currentImageIndex = 0;
 
-  // Event listeners
-  document.getElementById('generateBtn')!.addEventListener('click', generateImages);
-  document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
-  document.getElementById('referenceImages')!.addEventListener('change', handleReferenceImageSelect);
-  document.querySelector('.paste-area')!.addEventListener('paste', handlePaste);
+   // Open fullscreen modal
+   const openFullscreen = (batch: GeneratedImage[], startIndex: number) => {
+     // Get all images from history in chronological order (newest first)
+     const history = loadImageHistory();
+     allImages = history.reverse(); // Reverse to show newest first
 
-  // Make remove function globally accessible
-  (window as any).removeReferenceImage = removeReferenceImage;
+     // Find the index of the clicked image in the global list by URL
+     const clickedImageUrl = batch[startIndex].url;
+     currentImageIndex = allImages.findIndex(img => img.url === clickedImageUrl);
 
-  // Initialize
-  displayImageHistory();
+     const modal = document.getElementById('fullscreenModal')!;
+     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
+     img.src = allImages[currentImageIndex].url;
+     modal.classList.remove('hidden');
+     document.body.style.overflow = 'hidden';
+   };
+
+   // Close fullscreen modal
+   const closeFullscreen = () => {
+     const modal = document.getElementById('fullscreenModal')!;
+     modal.classList.add('hidden');
+     document.body.style.overflow = '';
+   };
+
+   // Navigate to previous image
+   const prevImage = () => {
+     currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
+     img.src = allImages[currentImageIndex].url;
+   };
+
+   // Navigate to next image
+   const nextImage = () => {
+     currentImageIndex = (currentImageIndex + 1) % allImages.length;
+     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
+     img.src = allImages[currentImageIndex].url;
+   };
+
+   // Clear specific batch
+   const clearBatch = (timestamp: number) => {
+     const history = loadImageHistory();
+     const filteredHistory = history.filter(img => img.timestamp !== timestamp);
+     saveImageHistory(filteredHistory);
+     displayImageHistory();
+     showStatus('🗑️ Batch cleared from history! 🍂', 'info');
+   };
+
+   // Clear history
+   const clearHistory = () => {
+     localStorage.removeItem('imageHistory');
+     displayImageHistory();
+     showStatus('🧹 History cleared - fresh autumn canvas! 🍁', 'info');
+   };
+
+   // Event listeners
+   document.getElementById('generateBtn')!.addEventListener('click', generateImages);
+   document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
+   document.getElementById('referenceImages')!.addEventListener('change', handleReferenceImageSelect);
+   document.querySelector('.paste-area')!.addEventListener('paste', handlePaste);
+
+   // Event delegation for clear batch buttons
+   document.getElementById('historyContainer')!.addEventListener('click', (event) => {
+     const target = event.target as HTMLElement;
+     if (target.classList.contains('clear-batch-btn')) {
+       const timestamp = parseInt(target.getAttribute('data-timestamp')!);
+       clearBatch(timestamp);
+     }
+   });
+
+   // Fullscreen modal event listeners
+   document.getElementById('closeFullscreen')!.addEventListener('click', closeFullscreen);
+   document.getElementById('prevImage')!.addEventListener('click', prevImage);
+   document.getElementById('nextImage')!.addEventListener('click', nextImage);
+
+   // Keyboard navigation for fullscreen
+   document.addEventListener('keydown', (event) => {
+     const modal = document.getElementById('fullscreenModal')!;
+     if (!modal.classList.contains('hidden')) {
+       switch (event.key) {
+         case 'Escape':
+           closeFullscreen();
+           break;
+         case 'ArrowLeft':
+           prevImage();
+           break;
+         case 'ArrowRight':
+           nextImage();
+           break;
+       }
+     }
+   });
+
+   // Close modal when clicking outside the image
+   document.getElementById('fullscreenModal')!.addEventListener('click', (event) => {
+     if (event.target === event.currentTarget) {
+       closeFullscreen();
+     }
+   });
+
+   // Make remove function globally accessible
+   (window as any).removeReferenceImage = removeReferenceImage;
+
+   // Initialize
+   displayImageHistory();
 </script>
