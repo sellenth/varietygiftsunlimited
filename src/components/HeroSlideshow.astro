@@ -58,7 +58,7 @@
         function showSlide(index: number) {
             // Hide all slides
             slides.forEach((slide) => {
-                slide.style.display = 'none';
+                (slide as HTMLElement).style.display = 'none';
             });
 
             // Update dots
