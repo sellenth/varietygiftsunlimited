@@ -1,0 +1,163 @@
+---
+// Hero slideshow component with dots and auto-advance
+---
+
+<div class="relative group w-full max-w-4xl mx-auto mt-4 hero-slideshow">
+    <div class="hero-carousel bg-transparent w-full aspect-[4/3] touch-none relative overflow-hidden rounded-2xl shadow-2xl">
+        <img
+            src="/halloween-bandana/product.webp"
+            alt="Halloween Bandana Product"
+            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0 transition-opacity duration-500"
+            data-index="1"
+        />
+        <img
+            src="/halloween-bandana/hero.webp"
+            alt="Halloween Bandana Hero"
+            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0"
+            data-index="2"
+            style="display: none;"
+        />
+        <img
+            src="/halloween-bandana/halloween-bandana-1.webp"
+            alt="Halloween Bandana Alternative"
+            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0"
+            data-index="3"
+            style="display: none;"
+        />
+    </div>
+
+    <!-- Dots navigation -->
+    <div class="flex justify-center space-x-2 mt-4">
+        <button class="hero-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 active" data-slide="1"></button>
+        <button class="hero-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300" data-slide="2"></button>
+        <button class="hero-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300" data-slide="3"></button>
+    </div>
+
+    <!-- Buy button -->
+    <a
+        href="/shop/product/halloween-bandana"
+        class="hero-buy-btn absolute bottom-12 right-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 z-10"
+    >
+        BUY NOW
+    </a>
+</div>
+
+<script>
+    const carousel = document.querySelector('.hero-carousel');
+    const slides = carousel?.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+
+    if (carousel && slides && dots) {
+        let currentIndex = 1;
+        const maxIndex = slides.length;
+        let autoAdvanceInterval: number | null = null;
+
+        // Initialize first slide
+        showSlide(currentIndex);
+
+        function showSlide(index: number) {
+            // Hide all slides
+            slides.forEach((slide) => {
+                slide.style.display = 'none';
+            });
+
+            // Update dots
+            dots.forEach((dot, i) => {
+                if (i + 1 === index) {
+                    dot.classList.add('active', 'bg-white/80');
+                    dot.classList.remove('bg-white/50');
+                } else {
+                    dot.classList.remove('active', 'bg-white/80');
+                    dot.classList.add('bg-white/50');
+                }
+            });
+
+            // Show target slide
+            const targetSlide = carousel.querySelector(`[data-index="${index}"]`);
+            if (targetSlide) {
+                (targetSlide as HTMLElement).style.display = 'block';
+            }
+        }
+
+        function nextSlide() {
+            currentIndex = currentIndex === maxIndex ? 1 : currentIndex + 1;
+            showSlide(currentIndex);
+        }
+
+        function goToSlide(index: number) {
+            currentIndex = index;
+            showSlide(currentIndex);
+            // Reset auto-advance timer
+            if (autoAdvanceInterval) {
+                window.clearInterval(autoAdvanceInterval);
+            }
+            startAutoAdvance();
+        }
+
+        function startAutoAdvance() {
+            autoAdvanceInterval = window.setInterval(nextSlide, 4000); // 4 second intervals
+        }
+
+        // Add click event listeners to dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index + 1);
+            });
+        });
+
+        // Add touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e: TouchEvent) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', (e: TouchEvent) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchEndX - touchStartX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe right, go to previous
+                    const prevIndex = currentIndex === 1 ? maxIndex : currentIndex - 1;
+                    goToSlide(prevIndex);
+                } else {
+                    // Swipe left, go to next
+                    nextSlide();
+                }
+            }
+        }
+
+        // Pause auto-advance on hover
+        carousel.addEventListener('mouseenter', () => {
+            if (autoAdvanceInterval) {
+                window.clearInterval(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            startAutoAdvance();
+        });
+
+        // Start auto-advance
+        startAutoAdvance();
+    }
+</script>
+
+<style>
+    .hero-dot.active {
+        transform: scale(1.2);
+        background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .hero-slideshow:hover .hero-dot {
+        opacity: 1;
+    }
+</style>
