@@ -29,7 +29,8 @@ const productDetailProps = product.priceIds ? {
     priceIds: product.priceIds,
     images: product.images,
     colorImages: product.colorImages,
-    disabled: product.disabled
+    disabled: product.disabled,
+    category: product.category
 } : {
     title: product.name,
     description: product.description,
@@ -38,7 +39,8 @@ const productDetailProps = product.priceIds ? {
     singlePriceId: product.priceId,
     images: product.images,
     colorImages: product.colorImages,
-    disabled: product.disabled
+    disabled: product.disabled,
+    category: product.category
 };
 ---
 
