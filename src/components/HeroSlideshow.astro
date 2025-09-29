@@ -1,30 +1,34 @@
 ---
 // Hero slideshow component with dots and auto-advance
+const { children } = Astro.props;
 ---
 
-<div class="relative group w-full max-w-4xl mx-auto mt-4 hero-slideshow">
-    <div class="hero-carousel bg-transparent w-full aspect-[4/3] touch-none relative overflow-hidden rounded-2xl shadow-2xl">
+<div class="relative group w-full hero-slideshow">
+    <div class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen touch-none relative overflow-hidden shadow-2xl">
         <img
             src="/halloween-bandana/product.webp"
             alt="Halloween Bandana Product"
-            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0 transition-opacity duration-500"
+            class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0 transition-opacity duration-500"
             data-index="1"
         />
         <img
             src="/halloween-bandana/hero.webp"
             alt="Halloween Bandana Hero"
-            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0"
+            class="hero-slide w-full h-full object-cover  shadow-2xl absolute inset-0"
             data-index="2"
             style="display: none;"
         />
         <img
             src="/halloween-bandana/halloween-bandana-1.webp"
             alt="Halloween Bandana Alternative"
-            class="hero-slide w-full h-full object-cover rounded-2xl shadow-2xl absolute inset-0"
+            class="hero-slide w-full h-full object-cover  shadow-2xl absolute inset-0"
             data-index="3"
             style="display: none;"
         />
     </div>
+
+    <!-- Overlaid content -->
+    {children}
 
     <!-- Dots navigation -->
     <div class="flex justify-center space-x-2 mt-4">

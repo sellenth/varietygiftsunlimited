@@ -1,15 +1,30 @@
-<header class="header-container">
-  <!-- Navigation Bar -->
-  <nav class="navbar py-4 px-8">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-    <div class="flex space-x-8 md:space-x-12">
-      <a href="/" class="nav-link font-medium text-sm">HOME</a>
-      <a href="https://www.variety.gifts/shop" class="nav-link font-medium text-sm">SHOP</a>
-      <a href="/contact" class="nav-link font-medium text-sm hidden md:block">CONTACT</a>
-    </div>
-    </div>
-  </nav>
-</header>
+<div class="drawer">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <!-- Page content here -->
+    <header class="header-container">
+      <nav class="absolute py-4 px-8">
+        <div class="max-w-6xl mx-auto flex justify-start items-center">
+          <label for="my-drawer" class="btn btn-square btn-ghost drawer-button">
+            <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+              <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
+            </svg>
+          </label>
+        </div>
+      </nav>
+    </header>
+  </div>
+  <div class="drawer-side z-50">
+    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <aside class="bg-[#8b4513] min-h-full w-80 p-4">
+      <ul class="mt-10 menu text-white">
+        <li><a href="/" class="text-lg font-medium text-white hover:text-orange-200">HOME</a></li>
+        <li><a href="https://www.variety.gifts/shop" class="text-lg font-medium text-white hover:text-orange-200">SHOP</a></li>
+        <li><a href="/contact" class="text-lg font-medium text-white hover:text-orange-200">CONTACT</a></li>
+      </ul>
+    </aside>
+  </div>
+</div>
 
 <style>
   /* Header Container */
@@ -23,19 +38,27 @@
 
   /* Navigation */
   .navbar {
-    background: var(--season-navbar-bg);
-    box-shadow: 0 2px 4px var(--season-navbar-shadow);
+    background: transparent;
+    box-shadow: none;
   }
 
-  .nav-link {
-    color: var(--season-navbar-text);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.05em;
+  /* Hamburger button styling */
+  .drawer-button svg {
+    color: white;
   }
 
-  .nav-link:hover {
+  .drawer-button:hover svg {
     opacity: 0.8;
+  }
+
+  /* Ensure menu items are clickable */
+  .drawer-side aside {
+    z-index: 60;
+  }
+
+  .drawer-side .menu li a {
+    position: relative;
+    z-index: 70;
   }
 </style>
 

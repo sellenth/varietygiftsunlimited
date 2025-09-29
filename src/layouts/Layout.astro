@@ -129,7 +129,7 @@ const themeClass = themeClasses[activeTheme];
  	<body class={themeClass}>
  		<div class="min-h-screen bg-theme-mist">
 			{ !hideHeader && <Header /> }
-			<main class={!hideHeader ? 'pt-16' : ''}>
+			<main>
 				<slot />
 			</main>
 		</div>
