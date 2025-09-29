@@ -37,6 +37,8 @@
   --season-navbar-bg: var(--season-accent);
   --season-navbar-text: var(--season-accent-contrast);
   --season-navbar-shadow: var(--season-accent-shadow);
+  /* Display font for headings */
+  --season-display-font: 'Comfortaa Variable', sans-serif;
 }
 
 .theme-fall {
@@ -77,6 +79,8 @@
   --season-navbar-bg: #8b4513;
   --season-navbar-text: #fff8dc;
   --season-navbar-shadow: rgba(139, 69, 19, 0.3);
+  /* Fall display font */
+  --season-display-font: 'Bodoni Moda', serif;
 }
 
 /* Base Theme Classes */

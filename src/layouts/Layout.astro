@@ -112,7 +112,12 @@ const themeClass = themeClasses[activeTheme];
 		/>
 
 		<link rel="canonical" href={ogUrl || "https://www.variety.gifts/"} />
-		
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
 		<slot name="head" />
 		
 		<script is:inline>
@@ -260,8 +265,8 @@ const themeClass = themeClasses[activeTheme];
 		font-family: system-ui, sans-serif;
 	}
 	h1, h2, h3, h4, h5, h6 {
-		font-family: 'Comfortaa Variable', sans-serif;
-		font-weight: bold;
+		font-family: var(--season-display-font);
+		font-weight: 900;
 	}
 
 	dialog {
