@@ -322,6 +322,21 @@ const hustlePinkPriceIds = {
   "Red - X-Large": "price_1S7KtCAp2D4XT14xRnx0wcjO",
 };
 
+// No Days Off price ID (hat)
+const noDaysOffPriceId = "price_1SDFLuAp2D4XT14xgnjLiVyk";
+
+// Pumpkin Sweater price IDs
+const pumpkinSweaterPriceIds = {
+  "Black - Small": "price_1SDFM4Ap2D4XT14xzOBnyI2s",
+  "Black - Medium": "price_1SDFM7Ap2D4XT14xH825k2Wc",
+  "Black - Large": "price_1SDFM9Ap2D4XT14x2wDCmX76",
+  "Black - X-Large": "price_1SDFMDAp2D4XT14x9c7eE4mT",
+  "Green - Small": "price_1SDFMIAp2D4XT14xIBUq9nLe",
+  "Green - Medium": "price_1SDFMLAp2D4XT14xKQNKkoQU",
+  "Green - Large": "price_1SDFMNAp2D4XT14xeahCglQR",
+  "Green - X-Large": "price_1SDFMQAp2D4XT14xPef8pSeg",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -403,6 +418,28 @@ export const products: Product[] = [
     price: '$29.99',
     priceIds: catsPumpkinsTShirtPriceIds,
     slug: 'cats-pumpkins-t-shirt',
+  },
+  {
+    id: 'pumpkin-sweater',
+    name: 'Pumpkin Sweater',
+    description: 'Cozy pumpkin-themed sweater in Black and ?? Green.',
+    category: 'shirts',
+    images: [
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
+    ],
+    colorImages: {
+      'Black': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' }
+      ],
+      'Green': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
+      ]
+    },
+    price: '$34.99',
+    priceIds: pumpkinSweaterPriceIds,
+    slug: 'pumpkin-sweater'
   },
   {
     id: 'cats-pumpkins-crewneck',
@@ -963,5 +1000,19 @@ export const products: Product[] = [
     price: '$29.99',
     priceId: 'price_1RiQjZAp2D4XT14xjGlRDVfe',
     slug: 'gym-brat-hat'
+  },
+  {
+    id: 'no-days-off',
+    name: 'No Days Off Hat',
+    description: 'Gym Brat hat – No Days Off.',
+    category: 'hats',
+    images: [
+      { src: '/no-days-off/no-days-off-front.webp', alt: 'No Days Off Hat - Front' },
+      { src: '/no-days-off/no-days-off-back.webp', alt: 'No Days Off Hat - Back' },
+      { src: '/no-days-off/no-days-off-side.webp', alt: 'No Days Off Hat - Side' }
+    ],
+    price: '$29.99',
+    priceId: noDaysOffPriceId,
+    slug: 'no-days-off'
   },
 ];
