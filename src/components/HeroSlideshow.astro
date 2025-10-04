@@ -5,7 +5,7 @@ const { children } = Astro.props;
 
 <div class="relative group w-full hero-slideshow">
     <div class="absolute w-full h-full z-10">
-        <div id="slide-1-content" class="flex flex-col w-full h-full items-center justify-center pt-48 md:pt-96 text-[#fff2de]" style="display: none;">
+        <div id="slide-1-content" class="flex flex-col w-full h-full items-center justify-center pt-48 md:pt-96 text-[#fff2de]" style="display: none; background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75));">
             <h1 class="text-3xl md:text-6xl text-center">
                 COZY UP TO <br />
                 FALL FAVORITES
@@ -17,18 +17,18 @@ const { children } = Astro.props;
                 SHOP NOW
             </a>
         </div>
-        <div id="slide-2-content" class="flex flex-col w-full h-full items-start px-8 pt-[37%] md:px-24 md:pt-32" style="display: none;">
-            <h1 class="text-5xl text-[#5b3e30] md:text-7xl text-left">
+        <div id="slide-2-content" class="flex flex-col w-full h-full items-start px-8 pt-[37%] md:px-24 md:pt-32" style="display: none; background: linear-gradient(to right, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));">
+            <h1 class="text-5xl text-white md:text-7xl text-left">
                 FALL <br /> INTO<br />
                 FUN FINDS
             </h1>
-            <p class="text-2xl font-thin md:mt-4 hidden md:block">
+            <p class="text-2xl font-thin text-white md:mt-4 hidden md:block">
                 Celebrate sweater weather with playful  <br> surprises, pumpkin-spices treasures,  <br> and other joyful moments.
 
             </p>
             <a
                 href="/shop/product/pumpkin-sweater"
-                class="md:text-4xl text-[#5b3e30]  border-[#5b3e30]  border-2 hover:bg-orange-600 font-bold mt-4 md:mt-12 py-3 px-12 rounded-full transition-all duration-300 transform hover:scale-105 z-10"
+                class="md:text-4xl text-white  border-white  border-2 hover:bg-orange-600 font-bold mt-4 md:mt-12 py-3 px-12 rounded-full transition-all duration-300 transform hover:scale-105 z-10"
             >
                 SHOP NOW
             </a>
@@ -147,7 +147,7 @@ const { children } = Astro.props;
             }
 
             function startAutoAdvance() {
-                autoAdvanceInterval = window.setInterval(nextSlide, 4000); // 4 second intervals
+                //autoAdvanceInterval = window.setInterval(nextSlide, 4000); // 4 second intervals
             }
 
             // Add click event listeners to dots
