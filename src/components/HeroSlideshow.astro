@@ -36,7 +36,7 @@ const { children } = Astro.props;
 
     </div>
         <div
-            class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen touch-none relative overflow-hidden shadow-2xl"
+            class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen relative overflow-hidden shadow-2xl"
         >
             <img
                 src="/landing/on_model.webp"
@@ -80,11 +80,12 @@ const { children } = Astro.props;
     </div>
 
     <script>
-        const carousel = document.querySelector(".hero-carousel");
+        const slideshow = document.querySelector(".hero-slideshow");
+        const carousel = slideshow?.querySelector(".hero-carousel");
         const slides = carousel?.querySelectorAll(".hero-slide");
         const dots = document.querySelectorAll(".hero-dot");
 
-        if (carousel && slides && dots) {
+        if (slideshow && carousel && slides && dots) {
             let currentIndex = 1;
             const maxIndex = slides.length;
             let autoAdvanceInterval: number | null = null;
@@ -161,21 +162,23 @@ const { children } = Astro.props;
             let touchStartX = 0;
             let touchEndX = 0;
 
-            carousel.addEventListener(
+            slideshow.addEventListener(
                 "touchstart",
                 (e: TouchEvent) => {
                     touchStartX = e.changedTouches[0].screenX;
+                    e.preventDefault();
                 },
-                { passive: true },
+                { passive: false },
             );
 
-            carousel.addEventListener(
+            slideshow.addEventListener(
                 "touchend",
                 (e: TouchEvent) => {
                     touchEndX = e.changedTouches[0].screenX;
                     handleSwipe();
+                    e.preventDefault();
                 },
-                { passive: true },
+                { passive: false },
             );
 
             function handleSwipe() {
@@ -196,14 +199,14 @@ const { children } = Astro.props;
             }
 
             // Pause auto-advance on hover
-            carousel.addEventListener("mouseenter", () => {
+            slideshow.addEventListener("mouseenter", () => {
                 if (autoAdvanceInterval) {
                     window.clearInterval(autoAdvanceInterval);
                     autoAdvanceInterval = null;
                 }
             });
 
-            carousel.addEventListener("mouseleave", () => {
+            slideshow.addEventListener("mouseleave", () => {
                 startAutoAdvance();
             });
 
