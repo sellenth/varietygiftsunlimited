@@ -461,6 +461,7 @@ export const products: Product[] = [
       'Gray': [
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Front' },
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
       ],
       'White': [
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins Crewneck - White Front' },
