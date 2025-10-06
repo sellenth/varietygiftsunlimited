@@ -4,7 +4,7 @@ const FEATURED_PRODUCT_IDS = [
   "halloween-ghosts",
   "cats-pumpkins-t-shirt",
   "cats-pumpkins-crewneck",
-  "freudian-tank",
+  "pumpkin-sweater",
 ] as const;
 
 export const featuredProductIds = [...FEATURED_PRODUCT_IDS];

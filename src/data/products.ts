@@ -430,11 +430,13 @@ export const products: Product[] = [
     ],
     colorImages: {
       'Black': [
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' }
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-folded.webp', alt: 'Pumpkin Sweater - Black Folded' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-model.webp', alt: 'Pumpkin Sweater - Black On Model' }
       ],
       'Green': [
         { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' },
       ]
     },
     price: '$34.99',
@@ -454,18 +456,16 @@ export const products: Product[] = [
       'Green': [
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green On Model' },
       ],
       'Gray': [
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Front' },
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Folded' },
       ],
-      'Orange': [
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-orange.webp', alt: 'Cats + Pumpkins Crewneck - Orange Front' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-orange.webp', alt: 'Cats + Pumpkins Crewneck - Orange Folded' },
-      ],
       'White': [
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins Crewneck - White Front' },
         { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins Crewneck - White Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-white.webp', alt: 'Cats + Pumpkins T-Shirt - White On Model' },
       ],
     },
     price: '$34.99',
