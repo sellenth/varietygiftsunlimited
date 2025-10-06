@@ -116,7 +116,7 @@ const themeClass = themeClasses[activeTheme];
 		<!-- Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 
 		<slot name="head" />
 		
@@ -264,9 +264,15 @@ const themeClass = themeClasses[activeTheme];
 		padding: 0;
 		font-family: system-ui, sans-serif;
 	}
-	h1, h2, h3, h4, h5, h6 {
+
+	h1, h2 { 
 		font-family: var(--season-display-font);
-		font-weight: 900;
+		font-weight: 400;
+		text-spacing: .2rem;
+	}
+
+	h3, h4, h5, h6 {
+		font-family: 'Comfortaa Variable', sans-serif;
 	}
 
 	dialog {
