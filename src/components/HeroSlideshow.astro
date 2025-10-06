@@ -5,7 +5,11 @@ const { children } = Astro.props;
 
 <div class="relative group w-full hero-slideshow">
     <div class="absolute w-full h-full z-10">
-        <div id="slide-1-content" class="flex flex-col w-full h-full items-center justify-center pt-40 md:pt-80 text-[#fff2de]" style="display: none; background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75));">
+        <div
+            id="slide-1-content"
+            class="flex flex-col w-full h-full items-center justify-center pt-40 md:pt-80 text-[#fff2de]"
+            style="display: none; background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75));"
+        >
             <h1 class="text-5xl md:text-6xl text-center">
                 COZY UP TO <br />
                 FALL FAVORITES
@@ -17,212 +21,238 @@ const { children } = Astro.props;
                 SHOP NOW
             </a>
         </div>
-        <div id="slide-2-content" class="flex flex-col w-full h-full items-start px-8 pt-[37%] md:px-24 md:pt-32" style="display: none; background: linear-gradient(to right, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));">
+        <div
+            id="slide-2-content"
+            class="flex flex-col w-full h-full items-start px-8 pt-24 md:px-24 md:pt-32"
+            style="display: flex; background: linear-gradient(to right, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));"
+        >
             <h1 class="text-5xl text-white md:text-7xl text-left">
                 FALL <br /> INTO<br />
                 FUN FINDS
             </h1>
             <p class="text-2xl font-thin text-white md:mt-4 hidden md:block">
-                Celebrate sweater weather with playful  <br> surprises, pumpkin-spices treasures,  <br> and other joyful moments.
-
+                Celebrate sweater weather with playful <br /> surprises, pumpkin-spices
+                treasures, <br /> and other joyful moments.
             </p>
             <a
                 href="/shop/product/pumpkin-sweater"
-                class="md:text-4xl text-white  border-white  border-2 hover:bg-orange-600 font-bold mt-4 md:mt-12 py-3 px-12 rounded-full transition-all duration-300 transform hover:scale-105 z-10"
+                class="md:text-lg text-white tracking-widest border-white border-[1px] hover:bg-orange-600 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
             >
                 SHOP NOW
             </a>
         </div>
-
-    </div>
         <div
-            class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen relative overflow-hidden shadow-2xl"
+            id="slide-3-content"
+            class="flex flex-col w-full h-full items-end px-8 pt-24 md:px-24 md:pt-32"
+            style="display: flex; background: linear-gradient(to left, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));"
         >
-            <img
-                src="/landing/on_model.webp"
-                alt="Halloween Pumpkin Sweater on model"
-                class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
-                data-index="1"
-                style="display: none;"
-            />
-            <img
-                src="/landing/on_display.webp"
-                alt="Halloween Pumpkin Sweaters Product"
-                class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0 transition-opacity duration-500"
-                data-index="2"
-            />
-            <img
-                src="/halloween-bandana/halloween-bandana-1.webp"
-                alt="Halloween Bandana Alternative"
-                class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
-                data-index="3"
-                style="display: none;"
-            />
-        </div>
-
-        <!-- Overlaid content -->
-        {children}
-
-        <!-- Dots navigation -->
-        <div
-            class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-2 z-30"
-        >
-            <button
-                class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 active"
-                data-slide="1"></button>
-            <button
-                class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
-                data-slide="2"></button>
-            <button
-                class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
-                data-slide="3"></button>
+            <div class="flex-col flex">
+                <h1 class="text-5xl text-white md:text-7xl text-center">
+                    FETCH THE <br /> CUTEST<br />
+                    FALL LOOKS
+                </h1>
+                <p
+                    class="text-2xl font-thin text-white md:mt-4 hidden md:block text-center"
+                >
+                    Pumpkin patches, crunchy leaves, and <br /> paw-fect accessories
+                    for your furry friend.
+                </p>
+                <a
+                    href="/shop/product/halloween-bandana"
+                    class="md:text-lg text-white self-center tracking-widest border-white border-[1px] hover:bg-orange-600 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
+                >
+                    SHOP NOW
+                </a>
+            </div>
         </div>
     </div>
+    <div
+        class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen relative overflow-hidden shadow-2xl"
+    >
+        <img
+            src="/landing/on_model.webp"
+            alt="Halloween Pumpkin Sweater on model"
+            class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
+            data-index="1"
+            style="display: none;"
+        />
+        <img
+            src="/landing/on_display.webp"
+            alt="Halloween Pumpkin Sweaters Product"
+            class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0 transition-opacity duration-500"
+            data-index="2"
+            style="display: block;"
+        />
+        <img
+            src="/landing/on_table.webp"
+            alt="Halloween Bandana Alternative"
+            class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
+            data-index="3"
+            style="display: none;"
+        />
+    </div>
 
-    <script>
-        const slideshow = document.querySelector(".hero-slideshow");
-        const carousel = slideshow?.querySelector(".hero-carousel");
-        const slides = carousel?.querySelectorAll(".hero-slide");
-        const dots = document.querySelectorAll(".hero-dot");
+    <!-- Overlaid content -->
+    {children}
 
-        if (slideshow && carousel && slides && dots) {
-            let currentIndex = 1;
-            const maxIndex = slides.length;
-            let autoAdvanceInterval: number | null = null;
+    <!-- Dots navigation -->
+    <div
+        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-2 z-30"
+    >
+        <button
+            class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 active"
+            data-slide="1"></button>
+        <button
+            class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
+            data-slide="2"></button>
+        <button
+            class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
+            data-slide="3"></button>
+    </div>
+</div>
 
-            // Initialize first slide
+<script>
+    const slideshow = document.querySelector(".hero-slideshow");
+    const carousel = slideshow?.querySelector(".hero-carousel");
+    const slides = carousel?.querySelectorAll(".hero-slide");
+    const dots = document.querySelectorAll(".hero-dot");
+
+    if (slideshow && carousel && slides && dots) {
+        let currentIndex = 1;
+        const maxIndex = slides.length;
+        let autoAdvanceInterval: number | null = null;
+
+        showSlide(currentIndex);
+
+        function showSlide(index: number) {
+            // Hide all slides
+            slides.forEach((slide) => {
+                (slide as HTMLElement).style.display = "none";
+            });
+
+            // Hide all overlay content
+            const slide1Content = document.getElementById("slide-1-content");
+            const slide2Content = document.getElementById("slide-2-content");
+            if (slide1Content) slide1Content.style.display = "none";
+            if (slide2Content) slide2Content.style.display = "none";
+
+            // Update dots
+            dots.forEach((dot, i) => {
+                if (i + 1 === index) {
+                    dot.classList.add("active", "bg-white/80");
+                    dot.classList.remove("bg-white/50");
+                } else {
+                    dot.classList.remove("active", "bg-white/80");
+                    dot.classList.add("bg-white/50");
+                }
+            });
+
+            // Show target slide
+            const targetSlide = carousel.querySelector(
+                `[data-index="${index}"]`,
+            );
+            if (targetSlide) {
+                (targetSlide as HTMLElement).style.display = "block";
+            }
+
+            // Show corresponding overlay content
+            if (index === 1 && slide1Content) {
+                slide1Content.style.display = "flex";
+            } else if (index === 2 && slide2Content) {
+                slide2Content.style.display = "flex";
+            }
+        }
+
+        function nextSlide() {
+            currentIndex = currentIndex === maxIndex ? 1 : currentIndex + 1;
             showSlide(currentIndex);
+        }
 
-            function showSlide(index: number) {
-                // Hide all slides
-                slides.forEach((slide) => {
-                    (slide as HTMLElement).style.display = "none";
-                });
-
-                // Hide all overlay content
-                const slide1Content = document.getElementById("slide-1-content");
-                const slide2Content = document.getElementById("slide-2-content");
-                if (slide1Content) slide1Content.style.display = "none";
-                if (slide2Content) slide2Content.style.display = "none";
-
-                // Update dots
-                dots.forEach((dot, i) => {
-                    if (i + 1 === index) {
-                        dot.classList.add("active", "bg-white/80");
-                        dot.classList.remove("bg-white/50");
-                    } else {
-                        dot.classList.remove("active", "bg-white/80");
-                        dot.classList.add("bg-white/50");
-                    }
-                });
-
-                // Show target slide
-                const targetSlide = carousel.querySelector(
-                    `[data-index="${index}"]`,
-                );
-                if (targetSlide) {
-                    (targetSlide as HTMLElement).style.display = "block";
-                }
-
-                // Show corresponding overlay content
-                if (index === 1 && slide1Content) {
-                    slide1Content.style.display = "flex";
-                } else if (index === 2 && slide2Content) {
-                    slide2Content.style.display = "flex";
-                }
+        function goToSlide(index: number) {
+            currentIndex = index;
+            showSlide(currentIndex);
+            // Reset auto-advance timer
+            if (autoAdvanceInterval) {
+                window.clearInterval(autoAdvanceInterval);
             }
-
-            function nextSlide() {
-                currentIndex = currentIndex === maxIndex ? 1 : currentIndex + 1;
-                showSlide(currentIndex);
-            }
-
-            function goToSlide(index: number) {
-                currentIndex = index;
-                showSlide(currentIndex);
-                // Reset auto-advance timer
-                if (autoAdvanceInterval) {
-                    window.clearInterval(autoAdvanceInterval);
-                }
-                startAutoAdvance();
-            }
-
-            function startAutoAdvance() {
-                //autoAdvanceInterval = window.setInterval(nextSlide, 4000); // 4 second intervals
-            }
-
-            // Add click event listeners to dots
-            dots.forEach((dot, index) => {
-                dot.addEventListener("click", () => {
-                    goToSlide(index + 1);
-                });
-            });
-
-            // Add touch swipe support
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            slideshow.addEventListener(
-                "touchstart",
-                (e: TouchEvent) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                    e.preventDefault();
-                },
-                { passive: false },
-            );
-
-            slideshow.addEventListener(
-                "touchend",
-                (e: TouchEvent) => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                    e.preventDefault();
-                },
-                { passive: false },
-            );
-
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const diff = touchEndX - touchStartX;
-
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        // Swipe right, go to previous
-                        const prevIndex =
-                            currentIndex === 1 ? maxIndex : currentIndex - 1;
-                        goToSlide(prevIndex);
-                    } else {
-                        // Swipe left, go to next
-                        nextSlide();
-                    }
-                }
-            }
-
-            // Pause auto-advance on hover
-            slideshow.addEventListener("mouseenter", () => {
-                if (autoAdvanceInterval) {
-                    window.clearInterval(autoAdvanceInterval);
-                    autoAdvanceInterval = null;
-                }
-            });
-
-            slideshow.addEventListener("mouseleave", () => {
-                startAutoAdvance();
-            });
-
-            // Start auto-advance
             startAutoAdvance();
         }
-    </script>
 
-    <style>
-        .hero-dot.active {
-            transform: scale(1.2);
-            background-color: rgba(255, 255, 255, 0.9) !important;
+        function startAutoAdvance() {
+            //autoAdvanceInterval = window.setInterval(nextSlide, 4000); // 4 second intervals
         }
 
-        .hero-slideshow:hover .hero-dot {
-            opacity: 1;
+        // Add click event listeners to dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener("click", () => {
+                goToSlide(index + 1);
+            });
+        });
+
+        // Add touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slideshow.addEventListener(
+            "touchstart",
+            (e: TouchEvent) => {
+                touchStartX = e.changedTouches[0].screenX;
+                e.preventDefault();
+            },
+            { passive: false },
+        );
+
+        slideshow.addEventListener(
+            "touchend",
+            (e: TouchEvent) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+                e.preventDefault();
+            },
+            { passive: false },
+        );
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchEndX - touchStartX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe right, go to previous
+                    const prevIndex =
+                        currentIndex === 1 ? maxIndex : currentIndex - 1;
+                    goToSlide(prevIndex);
+                } else {
+                    // Swipe left, go to next
+                    nextSlide();
+                }
+            }
         }
-    </style>
-</div>
+
+        // Pause auto-advance on hover
+        slideshow.addEventListener("mouseenter", () => {
+            if (autoAdvanceInterval) {
+                window.clearInterval(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+        });
+
+        slideshow.addEventListener("mouseleave", () => {
+            startAutoAdvance();
+        });
+
+        // Start auto-advance
+        startAutoAdvance();
+    }
+</script>
+
+<style>
+    .hero-dot.active {
+        transform: scale(1.2);
+        background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .hero-slideshow:hover .hero-dot {
+        opacity: 1;
+    }
+</style>
