@@ -197,9 +197,9 @@ const { children } = Astro.props;
             "touchstart",
             (e: TouchEvent) => {
                 touchStartX = e.changedTouches[0].screenX;
-                e.preventDefault();
+                // Do not prevent default here to allow taps on links/buttons to work on mobile
             },
-            { passive: false },
+            { passive: true },
         );
 
         slideshow.addEventListener(
@@ -207,9 +207,9 @@ const { children } = Astro.props;
             (e: TouchEvent) => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
-                e.preventDefault();
+                // Do not prevent default here so that tap-generated click events can fire
             },
-            { passive: false },
+            { passive: true },
         );
 
         function handleSwipe() {
