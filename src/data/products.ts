@@ -629,17 +629,15 @@ export const products: Product[] = [
     description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in black and ivory.',
     category: 'shirts',
     images: [
-      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
-      { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Black Back' }
+      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
+      { src: '/gym-brat-croptop/brat_crop_model_front.webp', alt: 'Gym Brat Cropped Shirt - Model' },
+      { src: '/gym-brat-croptop/brat_crop_model_turn.webp', alt: 'Gym Brat Cropped Shirt - Model' }
     ],
     colorImages: {
       'Ivory': [
-        { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
-        { src: '/gym-brat-croptop/brat_crop_back_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Back' },
-      ],
-      'Black': [
-        { src: '/gym-brat-croptop/brat_crop_front_black.webp', alt: 'Gym Brat Cropped Shirt - Black Front' },
-        { src: '/gym-brat-croptop/brat_crop_back_black.webp', alt: 'Gym Brat Cropped Shirt - Black Back' },
+      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
+      { src: '/gym-brat-croptop/brat_crop_model_front.webp', alt: 'Gym Brat Cropped Shirt - Model' },
+      { src: '/gym-brat-croptop/brat_crop_model_turn.webp', alt: 'Gym Brat Cropped Shirt - Model' }
       ]
     },
     price: '$29.99',
