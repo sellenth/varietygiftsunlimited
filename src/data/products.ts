@@ -626,7 +626,7 @@ export const products: Product[] = [
   {
     id: 'gym-brat-cropped-shirt',
     name: 'Gym Brat Cropped Shirt',
-    description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in black and ivory.',
+    description: 'Show off your fitness lifestyle with this stylish cropped shirt. Perfect for the gym or casual wear. Available in ivory.',
     category: 'shirts',
     images: [
       { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
