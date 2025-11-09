@@ -16,6 +16,6 @@ Visit [Variety Gifts](https://www.variety.gifts) to explore the tools and featur
 ---
 
 ### About the Creator
-This project is built by a creative technologist passionate about blending **state-of-the-art AI** with **digital creativity**. With a focus on marketing and innovation, the goal is to redefine how technology meets consumer engagement.
+This project is about blending **state-of-the-art AI** with **digital creativity**. With a focus on marketing and innovation, the goal is to redefine how technology meets consumer engagement 😎
 
 ---

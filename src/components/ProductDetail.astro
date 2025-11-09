@@ -385,6 +385,7 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                 lineItems: [{ price: priceId, quantity: 1 }],
                 mode: "payment",
                 successUrl: "https://varietygiftsunlimited.com/success",
+                billingAddressCollection: "required",
                 cancelUrl: "https://varietygiftsunlimited.com/",
                 shippingAddressCollection: {
                     allowedCountries: [],
