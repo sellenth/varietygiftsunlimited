@@ -77,6 +77,23 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </div>
             </a>
+
+            <a href="/neon-quake/index.html" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <div class="neon-quake-preview">
+                            <div class="quake-effect">
+                                <div class="neon-lines"></div>
+                                <div class="quake-icon">⚡</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Neon Quake</h2>
+                        <div class="button">Play Now</div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </Layout>
@@ -344,6 +361,111 @@ import Layout from "../layouts/Layout.astro";
     @keyframes particles {
         0% { transform: rotate(0deg); opacity: 0.6; }
         100% { transform: rotate(360deg); opacity: 0.4; }
+    }
+
+    /* Neon Quake Animation */
+    .neon-quake-preview {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #ff0080, #8000ff, #0080ff, #00ff80);
+        background-size: 400% 400%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        animation: neon-shift 4s ease-in-out infinite;
+    }
+
+    .neon-quake-preview::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+        animation: rotate 6s linear infinite;
+    }
+
+    .quake-effect {
+        position: relative;
+        z-index: 10;
+        animation: quake-shake 2s ease-in-out infinite;
+    }
+
+    .neon-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+            linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%),
+            linear-gradient(0deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+        background-size: 20px 20px;
+        animation: lines-move 3s linear infinite;
+        opacity: 0.7;
+    }
+
+    .quake-icon {
+        font-size: 5rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow:
+            0 0 5px #ff0080,
+            0 0 10px #ff0080,
+            0 0 15px #ff0080,
+            0 0 20px #8000ff,
+            0 0 35px #8000ff,
+            0 0 40px #0080ff;
+        animation: icon-glow 1.5s ease-in-out infinite alternate;
+        z-index: 20;
+    }
+
+    @keyframes neon-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    @keyframes quake-shake {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        10% { transform: translateX(-5px) rotate(-1deg); }
+        20% { transform: translateX(5px) rotate(1deg); }
+        30% { transform: translateX(-3px) rotate(-0.5deg); }
+        40% { transform: translateX(3px) rotate(0.5deg); }
+        50% { transform: translateX(-2px) rotate(-0.3deg); }
+        60% { transform: translateX(2px) rotate(0.3deg); }
+        70% { transform: translateX(-1px) rotate(-0.1deg); }
+        80% { transform: translateX(1px) rotate(0.1deg); }
+        90% { transform: translateX(0) rotate(0deg); }
+    }
+
+    @keyframes lines-move {
+        0% { background-position: 0 0; }
+        100% { background-position: 20px 20px; }
+    }
+
+    @keyframes icon-glow {
+        0% {
+            text-shadow:
+                0 0 5px #ff0080,
+                0 0 10px #ff0080,
+                0 0 15px #ff0080,
+                0 0 20px #8000ff,
+                0 0 35px #8000ff,
+                0 0 40px #0080ff;
+        }
+        100% {
+            text-shadow:
+                0 0 10px #ff0080,
+                0 0 20px #ff0080,
+                0 0 30px #ff0080,
+                0 0 40px #8000ff,
+                0 0 50px #8000ff,
+                0 0 60px #0080ff;
+        }
     }
 
     .game-info {
