@@ -18,6 +18,14 @@ const displayImages = isColorSizeVariant && colorOptions.length > 0 ? colorImage
 // Get the API key from environment variables
 const PUBLIC_STRIPE_KEY = import.meta.env.PUBLIC_STRIPE_KEY;
 
+const slugify = (value: string) => value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40);
+
+const checkoutClientReference = typeof title === "string" && title.length > 0 ? slugify(title) : undefined;
+
 // Calculate sizes for template use
 const availableSizes = priceIds ? Object.keys(priceIds) : [];
 const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
@@ -145,6 +153,7 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                 data-stripe-key={PUBLIC_STRIPE_KEY}
                                 data-stripe-payment-id={priceIds[defaultSize]}
                                 data-is-color-size={isColorSizeVariant}
+                                data-client-reference-id={checkoutClientReference || undefined}
                                 class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
                             >
                                 Buy Now
@@ -173,6 +182,7 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                 id="buy-button"
                                 data-stripe-key={PUBLIC_STRIPE_KEY}
                                 data-stripe-payment-id={singlePriceId}
+                                data-client-reference-id={checkoutClientReference || undefined}
                                 class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
                             >
                                 Buy Now
@@ -267,9 +277,11 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
 
 
 <script>
-    const buyButton = document.getElementById("buy-button");
-    const sizeSelect = document.getElementById("size-select") as HTMLSelectElement;
+    const buyButton = document.getElementById("buy-button") as HTMLButtonElement | null;
+    const sizeSelect = document.getElementById("size-select") as HTMLSelectElement | null;
     const isColorSize = buyButton?.dataset?.isColorSize === "true";
+    const CHECKOUT_ENDPOINT = "/shop/checkout";
+    const SHIPPING_COUNTRIES = ["US","CN","DE","JP","IN","GB","FR","IT","BR","CA","RU","MX","KR","AU","ES","ID","NL","SA","TR","CH","TW","PL","TH","SE","BE"];
     
     let stripe: any = null;
     let stripeLoadError = false;
@@ -313,6 +325,59 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
             return priceData[key] || buyButton?.dataset?.stripePaymentId;
         }
         return sizeSelect ? sizeSelect.value : buyButton?.dataset?.stripePaymentId;
+    };
+
+    const createCheckoutSession = async (priceId: string) => {
+        if (!priceId) {
+            throw new Error("Missing price selection.");
+        }
+
+        const endpointUrl = new URL(CHECKOUT_ENDPOINT, window.location.origin).toString();
+        const payload = {
+            priceId,
+            successUrl: `${window.location.origin}/success`,
+            cancelUrl: window.location.href,
+            shippingCountries: SHIPPING_COUNTRIES,
+            clientReferenceId: buyButton?.dataset?.clientReferenceId || window.location.pathname
+        };
+
+        const response = await fetch(endpointUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        let data: any = null;
+        try {
+            data = await response.json();
+        } catch (error) {
+            console.error("Failed to parse checkout response:", error);
+            throw new Error("Unexpected response from checkout service.");
+        }
+
+        if (!response.ok) {
+            throw new Error(data?.error || "Unable to start checkout. Please try again.");
+        }
+
+        if (!data?.sessionId) {
+            throw new Error("Checkout session response missing sessionId.");
+        }
+
+        return data.sessionId as string;
+    };
+
+    const setProcessingState = (isProcessing: boolean) => {
+        if (!buyButton) return;
+        if (isProcessing) {
+            buyButton.dataset.originalLabel = buyButton.textContent || "Buy Now";
+            buyButton.textContent = "Processing...";
+            buyButton.disabled = true;
+        } else {
+            buyButton.textContent = buyButton.dataset.originalLabel || "Buy Now";
+            buyButton.disabled = false;
+        }
     };
 
     // Initialize carousel functionality
@@ -447,7 +512,7 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
 
     // Only add click handler if buy button exists
     if (buyButton) {
-        buyButton.addEventListener("click", () => {
+        buyButton.addEventListener("click", async () => {
             if (isDev) {
                 alert("Stripe checkout is disabled in development mode.");
                 return;
@@ -460,20 +525,28 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
 
             const priceId = getPriceId();
 
-            stripe.redirectToCheckout({
-                lineItems: [{ price: priceId, quantity: 1 }],
-                mode: "payment",
-                successUrl: "https://varietygiftsunlimited.com/success",
-                cancelUrl: "https://varietygiftsunlimited.com/",
-                shippingAddressCollection: {
-                    allowedCountries: [   "US","CN","DE","JP","IN","GB","FR","IT","BR","CA", "RU","MX","KR","AU","ES","ID","NL","SA","TR","CH", "TW","PL","TH","SE","BE"],
-                },
-            })
-            .then(function (result: any) {
-                if (result.error) {
-                    alert(result.error.message);
+            if (!priceId) {
+                alert("Please select a valid option before checking out.");
+                return;
+            }
+
+            setProcessingState(true);
+
+            try {
+                const sessionId = await createCheckoutSession(priceId);
+                const result = await stripe.redirectToCheckout({ sessionId });
+
+                if (result && result.error) {
+                    console.error("Stripe checkout failed:", result.error);
+                    alert(result.error.message || "Checkout failed. Please try again.");
                 }
-            });
+            } catch (error) {
+                console.error("Checkout session creation failed:", error);
+                const message = error instanceof Error ? error.message : "Unable to start checkout. Please try again.";
+                alert(message);
+            } finally {
+                setProcessingState(false);
+            }
         });
     }
 </script>
