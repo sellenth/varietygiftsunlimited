@@ -42,8 +42,8 @@ import Layout from "../layouts/Layout.astro";
                 id="model"
                 class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
               >
-                <option value="fal-ai/nano-banana/edit">🍌 nano banana</option>
-                <option value="fal-ai/bytedance/seedream/v4/edit" selected>🌟 seedream v4 edit</option>
+                <option value="fal-ai/nano-banana-pro/edit" selected>🍌 nano banana pro</option>
+                <option value="fal-ai/bytedance/seedream/v4/edit">🌟 seedream v4 edit</option>
               </select>
           </div>
 
@@ -327,7 +327,7 @@ import Layout from "../layouts/Layout.astro";
    const aspectRatioSelect = document.getElementById('aspectRatio') as HTMLSelectElement;
 
    const updateAspectRatioAvailability = () => {
-     if (modelSelect.value === 'fal-ai/nano-banana/edit') {
+     if (modelSelect.value === 'fal-ai/nano-banana-pro/edit') {
        aspectRatioSelect.disabled = true;
        aspectRatioSelect.value = '1:1'; // Set default when disabled
      } else {
