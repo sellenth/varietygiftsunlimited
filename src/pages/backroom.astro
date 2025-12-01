@@ -8,10 +8,14 @@ import Layout from "../layouts/Layout.astro";
   hideFooter={false}
 >
   <main class="w-full overflow-x-hidden relative">
-    <section class="backroom-section relative py-8 px-4 sm:py-12 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 min-h-screen">
+    <section
+      class="backroom-section relative py-8 px-4 sm:py-12 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 min-h-screen"
+    >
       <div class="max-w-6xl mx-auto relative z-10">
         <div class="text-center mb-8 sm:mb-12">
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 text-amber-100 drop-shadow-lg">
+          <h1
+            class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 text-amber-100 drop-shadow-lg"
+          >
             🍂 Backroom Utility 🍁
           </h1>
           <p class="text-amber-200 text-base sm:text-lg drop-shadow-md">
@@ -19,105 +23,140 @@ import Layout from "../layouts/Layout.astro";
           </p>
         </div>
 
-        <div class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border-4 border-amber-200/50 backdrop-blur-sm">
+        <div
+          class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border-4 border-amber-200/50 backdrop-blur-sm"
+        >
           <!-- API Key Section -->
           <div class="mb-6 sm:mb-8">
-            <label for="apiKey" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
+            <label
+              for="apiKey"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
               🎃 Fal API Key
             </label>
-             <input
-               type="password"
-               id="apiKey"
-               class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
-               placeholder="Enter your Fal API key..."
-             />
+            <input
+              type="password"
+              id="apiKey"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
+              placeholder="Enter your Fal API key..."
+            />
           </div>
 
           <!-- Model Selection -->
           <div class="mb-6">
-            <label for="model" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
+            <label
+              for="model"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
               🎨 Model
             </label>
-              <select
-                id="model"
-                class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+            <select
+              id="model"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+            >
+              <option value="fal-ai/nano-banana-pro/edit" selected
+                >🍌 nano banana pro</option
               >
-                <option value="fal-ai/nano-banana-pro/edit" selected>🍌 nano banana pro</option>
-                <option value="fal-ai/bytedance/seedream/v4/edit">🌟 seedream v4 edit</option>
-              </select>
+              <option value="fal-ai/nano-banana/edit" selected
+                >🍌 nano banana</option
+              >
+              <option value="fal-ai/bytedance/seedream/v4/edit"
+                >🌟 seedream v4 edit</option
+              >
+            </select>
           </div>
 
-            <!-- Reference Images -->
-            <div class="mb-6">
-              <label for="referenceImages" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
-                🖼️ Reference Images (Required)
-              </label>
-              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-                <input
-                  type="file"
-                  id="referenceImages"
-                  multiple
-                  accept="image/*"
-                  class="flex-shrink-0 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-amber-200 file:text-amber-900 hover:file:bg-amber-300 w-full sm:w-auto"
-                />
-                <div class="paste-area flex-1 p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 shadow-lg text-center text-sm sm:text-base">
-                  📎 Or paste images from clipboard here
-                </div>
+          <!-- Reference Images -->
+          <div class="mb-6">
+            <label
+              for="referenceImages"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
+              🖼️ Reference Images (Required)
+            </label>
+            <div
+              class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
+            >
+              <input
+                type="file"
+                id="referenceImages"
+                multiple
+                accept="image/*"
+                class="flex-shrink-0 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-amber-200 file:text-amber-900 hover:file:bg-amber-300 w-full sm:w-auto"
+              />
+              <div
+                class="paste-area flex-1 p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 shadow-lg text-center text-sm sm:text-base"
+              >
+                📎 Or paste images from clipboard here
               </div>
-              <p class="text-amber-700 text-xs sm:text-sm mt-2 drop-shadow-sm">
-                Upload 1-4 reference images for editing, or paste images from clipboard. Both models require reference images. 🌟
-              </p>
+            </div>
+            <p class="text-amber-700 text-xs sm:text-sm mt-2 drop-shadow-sm">
+              Upload 1-4 reference images for editing, or paste images from
+              clipboard. Both models require reference images. 🌟
+            </p>
             <!-- Reference Images Preview -->
-            <div id="referencePreview" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-4">
+            <div
+              id="referencePreview"
+              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-4"
+            >
               <!-- Reference images will be displayed here -->
             </div>
           </div>
 
           <!-- Prompt Input -->
           <div class="mb-6">
-            <label for="prompt" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
+            <label
+              for="prompt"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
               ✨ Prompt
             </label>
-             <textarea
-               id="prompt"
-               rows="3"
-               class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none resize-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
-               placeholder="Describe how to edit the reference images... (e.g., 'add a buff dog wearing the tank top')"
-             ></textarea>
+            <textarea
+              id="prompt"
+              rows="3"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none resize-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
+              placeholder="Describe how to edit the reference images... (e.g., 'add a buff dog wearing the tank top')"
+            ></textarea>
           </div>
 
-           <!-- Image Count -->
-           <div class="mb-6">
-             <label for="imageCount" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
-               🎃 Number of Images (1-4)
-             </label>
-             <select
-               id="imageCount"
-               class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
-             >
-               <option value="1">🍁 1 Image</option>
-               <option value="2">🍂 2 Images</option>
-               <option value="3">🌰 3 Images</option>
-               <option value="4">🎃 4 Images</option>
-             </select>
-           </div>
+          <!-- Image Count -->
+          <div class="mb-6">
+            <label
+              for="imageCount"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
+              🎃 Number of Images (1-4)
+            </label>
+            <select
+              id="imageCount"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+            >
+              <option value="1">🍁 1 Image</option>
+              <option value="2">🍂 2 Images</option>
+              <option value="3">🌰 3 Images</option>
+              <option value="4">🎃 4 Images</option>
+            </select>
+          </div>
 
-           <!-- Aspect Ratio -->
-           <div class="mb-6 sm:mb-8">
-             <label for="aspectRatio" class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm">
-               📐 Aspect Ratio
-             </label>
-             <select
-               id="aspectRatio"
-               class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
-             >
-               <option value="16:9">📺 16:9 (Landscape)</option>
-               <option value="4:3">📷 4:3 (Standard)</option>
-               <option value="1:1">🎯 1:1 (Square)</option>
-               <option value="3:4">📱 3:4 (Portrait)</option>
-               <option value="9:16">📱 9:16 (Vertical)</option>
-             </select>
-           </div>
+          <!-- Aspect Ratio -->
+          <div class="mb-6 sm:mb-8">
+            <label
+              for="aspectRatio"
+              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+            >
+              📐 Aspect Ratio
+            </label>
+            <select
+              id="aspectRatio"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+            >
+              <option value="16:9">📺 16:9 (Landscape)</option>
+              <option value="4:3">📷 4:3 (Standard)</option>
+              <option value="1:1">🎯 1:1 (Square)</option>
+              <option value="3:4">📱 3:4 (Portrait)</option>
+              <option value="9:16">📱 9:16 (Vertical)</option>
+            </select>
+          </div>
 
           <!-- Generate Button -->
           <div class="text-center mb-6 sm:mb-8">
@@ -130,49 +169,76 @@ import Layout from "../layouts/Layout.astro";
           </div>
 
           <!-- Status Message -->
-          <div id="status" class="text-center mb-4 sm:mb-6 text-amber-900 font-semibold drop-shadow-sm text-sm sm:text-base"></div>
+          <div
+            id="status"
+            class="text-center mb-4 sm:mb-6 text-amber-900 font-semibold drop-shadow-sm text-sm sm:text-base"
+          >
+          </div>
 
-           <!-- Generated Images -->
-           <div id="imagesContainer" class="mb-6 sm:mb-8">
-             <!-- Images will be inserted here -->
-           </div>
+          <!-- Generated Images -->
+          <div id="imagesContainer" class="mb-6 sm:mb-8">
+            <!-- Images will be inserted here -->
+          </div>
 
-           <!-- Image History -->
-           <div class="border-t-4 border-amber-300 pt-4 sm:pt-6">
-             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0">
-               <h3 class="text-amber-900 text-lg sm:text-xl font-semibold drop-shadow-sm">🍁 Recent Cozy Creations</h3>
-               <button
-                 id="clearHistoryBtn"
-                 class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
-               >
-                 🗑️ Clear History
-               </button>
-             </div>
-             <div id="historyContainer" class="space-y-6">
-               <!-- History batches will be inserted here -->
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
+          <!-- Image History -->
+          <div class="border-t-4 border-amber-300 pt-4 sm:pt-6">
+            <div
+              class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0"
+            >
+              <h3
+                class="text-amber-900 text-lg sm:text-xl font-semibold drop-shadow-sm"
+              >
+                🍁 Recent Cozy Creations
+              </h3>
+              <button
+                id="clearHistoryBtn"
+                class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
+              >
+                🗑️ Clear History
+              </button>
+            </div>
+            <div id="historyContainer" class="space-y-6">
+              <!-- History batches will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-     <!-- Fullscreen Modal -->
-     <div id="fullscreenModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center">
-       <div class="relative max-w-4xl max-h-full p-4">
-         <img id="fullscreenImage" src="" alt="" class="max-w-full max-h-full object-contain" />
-         <button id="closeFullscreen" class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
-           ×
-         </button>
-         <button id="prevImage" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
-           ‹
-         </button>
-         <button id="nextImage" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors">
-           ›
-         </button>
-       </div>
-     </div>
-   </main>
- </Layout>
+    <!-- Fullscreen Modal -->
+    <div
+      id="fullscreenModal"
+      class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center"
+    >
+      <div class="relative max-w-4xl max-h-full p-4">
+        <img
+          id="fullscreenImage"
+          src=""
+          alt=""
+          class="max-w-full max-h-full object-contain"
+        />
+        <button
+          id="closeFullscreen"
+          class="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
+        >
+          ×
+        </button>
+        <button
+          id="prevImage"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
+        >
+          ‹
+        </button>
+        <button
+          id="nextImage"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </main>
+</Layout>
 
 <style>
   .backroom-section {
@@ -184,16 +250,27 @@ import Layout from "../layouts/Layout.astro";
   }
 
   .backroom-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image:
-      radial-gradient(circle at 20% 80%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(234, 88, 12, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
+    background-image: radial-gradient(
+        circle at 20% 80%,
+        rgba(251, 191, 36, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(234, 88, 12, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(220, 38, 38, 0.05) 0%,
+        transparent 50%
+      );
     pointer-events: none;
   }
 
@@ -255,13 +332,20 @@ import Layout from "../layouts/Layout.astro";
 
   /* Add some autumnal sparkle */
   @keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
   }
 
   @media (min-width: 640px) {
     .backroom-section::after {
-      content: '🍂';
+      content: "🍂";
       position: absolute;
       top: 10%;
       left: 10%;
@@ -271,14 +355,14 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .backroom-section::after:nth-child(2) {
-      content: '🎃';
+      content: "🎃";
       top: 20%;
       right: 15%;
       animation-delay: 1s;
     }
 
     .backroom-section::after:nth-child(3) {
-      content: '🍁';
+      content: "🍁";
       bottom: 15%;
       left: 20%;
       animation-delay: 2s;
@@ -304,53 +388,55 @@ import Layout from "../layouts/Layout.astro";
     timestamp: number;
   }
 
-   // Load API key from localStorage
-   const apiKeyInput = document.getElementById('apiKey') as HTMLInputElement;
-   const savedApiKey = localStorage.getItem('falApiKey');
-   if (savedApiKey) {
-     apiKeyInput.value = savedApiKey;
-   }
+  // Load API key from localStorage
+  const apiKeyInput = document.getElementById("apiKey") as HTMLInputElement;
+  const savedApiKey = localStorage.getItem("falApiKey");
+  if (savedApiKey) {
+    apiKeyInput.value = savedApiKey;
+  }
 
-   // Save API key to localStorage on input
-   apiKeyInput.addEventListener('input', () => {
-     localStorage.setItem('falApiKey', apiKeyInput.value);
-   });
+  // Save API key to localStorage on input
+  apiKeyInput.addEventListener("input", () => {
+    localStorage.setItem("falApiKey", apiKeyInput.value);
+  });
 
-   // Load model from localStorage
-   const modelSelect = document.getElementById('model') as HTMLSelectElement;
-   const savedModel = localStorage.getItem('selectedModel');
-   if (savedModel) {
-     modelSelect.value = savedModel;
-   }
+  // Load model from localStorage
+  const modelSelect = document.getElementById("model") as HTMLSelectElement;
+  const savedModel = localStorage.getItem("selectedModel");
+  if (savedModel) {
+    modelSelect.value = savedModel;
+  }
 
-   // Handle model change to disable aspect ratio for nano banana and save to localStorage
-   const aspectRatioSelect = document.getElementById('aspectRatio') as HTMLSelectElement;
+  // Handle model change to disable aspect ratio for nano banana and save to localStorage
+  const aspectRatioSelect = document.getElementById(
+    "aspectRatio",
+  ) as HTMLSelectElement;
 
-   const updateAspectRatioAvailability = () => {
-     if (modelSelect.value === 'fal-ai/nano-banana-pro/edit') {
-       aspectRatioSelect.disabled = true;
-       aspectRatioSelect.value = '1:1'; // Set default when disabled
-     } else {
-       aspectRatioSelect.disabled = false;
-     }
-   };
+  const updateAspectRatioAvailability = () => {
+    if (modelSelect.value === "fal-ai/nano-banana/edit") {
+      aspectRatioSelect.disabled = true;
+      aspectRatioSelect.value = "1:1"; // Set default when disabled
+    } else {
+      aspectRatioSelect.disabled = false;
+    }
+  };
 
-   const handleModelChange = () => {
-     localStorage.setItem('selectedModel', modelSelect.value);
-     updateAspectRatioAvailability();
-   };
+  const handleModelChange = () => {
+    localStorage.setItem("selectedModel", modelSelect.value);
+    updateAspectRatioAvailability();
+  };
 
-   modelSelect.addEventListener('change', handleModelChange);
+  modelSelect.addEventListener("change", handleModelChange);
 
-   // Set initial state
-   updateAspectRatioAvailability();
+  // Set initial state
+  updateAspectRatioAvailability();
 
-   // Reference images state
+  // Reference images state
   let referenceImages: File[] = [];
 
   // Load image history from localStorage
   const loadImageHistory = (): GeneratedImage[] => {
-    const history = localStorage.getItem('imageHistory');
+    const history = localStorage.getItem("imageHistory");
     return history ? JSON.parse(history) : [];
   };
 
@@ -358,39 +444,43 @@ import Layout from "../layouts/Layout.astro";
   const saveImageHistory = (history: GeneratedImage[]) => {
     // Keep only the last 10 images
     const limitedHistory = history.slice(-10);
-    localStorage.setItem('imageHistory', JSON.stringify(limitedHistory));
+    localStorage.setItem("imageHistory", JSON.stringify(limitedHistory));
   };
 
-   // Display image history grouped by generation batch
-   const displayImageHistory = () => {
-     const history = loadImageHistory();
-     const historyContainer = document.getElementById('historyContainer')!;
-     historyContainer.innerHTML = '';
+  // Display image history grouped by generation batch
+  const displayImageHistory = () => {
+    const history = loadImageHistory();
+    const historyContainer = document.getElementById("historyContainer")!;
+    historyContainer.innerHTML = "";
 
-     // Group images by timestamp (generation batch)
-     const batches: { [timestamp: number]: GeneratedImage[] } = {};
-     history.forEach((image) => {
-       if (!batches[image.timestamp]) {
-         batches[image.timestamp] = [];
-       }
-       batches[image.timestamp].push(image);
-     });
+    // Group images by timestamp (generation batch)
+    const batches: { [timestamp: number]: GeneratedImage[] } = {};
+    history.forEach((image) => {
+      if (!batches[image.timestamp]) {
+        batches[image.timestamp] = [];
+      }
+      batches[image.timestamp].push(image);
+    });
 
-     // Sort batches by timestamp (newest first)
-     const sortedTimestamps = Object.keys(batches).map(Number).sort((a, b) => b - a);
+    // Sort batches by timestamp (newest first)
+    const sortedTimestamps = Object.keys(batches)
+      .map(Number)
+      .sort((a, b) => b - a);
 
-     sortedTimestamps.forEach((timestamp) => {
-       const batch = batches[timestamp];
-       const batchDiv = document.createElement('div');
-       batchDiv.className = 'bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg';
+    sortedTimestamps.forEach((timestamp) => {
+      const batch = batches[timestamp];
+      const batchDiv = document.createElement("div");
+      batchDiv.className =
+        "bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg";
 
-       // Batch header with prompt and model
-       const headerDiv = document.createElement('div');
-       headerDiv.className = 'mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2';
-       headerDiv.innerHTML = `
+      // Batch header with prompt and model
+      const headerDiv = document.createElement("div");
+      headerDiv.className =
+        "mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2";
+      headerDiv.innerHTML = `
          <div class="flex-1">
            <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
-             🎨 ${batch[0].model.split('/').pop()} • ${new Date(timestamp).toLocaleString()}
+             🎨 ${batch[0].model.split("/").pop()} • ${new Date(timestamp).toLocaleString()}
            </div>
            <div class="text-amber-800 text-xs sm:text-sm italic">
              "${batch[0].prompt}"
@@ -400,27 +490,28 @@ import Layout from "../layouts/Layout.astro";
            🗑️ Clear Batch
          </button>
        `;
-       batchDiv.appendChild(headerDiv);
+      batchDiv.appendChild(headerDiv);
 
-       // Images grid
-       const imagesDiv = document.createElement('div');
-       imagesDiv.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3';
+      // Images grid
+      const imagesDiv = document.createElement("div");
+      imagesDiv.className =
+        "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3";
 
-       batch.forEach((image, index) => {
-         const imgElement = document.createElement('img');
-         imgElement.src = image.url;
-         imgElement.className = 'history-image';
-         imgElement.title = `${image.prompt} (${image.model})`;
-         imgElement.addEventListener('click', () => {
-           openFullscreen(batch, index);
-         });
-         imagesDiv.appendChild(imgElement);
-       });
+      batch.forEach((image, index) => {
+        const imgElement = document.createElement("img");
+        imgElement.src = image.url;
+        imgElement.className = "history-image";
+        imgElement.title = `${image.prompt} (${image.model})`;
+        imgElement.addEventListener("click", () => {
+          openFullscreen(batch, index);
+        });
+        imagesDiv.appendChild(imgElement);
+      });
 
-       batchDiv.appendChild(imagesDiv);
-       historyContainer.appendChild(batchDiv);
-     });
-   };
+      batchDiv.appendChild(imagesDiv);
+      historyContainer.appendChild(batchDiv);
+    });
+  };
 
   // Handle reference image selection
   const handleReferenceImageSelect = (event: Event) => {
@@ -435,24 +526,24 @@ import Layout from "../layouts/Layout.astro";
 
   // Display reference images preview
   const displayReferenceImages = () => {
-    const previewContainer = document.getElementById('referencePreview')!;
-    previewContainer.innerHTML = '';
+    const previewContainer = document.getElementById("referencePreview")!;
+    previewContainer.innerHTML = "";
 
-      referenceImages.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const imgElement = document.createElement('div');
-          imgElement.className = 'relative group';
-          imgElement.innerHTML = `
+    referenceImages.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imgElement = document.createElement("div");
+        imgElement.className = "relative group";
+        imgElement.innerHTML = `
             <img src="${e.target?.result}" class="w-full h-20 sm:h-24 object-cover rounded-lg border-2 border-amber-300 shadow-md" />
             <button class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeReferenceImage(${index})">
               ×
             </button>
           `;
-          previewContainer.appendChild(imgElement);
-        };
-        reader.readAsDataURL(file);
-      });
+        previewContainer.appendChild(imgElement);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   // Remove reference image
@@ -468,22 +559,24 @@ import Layout from "../layouts/Layout.astro";
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      if (item.type.indexOf('image') !== -1) {
+      if (item.type.indexOf("image") !== -1) {
         event.preventDefault();
 
         // Check if we already have 4 images
         if (referenceImages.length >= 4) {
-          showStatus('Maximum 4 reference images allowed', 'error');
+          showStatus("Maximum 4 reference images allowed", "error");
           return;
         }
 
         const blob = item.getAsFile();
         if (blob) {
           // Create a File object with a generic name
-          const file = new File([blob], `pasted-image-${Date.now()}.png`, { type: blob.type });
+          const file = new File([blob], `pasted-image-${Date.now()}.png`, {
+            type: blob.type,
+          });
           referenceImages.push(file);
           displayReferenceImages();
-          showStatus('Image pasted from clipboard! 🎨', 'success');
+          showStatus("Image pasted from clipboard! 🎨", "success");
         }
         break; // Only handle the first image found
       }
@@ -501,8 +594,10 @@ import Layout from "../layouts/Layout.astro";
   };
 
   // Calculate image dimensions based on aspect ratio
-  const getImageDimensions = (aspectRatio: string): { width: number; height: number } => {
-    const [widthRatio, heightRatio] = aspectRatio.split(':').map(Number);
+  const getImageDimensions = (
+    aspectRatio: string,
+  ): { width: number; height: number } => {
+    const [widthRatio, heightRatio] = aspectRatio.split(":").map(Number);
     const baseResolution = 2048; // Base resolution for calculations
 
     if (widthRatio > heightRatio) {
@@ -525,30 +620,38 @@ import Layout from "../layouts/Layout.astro";
   const generateImages = async () => {
     const apiKey = apiKeyInput.value.trim();
     if (!apiKey) {
-      showStatus('Please enter your Fal API key', 'error');
+      showStatus("Please enter your Fal API key", "error");
       return;
     }
 
-    const model = (document.getElementById('model') as HTMLSelectElement).value;
-    const prompt = (document.getElementById('prompt') as HTMLTextAreaElement).value.trim();
+    const model = (document.getElementById("model") as HTMLSelectElement).value;
+    const prompt = (
+      document.getElementById("prompt") as HTMLTextAreaElement
+    ).value.trim();
     if (!prompt) {
-      showStatus('Please enter a prompt', 'error');
+      showStatus("Please enter a prompt", "error");
       return;
     }
 
     if (referenceImages.length === 0) {
-      showStatus('Please upload at least one reference image', 'error');
+      showStatus("Please upload at least one reference image", "error");
       return;
     }
 
-    const imageCount = parseInt((document.getElementById('imageCount') as HTMLSelectElement).value);
-    const aspectRatio = (document.getElementById('aspectRatio') as HTMLSelectElement).value;
+    const imageCount = parseInt(
+      (document.getElementById("imageCount") as HTMLSelectElement).value,
+    );
+    const aspectRatio = (
+      document.getElementById("aspectRatio") as HTMLSelectElement
+    ).value;
 
-    const generateBtn = document.getElementById('generateBtn') as HTMLButtonElement;
+    const generateBtn = document.getElementById(
+      "generateBtn",
+    ) as HTMLButtonElement;
     generateBtn.disabled = true;
-    generateBtn.textContent = '🎃 Brewing Magic... 🍁';
+    generateBtn.textContent = "🎃 Brewing Magic... 🍁";
 
-    showStatus('Generating images...', 'info');
+    showStatus("Generating images...", "info");
 
     try {
       // Prepare request body
@@ -557,7 +660,7 @@ import Layout from "../layouts/Layout.astro";
         prompt: prompt,
         image_size: {
           width: dimensions.width,
-          height: dimensions.height
+          height: dimensions.height,
         },
         num_images: imageCount,
         max_images: 1,
@@ -566,15 +669,15 @@ import Layout from "../layouts/Layout.astro";
 
       // Add reference images (required for these models)
       const referenceImageUrls = await Promise.all(
-        referenceImages.map(file => fileToBase64(file))
+        referenceImages.map((file) => fileToBase64(file)),
       );
       requestBody.image_urls = referenceImageUrls;
 
       const response = await fetch(`https://fal.run/${model}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': `Key ${apiKey}`,
-          'Content-Type': 'application/json',
+          Authorization: `Key ${apiKey}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
       });
@@ -600,184 +703,213 @@ import Layout from "../layouts/Layout.astro";
       saveImageHistory(history);
       displayImageHistory();
 
-      showStatus(`🎉 Successfully brewed ${imageCount} cozy image(s) using ${referenceImages.length} reference image(s)! 🍂`, 'success');
+      showStatus(
+        `🎉 Successfully brewed ${imageCount} cozy image(s) using ${referenceImages.length} reference image(s)! 🍂`,
+        "success",
+      );
     } catch (error) {
-      console.error('Error generating images:', error);
-      showStatus(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
+      console.error("Error generating images:", error);
+      showStatus(
+        `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "error",
+      );
     } finally {
-    generateBtn.disabled = false;
-    generateBtn.textContent = '🎨 Generate Cozy Images ✨';
+      generateBtn.disabled = false;
+      generateBtn.textContent = "🎨 Generate Cozy Images ✨";
     }
   };
 
-    // Display generated images
-    const displayGeneratedImages = (images: any[]) => {
-      const container = document.getElementById('imagesContainer')!;
-      container.innerHTML = '';
+  // Display generated images
+  const displayGeneratedImages = (images: any[]) => {
+    const container = document.getElementById("imagesContainer")!;
+    container.innerHTML = "";
 
-      if (images.length === 0) return;
+    if (images.length === 0) return;
 
-      // Create a batch container for newly generated images
-      const batchDiv = document.createElement('div');
-      batchDiv.className = 'bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg';
+    // Create a batch container for newly generated images
+    const batchDiv = document.createElement("div");
+    batchDiv.className =
+      "bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg";
 
-      // Batch header with prompt and model
-      const headerDiv = document.createElement('div');
-      headerDiv.className = 'mb-3';
-      const model = (document.getElementById('model') as HTMLSelectElement).value;
-      const prompt = (document.getElementById('prompt') as HTMLTextAreaElement).value.trim();
-      headerDiv.innerHTML = `
+    // Batch header with prompt and model
+    const headerDiv = document.createElement("div");
+    headerDiv.className = "mb-3";
+    const model = (document.getElementById("model") as HTMLSelectElement).value;
+    const prompt = (
+      document.getElementById("prompt") as HTMLTextAreaElement
+    ).value.trim();
+    headerDiv.innerHTML = `
         <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
-          🎨 ${model.split('/').pop()} • Just now
+          🎨 ${model.split("/").pop()} • Just now
         </div>
         <div class="text-amber-800 text-xs sm:text-sm italic">
           "${prompt}"
         </div>
       `;
-      batchDiv.appendChild(headerDiv);
+    batchDiv.appendChild(headerDiv);
 
-      // Images grid
-      const imagesDiv = document.createElement('div');
-      imagesDiv.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4';
+    // Images grid
+    const imagesDiv = document.createElement("div");
+    imagesDiv.className =
+      "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4";
 
-      images.forEach((image, index) => {
-        const imgElement = document.createElement('img');
-        imgElement.src = image.url;
-        imgElement.className = 'generated-image';
-        imgElement.addEventListener('click', () => {
-          // Create a temporary batch for the current generation
-          const batch = images.map(img => ({
-            url: img.url,
-            prompt: prompt,
-            model: model,
-            timestamp: Date.now()
-          }));
-          openFullscreen(batch, index);
-        });
-        imagesDiv.appendChild(imgElement);
+    images.forEach((image, index) => {
+      const imgElement = document.createElement("img");
+      imgElement.src = image.url;
+      imgElement.className = "generated-image";
+      imgElement.addEventListener("click", () => {
+        // Create a temporary batch for the current generation
+        const batch = images.map((img) => ({
+          url: img.url,
+          prompt: prompt,
+          model: model,
+          timestamp: Date.now(),
+        }));
+        openFullscreen(batch, index);
       });
+      imagesDiv.appendChild(imgElement);
+    });
 
-      batchDiv.appendChild(imagesDiv);
-      container.appendChild(batchDiv);
-    };
+    batchDiv.appendChild(imagesDiv);
+    container.appendChild(batchDiv);
+  };
 
   // Show status message
-  const showStatus = (message: string, type: 'info' | 'success' | 'error') => {
-    const statusElement = document.getElementById('status')!;
+  const showStatus = (message: string, type: "info" | "success" | "error") => {
+    const statusElement = document.getElementById("status")!;
     statusElement.textContent = message;
     statusElement.className = `text-center mb-6 font-semibold drop-shadow-sm ${
-      type === 'error' ? 'text-red-700' :
-      type === 'success' ? 'text-green-700' :
-      'text-amber-700'
+      type === "error"
+        ? "text-red-700"
+        : type === "success"
+          ? "text-green-700"
+          : "text-amber-700"
     }`;
   };
 
-   // Fullscreen modal state
-   let allImages: GeneratedImage[] = [];
-   let currentImageIndex = 0;
+  // Fullscreen modal state
+  let allImages: GeneratedImage[] = [];
+  let currentImageIndex = 0;
 
-   // Open fullscreen modal
-   const openFullscreen = (batch: GeneratedImage[], startIndex: number) => {
-     // Get all images from history in chronological order (newest first)
-     const history = loadImageHistory();
-     allImages = history.reverse(); // Reverse to show newest first
+  // Open fullscreen modal
+  const openFullscreen = (batch: GeneratedImage[], startIndex: number) => {
+    // Get all images from history in chronological order (newest first)
+    const history = loadImageHistory();
+    allImages = history.reverse(); // Reverse to show newest first
 
-     // Find the index of the clicked image in the global list by URL
-     const clickedImageUrl = batch[startIndex].url;
-     currentImageIndex = allImages.findIndex(img => img.url === clickedImageUrl);
+    // Find the index of the clicked image in the global list by URL
+    const clickedImageUrl = batch[startIndex].url;
+    currentImageIndex = allImages.findIndex(
+      (img) => img.url === clickedImageUrl,
+    );
 
-     const modal = document.getElementById('fullscreenModal')!;
-     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
-     img.src = allImages[currentImageIndex].url;
-     modal.classList.remove('hidden');
-     document.body.style.overflow = 'hidden';
-   };
+    const modal = document.getElementById("fullscreenModal")!;
+    const img = document.getElementById("fullscreenImage") as HTMLImageElement;
+    img.src = allImages[currentImageIndex].url;
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  };
 
-   // Close fullscreen modal
-   const closeFullscreen = () => {
-     const modal = document.getElementById('fullscreenModal')!;
-     modal.classList.add('hidden');
-     document.body.style.overflow = '';
-   };
+  // Close fullscreen modal
+  const closeFullscreen = () => {
+    const modal = document.getElementById("fullscreenModal")!;
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  };
 
-   // Navigate to previous image
-   const prevImage = () => {
-     currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
-     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
-     img.src = allImages[currentImageIndex].url;
-   };
+  // Navigate to previous image
+  const prevImage = () => {
+    currentImageIndex =
+      (currentImageIndex - 1 + allImages.length) % allImages.length;
+    const img = document.getElementById("fullscreenImage") as HTMLImageElement;
+    img.src = allImages[currentImageIndex].url;
+  };
 
-   // Navigate to next image
-   const nextImage = () => {
-     currentImageIndex = (currentImageIndex + 1) % allImages.length;
-     const img = document.getElementById('fullscreenImage') as HTMLImageElement;
-     img.src = allImages[currentImageIndex].url;
-   };
+  // Navigate to next image
+  const nextImage = () => {
+    currentImageIndex = (currentImageIndex + 1) % allImages.length;
+    const img = document.getElementById("fullscreenImage") as HTMLImageElement;
+    img.src = allImages[currentImageIndex].url;
+  };
 
-   // Clear specific batch
-   const clearBatch = (timestamp: number) => {
-     const history = loadImageHistory();
-     const filteredHistory = history.filter(img => img.timestamp !== timestamp);
-     saveImageHistory(filteredHistory);
-     displayImageHistory();
-     showStatus('🗑️ Batch cleared from history! 🍂', 'info');
-   };
+  // Clear specific batch
+  const clearBatch = (timestamp: number) => {
+    const history = loadImageHistory();
+    const filteredHistory = history.filter(
+      (img) => img.timestamp !== timestamp,
+    );
+    saveImageHistory(filteredHistory);
+    displayImageHistory();
+    showStatus("🗑️ Batch cleared from history! 🍂", "info");
+  };
 
-   // Clear history
-   const clearHistory = () => {
-     localStorage.removeItem('imageHistory');
-     displayImageHistory();
-     showStatus('🧹 History cleared - fresh autumn canvas! 🍁', 'info');
-   };
+  // Clear history
+  const clearHistory = () => {
+    localStorage.removeItem("imageHistory");
+    displayImageHistory();
+    showStatus("🧹 History cleared - fresh autumn canvas! 🍁", "info");
+  };
 
-   // Event listeners
-   document.getElementById('generateBtn')!.addEventListener('click', generateImages);
-   document.getElementById('clearHistoryBtn')!.addEventListener('click', clearHistory);
-   document.getElementById('referenceImages')!.addEventListener('change', handleReferenceImageSelect);
-   document.querySelector('.paste-area')!.addEventListener('paste', handlePaste);
+  // Event listeners
+  document
+    .getElementById("generateBtn")!
+    .addEventListener("click", generateImages);
+  document
+    .getElementById("clearHistoryBtn")!
+    .addEventListener("click", clearHistory);
+  document
+    .getElementById("referenceImages")!
+    .addEventListener("change", handleReferenceImageSelect);
+  document.querySelector(".paste-area")!.addEventListener("paste", handlePaste);
 
-   // Event delegation for clear batch buttons
-   document.getElementById('historyContainer')!.addEventListener('click', (event) => {
-     const target = event.target as HTMLElement;
-     if (target.classList.contains('clear-batch-btn')) {
-       const timestamp = parseInt(target.getAttribute('data-timestamp')!);
-       clearBatch(timestamp);
-     }
-   });
+  // Event delegation for clear batch buttons
+  document
+    .getElementById("historyContainer")!
+    .addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains("clear-batch-btn")) {
+        const timestamp = parseInt(target.getAttribute("data-timestamp")!);
+        clearBatch(timestamp);
+      }
+    });
 
-   // Fullscreen modal event listeners
-   document.getElementById('closeFullscreen')!.addEventListener('click', closeFullscreen);
-   document.getElementById('prevImage')!.addEventListener('click', prevImage);
-   document.getElementById('nextImage')!.addEventListener('click', nextImage);
+  // Fullscreen modal event listeners
+  document
+    .getElementById("closeFullscreen")!
+    .addEventListener("click", closeFullscreen);
+  document.getElementById("prevImage")!.addEventListener("click", prevImage);
+  document.getElementById("nextImage")!.addEventListener("click", nextImage);
 
-   // Keyboard navigation for fullscreen
-   document.addEventListener('keydown', (event) => {
-     const modal = document.getElementById('fullscreenModal')!;
-     if (!modal.classList.contains('hidden')) {
-       switch (event.key) {
-         case 'Escape':
-           closeFullscreen();
-           break;
-         case 'ArrowLeft':
-           prevImage();
-           break;
-         case 'ArrowRight':
-           nextImage();
-           break;
-       }
-     }
-   });
+  // Keyboard navigation for fullscreen
+  document.addEventListener("keydown", (event) => {
+    const modal = document.getElementById("fullscreenModal")!;
+    if (!modal.classList.contains("hidden")) {
+      switch (event.key) {
+        case "Escape":
+          closeFullscreen();
+          break;
+        case "ArrowLeft":
+          prevImage();
+          break;
+        case "ArrowRight":
+          nextImage();
+          break;
+      }
+    }
+  });
 
-   // Close modal when clicking outside the image
-   document.getElementById('fullscreenModal')!.addEventListener('click', (event) => {
-     if (event.target === event.currentTarget) {
-       closeFullscreen();
-     }
-   });
+  // Close modal when clicking outside the image
+  document
+    .getElementById("fullscreenModal")!
+    .addEventListener("click", (event) => {
+      if (event.target === event.currentTarget) {
+        closeFullscreen();
+      }
+    });
 
-   // Make remove function globally accessible
-   (window as any).removeReferenceImage = removeReferenceImage;
+  // Make remove function globally accessible
+  (window as any).removeReferenceImage = removeReferenceImage;
 
-   // Initialize
-   displayImageHistory();
+  // Initialize
+  displayImageHistory();
 </script>
