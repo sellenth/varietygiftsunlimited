@@ -13,13 +13,15 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.2.1",
     "@astrojs/check": "^0.9.4",
     "@astrojs/react": "^4.2.1",
+    "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^6.0.0",
     "@astrojs/vercel": "^8.1.2",
     "@fontsource-variable/comfortaa": "^5.2.5",
+    "@fontsource-variable/raleway": "^5.2.8",
     "@fontsource-variable/roboto-slab": "^5.1.0",
+    "@fontsource/boogaloo": "^5.2.8",
     "@fontsource/creepster": "^5.1.0",
     "@fontsource/eagle-lake": "^5.1.0",
     "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
@@ -33,11 +35,11 @@
     "phaser": "^3.87.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "serve": "^14.2.1",
     "stripe": "^18.2.1",
     "tailwindcss": "^3.4.13",
     "three": "^0.169.0",
-    "typescript": "^5.6.2",
-    "serve": "^14.2.1"
+    "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",

@@ -48,7 +48,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     slide1: {
       headline: "DISCOVER JOYFUL SURPRISES",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/shop/shop",
+      ctaLink: "/shop/shirts",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
@@ -118,21 +118,21 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     slide1: {
       headline: "LET THE SEASON BEGIN",
       ctaLabel: "SHOP SWEATERS",
-      ctaLink: "/shop/product/cats-pumpkins-crewneck",
+      ctaLink: "/shop/category/shirts",
       secondaryCtaLabel: "BEST SELLERS",
-      secondaryCtaLink: "/shop/shop",
+      secondaryCtaLink: "/shop",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
       description: "Thoughtful, unique, and made to be loved all year round.",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/crochet-bag",
+      ctaLink: "/shop/category/bags",
     },
     slide3: {
       headline: "COFFEE FIRST.\nCOZY ALWAYS.",
       description: "Chill weather. Warm coffee. Easy layers. All-day comfort.",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/shop/product/coffee-first-sweater",
+      ctaLink: "/shop/product/bear-coffee-sweater",
     },
   },
 };

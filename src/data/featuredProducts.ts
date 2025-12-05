@@ -1,10 +1,10 @@
 import { products, type Product } from "./products";
 
 const FEATURED_PRODUCT_IDS = [
-  "halloween-ghosts",
-  "cats-pumpkins-t-shirt",
-  "cats-pumpkins-crewneck",
-  "pumpkin-sweater",
+  "dachshund-sweater",
+  "bear-coffee-sweater",
+  "moo-sweater",
+  "capybara-sweater",
 ] as const;
 
 export const featuredProductIds = [...FEATURED_PRODUCT_IDS];

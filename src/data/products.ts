@@ -337,6 +337,66 @@ const pumpkinSweaterPriceIds = {
   "Green - X-Large": "price_1SDFMQAp2D4XT14xPef8pSeg",
 };
 
+// Dachshund Sweater price IDs
+const dachshundSweaterPriceIds = {
+  "Denim - Small": "price_1SarH9Ap2D4XT14xTtW2ZhFg",
+  "Denim - Medium": "price_1SarHAAp2D4XT14xqJDYmXwJ",
+  "Denim - Large": "price_1SarHAAp2D4XT14xcraHEm4P",
+  "Denim - X-Large": "price_1SarHAAp2D4XT14xIh5QExGf",
+  "Seafoam - Small": "price_1SarHBAp2D4XT14xFSWZvvwd",
+  "Seafoam - Medium": "price_1SarHCAp2D4XT14xPBs7jBPi",
+  "Seafoam - Large": "price_1SarHCAp2D4XT14xwBgtRBTE",
+  "Seafoam - X-Large": "price_1SarHCAp2D4XT14xHDsp20Qp",
+  "White - Small": "price_1SarHDAp2D4XT14x8ioTPUF7",
+  "White - Medium": "price_1SarHEAp2D4XT14x9BS6GKA8",
+  "White - Large": "price_1SarHEAp2D4XT14xzH9UJmUw",
+  "White - X-Large": "price_1SarHFAp2D4XT14xtlLoZZ3Y",
+};
+
+// Bear Coffee Sweater price IDs
+const bearCoffeeSweaterPriceIds = {
+  "Denim - Small": "price_1SarHFAp2D4XT14x2i7O8mtu",
+  "Denim - Medium": "price_1SarHGAp2D4XT14xiG92RYWf",
+  "Denim - Large": "price_1SarHGAp2D4XT14xJQJ1OJqB",
+  "Denim - X-Large": "price_1SarHHAp2D4XT14x94r6VmHG",
+  "Green - Small": "price_1SarHJAp2D4XT14xyTM9eITU",
+  "Green - Medium": "price_1SarHJAp2D4XT14x6BEb9Lv3",
+  "Green - Large": "price_1SarHKAp2D4XT14xoVuYMj3d",
+  "Green - X-Large": "price_1SarHKAp2D4XT14xe1HT9GBT",
+  "Pepper - Small": "price_1SarHLAp2D4XT14x01FxLT2Q",
+  "Pepper - Medium": "price_1SarHLAp2D4XT14xnH7dcqbO",
+  "Pepper - Large": "price_1SarHMAp2D4XT14x6YlJFpKZ",
+  "Pepper - X-Large": "price_1SarHMAp2D4XT14xhV4Jz4Rm",
+};
+
+// Moo Sweater price IDs
+const mooSweaterPriceIds = {
+  "Green - Small": "price_1SarHNAp2D4XT14xOFxq3Ree",
+  "Green - Medium": "price_1SarHNAp2D4XT14xnOty17Wb",
+  "Green - Large": "price_1SarHOAp2D4XT14xJHWNcxQK",
+  "Green - X-Large": "price_1SarHOAp2D4XT14x0GPMf0gp",
+  "Pepper - Small": "price_1SarHPAp2D4XT14xPqLnahJJ",
+  "Pepper - Medium": "price_1SarHQAp2D4XT14xyerVcXYw",
+  "Pepper - Large": "price_1SarHQAp2D4XT14xu8vPMEuc",
+  "Pepper - X-Large": "price_1SarHRAp2D4XT14x81jgGK6I",
+};
+
+// Capybara Sweater price IDs
+const capybaraSweaterPriceIds = {
+  "Blue - Small": "price_1SarHRAp2D4XT14xvVgPsFLL",
+  "Blue - Medium": "price_1SarHSAp2D4XT14xpnpYG59r",
+  "Blue - Large": "price_1SarHSAp2D4XT14xZxI9K5Ne",
+  "Blue - X-Large": "price_1SarHTAp2D4XT14x41GQz5FO",
+  "Denim - Small": "price_1SarHUAp2D4XT14xWmWTC7Ru",
+  "Denim - Medium": "price_1SarHUAp2D4XT14xARYojAd0",
+  "Denim - Large": "price_1SarHUAp2D4XT14xIb4wQ2un",
+  "Denim - X-Large": "price_1SarHVAp2D4XT14x8zTJ6r8i",
+  "Gray - Small": "price_1SarHWAp2D4XT14x8bvQ3usl",
+  "Gray - Medium": "price_1SarHWAp2D4XT14x43I18MNB",
+  "Gray - Large": "price_1SarHXAp2D4XT14xCwjzReDa",
+  "Gray - X-Large": "price_1SarHXAp2D4XT14x00mFs98T",
+};
+
 export const products: Product[] = [
   // Bags
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -353,125 +413,93 @@ export const products: Product[] = [
   
   // Shirts
   {
-    id: 'halloween-ghosts',
-    name: 'Halloween Ghosts T-Shirt',
-    description: 'Spooky-season tee featuring three cute ghosties and some pumpkins.',
+    id: 'dachshund-sweater',
+    name: 'Dachshund Sweater',
+    description: 'Cozy dachshund-themed sweater in Denim, Seafoam, and White. Sizes Small–X-Large.',
     category: 'shirts',
     images: [
-      { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
-      { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+      { src: '/winter-collection/dachshund/dachshund-sweater-seafoam-front.webp', alt: 'Dachshund Sweater - Seafoam Front' },
     ],
     colorImages: {
-      'Orange': [
-        { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+      'Denim': [
+        { src: '/winter-collection/dachshund/dachshund-sweater-denim-front.webp', alt: 'Dachshund Sweater - Denim Front' },
       ],
-      'Brown': [
-        { src: '/webpshirts/halloween_ghosts_front_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Folded' },
-      ],
-      'Gray': [
-        { src: '/webpshirts/halloween_ghosts_front_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Folded' },
-      ],
-      'Green': [
-        { src: '/webpshirts/halloween_ghosts_front_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Front' },
-        { src: '/webpshirts/halloween_ghosts_folded_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Folded' },
-      ],
-    },
-    price: '$29.99',
-    priceIds: halloweenGhostsPriceIds,
-    slug: 'halloween-ghosts',
-    disabled: false,
-  },
-  {
-    id: 'cats-pumpkins-t-shirt',
-    name: 'Cats + Pumpkins T-Shirt',
-    description: 'Cats + Pumpkins graphic tee.',
-    category: 'shirts',
-    images: [
-      { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
-      { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
-    ],
-    colorImages: {
-      'White': [
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
-      ],
-      'Dark Gray': [
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Front' },
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Folded' },
-      ],
-      'Espresso': [
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Front' },
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Folded' },
-      ],
-      'Gray': [
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Front' },
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
-      ],
-      'Green': [
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Front' },
-        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Folded' },
-      ],
-    },
-    price: '$29.99',
-    priceIds: catsPumpkinsTShirtPriceIds,
-    slug: 'cats-pumpkins-t-shirt',
-  },
-  {
-    id: 'pumpkin-sweater',
-    name: 'Pumpkin Sweater',
-    description: 'Cozy pumpkin-themed sweater in Black and ?? Green.',
-    category: 'shirts',
-    images: [
-      { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
-      { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
-    ],
-    colorImages: {
-      'Black': [
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-folded.webp', alt: 'Pumpkin Sweater - Black Folded' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-model.webp', alt: 'Pumpkin Sweater - Black On Model' }
-      ],
-      'Green': [
-        { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' },
-      ]
-    },
-    price: '$34.99',
-    priceIds: pumpkinSweaterPriceIds,
-    slug: 'pumpkin-sweater'
-  },
-  {
-    id: 'cats-pumpkins-crewneck',
-    name: 'Cats + Pumpkins Crewneck',
-    description: 'Cats + Pumpkins cozy crewneck in Gray, Green, Orange, and White. Sizes Small–X-Large.',
-    category: 'shirts',
-    images: [
-      { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
-      { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
-    ],
-    colorImages: {
-      'Green': [
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green On Model' },
-      ],
-      'Gray': [
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Front' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Folded' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
+      'Seafoam': [
+        { src: '/winter-collection/dachshund/dachshund-sweater-seafoam-front.webp', alt: 'Dachshund Sweater - Seafoam Front' },
       ],
       'White': [
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins Crewneck - White Front' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins Crewneck - White Folded' },
-        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-white.webp', alt: 'Cats + Pumpkins T-Shirt - White On Model' },
+        { src: '/winter-collection/dachshund/dachshund-sweater-white-front.webp', alt: 'Dachshund Sweater - White Front' },
       ],
     },
     price: '$34.99',
-    priceIds: catsPumpkinsCrewneckPriceIds,
-    slug: 'cats-pumpkins-crewneck',
+    priceIds: dachshundSweaterPriceIds,
+    slug: 'dachshund-sweater',
+  },
+  {
+    id: 'bear-coffee-sweater',
+    name: 'Bear Coffee Sweater',
+    description: 'Cozy bear coffee-themed sweater in Denim, Green, and Pepper. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/winter-collection/bear-coffee/bear-sweater-green-front.webp', alt: 'Bear Coffee Sweater - Green Front' },
+    ],
+    colorImages: {
+      'Denim': [
+        { src: '/winter-collection/bear-coffee/bear-sweater-denim-front.webp', alt: 'Bear Coffee Sweater - Denim Front' },
+      ],
+      'Green': [
+        { src: '/winter-collection/bear-coffee/bear-sweater-green-front.webp', alt: 'Bear Coffee Sweater - Green Front' },
+      ],
+      'Pepper': [
+        { src: '/winter-collection/bear-coffee/bear-sweater-pepper-front.webp', alt: 'Bear Coffee Sweater - Pepper Front' },
+      ],
+    },
+    price: '$34.99',
+    priceIds: bearCoffeeSweaterPriceIds,
+    slug: 'bear-coffee-sweater',
+  },
+  {
+    id: 'moo-sweater',
+    name: 'Moo Sweater',
+    description: 'Cozy moo-themed sweater in Green and Pepper. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/winter-collection/moo/moo-sweater-green-front.webp', alt: 'Moo Sweater - Green Front' },
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/winter-collection/moo/moo-sweater-green-front.webp', alt: 'Moo Sweater - Green Front' },
+      ],
+      'Pepper': [
+        { src: '/winter-collection/moo/moo-sweater-pepper-front.webp', alt: 'Moo Sweater - Pepper Front' },
+      ],
+    },
+    price: '$34.99',
+    priceIds: mooSweaterPriceIds,
+    slug: 'moo-sweater',
+  },
+  {
+    id: 'capybara-sweater',
+    name: 'Capybara Sweater',
+    description: 'Cozy capybara-themed sweater in Blue, Denim, and Gray. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/winter-collection/capybara/capybara-sweater-blue-front.webp', alt: 'Capybara Sweater - Blue Front' },
+    ],
+    colorImages: {
+      'Blue': [
+        { src: '/winter-collection/capybara/capybara-sweater-blue-front.webp', alt: 'Capybara Sweater - Blue Front' },
+      ],
+      'Denim': [
+        { src: '/winter-collection/capybara/capybara-sweater-denim-front.webp', alt: 'Capybara Sweater - Denim Front' },
+      ],
+      'Gray': [
+        { src: '/winter-collection/capybara/capybara-sweater-gray-front.webp', alt: 'Capybara Sweater - Gray Front' },
+      ],
+    },
+    price: '$34.99',
+    priceIds: capybaraSweaterPriceIds,
+    slug: 'capybara-sweater',
   },
   {
     id: 'too-cute-to-quit',
@@ -951,6 +979,157 @@ export const products: Product[] = [
     priceId: 'price_1Rh2HtAp2D4XT14x51zjcjnJ',
     slug: 'chewbarka-bandana'
   },
+  // Gym Brat Collection
+  {
+    id: 'gym-brat-hat',
+    name: 'Gym Brat Hat',
+    description: 'Complete your gym look with this stylish Gym Brat hat. Premium quality, comfortable fit, available in tan.',
+    category: 'hats',
+    images: [
+      { src: '/gym-brat-hat/brat_hat_product.webp', alt: 'Gym Brat Hat - Tan Front' },
+      { src: '/gym-brat-hat/brat_hat_model.webp', alt: 'Gym Brat Hat - Tan Side' }
+    ],
+    price: '$29.99',
+    priceId: 'price_1RiQjZAp2D4XT14xjGlRDVfe',
+    slug: 'gym-brat-hat'
+  },
+  {
+    id: 'no-days-off',
+    name: 'No Days Off Hat',
+    description: 'Gym Brat hat – No Days Off.',
+    category: 'hats',
+    images: [
+      { src: '/no-days-off/no-days-off-front.webp', alt: 'No Days Off Hat - Front' },
+      { src: '/no-days-off/no-days-off-back.webp', alt: 'No Days Off Hat - Back' },
+      { src: '/no-days-off/no-days-off-side.webp', alt: 'No Days Off Hat - Side' }
+    ],
+    price: '$29.99',
+    priceId: noDaysOffPriceId,
+    slug: 'no-days-off'
+  },
+  
+  // Fall/Halloween Collection
+  {
+    id: 'halloween-ghosts',
+    name: 'Halloween Ghosts T-Shirt',
+    description: 'Spooky-season tee featuring three cute ghosties and some pumpkins.',
+    category: 'shirts',
+    images: [
+      { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+      { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+    ],
+    colorImages: {
+      'Orange': [
+        { src: '/webpshirts/halloween_ghosts_front_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_orange.webp', alt: 'Halloween Ghosts T-Shirt - Orange Folded' },
+      ],
+      'Brown': [
+        { src: '/webpshirts/halloween_ghosts_front_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_brown.webp', alt: 'Halloween Ghosts T-Shirt - Brown Folded' },
+      ],
+      'Gray': [
+        { src: '/webpshirts/halloween_ghosts_front_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_gray.webp', alt: 'Halloween Ghosts T-Shirt - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/webpshirts/halloween_ghosts_front_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Front' },
+        { src: '/webpshirts/halloween_ghosts_folded_green.webp', alt: 'Halloween Ghosts T-Shirt - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: halloweenGhostsPriceIds,
+    slug: 'halloween-ghosts',
+    disabled: false,
+  },
+  {
+    id: 'cats-pumpkins-t-shirt',
+    name: 'Cats + Pumpkins T-Shirt',
+    description: 'Cats + Pumpkins graphic tee.',
+    category: 'shirts',
+    images: [
+      { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
+      { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
+    ],
+    colorImages: {
+      'White': [
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Front' },
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins T-Shirt - White Folded' },
+      ],
+      'Dark Gray': [
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Front' },
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-dark-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Dark Gray Folded' },
+      ],
+      'Espresso': [
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Front' },
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-espresso.webp', alt: 'Cats + Pumpkins T-Shirt - Espresso Folded' },
+      ],
+      'Gray': [
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Front' },
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
+      ],
+      'Green': [
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Front' },
+        { src: '/halloween/cats-pumpkins-t-shirts/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green Folded' },
+      ],
+    },
+    price: '$29.99',
+    priceIds: catsPumpkinsTShirtPriceIds,
+    slug: 'cats-pumpkins-t-shirt',
+  },
+  {
+    id: 'pumpkin-sweater',
+    name: 'Pumpkin Sweater',
+    description: 'Cozy pumpkin-themed sweater in Black and Green.',
+    category: 'shirts',
+    images: [
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
+    ],
+    colorImages: {
+      'Black': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-folded.webp', alt: 'Pumpkin Sweater - Black Folded' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-model.webp', alt: 'Pumpkin Sweater - Black On Model' }
+      ],
+      'Green': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' },
+      ]
+    },
+    price: '$34.99',
+    priceIds: pumpkinSweaterPriceIds,
+    slug: 'pumpkin-sweater'
+  },
+  {
+    id: 'cats-pumpkins-crewneck',
+    name: 'Cats + Pumpkins Crewneck',
+    description: 'Cats + Pumpkins cozy crewneck in Gray, Green, Orange, and White. Sizes Small–X-Large.',
+    category: 'shirts',
+    images: [
+      { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
+      { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
+    ],
+    colorImages: {
+      'Green': [
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Front' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-green.webp', alt: 'Cats + Pumpkins Crewneck - Green Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-green.webp', alt: 'Cats + Pumpkins T-Shirt - Green On Model' },
+      ],
+      'Gray': [
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Front' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-gray.webp', alt: 'Cats + Pumpkins Crewneck - Gray Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-gray.webp', alt: 'Cats + Pumpkins T-Shirt - Gray Folded' },
+      ],
+      'White': [
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-front-white.webp', alt: 'Cats + Pumpkins Crewneck - White Front' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-folded-white.webp', alt: 'Cats + Pumpkins Crewneck - White Folded' },
+        { src: '/halloween/cats-pumpkins-crewnecks/cats-pumpkins-model-white.webp', alt: 'Cats + Pumpkins T-Shirt - White On Model' },
+      ],
+    },
+    price: '$34.99',
+    priceIds: catsPumpkinsCrewneckPriceIds,
+    slug: 'cats-pumpkins-crewneck',
+  },
   {
     id: 'halloween-bandana',
     name: 'Halloween Bandana',
@@ -985,33 +1164,5 @@ export const products: Product[] = [
     },
     sizes: ['S', 'M', 'LG'],
     slug: 'halloween-bow-tie'
-  },
-  // Gym Brat Collection
-  {
-    id: 'gym-brat-hat',
-    name: 'Gym Brat Hat',
-    description: 'Complete your gym look with this stylish Gym Brat hat. Premium quality, comfortable fit, available in tan.',
-    category: 'hats',
-    images: [
-      { src: '/gym-brat-hat/brat_hat_product.webp', alt: 'Gym Brat Hat - Tan Front' },
-      { src: '/gym-brat-hat/brat_hat_model.webp', alt: 'Gym Brat Hat - Tan Side' }
-    ],
-    price: '$29.99',
-    priceId: 'price_1RiQjZAp2D4XT14xjGlRDVfe',
-    slug: 'gym-brat-hat'
-  },
-  {
-    id: 'no-days-off',
-    name: 'No Days Off Hat',
-    description: 'Gym Brat hat – No Days Off.',
-    category: 'hats',
-    images: [
-      { src: '/no-days-off/no-days-off-front.webp', alt: 'No Days Off Hat - Front' },
-      { src: '/no-days-off/no-days-off-back.webp', alt: 'No Days Off Hat - Back' },
-      { src: '/no-days-off/no-days-off-side.webp', alt: 'No Days Off Hat - Side' }
-    ],
-    price: '$29.99',
-    priceId: noDaysOffPriceId,
-    slug: 'no-days-off'
   },
 ];

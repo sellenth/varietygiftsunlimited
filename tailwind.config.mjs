@@ -6,6 +6,10 @@ export default {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        'boogaloo': ['Boogaloo', 'cursive'],
+        'raleway': ['Raleway Variable', 'sans-serif'],
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
