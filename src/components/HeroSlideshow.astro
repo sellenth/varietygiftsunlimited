@@ -12,20 +12,20 @@ const copy = landingCopy[activeTheme];
             class="flex flex-col w-full h-full items-center justify-center pt-40 md:pt-48 text-[#fff2de]"
             style="display: none; background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75));"
         >
-            <h1 class="text-3xl md:text-[132px] text-center font-boogaloo">
+            <h1 class="text-3xl md:text-6xl lg:text-[132px] text-center font-boogaloo">
                 {copy.slide1.headline}
             </h1>
             <div class="flex flex-nowrap gap-6">
                 <a
                     href={copy.slide1.ctaLink}
-                    class="text-nowrap font-raleway font-bold md:text-4xl tracking-widest border-white border-[4px] hover:bg-white/20 mt-2 md:mt-16 py-8 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
+                    class="text-nowrap font-raleway font-bold md:text-4xl tracking-widest border-white border-[4px] hover:bg-white/20 mt-2 md:mt-16 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
                 > 
                     {copy.slide1.ctaLabel}
                 </a>
                 {copy.slide1.secondaryCtaLabel && (
                     <a
                         href={copy.slide1.secondaryCtaLink}
-                        class="ftext-nowrap ont-raleway font-bold md:text-4xl tracking-widest border-white border-[4px] hover:bg-white/20 mt-2 md:mt-16 py-8 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
+                        class="ftext-nowrap ont-raleway font-bold md:text-4xl tracking-widest border-white border-[4px] hover:bg-white/20 mt-2 md:mt-16 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
                     >
                         {copy.slide1.secondaryCtaLabel}
                     </a>
@@ -47,7 +47,7 @@ const copy = landingCopy[activeTheme];
             )}
             <a
                 href={copy.slide2.ctaLink}
-                class="text-nowrap font-raleway font-bold md:text-4xl text-white tracking-widest border-white border-[4px] hover:bg-white/20 mt-6 md:mt-8 py-8 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl"
+                class="text-nowrap font-raleway font-bold md:text-4xl text-white tracking-widest border-white border-[4px] hover:bg-white/20 mt-6 md:mt-8 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl"
             >
                 {copy.slide2.ctaLabel}
             </a>
@@ -67,7 +67,7 @@ const copy = landingCopy[activeTheme];
             )}
             <a
                 href={copy.slide3.ctaLink}
-                class="text-nowrap font-raleway font-bold md:text-4xl text-white tracking-widest border-white border-[4px] hover:bg-white/20 mt-6 md:mt-8 py-8 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl"
+                class="text-nowrap font-raleway font-bold md:text-4xl text-white tracking-widest border-white border-[4px] hover:bg-white/20 mt-6 md:mt-8 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl"
             >
                 {copy.slide3.ctaLabel}
             </a>
