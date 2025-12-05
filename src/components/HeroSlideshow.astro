@@ -1,6 +1,8 @@
 ---
 // Hero slideshow component with dots and auto-advance
+import { landingCopy, activeTheme } from '../config/theme';
 const { children } = Astro.props;
+const copy = landingCopy[activeTheme];
 ---
 
 <div class="relative group w-full hero-slideshow">
@@ -11,80 +13,83 @@ const { children } = Astro.props;
             style="display: none; background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.75));"
         >
             <h1 class="text-3xl md:text-6xl text-center">
-                COZY UP TO <br />
-                FALL FAVORITES
+                {copy.slide1.headline}
             </h1>
             <a
-                href="/shop/product/cats-pumpkins-crewneck"
-                class="md:text-lg tracking-widest border-white border-[1px] hover:bg-orange-600 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
+                href={copy.slide1.ctaLink}
+                class="md:text-lg tracking-widest border-white border-[1px] hover:bg-white/20 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
             >
-                SHOP NOW
+                {copy.slide1.ctaLabel}
             </a>
+            {copy.slide1.secondaryCtaLabel && (
+                <a
+                    href={copy.slide1.secondaryCtaLink}
+                    class="md:text-lg tracking-widest border-white border-[1px] hover:bg-white/20 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
+                >
+                    {copy.slide1.secondaryCtaLabel}
+                </a>
+            )}
         </div>
         <div
             id="slide-2-content"
-            class="flex flex-col w-full h-full items-start px-8 pt-24 md:px-24 md:pt-32"
-            style="display: flex; background: linear-gradient(to right, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));"
+            class="flex flex-col w-full h-full items-start justify-center px-8 md:px-16 lg:px-24"
+            style="display: flex; background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));"
         >
-            <h1 class="text-5xl text-white md:text-7xl text-left">
-                FALL <br /> INTO<br />
-                FUN FINDS
+            <h1 class="text-4xl text-white md:text-6xl lg:text-7xl text-left font-display uppercase leading-tight whitespace-pre-line">
+                {copy.slide2.headline}
             </h1>
-            <p class="text-2xl font-thin text-white md:mt-4 hidden md:block">
-                Celebrate sweater weather with playful <br /> surprises, pumpkin-spices
-                treasures, <br /> and other joyful moments.
-            </p>
+            {copy.slide2.description && (
+                <p class="text-xl md:text-2xl italic font-light text-white mt-4 max-w-md">
+                    {copy.slide2.description}
+                </p>
+            )}
             <a
-                href="/shop/product/pumpkin-sweater"
-                class="md:text-lg text-white tracking-widest border-white border-[1px] hover:bg-orange-600 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
+                href={copy.slide2.ctaLink}
+                class="md:text-lg text-white tracking-widest border-white border-[1px] hover:bg-white/20 mt-6 md:mt-8 py-2 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
             >
-                SHOP NOW
+                {copy.slide2.ctaLabel}
             </a>
         </div>
         <div
             id="slide-3-content"
-            class="flex flex-col w-full h-full items-end px-8 pt-24 md:px-24 md:pt-32"
-            style="display: flex; background: linear-gradient(to left, rgba(0, 0, 0, 0.421), rgba(0, 0, 0, 0));"
+            class="flex flex-col w-full h-full items-start justify-center px-8 md:px-16 lg:px-24"
+            style="display: none; background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));"
         >
-            <div class="flex-col flex">
-                <h1 class="text-3xl text-white md:text-7xl text-right">
-                    FETCH THE <br /> CUTEST<br />
-                    FALL LOOKS
-                </h1>
-                <p
-                    class="text-2xl font-thin text-white md:mt-4 hidden lg:block text-center"
-                >
-                    Pumpkin patches, crunchy leaves, and <br /> paw-fect accessories
-                    for your furry friend.
+            <h1 class="text-4xl text-white md:text-6xl lg:text-7xl text-left font-display uppercase leading-tight whitespace-pre-line">
+                {copy.slide3.headline}
+            </h1>
+            {copy.slide3.description && (
+                <p class="text-xl md:text-2xl font-light text-white mt-4 max-w-lg">
+                    {copy.slide3.description}
                 </p>
-                <a
-                    href="/shop/product/halloween-bandana"
-                    class="md:text-lg text-white self-end tracking-widest border-white border-[1px] hover:bg-orange-600 mt-2 md:mt-8 py-1 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
-                >
-                    SHOP NOW
-                </a>
-            </div>
+            )}
+            <a
+                href={copy.slide3.ctaLink}
+                class="md:text-lg text-white tracking-widest border-white border-[1px] hover:bg-white/20 mt-6 md:mt-8 py-2 px-8 transition-all duration-300 transform hover:scale-105 z-10 rounded-[4px]"
+            >
+                {copy.slide3.ctaLabel}
+            </a>
         </div>
     </div>
     <div
         class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen relative overflow-hidden shadow-2xl"
     >
         <img
-            src="/landing/on_model.webp"
+            src="/landing/landing_1.webp"
             alt="Halloween Pumpkin Sweater on model"
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
             data-index="1"
             style="display: none;"
         />
         <img
-            src="/landing/on_display.webp"
+            src="/landing/landing_2.webp"
             alt="Halloween Pumpkin Sweaters Product"
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0 transition-opacity duration-500"
             data-index="2"
             style="display: block;"
         />
         <img
-            src="/landing/on_table.webp"
+            src="/landing/landing_3.webp"
             alt="Halloween Bandana Alternative"
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
             data-index="3"
@@ -133,8 +138,10 @@ const { children } = Astro.props;
             // Hide all overlay content
             const slide1Content = document.getElementById("slide-1-content");
             const slide2Content = document.getElementById("slide-2-content");
+            const slide3Content = document.getElementById("slide-3-content");
             if (slide1Content) slide1Content.style.display = "none";
             if (slide2Content) slide2Content.style.display = "none";
+            if (slide3Content) slide3Content.style.display = "none";
 
             // Update dots
             dots.forEach((dot, i) => {
@@ -160,6 +167,8 @@ const { children } = Astro.props;
                 slide1Content.style.display = "flex";
             } else if (index === 2 && slide2Content) {
                 slide2Content.style.display = "flex";
+            } else if (index === 3 && slide3Content) {
+                slide3Content.style.display = "flex";
             }
         }
 

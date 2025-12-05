@@ -41,6 +41,48 @@
   --season-display-font: 'Comfortaa Variable', sans-serif;
 }
 
+.theme-winter {
+  --season-accent: #3b82f6;
+  --season-accent-strong: #1d4ed8;
+  --season-accent-contrast: #ffffff;
+  --season-accent-shadow: rgba(59, 130, 246, 0.25);
+  --season-accent-shadow-strong: rgba(59, 130, 246, 0.4);
+  --season-accent-active-shadow: rgba(29, 78, 216, 0.35);
+  --season-accent-tint: rgba(59, 130, 246, 0.1);
+  --season-surface: #f0f9ff;
+  --season-mist: linear-gradient(150deg, rgba(240, 249, 255, 0.95), rgba(224, 242, 254, 0.9));
+  --season-text-primary: #1e40af;
+  --season-text-secondary: #1e3a5f;
+  --season-pill-text: #1e3a5f;
+  --season-badge-bg: rgba(59, 130, 246, 0.1);
+  --season-badge-border: rgba(59, 130, 246, 0.35);
+  --season-badge-shadow: rgba(29, 78, 216, 0.15);
+  --season-pill-bg: rgba(224, 242, 254, 0.8);
+  --season-pill-border: rgba(59, 130, 246, 0.35);
+  --season-overlay: rgba(59, 130, 246, 0.85);
+  --season-overlay-blur: rgba(59, 130, 246, 0.75);
+  --season-hero-gradient: linear-gradient(180deg, rgba(240, 249, 255, 0.95) 0%, rgba(186, 230, 253, 0.85) 100%);
+  --season-leaf-gradient: radial-gradient(circle at 30% 30%, rgba(147, 197, 253, 0.6), rgba(59, 130, 246, 0));
+  --season-gradient-start: #3b82f6;
+  --season-gradient-mid: #60a5fa;
+  --season-gradient-end: #93c5fd;
+  --season-cta-gradient-start: #3b82f6;
+  --season-cta-gradient-end: #60a5fa;
+  --season-cta-surface-start: rgba(186, 230, 253, 0.85);
+  --season-cta-surface-end: rgba(96, 165, 250, 0.9);
+  --season-cta-border: rgba(59, 130, 246, 0.35);
+  --season-cta-shadow: rgba(29, 78, 216, 0.25);
+  --season-social-bg: #3b82f6;
+  --season-social-hover: rgba(59, 130, 246, 0.6);
+  --season-model-shadow: rgba(29, 78, 216, 0.25);
+  /* Icy blue navbar colors for winter theme */
+  --season-navbar-bg: #1e3a5f;
+  --season-navbar-text: #f0f9ff;
+  --season-navbar-shadow: rgba(30, 58, 95, 0.3);
+  /* Winter display font */
+  --season-display-font: 'Playfair Display', serif;
+}
+
 .theme-fall {
   --season-accent: #ea580c;
   --season-accent-strong: #b45309;
