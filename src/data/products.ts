@@ -339,62 +339,62 @@ const pumpkinSweaterPriceIds = {
 
 // Dachshund Sweater price IDs
 const dachshundSweaterPriceIds = {
-  "Denim - Small": "price_1SarH9Ap2D4XT14xTtW2ZhFg",
-  "Denim - Medium": "price_1SarHAAp2D4XT14xqJDYmXwJ",
-  "Denim - Large": "price_1SarHAAp2D4XT14xcraHEm4P",
-  "Denim - X-Large": "price_1SarHAAp2D4XT14xIh5QExGf",
-  "Seafoam - Small": "price_1SarHBAp2D4XT14xFSWZvvwd",
-  "Seafoam - Medium": "price_1SarHCAp2D4XT14xPBs7jBPi",
-  "Seafoam - Large": "price_1SarHCAp2D4XT14xwBgtRBTE",
-  "Seafoam - X-Large": "price_1SarHCAp2D4XT14xHDsp20Qp",
-  "White - Small": "price_1SarHDAp2D4XT14x8ioTPUF7",
-  "White - Medium": "price_1SarHEAp2D4XT14x9BS6GKA8",
-  "White - Large": "price_1SarHEAp2D4XT14xzH9UJmUw",
-  "White - X-Large": "price_1SarHFAp2D4XT14xtlLoZZ3Y",
+  "Denim - Small": "price_1SbAJfAp2D4XT14x9Q5CQcTK",
+  "Denim - Medium": "price_1SbAJfAp2D4XT14xxuAeNzcF",
+  "Denim - Large": "price_1SbAJgAp2D4XT14x0WTFwnTY",
+  "Denim - X-Large": "price_1SbAJgAp2D4XT14xuZsflPSP",
+  "Seafoam - Small": "price_1SbAJhAp2D4XT14xY55K8P3i",
+  "Seafoam - Medium": "price_1SbAJiAp2D4XT14x3IHzJyYz",
+  "Seafoam - Large": "price_1SbAJiAp2D4XT14xfBV9muHA",
+  "Seafoam - X-Large": "price_1SbAJiAp2D4XT14xImMwf5AR",
+  "White - Small": "price_1SbAJjAp2D4XT14xZfcL361N",
+  "White - Medium": "price_1SbAJkAp2D4XT14x2qmw78N4",
+  "White - Large": "price_1SbAJkAp2D4XT14xoMlb9M7U",
+  "White - X-Large": "price_1SbAJlAp2D4XT14xmzTkNEyK",
 };
 
 // Bear Coffee Sweater price IDs
 const bearCoffeeSweaterPriceIds = {
-  "Denim - Small": "price_1SarHFAp2D4XT14x2i7O8mtu",
-  "Denim - Medium": "price_1SarHGAp2D4XT14xiG92RYWf",
-  "Denim - Large": "price_1SarHGAp2D4XT14xJQJ1OJqB",
-  "Denim - X-Large": "price_1SarHHAp2D4XT14x94r6VmHG",
-  "Green - Small": "price_1SarHJAp2D4XT14xyTM9eITU",
-  "Green - Medium": "price_1SarHJAp2D4XT14x6BEb9Lv3",
-  "Green - Large": "price_1SarHKAp2D4XT14xoVuYMj3d",
-  "Green - X-Large": "price_1SarHKAp2D4XT14xe1HT9GBT",
-  "Pepper - Small": "price_1SarHLAp2D4XT14x01FxLT2Q",
-  "Pepper - Medium": "price_1SarHLAp2D4XT14xnH7dcqbO",
-  "Pepper - Large": "price_1SarHMAp2D4XT14x6YlJFpKZ",
-  "Pepper - X-Large": "price_1SarHMAp2D4XT14xhV4Jz4Rm",
+  "Denim - Small": "price_1SbAJlAp2D4XT14xHB9mvWIH",
+  "Denim - Medium": "price_1SbAJmAp2D4XT14x1akoJUeR",
+  "Denim - Large": "price_1SbAJmAp2D4XT14xxk4RfV5Z",
+  "Denim - X-Large": "price_1SbAJnAp2D4XT14xPe3po8EY",
+  "Green - Small": "price_1SbAJoAp2D4XT14xmbk9LYck",
+  "Green - Medium": "price_1SbAJoAp2D4XT14xsRMVCEhK",
+  "Green - Large": "price_1SbAJoAp2D4XT14xr4UlU84J",
+  "Green - X-Large": "price_1SbAJpAp2D4XT14xppKLsgIT",
+  "Pepper - Small": "price_1SbAJqAp2D4XT14xXB6W4jhk",
+  "Pepper - Medium": "price_1SbAJqAp2D4XT14xaW1T7xX6",
+  "Pepper - Large": "price_1SbAJqAp2D4XT14xzZIvwG59",
+  "Pepper - X-Large": "price_1SbAJrAp2D4XT14x3Sp97r2q",
 };
 
 // Moo Sweater price IDs
 const mooSweaterPriceIds = {
-  "Green - Small": "price_1SarHNAp2D4XT14xOFxq3Ree",
-  "Green - Medium": "price_1SarHNAp2D4XT14xnOty17Wb",
-  "Green - Large": "price_1SarHOAp2D4XT14xJHWNcxQK",
-  "Green - X-Large": "price_1SarHOAp2D4XT14x0GPMf0gp",
-  "Pepper - Small": "price_1SarHPAp2D4XT14xPqLnahJJ",
-  "Pepper - Medium": "price_1SarHQAp2D4XT14xyerVcXYw",
-  "Pepper - Large": "price_1SarHQAp2D4XT14xu8vPMEuc",
-  "Pepper - X-Large": "price_1SarHRAp2D4XT14x81jgGK6I",
+  "Green - Small": "price_1SbAJsAp2D4XT14xAiHIsrBL",
+  "Green - Medium": "price_1SbAJsAp2D4XT14xlgUubGUy",
+  "Green - Large": "price_1SbAJtAp2D4XT14xp0iplTg3",
+  "Green - X-Large": "price_1SbAJtAp2D4XT14x6IlalI1l",
+  "Pepper - Small": "price_1SbAJuAp2D4XT14xfulN3HiF",
+  "Pepper - Medium": "price_1SbAJuAp2D4XT14xDUnfhgPQ",
+  "Pepper - Large": "price_1SbAJvAp2D4XT14xi03Wgcsd",
+  "Pepper - X-Large": "price_1SbAJvAp2D4XT14xdJgKSv3n",
 };
 
 // Capybara Sweater price IDs
 const capybaraSweaterPriceIds = {
-  "Blue - Small": "price_1SarHRAp2D4XT14xvVgPsFLL",
-  "Blue - Medium": "price_1SarHSAp2D4XT14xpnpYG59r",
-  "Blue - Large": "price_1SarHSAp2D4XT14xZxI9K5Ne",
-  "Blue - X-Large": "price_1SarHTAp2D4XT14x41GQz5FO",
-  "Denim - Small": "price_1SarHUAp2D4XT14xWmWTC7Ru",
-  "Denim - Medium": "price_1SarHUAp2D4XT14xARYojAd0",
-  "Denim - Large": "price_1SarHUAp2D4XT14xIb4wQ2un",
-  "Denim - X-Large": "price_1SarHVAp2D4XT14x8zTJ6r8i",
-  "Gray - Small": "price_1SarHWAp2D4XT14x8bvQ3usl",
-  "Gray - Medium": "price_1SarHWAp2D4XT14x43I18MNB",
-  "Gray - Large": "price_1SarHXAp2D4XT14xCwjzReDa",
-  "Gray - X-Large": "price_1SarHXAp2D4XT14x00mFs98T",
+  "Blue - Small": "price_1SbAJwAp2D4XT14xNt0rY1YK",
+  "Blue - Medium": "price_1SbAJwAp2D4XT14xw1zXnjbx",
+  "Blue - Large": "price_1SbAJxAp2D4XT14xj3Nn22ph",
+  "Blue - X-Large": "price_1SbAJxAp2D4XT14xspessOcc",
+  "Denim - Small": "price_1SbAJyAp2D4XT14xkoud9byJ",
+  "Denim - Medium": "price_1SbAJzAp2D4XT14x4yc9taaG",
+  "Denim - Large": "price_1SbAJzAp2D4XT14xKIjgfWtB",
+  "Denim - X-Large": "price_1SbAJzAp2D4XT14xKH95COrF",
+  "Gray - Small": "price_1SbAK0Ap2D4XT14x0MNwEhxa",
+  "Gray - Medium": "price_1SbAK1Ap2D4XT14xhEUp8pOG",
+  "Gray - Large": "price_1SbAK1Ap2D4XT14xmdc3VsaY",
+  "Gray - X-Large": "price_1SbAK2Ap2D4XT14xj1MHpsx0",
 };
 
 export const products: Product[] = [
@@ -415,10 +415,10 @@ export const products: Product[] = [
   {
     id: 'dachshund-sweater',
     name: 'Dachshund Sweater',
-    description: 'Cozy dachshund-themed sweater in Denim, Seafoam, and White. Sizes Small–X-Large.',
+    description: 'Cozy dachshund-themed sweater in Denim, Seafoam, and White.',
     category: 'shirts',
     images: [
-      { src: '/winter-collection/dachshund/dachshund-sweater-seafoam-front.webp', alt: 'Dachshund Sweater - Seafoam Front' },
+      { src: '/winter-collection/dachshund/dachshund-sweater-denim-front.webp', alt: 'Dachshund Sweater - Denim Front' },
     ],
     colorImages: {
       'Denim': [
@@ -433,15 +433,15 @@ export const products: Product[] = [
     },
     price: '$34.99',
     priceIds: dachshundSweaterPriceIds,
-    slug: 'dachshund-sweater',
+    slug: 'dachshund-sweater'
   },
   {
     id: 'bear-coffee-sweater',
     name: 'Bear Coffee Sweater',
-    description: 'Cozy bear coffee-themed sweater in Denim, Green, and Pepper. Sizes Small–X-Large.',
+    description: 'Cozy bear coffee-themed sweater in Denim, Green, and Pepper.',
     category: 'shirts',
     images: [
-      { src: '/winter-collection/bear-coffee/bear-sweater-green-front.webp', alt: 'Bear Coffee Sweater - Green Front' },
+      { src: '/winter-collection/bear-coffee/bear-sweater-denim-front.webp', alt: 'Bear Coffee Sweater - Denim Front' },
     ],
     colorImages: {
       'Denim': [
@@ -456,12 +456,12 @@ export const products: Product[] = [
     },
     price: '$34.99',
     priceIds: bearCoffeeSweaterPriceIds,
-    slug: 'bear-coffee-sweater',
+    slug: 'bear-coffee-sweater'
   },
   {
     id: 'moo-sweater',
     name: 'Moo Sweater',
-    description: 'Cozy moo-themed sweater in Green and Pepper. Sizes Small–X-Large.',
+    description: 'Cozy moo-themed sweater in Green and Pepper.',
     category: 'shirts',
     images: [
       { src: '/winter-collection/moo/moo-sweater-green-front.webp', alt: 'Moo Sweater - Green Front' },
@@ -476,12 +476,12 @@ export const products: Product[] = [
     },
     price: '$34.99',
     priceIds: mooSweaterPriceIds,
-    slug: 'moo-sweater',
+    slug: 'moo-sweater'
   },
   {
     id: 'capybara-sweater',
     name: 'Capybara Sweater',
-    description: 'Cozy capybara-themed sweater in Blue, Denim, and Gray. Sizes Small–X-Large.',
+    description: 'Cozy capybara-themed sweater in Blue, Denim, and Gray.',
     category: 'shirts',
     images: [
       { src: '/winter-collection/capybara/capybara-sweater-blue-front.webp', alt: 'Capybara Sweater - Blue Front' },
@@ -499,7 +499,7 @@ export const products: Product[] = [
     },
     price: '$34.99',
     priceIds: capybaraSweaterPriceIds,
-    slug: 'capybara-sweater',
+    slug: 'capybara-sweater'
   },
   {
     id: 'too-cute-to-quit',
@@ -1077,30 +1077,6 @@ export const products: Product[] = [
     slug: 'cats-pumpkins-t-shirt',
   },
   {
-    id: 'pumpkin-sweater',
-    name: 'Pumpkin Sweater',
-    description: 'Cozy pumpkin-themed sweater in Black and Green.',
-    category: 'shirts',
-    images: [
-      { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
-      { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
-    ],
-    colorImages: {
-      'Black': [
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-folded.webp', alt: 'Pumpkin Sweater - Black Folded' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-black-model.webp', alt: 'Pumpkin Sweater - Black On Model' }
-      ],
-      'Green': [
-        { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
-        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' },
-      ]
-    },
-    price: '$34.99',
-    priceIds: pumpkinSweaterPriceIds,
-    slug: 'pumpkin-sweater'
-  },
-  {
     id: 'cats-pumpkins-crewneck',
     name: 'Cats + Pumpkins Crewneck',
     description: 'Cats + Pumpkins cozy crewneck in Gray, Green, Orange, and White. Sizes Small–X-Large.',
@@ -1129,6 +1105,30 @@ export const products: Product[] = [
     price: '$34.99',
     priceIds: catsPumpkinsCrewneckPriceIds,
     slug: 'cats-pumpkins-crewneck',
+  },
+  {
+    id: 'pumpkin-sweater',
+    name: 'Pumpkin Sweater',
+    description: 'Cozy pumpkin-themed sweater in Black and ?? Green.',
+    category: 'shirts',
+    images: [
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+      { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' }
+    ],
+    colorImages: {
+      'Black': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-front.webp', alt: 'Pumpkin Sweater - Black Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-folded.webp', alt: 'Pumpkin Sweater - Black Folded' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-black-model.webp', alt: 'Pumpkin Sweater - Black On Model' }
+      ],
+      'Green': [
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-front.webp', alt: 'Pumpkin Sweater - Green Front' },
+        { src: '/pumpkin-sweater/pumpkin-sweater-green-folded.webp', alt: 'Pumpkin Sweater - Green Folded' },
+      ]
+    },
+    price: '$34.99',
+    priceIds: pumpkinSweaterPriceIds,
+    slug: 'pumpkin-sweater'
   },
   {
     id: 'halloween-bandana',
