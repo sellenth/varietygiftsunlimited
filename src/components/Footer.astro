@@ -2,7 +2,7 @@
 import { socials } from "../data/socials";
 ---
 
-<footer class="footer py-2 flex justify-center" style="background: var(--season-navbar-bg); color: var(--season-navbar-text);">
+<footer class="footer py-2 flex justify-center season-footer">
   <nav>
     <h6 class="footer-title opacity-0">variety gifts, unlimited</h6>
     <div class="flex gap-4 w-full justify-center">
@@ -28,3 +28,23 @@ import { socials } from "../data/socials";
     <h6 class="footer-title opacity-0">VGU VGU VGU VGU</h6>
   </nav>
 </footer>
+
+<style>
+  .season-footer {
+    background: var(--season-navbar-bg);
+    color: var(--season-navbar-text);
+  }
+
+  .season-footer a {
+    color: inherit;
+  }
+
+  :global(.theme-winter) .season-footer {
+    background: var(--season-text-primary);
+    color: #e8edf7;
+  }
+
+  :global(.theme-winter) .season-footer a {
+    color: #f5f7fb;
+  }
+</style>

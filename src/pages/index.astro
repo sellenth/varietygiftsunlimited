@@ -14,7 +14,6 @@ const baseUrl = isLocalhost ? "" : "https://www.variety.gifts";
 // Featured products shared with the shop page for consistency
 const isFourFeatured = featuredProducts.length === 4;
 const seasonCopy = landingCopy[activeTheme];
-
 ---
 
 <Layout
@@ -25,26 +24,32 @@ const seasonCopy = landingCopy[activeTheme];
   <main class="w-full overflow-x-hidden relative">
     <!-- Hero Section -->
     <section class="hero-section relative">
-       <HeroSlideshow client:load>
-         <!-- Content overlaid on slideshow -->
-         <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 sm:px-8 md:px-12 lg:px-24">
-           {seasonCopy.heroBadge && (
-             <span class="season-badge">{seasonCopy.heroBadge}</span>
-           )}
-           <h1
-             class="text-4xl md:text-5xl lg:text-6xl font-bold text-theme-primary text-center"
-           >
-             {seasonCopy.heroHeadline}
-           </h1>
-           <p class="text-theme-secondary max-w-2xl text-lg md:text-xl mb-8">
-             {seasonCopy.heroDescription}
-           </p>
-         </div>
-       </HeroSlideshow>
+      <HeroSlideshow client:load>
+        <!-- Content overlaid on slideshow -->
+        <div
+          class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 sm:px-8 md:px-12 lg:px-24"
+        >
+          {
+            seasonCopy.heroBadge && (
+              <span class="season-badge">{seasonCopy.heroBadge}</span>
+            )
+          }
+          <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-bold text-theme-primary text-center"
+          >
+            {seasonCopy.heroHeadline}
+          </h1>
+          <p class="text-theme-secondary max-w-2xl text-lg md:text-xl mb-8">
+            {seasonCopy.heroDescription}
+          </p>
+        </div>
+      </HeroSlideshow>
     </section>
 
     <!-- Featured Products Section -->
-    <section class="featured-products py-24 px-8 md:px-12 lg:px-24 bg-theme-surface">
+    <section
+      class="featured-products py-24 px-8 md:px-12 lg:px-24 bg-theme-surface"
+    >
       <h2
         class="text-3xl md:text-4xl lg:text-5xl font-bold text-theme-primary text-center mb-16"
       >
@@ -105,7 +110,7 @@ const seasonCopy = landingCopy[activeTheme];
             class="w-full max-w-sm mx-auto md:mx-0 rounded-lg transition-all duration-300"
           />
         </div>
-        <div class="md:w-1/2 text-center md:text-right">
+        <div class="md:w-1/2 text-center md:text-right about-copy">
           <h2 class="text-4xl lg:text-5xl font-[700] text-theme-primary mb-6">
             ABOUT US
           </h2>
@@ -131,7 +136,7 @@ const seasonCopy = landingCopy[activeTheme];
             class="game-image hover-grow"
           />
         </div>
-        <div class="md:w-1/2 text-center md:text-left px-4">
+        <div class="md:w-1/2 text-center md:text-left px-4 games-copy">
           <h2 class="text-4xl lg:text-5xl font-bold text-theme-primary mb-6">
             {seasonCopy.gamesHeading}
           </h2>
@@ -140,7 +145,7 @@ const seasonCopy = landingCopy[activeTheme];
           </p>
           <a href="/game-browser" class="learn-more-btn btn-ripple hover-grow"
             >{seasonCopy.gamesCtaLabel}</a
-        >
+          >
         </div>
       </div>
     </section>
@@ -156,8 +161,10 @@ const seasonCopy = landingCopy[activeTheme];
             <ContactForm />
           </div>
 
+          <!-- sorry for the dirty hack to color just this one title -->
           <div
-            class="w-full md:w-1/3 flex flex-col items-center md:items-start text-gradient"
+            class="w-full md:w-1/3 flex flex-col items-center md:items-start
+            text-[var(--season-text-primary)]"
           >
             <h2
               class="text-4xl lg:text-5xl font-bold mb-8 text-center md:text-left"
@@ -213,7 +220,7 @@ const seasonCopy = landingCopy[activeTheme];
               </a>
             </div>
 
-            <div class="owners-image mt-4 p-4 rounded-full" style="background-color: var(--season-accent);">
+            <div class="owners-image mt-4 p-4 rounded-full">
               <img
                 src="/logos/m_and_h_nobg.webp"
                 alt="Owners"
@@ -361,6 +368,16 @@ const seasonCopy = landingCopy[activeTheme];
     margin: 0;
   }
 
+  :global(.theme-winter) .product-price {
+    color: var(--season-text-primary);
+  }
+
+  /* Winter: make section copy match the primary text hue */
+  :global(.theme-winter) .about-copy p,
+  :global(.theme-winter) .games-copy p {
+    color: var(--season-text-primary);
+  }
+
   /* About Us & Free Games */
   .about-us {
     position: relative;
@@ -398,7 +415,6 @@ const seasonCopy = landingCopy[activeTheme];
     border-radius: 4px;
   }
 
-
   .social-links {
     color: white;
     display: flex;
@@ -431,6 +447,11 @@ const seasonCopy = landingCopy[activeTheme];
     transition: all 0.3s ease;
   }
 
+  :global(.theme-winter) .social-icon-link {
+    background: var(--season-text-primary);
+    box-shadow: 0 12px 24px rgba(30, 58, 95, 0.35);
+  }
+
   .social-icon-link:hover {
     background: var(--season-social-hover);
     transform: translateY(-4px) scale(1.1);
@@ -442,6 +463,16 @@ const seasonCopy = landingCopy[activeTheme];
 
   .social-icon-link:hover svg {
     transform: rotate(5deg);
+  }
+
+  .owners-image {
+    background-color: var(--season-accent);
+    box-shadow: 0 8px 20px var(--season-accent-shadow);
+  }
+
+  :global(.theme-winter) .owners-image {
+    background-color: var(--season-text-primary);
+    box-shadow: 0 10px 24px rgba(30, 58, 95, 0.35);
   }
 
   /* Smooth backdrop filter for modern look */
@@ -481,14 +512,15 @@ const seasonCopy = landingCopy[activeTheme];
   }
 
   .hero-image {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   .hero-image:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   }
-
 </style>
 
 <script>

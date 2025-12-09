@@ -410,7 +410,7 @@ export const products: Product[] = [
     slug: `bag-${i + 1}`,
     disabled: disabledBags.includes(i + 1)
   })),
-  
+
   // Shirts
   {
     id: 'dachshund-sweater',
@@ -418,7 +418,7 @@ export const products: Product[] = [
     description: 'Cozy dachshund-themed sweater in Denim, Seafoam, and White.',
     category: 'shirts',
     images: [
-      { src: '/winter-collection/dachshund/dachshund-sweater-denim-front.webp', alt: 'Dachshund Sweater - Denim Front' },
+      { src: '/winter-collection/dachshund/dachshund-sweater-seafoam-front.webp', alt: 'Dachshund Sweater - Denim Front' },
     ],
     colorImages: {
       'Denim': [
@@ -441,7 +441,7 @@ export const products: Product[] = [
     description: 'Cozy bear coffee-themed sweater in Denim, Green, and Pepper.',
     category: 'shirts',
     images: [
-      { src: '/winter-collection/bear-coffee/bear-sweater-denim-front.webp', alt: 'Bear Coffee Sweater - Denim Front' },
+      { src: '/winter-collection/bear-coffee/bear-sweater-green-front.webp', alt: 'Bear Coffee Sweater - Denim Front' },
     ],
     colorImages: {
       'Denim': [
@@ -464,7 +464,7 @@ export const products: Product[] = [
     description: 'Cozy moo-themed sweater in Green and Pepper.',
     category: 'shirts',
     images: [
-      { src: '/winter-collection/moo/moo-sweater-green-front.webp', alt: 'Moo Sweater - Green Front' },
+      { src: '/winter-collection/moo/moo-sweater-pepper-front.webp', alt: 'Moo Sweater - Green Front' },
     ],
     colorImages: {
       'Green': [
@@ -663,9 +663,9 @@ export const products: Product[] = [
     ],
     colorImages: {
       'Ivory': [
-      { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
-      { src: '/gym-brat-croptop/brat_crop_model_front.webp', alt: 'Gym Brat Cropped Shirt - Model' },
-      { src: '/gym-brat-croptop/brat_crop_model_turn.webp', alt: 'Gym Brat Cropped Shirt - Model' }
+        { src: '/gym-brat-croptop/brat_crop_front_ivory.webp', alt: 'Gym Brat Cropped Shirt - Ivory Front' },
+        { src: '/gym-brat-croptop/brat_crop_model_front.webp', alt: 'Gym Brat Cropped Shirt - Model' },
+        { src: '/gym-brat-croptop/brat_crop_model_turn.webp', alt: 'Gym Brat Cropped Shirt - Model' }
       ]
     },
     price: '$29.99',
@@ -776,8 +776,8 @@ export const products: Product[] = [
     description: 'Show your unique style with this comfortable and eye-catching t-shirt. Available in multiple colors and sizes.',
     category: 'shirts',
     images: [
-        { src: '/webpshirts/what_the_front_natural.webp', alt: 'What The T-Shirt - Natural Front' },
-        { src: '/webpshirts/what_the_hanging_natural.webp', alt: 'What The T-Shirt - Natural Hanging' },
+      { src: '/webpshirts/what_the_front_natural.webp', alt: 'What The T-Shirt - Natural Front' },
+      { src: '/webpshirts/what_the_hanging_natural.webp', alt: 'What The T-Shirt - Natural Hanging' },
     ],
     colorImages: {
       /*
@@ -964,7 +964,7 @@ export const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL'],
     slug: 'tong'
   },
-  
+
   // Bandana
   {
     id: 'chewbarka-bandana',
@@ -1007,7 +1007,7 @@ export const products: Product[] = [
     priceId: noDaysOffPriceId,
     slug: 'no-days-off'
   },
-  
+
   // Fall/Halloween Collection
   {
     id: 'halloween-ghosts',
