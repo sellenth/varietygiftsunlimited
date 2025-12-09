@@ -16,8 +16,8 @@ export const categories: Category[] = [
   },
   {
     id: 'shirts',
-    name: 'Shirts',
-    description: 'Comfortable and stylish t-shirts with unique designs',
+    name: 'Shirts & Sweater',
+    description: 'Comfortable and stylish tops with unique designs',
     image: '/yoga/corgi1.jpg', // Featured shirt image
     slug: 'shirts'
   },
