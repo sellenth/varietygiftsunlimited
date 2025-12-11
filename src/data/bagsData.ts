@@ -10,8 +10,21 @@ export const bagNames = [
     "Red Zig Zag Bag",
     "Green Smile Bag",
     "Daisy Bag"
-]; 
+];
 
 // Mark specific bags as unavailable/disabled by their number (1-based).
 // Example: to disable bags 2 and 7, set: [2, 7]
 export const disabledBags: number[] = [6, 7];
+
+// On-model photos mapped by bag number (1-based)
+export const onModelPhotos: Record<number, string> = {
+    1: "/bags/on-model/red-line-bag.webp",
+    2: "/bags/on-model/zig-zag-bag.webp",
+    3: "/bags/on-model/red-tassle-bag.webp",
+    4: "/bags/on-model/yellow-flower-bag.webp",
+    5: "/bags/on-model/sheep-flock-bag.webp",
+    8: "/bags/on-model/roses-bag.webp",
+    9: "/bags/on-model/red-zig-zag-bag.webp",
+    10: "/bags/on-model/green-smile-bag.webp",
+    11: "/bags/on-model/daisy-bag.webp",
+};

@@ -55,6 +55,7 @@ const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;
                 {categoryProducts.map(product => (
                     <Card
                         img={product.images[0].src}
+                        hoverImg={product.images[1]?.src}
                         title={product.name}
                         body={product.description.substring(0, 80) + '...'}
                         href={`/shop/product/${product.slug}`}

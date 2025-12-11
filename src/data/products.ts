@@ -1,4 +1,4 @@
-import { bagNames, disabledBags } from './bagsData';
+import { bagNames, disabledBags, onModelPhotos } from './bagsData';
 
 export interface Product {
   id: string;
@@ -399,17 +399,24 @@ const capybaraSweaterPriceIds = {
 
 export const products: Product[] = [
   // Bags
-  ...Array.from({ length: 11 }, (_, i) => ({
-    id: `bag-${i + 1}`,
-    name: bagNames[i],
-    description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
-    category: 'bags' as const,
-    images: [{ src: `/bags/bags/${i + 1}.webp`, alt: bagNames[i] }],
-    price: "$29.99",
-    priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
-    slug: `bag-${i + 1}`,
-    disabled: disabledBags.includes(i + 1)
-  })),
+  ...Array.from({ length: 11 }, (_, i) => {
+    const bagNum = i + 1;
+    const images = [{ src: `/bags/bags/${bagNum}.webp`, alt: bagNames[i] }];
+    if (onModelPhotos[bagNum]) {
+      images.push({ src: onModelPhotos[bagNum], alt: `${bagNames[i]} - On Model` });
+    }
+    return {
+      id: `bag-${bagNum}`,
+      name: bagNames[i],
+      description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
+      category: 'bags' as const,
+      images,
+      price: "$29.99",
+      priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
+      slug: `bag-${bagNum}`,
+      disabled: disabledBags.includes(bagNum)
+    };
+  }),
 
   // Shirts
   {

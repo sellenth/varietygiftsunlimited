@@ -1,6 +1,7 @@
 ---
 interface Props {
 	img: string;
+	hoverImg?: string;
 	sticker?: string;
 	title: string;
 	body: string;
@@ -9,7 +10,7 @@ interface Props {
     disabled?: boolean;
 }
 
-const { img, href, title, body, sticker, price, disabled = false } = Astro.props;
+const { img, hoverImg, href, title, body, sticker, price, disabled = false } = Astro.props;
 ---
 
 {!disabled ? (
@@ -17,11 +18,19 @@ const { img, href, title, body, sticker, price, disabled = false } = Astro.props
         <div class="bg-white relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl">
             <div class="aspect-square relative">
                 <img
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    class={`w-full h-full object-cover transition-all duration-300 ${hoverImg ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
                     src={img}
                     alt={title}
                     loading="lazy"
                 />
+                {hoverImg && (
+                    <img
+                        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        src={hoverImg}
+                        alt={`${title} - On Model`}
+                        loading="lazy"
+                    />
+                )}
             </div>
             <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
                 <h3 class="text-xl font-bold text-black text-center">{title}</h3>

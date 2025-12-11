@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 export const prerender = true;
 import ImageCarousel from "../../../components/ImageCarousel.astro"; // Assuming a carousel might be nice
-import { bagNames, disabledBags } from "../../../data/bagsData"; // Import from the new data file
+import { bagNames, disabledBags, onModelPhotos } from "../../../data/bagsData"; // Import from the new data file
 
 // Define the props type for better type checking (optional but good practice)
 interface Props {
@@ -17,18 +17,28 @@ interface Props {
 
 export async function getStaticPaths() {
     // Generate paths for bags 1 through 13
-    const paths = Array.from({ length: 13 }, (_, i) => ({
-        params: { id: (i + 1).toString() },
-        props: {
-            id: i + 1,
-            title: bagNames[i],
-            description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
-            images: [ { src: `/bags/bags/${i + 1}.webp`, alt: `Crochet Bag #${i + 1}` }],
-            priceDisplay: "$29.99", // Adjust if needed
-            priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
-            clientReferenceId: `bag-${i + 1}`
-        } satisfies Props // Ensure props match the interface
-    }));
+    const paths = Array.from({ length: 13 }, (_, i) => {
+        const bagNum = i + 1;
+        const images = [{ src: `/bags/${bagNum}.webp`, alt: `Crochet Bag #${bagNum}` }];
+
+        // Add on-model photo if available
+        if (onModelPhotos[bagNum]) {
+            images.push({ src: onModelPhotos[bagNum], alt: `${bagNames[i]} - On Model` });
+        }
+
+        return {
+            params: { id: bagNum.toString() },
+            props: {
+                id: bagNum,
+                title: bagNames[i],
+                description: "A beautiful, handmade crochet bag. Perfect for carrying your essentials.",
+                images,
+                priceDisplay: "$29.99", // Adjust if needed
+                priceId: "price_1R88KsAp2D4XT14xnjBjFhmd",
+                clientReferenceId: `bag-${bagNum}`
+            } satisfies Props // Ensure props match the interface
+        };
+    });
     return paths;
 }
 

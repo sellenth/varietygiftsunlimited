@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import IntroForm from '../components/IntroForm.astro';
 import SocialLinks from '../components/SocialLinks.astro';
+import { onModelPhotos } from '../data/bagsData';
+
+const bags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 ---
 
 <Layout title="Crochet Bag - Variety Gifts Unlimited" hideHeader={false}>
@@ -10,18 +13,18 @@ import SocialLinks from '../components/SocialLinks.astro';
     <div class="container mx-auto max-w-2xl">
       <Hero img="" />
   <div class="grid-container grid grid-cols-2 md:grid-cols-3 gap-4 ">
-    <div class="grid-item"><img src="/bags/1.webp" alt="Bag 1"></div>
-    <div class="grid-item"><img src="/bags/2.webp" alt="Bag 2"></div>
-    <div class="grid-item"><img src="/bags/3.webp" alt="Bag 3"></div>
-    <div class="grid-item"><img src="/bags/4.webp" alt="Bag 4"></div>
-    <div class="grid-item"><img src="/bags/5.webp" alt="Bag 5"></div>
-    <div class="grid-item"><img src="/bags/6.webp" alt="Bag 6"></div>
-    <div class="grid-item"><img src="/bags/7.webp" alt="Bag 7"></div>
-    <div class="grid-item"><img src="/bags/8.webp" alt="Bag 8"></div>
-    <div class="grid-item"><img src="/bags/9.webp" alt="Bag 9"></div>
-    <div class="grid-item"><img src="/bags/10.webp" alt="Bag 10"></div>
-    <div class="grid-item"><img src="/bags/11.webp" alt="Bag 11"></div>
-    <div class="grid-item"><img src="/bags/12.webp" alt="Bag 12"></div>
+    {bags.map((num) => (
+      <div class="grid-item relative group">
+        <img src={`/bags/${num}.webp`} alt={`Bag ${num}`} class={onModelPhotos[num] ? "group-hover:opacity-0 transition-opacity duration-300" : ""} />
+        {onModelPhotos[num] && (
+          <img
+            src={onModelPhotos[num]}
+            alt={`Bag ${num} on model`}
+            class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          />
+        )}
+      </div>
+    ))}
   </div>
     </div>
   </main>
