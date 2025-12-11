@@ -12,61 +12,87 @@ interface Props {
 const { images, title } = Astro.props;
 ---
 
-<div class="relative group aspect-square overflow-hidden rounded-lg shadow-md image-carousel bg-white">
-    <div class="carousel bg-white w-full h-full touch-none">
-        {images.map((image, index) => (
-            <img 
-                src={image.src} 
-                alt={image.alt || `${title} view ${index + 1}`} 
-                loading={index === 0 ? "eager" : "lazy"} 
-                class={`w-full h-full object-cover carousel-item select-none ${index === 0 ? '' : 'hidden'}`} 
-                data-index={index + 1}
-            />
-        ))}
+<div
+    class="relative group aspect-square overflow-hidden rounded-lg shadow-md image-carousel bg-white"
+>
+    <div class="carousel bg-white w-full touch-none">
+        {
+            images.map((image, index) => (
+                <img
+                    src={image.src}
+                    alt={image.alt || `${title} view ${index + 1}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    class={`w-full h-full object-cover carousel-item select-none ${index === 0 ? "" : "hidden"}`}
+                    data-index={index + 1}
+                />
+            ))
+        }
     </div>
-    
+
     <!-- Navigation Arrows - only hidden on desktop hover -->
-    <button 
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100" 
+    <button
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
         id="prevBtn"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"></path>
         </svg>
     </button>
-    <button 
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100" 
+    <button
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full transition-opacity duration-300 hover:bg-black/70 md:opacity-0 md:group-hover:opacity-100"
         id="nextBtn"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"></path>
         </svg>
     </button>
 </div>
 
 <script>
-    const carousel = document.querySelector('.carousel');
-    const items = carousel?.querySelectorAll('.carousel-item');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    
+    const carousel = document.querySelector(".carousel");
+    const items = carousel?.querySelectorAll(".carousel-item");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
     if (carousel && items && prevBtn && nextBtn) {
         let currentIndex = 1;
         const maxIndex = items.length;
 
         // Hide navigation buttons if there's only one image
         if (maxIndex <= 1) {
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
+            prevBtn.style.display = "none";
+            nextBtn.style.display = "none";
         }
 
         function showImage(index: number) {
             items.forEach((item) => {
-                item.classList.add('hidden');
+                item.classList.add("hidden");
             });
-            const targetItem = carousel.querySelector(`[data-index="${index}"]`);
+            const targetItem = carousel.querySelector(
+                `[data-index="${index}"]`,
+            );
             if (targetItem) {
-                targetItem.classList.remove('hidden');
+                targetItem.classList.remove("hidden");
             }
         }
 
@@ -81,21 +107,21 @@ const { images, title } = Astro.props;
         }
 
         // Add click event listeners to the buttons
-        nextBtn.addEventListener('click', (e) => {
+        nextBtn.addEventListener("click", (e) => {
             e.preventDefault(); // Prevent any default behavior
             nextImage();
         });
-        
-        prevBtn.addEventListener('click', (e) => {
+
+        prevBtn.addEventListener("click", (e) => {
             e.preventDefault(); // Prevent any default behavior
             prevImage();
         });
 
         // Optional: Add keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") {
                 prevImage();
-            } else if (e.key === 'ArrowRight') {
+            } else if (e.key === "ArrowRight") {
                 nextImage();
             }
         });
@@ -103,20 +129,28 @@ const { images, title } = Astro.props;
         // Add touch swipe support
         let touchStartX = 0;
         let touchEndX = 0;
-        
-        carousel.addEventListener('touchstart', (e: TouchEvent) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        
-        carousel.addEventListener('touchend', (e: TouchEvent) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-        
+
+        carousel.addEventListener(
+            "touchstart",
+            (e: TouchEvent) => {
+                touchStartX = e.changedTouches[0].screenX;
+            },
+            { passive: true },
+        );
+
+        carousel.addEventListener(
+            "touchend",
+            (e: TouchEvent) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            },
+            { passive: true },
+        );
+
         function handleSwipe() {
             const swipeThreshold = 50; // minimum distance for a swipe
             const diff = touchEndX - touchStartX;
-            
+
             if (Math.abs(diff) > swipeThreshold) {
                 if (diff > 0) {
                     prevImage(); // Swipe right, go to previous
@@ -132,4 +166,5 @@ const { images, title } = Astro.props;
     .carousel-item {
         transition: opacity 0.3s ease-in-out;
     }
-</style> 
+</style>
+
