@@ -1,0 +1,930 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+    title="Arena 2006 - Game Hub"
+    hideHeader={true}
+    description="Arena 2006 - File Share and Downloads"
+>
+    <div class="retro-body">
+        <div class="main-wrapper">
+            <!-- Header -->
+            <header class="retro-header">
+                <div class="logo-area">
+                    <h1 class="glitch-logo">
+                        ARENA<span class="highlight">2006</span>
+                    </h1>
+
+                    <div class="header-right">
+                        <div class="user-panel">
+                            <img
+                                src="https://api.dicebear.com/7.x/pixel-art/svg?seed=MasterChief"
+                                alt="Avatar"
+                                class="avatar"
+                            />
+                            <div class="user-info">
+                                <span class="username">Guest_User</span>
+                                <span class="status">Not Signed In</span>
+                            </div>
+                        </div>
+                        <button
+                            id="hamburger-btn"
+                            class="hamburger-btn"
+                            aria-label="Toggle Menu"
+                        >
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </button>
+                    </div>
+                </div>
+                <nav class="retro-nav" id="main-nav">
+                    <ul>
+                        <li class="vgu-home">
+                            <a href="/">« Variety Gifts</a>
+                        </li>
+                        <li class="active"><a href="#">Homepage</a></li>
+                        <li class="disabled"><a href="#">My Stats</a></li>
+                        <li class="disabled"><a href="#">Online</a></li>
+                        <li class="disabled"><a href="#">Community</a></li>
+                        <li class="disabled"><a href="#">Support</a></li>
+                        <li class="search-box">
+                            <input
+                                type="text"
+                                id="retro-search"
+                                placeholder="Enter Search Term(s)"
+                            />
+                            <button id="search-btn">search</button>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- Sub Header / Breadcrumbs -->
+            <div class="sub-header">
+                <div class="breadcrumbs">
+                    Home : Online : Arena 2006 Community Files
+                </div>
+                <div class="online-counter">
+                    ??? Players Online in Arena 2006
+                </div>
+            </div>
+
+            <div class="content-layout">
+                <!-- Left Column -->
+                <div class="col-left">
+                    <!-- File Share Item (Video) -->
+                    <div class="content-box file-share">
+                        <div class="box-header">
+                            <h3>File Share Item</h3>
+                            <div class="tabs">
+                                <span class="tab active">Clips</span>
+                                <span class="tab">Screenshots</span>
+                            </div>
+                        </div>
+                        <div class="box-body file-share-body">
+                            <div class="media-container">
+                                <a
+                                    href="https://www.youtube.com/watch?v=u5WnmOPv22k"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="video-link"
+                                >
+                                    <div class="video-thumbnail">
+                                        <img
+                                            src="https://img.youtube.com/vi/u5WnmOPv22k/maxresdefault.jpg"
+                                            alt="Arena 2006 Trailer"
+                                            onerror="this.src='https://img.youtube.com/vi/u5WnmOPv22k/hqdefault.jpg'"
+                                        />
+                                        <div class="play-overlay">
+                                            <div class="play-icon">▶</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="file-meta">
+                                <div class="file-title">
+                                    <h4>Arena 2006 Trailer</h4>
+                                    <p class="description">
+                                        Gameplay footage from the latest build.
+                                        SND on Hillside.
+                                    </p>
+                                </div>
+                                <div class="file-stats">
+                                    <p>
+                                        Author: <span class="author"
+                                            >DevTeam</span
+                                        >
+                                    </p>
+                                    <div class="rating">
+                                        <span class="star">★</span><span
+                                            class="star">★</span
+                                        ><span class="star">★</span><span
+                                            class="star">★</span
+                                        ><span class="star">★</span>
+                                    </div>
+                                    <p class="stat-detail">343 ratings</p>
+                                    <p class="stat-detail">117 downloads</p>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <span class="date">created 12.22.2025</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Section -->
+                    <div class="content-box">
+                        <div class="box-header">
+                            <h3>Latest Intel</h3>
+                        </div>
+                        <div class="box-body news-body">
+                            <article class="news-item">
+                                <h4>Server Maintenance Complete</h4>
+                                <p class="date">
+                                    Posted by: Webmaster | 12.20.2025
+                                </p>
+                                <p>
+                                    The Arena 2006 master servers have been
+                                    updated. Ensure you have the latest client
+                                    to connect.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-right">
+                    <!-- Download Box (Unified Blue Theme) -->
+                    <div class="content-box download-box">
+                        <div class="box-header featured">
+                            <h3>GET THE GAME</h3>
+                        </div>
+                        <div class="box-body download-body">
+                            <p class="promo-text">
+                                Arena 2006 delivers fast-paced action to your
+                                desktop. Connect now to the master server.
+                            </p>
+
+                            <div id="build-info" class="build-status">
+                                Checking for updates...
+                            </div>
+
+                            <!-- Windows -->
+                            <div class="package-card">
+                                <div class="pkg-header">Windows Edition</div>
+                                <div class="pkg-content">
+                                    <div class="pkg-price">FREE</div>
+                                    <ul class="pkg-features">
+                                        <li>Full Client (latest)</li>
+                                    </ul>
+                                    <a
+                                        id="windows-download"
+                                        href="#"
+                                        class="retro-btn disabled"
+                                    >
+                                        <span class="btn-text"
+                                            >Download Client</span
+                                        >
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Linux -->
+                            <div class="package-card">
+                                <div class="pkg-header">Linux / Proton</div>
+                                <div class="pkg-content">
+                                    <div class="pkg-price">FREE</div>
+                                    <ul class="pkg-features">
+                                        <li>Native Linux Binaries</li>
+                                    </ul>
+                                    <a
+                                        id="linux-download"
+                                        href="#"
+                                        class="retro-btn disabled"
+                                    >
+                                        <span class="btn-text"
+                                            >Download Client</span
+                                        >
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Maps -->
+                    <div class="content-box">
+                        <div class="box-header">
+                            <h3>Most Played Maps</h3>
+                        </div>
+                        <div class="box-body sidebar-list">
+                            <div class="list-item">
+                                <div class="thumb blue"></div>
+                                <div class="info">
+                                    <span class="title">Cyber One</span>
+                                    <span class="author">Author: H2_Fan</span>
+                                </div>
+                            </div>
+                            <div class="list-item">
+                                <div class="thumb red"></div>
+                                <div class="info">
+                                    <span class="title">Hillside</span>
+                                    <span class="author">Author: DevTeam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stylized Alert Overlay -->
+    <div id="retro-alert" class="alert-overlay hidden">
+        <div class="alert-box">
+            <div class="alert-header">System Message</div>
+            <div class="alert-content">Nothing useful here!</div>
+            <div class="alert-footer">
+                <button id="alert-close" class="retro-btn">OK</button>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const BUCKET_BASE = "https://storage.googleapis.com/arena2006-downloads";
+    const LATEST_COMMIT = "0bbbd908da97b4af319d401d68f5f22cf2d8725e";
+
+    async function fetchLatestBuild() {
+        try {
+            const manifestUrl = `${BUCKET_BASE}/latest.json`;
+            const response = await fetch(manifestUrl);
+            if (response.ok) {
+                return await response.json();
+            }
+        } catch (e) {
+            console.warn("Manifest fetch failed, using fallback.");
+        }
+
+        return {
+            commitSha: LATEST_COMMIT,
+            buildDate: "2025-12-13",
+        };
+    }
+
+    async function init() {
+        const buildInfo = document.getElementById("build-info");
+        const windowsBtn = document.getElementById(
+            "windows-download",
+        ) as HTMLAnchorElement;
+        const linuxBtn = document.getElementById(
+            "linux-download",
+        ) as HTMLAnchorElement;
+        const searchInput = document.getElementById("retro-search");
+        const searchBtn = document.getElementById("search-btn");
+        const alertOverlay = document.getElementById("retro-alert");
+        const alertClose = document.getElementById("alert-close");
+
+        // Mobile Menu Logic
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const mainNav = document.getElementById("main-nav");
+
+        if (hamburgerBtn && mainNav) {
+            hamburgerBtn.addEventListener("click", () => {
+                mainNav.classList.toggle("open");
+                hamburgerBtn.classList.toggle("active");
+            });
+        }
+
+        // Search UI Logic
+        const showAlert = () => alertOverlay?.classList.remove("hidden");
+        searchBtn?.addEventListener("click", showAlert);
+        searchInput?.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") showAlert();
+        });
+        alertClose?.addEventListener("click", () =>
+            alertOverlay?.classList.add("hidden"),
+        );
+
+        try {
+            const build = await fetchLatestBuild();
+            const commitSha = build.commitSha || "latest";
+            const shortSha = commitSha.substring(0, 7);
+
+            if (build.buildDate) {
+                const date = new Date(build.buildDate);
+                buildInfo!.innerHTML = `Latest Build: <strong>${shortSha}</strong> (${date.toLocaleDateString()})`;
+            } else {
+                buildInfo!.innerHTML = `Latest Build: <strong>${shortSha}</strong>`;
+            }
+
+            // Set download URLs
+            windowsBtn.href = `${BUCKET_BASE}/${commitSha}/windows_client.zip`;
+            windowsBtn.classList.remove("disabled");
+            windowsBtn.querySelector(".btn-text")!.textContent =
+                "CLICK HERE TO DOWNLOAD";
+
+            linuxBtn.href = `${BUCKET_BASE}/${commitSha}/linux_client.zip`;
+            linuxBtn.classList.remove("disabled");
+            linuxBtn.querySelector(".btn-text")!.textContent =
+                "CLICK HERE TO DOWNLOAD";
+        } catch (error) {
+            console.error("Failed to load build info:", error);
+            buildInfo!.innerHTML =
+                '<span style="color:red">Connection Failed</span>';
+        }
+    }
+
+    init();
+</script>
+
+<style>
+    :root {
+        --retro-bg: #0c1219;
+        --retro-panel: #111a24;
+        --retro-blue-header: #0f2b4d;
+        --retro-blue-border: #2a4c7d;
+        --retro-text: #c0c0c0;
+        --retro-highlight: #4a9eff;
+        --retro-cyan: #00d4ff;
+    }
+
+    /* Reset & Base */
+    .retro-body {
+        background-color: #000;
+        background-image:
+            linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                #0a1525 1px,
+                #0a1525 2px
+            );
+        background-size:
+            100% 100%,
+            100% 4px;
+        color: var(--retro-text);
+        font-family: Verdana, Tahoma, sans-serif;
+        font-size: 11px;
+        min-height: 100vh;
+        padding-bottom: 50px;
+    }
+
+    .main-wrapper {
+        width: 960px;
+        margin: 0 auto;
+        background: var(--retro-bg);
+        border-left: 1px solid #333;
+        border-right: 1px solid #333;
+        box-shadow: 0 0 50px rgba(0, 100, 255, 0.1);
+    }
+
+    /* Header */
+    .retro-header {
+        background: linear-gradient(to bottom, #1a3b6e, #0e2240);
+        border-bottom: 2px solid var(--retro-highlight);
+        padding: 0;
+    }
+
+    .logo-area {
+        height: 80px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .glitch-logo {
+        font-family: "Arial Black", sans-serif;
+        font-size: 32px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .glitch-logo .highlight {
+        color: var(--retro-highlight);
+    }
+
+    .user-panel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 5px 10px;
+        border: 1px solid var(--retro-blue-border);
+        border-radius: 4px;
+    }
+
+    .user-panel .avatar {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #fff;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+    }
+    .username {
+        color: #fff;
+        font-weight: bold;
+    }
+    .status {
+        color: #888;
+        font-size: 10px;
+    }
+
+    /* Hamburger */
+    .hamburger-btn {
+        display: none;
+        background: transparent;
+        border: 1px solid var(--retro-blue-border);
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .hamburger-btn .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--retro-highlight);
+        transition: all 0.3s ease;
+    }
+
+    .hamburger-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .hamburger-btn.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger-btn.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger-btn.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Nav */
+    .retro-nav {
+        background: #08111f;
+        border-top: 1px solid #345685;
+        border-bottom: 1px solid #000;
+        height: 30px;
+        position: relative;
+        z-index: 100;
+    }
+
+    .retro-nav ul {
+        list-style: none;
+        padding: 0 10px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .retro-nav li {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border-right: 1px solid #223a5e;
+    }
+
+    .retro-nav li a {
+        color: #fff;
+        text-decoration: none;
+        padding: 0 15px;
+        font-weight: bold;
+        text-transform: capitalize;
+        display: block;
+        line-height: 28px;
+    }
+
+    .retro-nav li.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+        filter: grayscale(1);
+    }
+
+    .retro-nav li.vgu-home {
+        background: #4a1e1e;
+        border-right: 1px solid #8f3a3a;
+    }
+
+    .retro-nav li.vgu-home a {
+        color: #ffcccc;
+    }
+
+    .retro-nav li:hover,
+    .retro-nav li.active {
+        background: linear-gradient(to bottom, #2a4c7d, #152845);
+    }
+
+    .retro-nav li.vgu-home:hover {
+        background: linear-gradient(to bottom, #7d2a2a, #451515);
+    }
+
+    .search-box {
+        margin-left: auto;
+        border-right: none !important;
+        padding-left: 10px;
+    }
+
+    .search-box input {
+        background: #fff;
+        border: 1px solid #000;
+        height: 18px;
+        font-size: 10px;
+        padding: 0 4px;
+        color: #000;
+    }
+
+    .search-box button {
+        background: #333;
+        color: #fff;
+        border: 1px solid #000;
+        height: 20px;
+        font-size: 10px;
+        cursor: pointer;
+        text-transform: uppercase;
+    }
+
+    /* Sub Header */
+    .sub-header {
+        background-color: #152233;
+        color: #6a8caf;
+        padding: 8px 15px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--retro-blue-border);
+        margin-bottom: 20px;
+    }
+
+    /* Content Layout */
+    .content-layout {
+        display: flex;
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    .col-left {
+        width: 640px;
+    }
+    .col-right {
+        width: 300px;
+    }
+
+    /* Content Box Generic */
+    .content-box {
+        border: 1px solid var(--retro-blue-border);
+        background: var(--retro-panel);
+        margin-bottom: 20px;
+    }
+
+    .box-header {
+        background: linear-gradient(to bottom, #1a3357, #0f1e33);
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--retro-blue-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .box-header.featured {
+        background: linear-gradient(
+            to bottom,
+            var(--retro-blue-header),
+            #0a1525
+        );
+        border-bottom: 1px solid var(--retro-highlight);
+    }
+
+    .box-header h3 {
+        margin: 0;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .box-body {
+        padding: 10px;
+    }
+
+    .tabs .tab {
+        background: #09121d;
+        padding: 3px 8px;
+        border: 1px solid var(--retro-blue-border);
+        border-radius: 3px;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .tabs .tab.active {
+        background: var(--retro-blue-border);
+        color: #fff;
+    }
+
+    /* File Share Specifics */
+    .file-share-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .media-container {
+        border: 1px solid #333;
+        background: #000;
+        padding: 1px;
+    }
+    .video-thumbnail {
+        width: 100%;
+        position: relative;
+    }
+    .video-thumbnail img {
+        width: 100%;
+        display: block;
+        border: 1px solid #222;
+    }
+    .play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.2);
+    }
+    .play-icon {
+        font-size: 40px;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 10px #000;
+    }
+
+    .file-meta {
+        display: flex;
+        background: #152233;
+        padding: 10px;
+        border: 1px solid #223a5e;
+    }
+
+    .file-title {
+        flex: 1;
+    }
+    .file-title h4 {
+        margin: 0 0 5px 0;
+        color: #fff;
+        font-size: 14px;
+    }
+    .description {
+        margin: 0;
+        color: #aaa;
+    }
+    .file-stats {
+        width: 150px;
+        text-align: right;
+        border-left: 1px solid #223a5e;
+        padding-left: 10px;
+    }
+    .author {
+        color: var(--retro-highlight);
+        font-weight: bold;
+    }
+    .rating .star {
+        color: #ffcc00;
+    }
+    .file-actions {
+        background: #09121d;
+        border-top: 1px solid #223a5e;
+        padding: 5px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Download Box Specifics */
+    .download-body {
+        background: #08111f;
+    }
+    .promo-text {
+        color: #6a8caf;
+        margin-bottom: 10px;
+    }
+    .build-status {
+        background: #000;
+        color: var(--retro-cyan);
+        font-family: monospace;
+        padding: 6px;
+        margin-bottom: 15px;
+        text-align: center;
+        border: 1px solid #223a5e;
+    }
+    .package-card {
+        background: #0e1621;
+        border: 1px solid var(--retro-blue-border);
+        margin-bottom: 10px;
+    }
+    .package-card .pkg-header {
+        background: #152233;
+        padding: 6px;
+        font-weight: bold;
+        color: #fff;
+        border-bottom: 1px solid var(--retro-blue-border);
+    }
+    .pkg-content {
+        padding: 10px;
+    }
+    .pkg-price {
+        float: right;
+        color: var(--retro-cyan);
+        font-weight: bold;
+    }
+    .pkg-features {
+        list-style: square;
+        padding-left: 20px;
+        margin: 5px 0 10px 0;
+        color: #888;
+    }
+
+    .retro-btn {
+        display: block;
+        background: linear-gradient(to bottom, #1a3b6e, #0e2240);
+        border: 2px solid #000;
+        border-color: #345685 #08111f #08111f #345685;
+        color: var(--retro-cyan);
+        text-align: center;
+        text-decoration: none;
+        padding: 8px 0;
+        font-weight: bold;
+        font-family: sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .retro-btn:hover:not(.disabled) {
+        background: linear-gradient(to bottom, #2a4c7d, #152845);
+        color: #fff;
+        border-color: #4a9eff #0e2240 #0e2240 #4a9eff;
+    }
+    .retro-btn.disabled {
+        filter: grayscale(1);
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Alert Overlay */
+    .alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .alert-overlay.hidden {
+        display: none;
+    }
+    .alert-box {
+        width: 320px;
+        background: var(--retro-panel);
+        border: 2px solid var(--retro-highlight);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+    .alert-header {
+        background: var(--retro-blue-header);
+        color: #fff;
+        padding: 8px;
+        font-weight: bold;
+        border-bottom: 1px solid var(--retro-highlight);
+    }
+    .alert-content {
+        padding: 20px;
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    .alert-footer {
+        padding: 10px;
+        border-top: 1px solid #223a5e;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .alert-footer .retro-btn {
+        min-width: 60px;
+        padding: 4px 12px;
+    }
+
+    /* Sidebar List */
+    .sidebar-list .list-item {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        background: #0e1621;
+        padding: 5px;
+        border: 1px solid #223a5e;
+    }
+    .list-item .thumb {
+        width: 40px;
+        height: 40px;
+        background: #000;
+    }
+    .list-item .thumb.blue {
+        background: #0044aa;
+    }
+    .list-item .thumb.red {
+        background: #aa2200;
+    }
+    .list-item .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .list-item .title {
+        color: #fff;
+        font-weight: bold;
+    }
+    .list-item .author {
+        color: #666;
+        font-size: 9px;
+    }
+
+    @media (max-width: 980px) {
+        .main-wrapper {
+            width: 100%;
+            border: none;
+        }
+        .content-layout {
+            flex-direction: column;
+        }
+        .col-left,
+        .col-right {
+            width: 100%;
+        }
+
+        .user-panel {
+            display: none;
+        }
+        .hamburger-btn {
+            display: flex;
+        }
+
+        .retro-nav {
+            height: auto;
+            display: none;
+        }
+        .retro-nav.open {
+            display: block;
+            border-bottom: 2px solid var(--retro-highlight);
+        }
+        .retro-nav ul {
+            flex-direction: column;
+            height: auto;
+            align-items: flex-start;
+            padding: 0;
+        }
+        .retro-nav li {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid #223a5e;
+            height: auto;
+        }
+        .retro-nav li a {
+            padding: 10px 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            gap: 5px;
+        }
+        .search-box input {
+            flex: 1;
+            height: 30px;
+        }
+        .search-box button {
+            height: 30px;
+            padding: 0 15px;
+        }
+    }
+</style>

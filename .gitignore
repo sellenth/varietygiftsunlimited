@@ -33,3 +33,4 @@ astro.log
 scripts/
 .config/
 .data/
+.gemini-clipboard/

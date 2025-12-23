@@ -3,10 +3,43 @@ import Header from "../components/Header.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Variety Gifts Unlimited - Unique and Fun Gifts" hideHeader={false}>
+<Layout
+    title="Variety Gifts Unlimited - Unique and Fun Gifts"
+    hideHeader={false}
+>
     <div class="game-browser">
         <h1>Game Browser</h1>
         <div class="grid">
+            <a href="/gifty-dodge" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <img
+                            src="/gifty-dodge/gifty-dodge.png"
+                            alt="Gifty Dodge Game"
+                            class="game-image"
+                        />
+                    </div>
+                    <div class="game-info">
+                        <h2>Gifty Dodge</h2>
+                        <div class="button">Play Now</div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="/arena2006/index.html" class="game-link">
+                <div class="game">
+                    <div class="game-image-container">
+                        <div class="flappy-preview">
+                            <div class="money-symbol">A</div>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h2>Arena 2006</h2>
+                        <div class="button">Play Now</div>
+                    </div>
+                </div>
+            </a>
+
             <a href="/flappy-cash/index.html" class="game-link">
                 <div class="game">
                     <div class="game-image-container">
@@ -16,18 +49,6 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                     <div class="game-info">
                         <h2>Flappy Cash</h2>
-                        <div class="button">Play Now</div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="/gifty-dodge" class="game-link">
-                <div class="game">
-                    <div class="game-image-container">
-                        <img src="/gifty-dodge/gifty-dodge.png" alt="Gifty Dodge Game" class="game-image" />
-                    </div>
-                    <div class="game-info">
-                        <h2>Gifty Dodge</h2>
                         <div class="button">Play Now</div>
                     </div>
                 </div>
@@ -57,7 +78,11 @@ import Layout from "../layouts/Layout.astro";
             <a href="/hoops/index.html" class="game-link">
                 <div class="game">
                     <div class="game-image-container">
-                        <img src="/game/shootout.png" alt="Basketball Game" class="game-image" />
+                        <img
+                            src="/game/shootout.png"
+                            alt="Basketball Game"
+                            class="game-image"
+                        />
                     </div>
                     <div class="game-info">
                         <h2>Hoops</h2>
@@ -69,7 +94,11 @@ import Layout from "../layouts/Layout.astro";
             <a href="/savings-box-anthology" class="game-link">
                 <div class="game">
                     <div class="game-image-container">
-                        <img src="/game/preview.png" alt="Original Collection" class="game-image" />
+                        <img
+                            src="/game/preview.png"
+                            alt="Original Collection"
+                            class="game-image"
+                        />
                     </div>
                     <div class="game-info">
                         <h2>Original Collection</h2>
@@ -114,7 +143,7 @@ import Layout from "../layouts/Layout.astro";
         font-size: 3rem;
         font-weight: 800;
         color: #2a2a72;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .grid {
@@ -132,7 +161,9 @@ import Layout from "../layouts/Layout.astro";
         border-radius: 16px;
         overflow: hidden;
         background: white;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 6px 15px rgba(0, 0, 0, 0.05);
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.08),
+            0 6px 15px rgba(0, 0, 0, 0.05);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         height: 100%;
         display: flex;
@@ -141,7 +172,9 @@ import Layout from "../layouts/Layout.astro";
 
     .game:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+        box-shadow:
+            0 15px 40px rgba(0, 0, 0, 0.15),
+            0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
     .game-image-container {
@@ -186,7 +219,11 @@ import Layout from "../layouts/Layout.astro";
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0) 70%
+        );
         animation: rotate 8s linear infinite;
     }
 
@@ -199,10 +236,10 @@ import Layout from "../layouts/Layout.astro";
         height: 100%;
         background: repeating-linear-gradient(
             45deg,
-            rgba(0,0,0,0.05),
-            rgba(0,0,0,0.05) 10px,
-            rgba(0,0,0,0) 10px,
-            rgba(0,0,0,0) 20px
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.05) 10px,
+            rgba(0, 0, 0, 0) 10px,
+            rgba(0, 0, 0, 0) 20px
         );
     }
 
@@ -235,7 +272,11 @@ import Layout from "../layouts/Layout.astro";
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0) 70%
+        );
         animation: rotate 10s linear infinite;
     }
 
@@ -256,7 +297,7 @@ import Layout from "../layouts/Layout.astro";
         bottom: 0;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         transform-origin: bottom center;
         animation: pulse-shadow 3s ease-in-out infinite;
     }
@@ -271,7 +312,7 @@ import Layout from "../layouts/Layout.astro";
         border-radius: 8px 8px 0 0;
         transform-origin: top center;
         animation: lid-bounce 4s ease-in-out infinite;
-        box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
     }
 
     .gift-ribbon-v {
@@ -282,7 +323,7 @@ import Layout from "../layouts/Layout.astro";
         left: 40%;
         background: #5e72eb;
         z-index: 20;
-        box-shadow: 0 0 10px rgba(94,114,235,0.6);
+        box-shadow: 0 0 10px rgba(94, 114, 235, 0.6);
     }
 
     .gift-ribbon-h {
@@ -293,7 +334,7 @@ import Layout from "../layouts/Layout.astro";
         left: -10%;
         background: #5e72eb;
         z-index: 20;
-        box-shadow: 0 0 10px rgba(94,114,235,0.6);
+        box-shadow: 0 0 10px rgba(94, 114, 235, 0.6);
     }
 
     .gift-glow {
@@ -302,7 +343,11 @@ import Layout from "../layouts/Layout.astro";
         height: 140%;
         top: -20%;
         left: -20%;
-        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 0) 70%
+        );
         opacity: 0;
         animation: glow-pulse 4s ease-in-out infinite;
         z-index: 5;
@@ -316,7 +361,7 @@ import Layout from "../layouts/Layout.astro";
         left: -50%;
         z-index: 15;
         pointer-events: none;
-        background-image: 
+        background-image:
             radial-gradient(circle, #5e72eb 50%, transparent 50%),
             radial-gradient(circle, #ff9190 50%, transparent 50%),
             radial-gradient(circle, #ffffff 50%, transparent 50%),
@@ -324,7 +369,7 @@ import Layout from "../layouts/Layout.astro";
             radial-gradient(circle, #5e72eb 50%, transparent 50%),
             radial-gradient(circle, #ffffff 50%, transparent 50%);
         background-size: 10px 10px;
-        background-position: 
+        background-position:
             0 0,
             25px 25px,
             50px 50px,
@@ -336,31 +381,63 @@ import Layout from "../layouts/Layout.astro";
     }
 
     @keyframes lid-bounce {
-        0%, 100% { transform: rotateX(0deg); }
-        20% { transform: rotateX(-10deg); }
-        40% { transform: rotateX(-30deg); }
-        60% { transform: rotateX(-10deg); }
-        80% { transform: rotateX(-5deg); }
+        0%,
+        100% {
+            transform: rotateX(0deg);
+        }
+        20% {
+            transform: rotateX(-10deg);
+        }
+        40% {
+            transform: rotateX(-30deg);
+        }
+        60% {
+            transform: rotateX(-10deg);
+        }
+        80% {
+            transform: rotateX(-5deg);
+        }
     }
 
     @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
     }
 
     @keyframes pulse-shadow {
-        0%, 100% { box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
-        50% { box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        0%,
+        100% {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        50% {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
     }
 
     @keyframes glow-pulse {
-        0%, 100% { opacity: 0.2; }
-        50% { opacity: 0.6; }
+        0%,
+        100% {
+            opacity: 0.2;
+        }
+        50% {
+            opacity: 0.6;
+        }
     }
 
     @keyframes particles {
-        0% { transform: rotate(0deg); opacity: 0.6; }
-        100% { transform: rotate(360deg); opacity: 0.4; }
+        0% {
+            transform: rotate(0deg);
+            opacity: 0.6;
+        }
+        100% {
+            transform: rotate(360deg);
+            opacity: 0.4;
+        }
     }
 
     /* Neon Quake Animation */
@@ -386,7 +463,11 @@ import Layout from "../layouts/Layout.astro";
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0) 70%
+        );
         animation: rotate 6s linear infinite;
     }
 
@@ -403,8 +484,18 @@ import Layout from "../layouts/Layout.astro";
         width: 100%;
         height: 100%;
         background-image:
-            linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%),
-            linear-gradient(0deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+            linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.8) 50%,
+                transparent 100%
+            ),
+            linear-gradient(
+                0deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.6) 50%,
+                transparent 100%
+            );
         background-size: 20px 20px;
         animation: lines-move 3s linear infinite;
         opacity: 0.7;
@@ -425,26 +516,56 @@ import Layout from "../layouts/Layout.astro";
     }
 
     @keyframes neon-shift {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
     }
 
     @keyframes quake-shake {
-        0%, 100% { transform: translateX(0) rotate(0deg); }
-        10% { transform: translateX(-5px) rotate(-1deg); }
-        20% { transform: translateX(5px) rotate(1deg); }
-        30% { transform: translateX(-3px) rotate(-0.5deg); }
-        40% { transform: translateX(3px) rotate(0.5deg); }
-        50% { transform: translateX(-2px) rotate(-0.3deg); }
-        60% { transform: translateX(2px) rotate(0.3deg); }
-        70% { transform: translateX(-1px) rotate(-0.1deg); }
-        80% { transform: translateX(1px) rotate(0.1deg); }
-        90% { transform: translateX(0) rotate(0deg); }
+        0%,
+        100% {
+            transform: translateX(0) rotate(0deg);
+        }
+        10% {
+            transform: translateX(-5px) rotate(-1deg);
+        }
+        20% {
+            transform: translateX(5px) rotate(1deg);
+        }
+        30% {
+            transform: translateX(-3px) rotate(-0.5deg);
+        }
+        40% {
+            transform: translateX(3px) rotate(0.5deg);
+        }
+        50% {
+            transform: translateX(-2px) rotate(-0.3deg);
+        }
+        60% {
+            transform: translateX(2px) rotate(0.3deg);
+        }
+        70% {
+            transform: translateX(-1px) rotate(-0.1deg);
+        }
+        80% {
+            transform: translateX(1px) rotate(0.1deg);
+        }
+        90% {
+            transform: translateX(0) rotate(0deg);
+        }
     }
 
     @keyframes lines-move {
-        0% { background-position: 0 0; }
-        100% { background-position: 20px 20px; }
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 20px 20px;
+        }
     }
 
     @keyframes icon-glow {
@@ -486,7 +607,7 @@ import Layout from "../layouts/Layout.astro";
     .button {
         display: inline-block;
         padding: 0.8rem 1.5rem;
-        background: linear-gradient(to right, #4776E6, #8E54E9);
+        background: linear-gradient(to right, #4776e6, #8e54e9);
         color: white;
         font-weight: 600;
         border-radius: 8px;
@@ -512,7 +633,8 @@ import Layout from "../layouts/Layout.astro";
     }
 
     @keyframes pulse {
-        0%, 100% {
+        0%,
+        100% {
             transform: scale(1);
             opacity: 0.9;
         }
@@ -526,12 +648,12 @@ import Layout from "../layouts/Layout.astro";
         .grid {
             grid-template-columns: 1fr;
         }
-        
+
         .game-browser {
             padding: 1.5rem;
             border-radius: 12px;
         }
-        
+
         h1 {
             font-size: 2.25rem;
         }
