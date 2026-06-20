@@ -3,7 +3,7 @@ export const bagNames = [
     "Zig Zag Bag",
     "Red Tassle Bag",
     "Yellow Flower Bag",
-    "Sheep Flock Bag",
+    "Sheep Bag",
     "Red Smile Bag",
     "Brown Bear Bag",
     "Purple Flower Bag",
