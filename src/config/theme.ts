@@ -1,6 +1,6 @@
-export type ThemeId = "default" | "fall" | "winter";
+export type ThemeId = "default" | "fall" | "winter" | "summer";
 
-export const activeTheme: ThemeId = "winter";
+export const activeTheme: ThemeId = "summer";
 
 export interface SlideContent {
   headline: string;
@@ -135,10 +135,47 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       ctaLink: "/shop/product/bear-coffee-sweater",
     },
   },
+  summer: {
+    heroBadge: "Sunshine & Good Vibes",
+    heroHeadline: "SUMMER JUST GOT FUN",
+    heroDescription:
+      "Soak up the season with breezy tees, tanks, and playful finds made for sunny days.",
+    heroBadges: [],
+    heroCtaLabel: "SHOP SUMMER",
+    featuredHeading: "SUMMER FAVORITES",
+    featuredCtaLabel: "SHOP THE SEASON",
+    aboutParagraph:
+      "Hey there! We're Halston and Matchima. We created Variety Gifts to bring a bit more joy into everyday life—especially when the sun's out. From playful presents to digital experiences, we love making bright days even brighter.",
+    gamesHeading: "SUNNY DAY GAMES",
+    gamesDescription:
+      "Beat the heat indoors with our collection of free browser games! We're steadily adding new titles to the lineup—perfect for cooling off with a cold drink and a little friendly competition.",
+    gamesCtaLabel: "PLAY NOW",
+    showFloatingLeaves: false,
+    slide1: {
+      headline: "SUMMER JUST GOT FUN",
+      ctaLabel: "SHOP SUMMER",
+      ctaLink: "/shop/category/shirts",
+      secondaryCtaLabel: "BEST SELLERS",
+      secondaryCtaLink: "/shop",
+    },
+    slide2: {
+      headline: "PETS LOVE\nSUMMER TOO",
+      description: "Bandanas and accessories for your sunshine sidekick.",
+      ctaLabel: "SHOP ACCESSORIES",
+      ctaLink: "/shop/product/chewbarka-bandana",
+    },
+    slide3: {
+      headline: "BEAT THE HEAT.\nLOOK COOL.",
+      description: "Breezy crops, tanks, and tees made for hot days.",
+      ctaLabel: "SHOP TEES",
+      ctaLink: "/shop/category/shirts",
+    },
+  },
 };
 
 export const themeClasses: Record<ThemeId, string> = {
   default: "theme-default",
   fall: "theme-fall",
   winter: "theme-winter",
+  summer: "theme-summer",
 };
