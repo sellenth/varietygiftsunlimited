@@ -9,41 +9,41 @@ import Layout from "../layouts/Layout.astro";
 >
   <main class="w-full overflow-x-hidden relative">
     <section
-      class="backroom-section relative py-8 px-4 sm:py-12 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 min-h-screen"
+      class="backroom-section relative py-8 px-4 sm:py-12 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-br from-cyan-600 via-teal-500 to-sky-600 min-h-screen"
     >
       <div class="max-w-6xl mx-auto relative z-10">
         <div class="text-center mb-8 sm:mb-12">
           <h1
-            class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 text-amber-100 drop-shadow-lg"
+            class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 text-cyan-50 drop-shadow-lg"
           >
-            🍂 Backroom Utility 🍁
+            ☀️ Backroom Utility 🌊
           </h1>
-          <p class="text-amber-200 text-base sm:text-lg drop-shadow-md mb-4">
-            Cozy AI Image Generation Tool
+          <p class="text-cyan-100 text-base sm:text-lg drop-shadow-md mb-4">
+            Sunny AI Image Generation Tool
           </p>
           <a
             href="/upscaler"
-            class="inline-block bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base"
+            class="inline-block bg-gradient-to-r from-rose-400 to-amber-400 hover:from-rose-500 hover:to-amber-500 text-white font-semibold py-2 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105 text-sm sm:text-base"
           >
             Go to Image Upscaler
           </a>
         </div>
 
         <div
-          class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border-4 border-amber-200/50 backdrop-blur-sm"
+          class="bg-gradient-to-br from-cyan-50 via-sky-50 to-teal-50 rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border-4 border-cyan-200/50 backdrop-blur-sm"
         >
           <!-- API Key Section -->
           <div class="mb-6 sm:mb-8">
             <label
               for="apiKey"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
-              🎃 Fal API Key
+              🔑 Fal API Key
             </label>
             <input
               type="password"
               id="apiKey"
-              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 focus:border-teal-500 focus:outline-none shadow-lg placeholder-teal-600 text-sm sm:text-base"
               placeholder="Enter your Fal API key..."
             />
           </div>
@@ -52,23 +52,22 @@ import Layout from "../layouts/Layout.astro";
           <div class="mb-6">
             <label
               for="model"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
               🎨 Model
             </label>
             <select
               id="model"
-              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 focus:border-teal-500 focus:outline-none shadow-lg text-sm sm:text-base"
             >
-              <option value="fal-ai/nano-banana-pro/edit" selected
-                >🍌 nano banana pro</option
+              <option value="fal-ai/nano-banana-2/edit" selected
+                >🍌 nano banana 2 (edit)</option
               >
-              <option value="fal-ai/nano-banana/edit" selected
-                >🍌 nano banana</option
+              <option value="fal-ai/nano-banana-2">🍌 nano banana 2</option>
+              <option value="openai/gpt-image-2/edit"
+                >🖌️ gpt image 2 (edit)</option
               >
-              <option value="fal-ai/bytedance/seedream/v4/edit"
-                >🌟 seedream v4 edit</option
-              >
+              <option value="openai/gpt-image-2">🖼️ gpt image 2</option>
             </select>
           </div>
 
@@ -76,9 +75,9 @@ import Layout from "../layouts/Layout.astro";
           <div class="mb-6">
             <label
               for="referenceImages"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
-              🖼️ Reference Images (Required)
+              🖼️ Reference Images <span id="refImagesReq">(Required)</span>
             </label>
             <div
               class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
@@ -88,17 +87,20 @@ import Layout from "../layouts/Layout.astro";
                 id="referenceImages"
                 multiple
                 accept="image/*"
-                class="flex-shrink-0 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-amber-200 file:text-amber-900 hover:file:bg-amber-300 w-full sm:w-auto"
+                class="flex-shrink-0 file:mr-3 sm:file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-cyan-200 file:text-teal-900 hover:file:bg-cyan-300 w-full sm:w-auto"
               />
               <div
-                class="paste-area flex-1 p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 shadow-lg text-center text-sm sm:text-base"
+                class="paste-area flex-1 p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 shadow-lg text-center text-sm sm:text-base"
               >
                 📎 Or paste images from clipboard here
               </div>
             </div>
-            <p class="text-amber-700 text-xs sm:text-sm mt-2 drop-shadow-sm">
+            <p
+              id="refImagesNote"
+              class="text-teal-700 text-xs sm:text-sm mt-2 drop-shadow-sm"
+            >
               Upload 1-4 reference images for editing, or paste images from
-              clipboard. Both models require reference images. 🌟
+              clipboard. Edit models require reference images. 🌊
             </p>
             <!-- Reference Images Preview -->
             <div
@@ -113,15 +115,15 @@ import Layout from "../layouts/Layout.astro";
           <div class="mb-6">
             <label
               for="prompt"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
               ✨ Prompt
             </label>
             <textarea
               id="prompt"
               rows="3"
-              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none resize-none shadow-lg placeholder-amber-600 text-sm sm:text-base"
-              placeholder="Describe how to edit the reference images... (e.g., 'add a buff dog wearing the tank top')"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 focus:border-teal-500 focus:outline-none resize-none shadow-lg placeholder-teal-600 text-sm sm:text-base"
+              placeholder="Describe the image to generate or how to edit the references... (e.g., 'a buff dog at the beach wearing the tank top')"
             ></textarea>
           </div>
 
@@ -129,18 +131,18 @@ import Layout from "../layouts/Layout.astro";
           <div class="mb-6">
             <label
               for="imageCount"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
-              🎃 Number of Images (1-4)
+              🏖️ Number of Images (1-4)
             </label>
             <select
               id="imageCount"
-              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 focus:border-teal-500 focus:outline-none shadow-lg text-sm sm:text-base"
             >
-              <option value="1">🍁 1 Image</option>
-              <option value="2">🍂 2 Images</option>
-              <option value="3">🌰 3 Images</option>
-              <option value="4">🎃 4 Images</option>
+              <option value="1">☀️ 1 Image</option>
+              <option value="2">🌊 2 Images</option>
+              <option value="3">🌴 3 Images</option>
+              <option value="4">🍹 4 Images</option>
             </select>
           </div>
 
@@ -148,13 +150,13 @@ import Layout from "../layouts/Layout.astro";
           <div class="mb-6 sm:mb-8">
             <label
               for="aspectRatio"
-              class="block text-amber-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
+              class="block text-teal-900 text-base sm:text-lg font-semibold mb-2 drop-shadow-sm"
             >
               📐 Aspect Ratio
             </label>
             <select
               id="aspectRatio"
-              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border-2 border-amber-300 focus:border-orange-500 focus:outline-none shadow-lg text-sm sm:text-base"
+              class="w-full p-3 sm:p-4 rounded-xl bg-gradient-to-r from-cyan-100 to-sky-100 text-teal-900 border-2 border-cyan-300 focus:border-teal-500 focus:outline-none shadow-lg text-sm sm:text-base"
             >
               <option value="16:9">📺 16:9 (Landscape)</option>
               <option value="4:3">📷 4:3 (Standard)</option>
@@ -168,16 +170,16 @@ import Layout from "../layouts/Layout.astro";
           <div class="text-center mb-6 sm:mb-8">
             <button
               id="generateBtn"
-              class="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-10 rounded-2xl transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl transform hover:scale-105 text-sm sm:text-base"
+              class="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-bold py-3 px-6 sm:py-4 sm:px-10 rounded-2xl transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl transform hover:scale-105 text-sm sm:text-base"
             >
-              🎨 Generate Cozy Images ✨
+              🎨 Generate Summer Images ☀️
             </button>
           </div>
 
           <!-- Status Message -->
           <div
             id="status"
-            class="text-center mb-4 sm:mb-6 text-amber-900 font-semibold drop-shadow-sm text-sm sm:text-base"
+            class="text-center mb-4 sm:mb-6 text-teal-900 font-semibold drop-shadow-sm text-sm sm:text-base"
           >
           </div>
 
@@ -187,14 +189,14 @@ import Layout from "../layouts/Layout.astro";
           </div>
 
           <!-- Image History -->
-          <div class="border-t-4 border-amber-300 pt-4 sm:pt-6">
+          <div class="border-t-4 border-cyan-300 pt-4 sm:pt-6">
             <div
               class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 sm:gap-0"
             >
               <h3
-                class="text-amber-900 text-lg sm:text-xl font-semibold drop-shadow-sm"
+                class="text-teal-900 text-lg sm:text-xl font-semibold drop-shadow-sm"
               >
-                🍁 Recent Cozy Creations
+                🌊 Recent Summer Creations
               </h3>
               <button
                 id="clearHistoryBtn"
@@ -231,13 +233,13 @@ import Layout from "../layouts/Layout.astro";
         </button>
         <button
           id="prevImage"
-          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
         >
           ‹
         </button>
         <button
           id="nextImage"
-          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold shadow-lg transition-colors"
         >
           ›
         </button>
@@ -264,17 +266,17 @@ import Layout from "../layouts/Layout.astro";
     bottom: 0;
     background-image: radial-gradient(
         circle at 20% 80%,
-        rgba(251, 191, 36, 0.1) 0%,
+        rgba(34, 211, 238, 0.15) 0%,
         transparent 50%
       ),
       radial-gradient(
         circle at 80% 20%,
-        rgba(234, 88, 12, 0.1) 0%,
+        rgba(253, 224, 71, 0.15) 0%,
         transparent 50%
       ),
       radial-gradient(
         circle at 40% 40%,
-        rgba(220, 38, 38, 0.05) 0%,
+        rgba(251, 113, 133, 0.08) 0%,
         transparent 50%
       );
     pointer-events: none;
@@ -295,7 +297,7 @@ import Layout from "../layouts/Layout.astro";
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    border: 3px solid rgba(251, 191, 36, 0.3);
+    border: 3px solid rgba(8, 145, 178, 0.3);
   }
 
   @media (min-width: 640px) {
@@ -308,7 +310,7 @@ import Layout from "../layouts/Layout.astro";
   .generated-image:hover {
     transform: scale(1.05) rotate(1deg);
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
-    border-color: rgba(251, 191, 36, 0.6);
+    border-color: rgba(8, 145, 178, 0.6);
   }
 
   .history-image {
@@ -319,7 +321,7 @@ import Layout from "../layouts/Layout.astro";
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    border: 2px solid rgba(251, 191, 36, 0.2);
+    border: 2px solid rgba(8, 145, 178, 0.2);
   }
 
   @media (min-width: 640px) {
@@ -333,10 +335,10 @@ import Layout from "../layouts/Layout.astro";
     opacity: 0.9;
     transform: scale(1.05);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    border-color: rgba(251, 191, 36, 0.4);
+    border-color: rgba(8, 145, 178, 0.4);
   }
 
-  /* Add some autumnal sparkle */
+  /* Add some summer sparkle */
   @keyframes twinkle {
     0%,
     100% {
@@ -351,7 +353,7 @@ import Layout from "../layouts/Layout.astro";
 
   @media (min-width: 640px) {
     .backroom-section::after {
-      content: "🍂";
+      content: "🌴";
       position: absolute;
       top: 10%;
       left: 10%;
@@ -361,14 +363,14 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .backroom-section::after:nth-child(2) {
-      content: "🎃";
+      content: "☀️";
       top: 20%;
       right: 15%;
       animation-delay: 1s;
     }
 
     .backroom-section::after:nth-child(3) {
-      content: "🍁";
+      content: "🌊";
       bottom: 15%;
       left: 20%;
       animation-delay: 2s;
@@ -413,29 +415,35 @@ import Layout from "../layouts/Layout.astro";
     modelSelect.value = savedModel;
   }
 
-  // Handle model change to disable aspect ratio for nano banana and save to localStorage
-  const aspectRatioSelect = document.getElementById(
-    "aspectRatio",
-  ) as HTMLSelectElement;
+  // Model helpers
+  const isEditModel = (model: string) => model.endsWith("/edit");
+  const isGptModel = (model: string) => model.startsWith("openai/gpt-image-2");
 
-  const updateAspectRatioAvailability = () => {
-    if (modelSelect.value === "fal-ai/nano-banana/edit") {
-      aspectRatioSelect.disabled = true;
-      aspectRatioSelect.value = "1:1"; // Set default when disabled
+  const refImagesReq = document.getElementById("refImagesReq")!;
+  const refImagesNote = document.getElementById("refImagesNote")!;
+
+  // Reflect whether the current model needs reference images
+  const updateReferenceRequirement = () => {
+    if (isEditModel(modelSelect.value)) {
+      refImagesReq.textContent = "(Required)";
+      refImagesNote.textContent =
+        "Upload 1-4 reference images for editing, or paste images from clipboard. Edit models require reference images. 🌊";
     } else {
-      aspectRatioSelect.disabled = false;
+      refImagesReq.textContent = "(Optional)";
+      refImagesNote.textContent =
+        "Reference images are optional for this model — leave empty for pure text-to-image, or add some for guidance. ☀️";
     }
   };
 
   const handleModelChange = () => {
     localStorage.setItem("selectedModel", modelSelect.value);
-    updateAspectRatioAvailability();
+    updateReferenceRequirement();
   };
 
   modelSelect.addEventListener("change", handleModelChange);
 
   // Set initial state
-  updateAspectRatioAvailability();
+  updateReferenceRequirement();
 
   // Reference images state
   let referenceImages: File[] = [];
@@ -477,7 +485,7 @@ import Layout from "../layouts/Layout.astro";
       const batch = batches[timestamp];
       const batchDiv = document.createElement("div");
       batchDiv.className =
-        "bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg";
+        "bg-gradient-to-r from-cyan-50 to-sky-50 rounded-xl p-4 border-2 border-cyan-200 shadow-lg";
 
       // Batch header with prompt and model
       const headerDiv = document.createElement("div");
@@ -485,10 +493,10 @@ import Layout from "../layouts/Layout.astro";
         "mb-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2";
       headerDiv.innerHTML = `
          <div class="flex-1">
-           <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
+           <div class="text-teal-900 font-semibold text-sm sm:text-base mb-1">
              🎨 ${batch[0].model.split("/").pop()} • ${new Date(timestamp).toLocaleString()}
            </div>
-           <div class="text-amber-800 text-xs sm:text-sm italic">
+           <div class="text-teal-800 text-xs sm:text-sm italic">
              "${batch[0].prompt}"
            </div>
          </div>
@@ -541,7 +549,7 @@ import Layout from "../layouts/Layout.astro";
         const imgElement = document.createElement("div");
         imgElement.className = "relative group";
         imgElement.innerHTML = `
-            <img src="${e.target?.result}" class="w-full h-20 sm:h-24 object-cover rounded-lg border-2 border-amber-300 shadow-md" />
+            <img src="${e.target?.result}" class="w-full h-20 sm:h-24 object-cover rounded-lg border-2 border-cyan-300 shadow-md" />
             <button class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeReferenceImage(${index})">
               ×
             </button>
@@ -582,7 +590,7 @@ import Layout from "../layouts/Layout.astro";
           });
           referenceImages.push(file);
           displayReferenceImages();
-          showStatus("Image pasted from clipboard! 🎨", "success");
+          showStatus("Image pasted from clipboard! 🌊", "success");
         }
         break; // Only handle the first image found
       }
@@ -639,8 +647,12 @@ import Layout from "../layouts/Layout.astro";
       return;
     }
 
-    if (referenceImages.length === 0) {
-      showStatus("Please upload at least one reference image", "error");
+    // Reference images are only required for edit models
+    if (isEditModel(model) && referenceImages.length === 0) {
+      showStatus(
+        "Edit models require at least one reference image",
+        "error",
+      );
       return;
     }
 
@@ -655,29 +667,35 @@ import Layout from "../layouts/Layout.astro";
       "generateBtn",
     ) as HTMLButtonElement;
     generateBtn.disabled = true;
-    generateBtn.textContent = "🎃 Brewing Magic... 🍁";
+    generateBtn.textContent = "🌊 Catching Waves... ☀️";
 
     showStatus("Generating images...", "info");
 
     try {
-      // Prepare request body
-      const dimensions = getImageDimensions(aspectRatio);
+      // Prepare request body. GPT Image 2 uses image_size; Nano Banana 2
+      // uses aspect_ratio.
       const requestBody: any = {
         prompt: prompt,
-        image_size: {
-          width: dimensions.width,
-          height: dimensions.height,
-        },
         num_images: imageCount,
-        max_images: 1,
-        enable_safety_checker: true,
       };
 
-      // Add reference images (required for these models)
-      const referenceImageUrls = await Promise.all(
-        referenceImages.map((file) => fileToBase64(file)),
-      );
-      requestBody.image_urls = referenceImageUrls;
+      if (isGptModel(model)) {
+        const dimensions = getImageDimensions(aspectRatio);
+        requestBody.image_size = {
+          width: dimensions.width,
+          height: dimensions.height,
+        };
+      } else {
+        requestBody.aspect_ratio = aspectRatio;
+      }
+
+      // Add reference images for edit models (or when provided)
+      if (referenceImages.length > 0) {
+        const referenceImageUrls = await Promise.all(
+          referenceImages.map((file) => fileToBase64(file)),
+        );
+        requestBody.image_urls = referenceImageUrls;
+      }
 
       const response = await fetch(`https://fal.run/${model}`, {
         method: "POST",
@@ -709,8 +727,12 @@ import Layout from "../layouts/Layout.astro";
       saveImageHistory(history);
       displayImageHistory();
 
+      const refNote =
+        referenceImages.length > 0
+          ? ` using ${referenceImages.length} reference image(s)`
+          : "";
       showStatus(
-        `🎉 Successfully brewed ${imageCount} cozy image(s) using ${referenceImages.length} reference image(s)! 🍂`,
+        `🎉 Successfully generated ${imageCount} sunny image(s)${refNote}! 🌴`,
         "success",
       );
     } catch (error) {
@@ -721,7 +743,7 @@ import Layout from "../layouts/Layout.astro";
       );
     } finally {
       generateBtn.disabled = false;
-      generateBtn.textContent = "🎨 Generate Cozy Images ✨";
+      generateBtn.textContent = "🎨 Generate Summer Images ☀️";
     }
   };
 
@@ -735,7 +757,7 @@ import Layout from "../layouts/Layout.astro";
     // Create a batch container for newly generated images
     const batchDiv = document.createElement("div");
     batchDiv.className =
-      "bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border-2 border-amber-200 shadow-lg";
+      "bg-gradient-to-r from-cyan-50 to-sky-50 rounded-xl p-4 border-2 border-cyan-200 shadow-lg";
 
     // Batch header with prompt and model
     const headerDiv = document.createElement("div");
@@ -745,10 +767,10 @@ import Layout from "../layouts/Layout.astro";
       document.getElementById("prompt") as HTMLTextAreaElement
     ).value.trim();
     headerDiv.innerHTML = `
-        <div class="text-amber-900 font-semibold text-sm sm:text-base mb-1">
+        <div class="text-teal-900 font-semibold text-sm sm:text-base mb-1">
           🎨 ${model.split("/").pop()} • Just now
         </div>
-        <div class="text-amber-800 text-xs sm:text-sm italic">
+        <div class="text-teal-800 text-xs sm:text-sm italic">
           "${prompt}"
         </div>
       `;
@@ -789,7 +811,7 @@ import Layout from "../layouts/Layout.astro";
         ? "text-red-700"
         : type === "success"
           ? "text-green-700"
-          : "text-amber-700"
+          : "text-teal-700"
     }`;
   };
 
@@ -846,14 +868,14 @@ import Layout from "../layouts/Layout.astro";
     );
     saveImageHistory(filteredHistory);
     displayImageHistory();
-    showStatus("🗑️ Batch cleared from history! 🍂", "info");
+    showStatus("🗑️ Batch cleared from history! 🌊", "info");
   };
 
   // Clear history
   const clearHistory = () => {
     localStorage.removeItem("imageHistory");
     displayImageHistory();
-    showStatus("🧹 History cleared - fresh autumn canvas! 🍁", "info");
+    showStatus("🧹 History cleared - fresh summer canvas! ☀️", "info");
   };
 
   // Event listeners
@@ -919,3 +941,5 @@ import Layout from "../layouts/Layout.astro";
   // Initialize
   displayImageHistory();
 </script>
+</content>
+</invoke>
