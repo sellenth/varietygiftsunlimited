@@ -4,6 +4,7 @@ export const prerender = true;
 import Card from "../../../components/Card.astro";
 import { categories } from "../../../data/categories";
 import { products } from "../../../data/products";
+import { orderProductsForBuild } from "../../../data/productSeasonality";
 
 export function getStaticPaths() {
     return categories.map(category => ({
@@ -13,7 +14,9 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const categoryProducts = products.filter(p => p.category === category.id);
+const categoryProducts = orderProductsForBuild(
+    products.filter(p => p.category === category.id)
+);
 
 // Get the canonical URL for this category
 const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;

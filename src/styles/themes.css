@@ -41,6 +41,35 @@
   --season-display-font: 'Comfortaa Variable', sans-serif;
 }
 
+.theme-spring {
+  --season-accent: #16a34a;
+  --season-accent-strong: #15803d;
+  --season-surface: #f7fee7;
+  --season-mist: linear-gradient(150deg, rgba(240, 253, 244, 0.96), rgba(252, 231, 243, 0.9));
+  --season-text-primary: #166534;
+  --season-text-secondary: #7e22ce;
+  --season-pill-text: #166534;
+  --season-badge-bg: rgba(244, 114, 182, 0.14);
+  --season-badge-border: rgba(244, 114, 182, 0.4);
+  --season-pill-bg: rgba(220, 252, 231, 0.85);
+  --season-pill-border: rgba(22, 163, 74, 0.4);
+  --season-overlay: rgba(22, 163, 74, 0.85);
+  --season-overlay-blur: rgba(22, 163, 74, 0.72);
+  --season-hero-gradient: linear-gradient(180deg, rgba(240, 253, 244, 0.95) 0%, rgba(252, 231, 243, 0.85) 100%);
+  --season-leaf-gradient: radial-gradient(circle at 30% 30%, rgba(134, 239, 172, 0.6), rgba(22, 163, 74, 0));
+  --season-gradient-start: #16a34a;
+  --season-gradient-mid: #84cc16;
+  --season-gradient-end: #f472b6;
+  --season-cta-gradient-start: #16a34a;
+  --season-cta-gradient-end: #65a30d;
+  --season-social-bg: #16a34a;
+  --season-social-hover: rgba(244, 114, 182, 0.85);
+  --season-navbar-bg: #166534;
+  --season-navbar-text: #f0fdf4;
+  --season-navbar-shadow: rgba(22, 101, 52, 0.3);
+  --season-display-font: 'Comfortaa Variable', sans-serif;
+}
+
 .theme-winter {
   --season-accent: #1e3a5f;
   --season-accent-strong: #166534;

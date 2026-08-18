@@ -184,26 +184,25 @@ const themeClass = themeClasses[activeTheme];
 
 		window.addEventListener('scroll', requestTick);
 		
-		// Force scrollbar styling with exact winter theme colors
+		// Keep scrollbar and overscroll colors in sync with the build-time season.
 		document.addEventListener('DOMContentLoaded', () => {
-			// Use exact winter theme colors (Christmas green)
-			const winterAccent = '#15803d'; // Christmas green
-			const winterSurface = '#f0fdf4'; // Light green surface
-			const winterAccentStrong = '#166534'; // Darker Christmas green
+			const themeStyles = getComputedStyle(document.body);
+			const seasonAccent = themeStyles.getPropertyValue('--season-accent').trim();
+			const seasonSurface = themeStyles.getPropertyValue('--season-surface').trim();
+			const seasonAccentStrong = themeStyles.getPropertyValue('--season-accent-strong').trim();
 
-			// Apply directly with exact colors
 			document.documentElement.style.setProperty('scrollbar-width', 'thin', 'important');
-			document.documentElement.style.setProperty('scrollbar-color', `${winterAccent} ${winterSurface}`, 'important');
+			document.documentElement.style.setProperty('scrollbar-color', `${seasonAccent} ${seasonSurface}`, 'important');
 			document.body.style.setProperty('scrollbar-width', 'thin', 'important');
-			document.body.style.setProperty('scrollbar-color', `${winterAccent} ${winterSurface}`, 'important');
+			document.body.style.setProperty('scrollbar-color', `${seasonAccent} ${seasonSurface}`, 'important');
 
 			// Create aggressive override style
 			const style = document.createElement('style');
 			style.textContent = `
-				/* Aggressive scrollbar override - use winter theme */
+				/* Keep nested scrollbars aligned with the active seasonal palette. */
 				html, body, *, :root {
 					scrollbar-width: thin !important;
-					scrollbar-color: ${winterAccent} ${winterSurface} !important;
+					scrollbar-color: ${seasonAccent} ${seasonSurface} !important;
 				}
 				/* WebKit scrollbars with exact colors */
 				html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
@@ -211,22 +210,22 @@ const themeClass = themeClasses[activeTheme];
 					height: 12px !important;
 				}
 				html::-webkit-scrollbar-track, body::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
-					background: ${winterSurface} !important;
+					background: ${seasonSurface} !important;
 				}
 				html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
-					background: ${winterAccent} !important;
+					background: ${seasonAccent} !important;
 					border-radius: 6px !important;
-					border: 2px solid ${winterSurface} !important;
+					border: 2px solid ${seasonSurface} !important;
 				}
 				html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover, *::-webkit-scrollbar-thumb:hover {
-					background: ${winterAccentStrong} !important;
+					background: ${seasonAccentStrong} !important;
 				}
 				html::-webkit-scrollbar-thumb:not(:hover) {
-					background: ${winterAccent} !important;
+					background: ${seasonAccent} !important;
 				}
 				/* iOS overscroll bounce area */
 				html, body {
-					background: ${winterSurface} !important;
+					background: ${seasonSurface} !important;
 				}
 			`;
 			style.setAttribute('data-scrollbar-override', 'true');

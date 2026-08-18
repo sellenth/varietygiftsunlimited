@@ -1,6 +1,8 @@
-export type ThemeId = "default" | "fall" | "winter" | "summer";
+import { buildDate, getSeasonForDate, type Season } from "./season";
 
-export const activeTheme: ThemeId = "summer";
+export type ThemeId = "default" | Season;
+
+export const activeTheme: Season = getSeasonForDate(buildDate);
 
 export interface SlideContent {
   headline: string;
@@ -61,6 +63,42 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       description: "Chill weather. Warm coffee. Easy layers. All-day comfort.",
       ctaLabel: "SHOP NOW",
       ctaLink: "/shop/shop",
+    },
+  },
+  spring: {
+    heroBadge: "Fresh Finds & Bright Days",
+    heroHeadline: "SPRING INTO SOMETHING FUN",
+    heroDescription:
+      "Welcome brighter days with cheerful tees, handmade gifts, and playful finds.",
+    heroBadges: [],
+    heroCtaLabel: "SHOP SPRING",
+    featuredHeading: "SPRING FAVORITES",
+    featuredCtaLabel: "SHOP THE SEASON",
+    aboutParagraph:
+      "Hey there! We're Halston and Matchima. We created Variety Gifts to bring a bit more joy into everyday life—especially as everything starts blooming. From playful presents to digital experiences, we love making bright days even brighter.",
+    gamesHeading: "FRESH & FUN GAMES",
+    gamesDescription:
+      "Take a break and enjoy our collection of free browser games! We're steadily adding new titles to the lineup—perfect for a little friendly competition on a fresh spring day.",
+    gamesCtaLabel: "PLAY NOW",
+    showFloatingLeaves: false,
+    slide1: {
+      headline: "SPRING INTO SOMETHING FUN",
+      ctaLabel: "SHOP SPRING",
+      ctaLink: "/shop/category/shirts",
+      secondaryCtaLabel: "BEST SELLERS",
+      secondaryCtaLink: "/shop",
+    },
+    slide2: {
+      headline: "THE PERFECT\nHANDMADE GIFT",
+      description: "Thoughtful, unique, and made to be loved all year round.",
+      ctaLabel: "SHOP NOW",
+      ctaLink: "/shop/category/bags",
+    },
+    slide3: {
+      headline: "BRIGHT DAYS.\nPLAYFUL STYLE.",
+      description: "Light layers and cheerful tees for the season ahead.",
+      ctaLabel: "SHOP TEES",
+      ctaLink: "/shop/category/shirts",
     },
   },
   fall: {
@@ -175,6 +213,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
 
 export const themeClasses: Record<ThemeId, string> = {
   default: "theme-default",
+  spring: "theme-spring",
   fall: "theme-fall",
   winter: "theme-winter",
   summer: "theme-summer",
