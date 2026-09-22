@@ -1,241 +1,119 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Bubbles from '../components/Bubbles.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Variety Gifts Unlimited - Privacy Policy" hideHeader={false}>
-    <main class="min-h-screen bg-theme-mist relative overflow-hidden">
-        <Bubbles />
-        
-        <div class="relative z-10 max-w-4xl mx-auto px-6 py-16">
-            <!-- Header -->
-            <div class="text-center mb-12">
-                <h1 class="text-5xl md:text-6xl font-bold text-theme-primary mb-4 animate-float">
-                    Privacy Policy 🛡️
-                </h1>
-                <p class="text-lg text-theme-secondary mb-8">
-                    We keep your data safe and sound, just like our gift wrapping!
-                </p>
-                <a href="/" class="shop-all-btn">
-                    ← Back to Home
-                </a>
-            </div>
+<Layout
+    title="Privacy Policy — Variety Gifts Unlimited & Arena 2006"
+    hideHeader={false}
+    description="How Variety Gifts Unlimited handles information for its website, shop, and the upcoming Arena 2006 iPhone campaign."
+    ogTitle="Privacy Policy — Variety Gifts Unlimited & Arena 2006"
+    ogUrl="https://www.variety.gifts/privacy-policy"
+>
+    <main class="policy-page">
+        <div class="policy-wrapper">
+            <header class="policy-header">
+                <p class="eyebrow">Variety Gifts Unlimited</p>
+                <h1>Privacy Policy</h1>
+                <p class="updated">Last updated: September 22, 2026</p>
+                <p>This policy explains how Variety Gifts Unlimited ("we", "our", or "us") handles information for our website, shop, and the Arena 2006 iPhone campaign.</p>
+                <nav aria-label="Privacy policy sections">
+                    <a href="#arena2006-ios">Arena 2006 on iPhone</a>
+                    <a href="#website-shop">Website &amp; shop</a>
+                    <a href="#privacy-contact">Contact &amp; requests</a>
+                </nav>
+            </header>
 
-            <!-- Last Updated Badge -->
-            <div class="bg-theme-surface p-4 rounded-xl mb-8 border-l-4 border-theme-accent">
-                <p class="text-sm text-theme-secondary">
-                    📅 <strong>Last updated:</strong> September 17, 2024
-                </p>
-            </div>
+            <section class="policy-card" id="arena2006-ios" aria-labelledby="game-heading">
+                <h2 id="game-heading">Arena 2006 on iPhone</h2>
+                <p class="scope-note">The iPhone campaign is upcoming. This section describes its purchase and rewarded-ad features. It does not describe the separate Windows and Linux desktop clients or purchases from our website shop.</p>
+                <p>No player account or game login is required. The game uses Apple for in-app payments, RevenueCat to check premium access, and Google AdMob for optional rewarded ads. These services process information even though you do not create a game account.</p>
 
-            <!-- Interactive Cards -->
-            <div class="space-y-6">
-                <!-- Introduction Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">👋 Hello There!</h2>
-                    </div>
-                    <div class="card-content">
-                        <p>
-                            Variety Gifts Unlimited ("we", "our", or "us") is committed to protecting your privacy. 
-                            This Privacy Policy explains how we collect, use, and share information about you when you 
-                            use our website and services. Think of us as the guardians of your digital gift box!
-                        </p>
-                    </div>
-                </div>
+                <h3>Purchases and premium access</h3>
+                <p>Apple processes payments for the one-time premium unlock. We do not receive your full payment-card details. RevenueCat receives purchase history and transaction or receipt information to validate purchases, restore access, prevent purchase fraud, and provide purchase analytics.</p>
+                <p>RevenueCat assigns an anonymous App User ID to the app installation. "Anonymous" means the game does not supply your name, email address, a custom account ID, or other contact attributes to RevenueCat; the identifier still lets the service associate activity and purchases with an app user. RevenueCat also processes technical information such as device and operating-system details, app/SDK version, locale, and currency.</p>
+                <p>Permanent premium access is checked through RevenueCat's purchase status, including its local cache. It is not determined by your campaign save. Use <strong>Restore Purchases</strong> in the mission selector with the Apple account used for the purchase.</p>
 
-                <!-- Information Collection Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">📦 What We Collect</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="mb-4">
-                            We collect information you share with us directly, like when you:
-                        </p>
-                        <ul class="privacy-list">
-                            <li>🛍️ Make a purchase (name, email, address, payment info)</li>
-                            <li>📧 Contact us with questions</li>
-                            <li>🎮 Play our games or use interactive features</li>
-                            <li>📱 Subscribe to our newsletter</li>
-                        </ul>
-                    </div>
-                </div>
+                <h3>Rewarded ads and ad measurement</h3>
+                <p>You can choose to watch a rewarded ad for one attempt at a selected premium mission if you do not own the premium unlock. Google Mobile Ads may process:</p>
+                <ul>
+                    <li>Your IP address and an approximate location inferred from it.</li>
+                    <li>App- or developer-scoped device identifiers, together with device and app information.</li>
+                    <li>Ads requested or viewed, video views, taps, and other interactions.</li>
+                    <li>Crash reports, performance information, and other diagnostics.</li>
+                </ul>
+                <p>Google uses this information for ad delivery and measurement, analytics, fraud prevention, and improving its services. Information may be shared with advertising partners as part of serving and measuring ads, subject to applicable privacy choices.</p>
+                <p>The RevenueCat AdMob integration also sends RevenueCat events for ad loads, impressions, clicks, load failures, and ad revenue. These can include ad-unit, placement, network and impression identifiers, event times, errors, and revenue amount/currency, associated with the anonymous App User ID. We use this reporting to understand ad performance and revenue.</p>
+                <p>The app can request and preload an ad once Google's consent system allows ad requests, before you choose to watch one. Buying the premium unlock means no ads are required to play those missions; it does not disable all SDK network activity or data processing.</p>
 
-                <!-- How We Use Information Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">🎯 How We Use Your Info</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="mb-4">We use your information to make your experience amazing:</p>
-                        <ul class="privacy-list">
-                            <li>📦 Process and ship your orders</li>
-                            <li>💌 Send you order confirmations and updates</li>
-                            <li>🎧 Provide stellar customer support</li>
-                            <li>✨ Improve our website and services</li>
-                            <li>⚖️ Comply with legal requirements</li>
-                        </ul>
-                    </div>
-                </div>
+                <h3>Consent and privacy choices</h3>
+                <p>Google's User Messaging Platform (UMP) checks whether a privacy message is required and handles consent choices. It may process approximate location, performance data, and interactions with privacy messages to provide that functionality. Ad requests are gated on UMP reporting that ads may be requested.</p>
+                <p>When UMP requires a privacy-options entry, the mission selector shows <strong>Ad privacy</strong> so you can revisit the available choices. The message and options depend on your region and the consent requirements that apply. You can also decline to watch rewarded ads.</p>
+                <p>The app does not request App Tracking Transparency (ATT) authorization for Apple's advertising identifier (IDFA). This does not mean that no information is collected: the purchase, advertising, diagnostic, and network information described here can still be processed.</p>
 
-                <!-- Sharing Information Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">🤝 When We Share</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="mb-4">We only share your information with:</p>
-                        <ul class="privacy-list">
-                            <li>🚚 Service providers (like shipping companies)</li>
-                            <li>🏦 Government entities when legally required</li>
-                            <li>🚫 <strong>Never</strong> with random third parties for marketing!</li>
-                        </ul>
-                    </div>
-                </div>
+                <h3>Local saves and rewarded passes</h3>
+                <p>Campaign progress, game settings, and an earned rewarded-attempt pass are stored locally on your device. The game's purchase and ad bridge does not upload those save files to RevenueCat or Google. They are separate from the purchase records used to restore premium access.</p>
+                <p>One unspent rewarded pass is saved for the selected mission and can survive an app restart. It becomes active when that mission starts and is consumed when the mission unloads. Checkpoint recovery and self-revival remain within that attempt. A failed load or crash does not spend another pass.</p>
+                <p>Removing the app's local data can remove these saves and passes. Uninstalling the app does not itself delete transaction or service records held by Apple, RevenueCat, or Google. Device backups are controlled through your Apple device and backup settings.</p>
 
-                <!-- Security Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">🔒 Security First</h2>
-                    </div>
-                    <div class="card-content">
-                        <p>
-                            We take reasonable measures to protect your information from loss, theft, misuse, 
-                            unauthorized access, disclosure, alteration, and destruction. Your data is locked 
-                            up tighter than our gift vault!
-                        </p>
-                    </div>
-                </div>
+                <h3>Network connections and service providers</h3>
+                <p>Connecting to purchase, advertising, and consent services sends network information, including your IP address, to the receiving service. These services process the information described above to operate their features. If you open a website or advertiser link from the game, that destination's privacy practices also apply.</p>
+                <p>Further information from the providers:</p>
+                <ul class="provider-links">
+                    <li><a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a></li>
+                    <li><a href="https://www.revenuecat.com/privacy">RevenueCat privacy information</a> and <a href="https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy">purchase-data disclosures</a></li>
+                    <li><a href="https://policies.google.com/privacy">Google privacy policy</a> and <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from partner apps</a></li>
+                    <li><a href="https://developers.google.com/admob/ios/data-disclosure">Google Mobile Ads SDK data disclosures</a></li>
+                </ul>
+            </section>
 
-                <!-- Your Choices Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">🎛️ Your Control Panel</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="mb-4">You're in charge! You can:</p>
-                        <ul class="privacy-list">
-                            <li>📬 Opt out of promotional emails</li>
-                            <li>👀 Request to see your data</li>
-                            <li>✏️ Ask us to correct your information</li>
-                            <li>🗑️ Request deletion of your data</li>
-                        </ul>
-                    </div>
-                </div>
+            <section class="policy-card" id="website-shop" aria-labelledby="website-heading">
+                <h2 id="website-heading">Website, shop, and other website services</h2>
+                <p>This section covers variety.gifts, our shop, and the interactive features offered on the website. The iPhone-specific providers and local saves described above apply to the Arena 2006 iPhone campaign.</p>
+                <h3>Information you provide</h3>
+                <p>When you place a shop order, you provide contact, shipping, and payment information for checkout and fulfillment. When you contact us, we receive the contact details and message you send. You may also provide content when using interactive website features or an email address when subscribing to updates where offered.</p>
+                <h3>How website information is used and shared</h3>
+                <p>We use this information to process and ship orders, send order confirmations and updates, answer support requests, operate and improve our website services, and meet legal requirements. Service providers help us with payments, fulfillment, hosting, and communications. The shop uses Stripe checkout; the website contact form sends your submitted details through Web3Forms. Our website also uses Vercel Analytics to help us understand site usage.</p>
+                <p>We share information with the service providers involved in delivering the relevant feature and with authorities when legally required. Following an external link takes you to a service with its own privacy practices.</p>
+                <h3>Security and your choices</h3>
+                <p>We take reasonable measures to protect information against unauthorized access, loss, or misuse. You can opt out of promotional emails and contact us to request access, correction, or deletion of information associated with your use of the website or shop.</p>
+            </section>
 
-                <!-- Changes Card -->
-                <div class="privacy-card group">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">🔄 Policy Updates</h2>
-                    </div>
-                    <div class="card-content">
-                        <p>
-                            We may update this Privacy Policy from time to time. When we do, we'll post 
-                            the new version right here and let you know about any significant changes.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Contact Card -->
-                <div class="privacy-card group bg-theme-surface">
-                    <div class="card-header">
-                        <h2 class="text-2xl font-bold text-theme-primary">📞 Questions? We're Here!</h2>
-                    </div>
-                    <div class="card-content">
-                        <p class="mb-4">
-                            If you have any questions about this Privacy Policy, don't hesitate to reach out:
-                        </p>
-                        <div class="contact-info">
-                            <p class="text-theme-secondary font-semibold">
-                                📧 varietygiftsunlimited (at) gmail .com
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Action -->
-            <div class="text-center mt-12">
-                <a href="/shop" class="shop-all-btn text-lg font-semibold">
-                    Ready to Shop? Let's Go! 🛍️
-                </a>
-            </div>
+            <section class="policy-card" id="privacy-contact" aria-labelledby="contact-heading">
+                <h2 id="contact-heading">Contact and privacy requests</h2>
+                <p>For Arena 2006 support, questions about this policy, or requests concerning your information, email <a href="mailto:varietygiftsunlimited@gmail.com">varietygiftsunlimited@gmail.com</a> or use our <a href="/contact/">support page</a>.</p>
+                <p>Tell us which service your request concerns. We may need additional information to locate the relevant records, especially because the iPhone game does not use named player accounts. Do not send passwords or full payment-card details.</p>
+                <p>Privacy rights and any limits on a request depend on applicable law and the records involved. The game has no player-account deletion screen. Contact us for help with a data request; deleting local saves or restoring a purchase is not a request to delete records held by service providers.</p>
+                <h3>Policy changes</h3>
+                <p>We may update this policy as our services change. We will post the revised policy here with an updated date.</p>
+            </section>
+            <p class="back-link"><a href="/arena2006">← Arena 2006</a><a href="/">Variety Gifts home →</a></p>
         </div>
     </main>
 </Layout>
 
 <style>
-    .bg-lavender {
-        background-color: #f3f4f6;
-    }
-
-    .privacy-card {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid var(--season-accent-tint);
-    }
-
-    .privacy-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px var(--season-accent-shadow);
-        border-color: var(--season-accent-shadow);
-    }
-
-    .card-header {
-        background: var(--season-surface);
-        padding: 1.5rem;
-        border-radius: 16px 16px 0 0;
-        border-bottom: 1px solid var(--season-accent-tint);
-    }
-
-    .card-content {
-        padding: 1.5rem;
-    }
-
-    .privacy-list {
-        space-y: 0.75rem;
-    }
-
-    .privacy-list li {
-        padding: 0.75rem;
-        background: var(--season-accent-tint);
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
-        transition: all 0.2s ease;
-    }
-
-    .privacy-list li:hover {
-        background: var(--season-badge-bg);
-        transform: translateX(4px);
-    }
-
-    .contact-info {
-        background: var(--season-badge-bg);
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 4px solid var(--season-accent);
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-
-    .animate-float {
-        animation: float 3s ease-in-out infinite;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .privacy-card {
-            margin: 0 1rem;
-        }
-        
-        .card-header, .card-content {
-            padding: 1rem;
-        }
+    h1, h2, h3 { font-family: Arial, sans-serif; }
+    .policy-page { background: var(--season-bg, #f7f9fc); color: #263545; padding: 52px 20px 72px; font-family: Arial, sans-serif; line-height: 1.75; }
+    .policy-wrapper { max-width: 860px; margin-inline: auto; }
+    .policy-header { margin-bottom: 32px; }
+    .eyebrow { font-size: 12px; font-weight: bold; letter-spacing: 0.12em; text-transform: uppercase; color: #486079; }
+    h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.2; color: #142c43; font-weight: bold; margin: 10px 0 12px; }
+    .updated { color: #53677a; font-size: 14px; margin-bottom: 18px; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 24px; }
+    a { color: #175987; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+    a:hover { color: #0e3d61; }
+    a:focus-visible { outline: 3px solid #2178b6; outline-offset: 4px; }
+    .policy-card { background: #fff; border: 1px solid #d6e0e9; border-radius: 12px; padding: 32px; margin-bottom: 24px; scroll-margin-top: 24px; }
+    h2 { font-size: 26px; line-height: 1.3; font-weight: bold; color: #142c43; margin-bottom: 18px; }
+    h3 { font-size: 19px; line-height: 1.4; font-weight: bold; color: #203f5b; margin: 28px 0 12px; }
+    p + p { margin-top: 14px; }
+    .scope-note { border-left: 3px solid #3c789f; background: #eff5fa; padding: 14px 18px; }
+    ul { list-style: disc; padding-left: 24px; margin: 14px 0; }
+    li + li { margin-top: 8px; }
+    .back-link { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+    @media (max-width: 600px) {
+        .policy-page { padding: 80px 14px 48px; }
+        .policy-card { padding: 22px 18px; scroll-margin-top: 80px; }
+        h2 { font-size: 23px; }
     }
 </style>
