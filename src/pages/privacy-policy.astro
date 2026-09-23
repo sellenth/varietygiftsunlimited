@@ -31,7 +31,7 @@ import Layout from "../layouts/Layout.astro";
                 <h3>Purchases and premium access</h3>
                 <p>Apple processes payments for the one-time premium unlock. We do not receive your full payment-card details. RevenueCat receives purchase history and transaction or receipt information to validate purchases, restore access, prevent purchase fraud, and provide purchase analytics.</p>
                 <p>RevenueCat assigns an anonymous App User ID to the app installation. "Anonymous" means the game does not supply your name, email address, a custom account ID, or other contact attributes to RevenueCat; the identifier still lets the service associate activity and purchases with an app user. RevenueCat also processes technical information such as device and operating-system details, app/SDK version, locale, and currency.</p>
-                <p>Permanent premium access is checked through RevenueCat's purchase status, including its local cache. It is not determined by your campaign save. Use <strong>Restore Purchases</strong> in the mission selector with the Apple account used for the purchase.</p>
+                <p>Permanent premium access is checked through RevenueCat's purchase status, including its local cache. It is not determined by your campaign save. Use <strong>Restore Purchases</strong> in Campaign Settings or on the premium access screen with the Apple account used for the purchase.</p>
 
                 <h3>Rewarded ads and ad measurement</h3>
                 <p>You can choose to watch a rewarded ad for one attempt at a selected premium mission if you do not own the premium unlock. Google Mobile Ads may process:</p>
@@ -43,11 +43,11 @@ import Layout from "../layouts/Layout.astro";
                 </ul>
                 <p>Google uses this information for ad delivery and measurement, analytics, fraud prevention, and improving its services. Information may be shared with advertising partners as part of serving and measuring ads, subject to applicable privacy choices.</p>
                 <p>The RevenueCat AdMob integration also sends RevenueCat events for ad loads, impressions, clicks, load failures, and ad revenue. These can include ad-unit, placement, network and impression identifiers, event times, errors, and revenue amount/currency, associated with the anonymous App User ID. We use this reporting to understand ad performance and revenue.</p>
-                <p>The app can request and preload an ad once Google's consent system allows ad requests, before you choose to watch one. Buying the premium unlock means no ads are required to play those missions; it does not disable all SDK network activity or data processing.</p>
+                <p>Rewarded ads are requested and loaded only after you choose <strong>Watch ad</strong>, and only if Google's consent system allows ad requests. Buying the premium unlock means no ads are required to play those missions; it does not disable all SDK network activity or data processing.</p>
 
                 <h3>Consent and privacy choices</h3>
                 <p>Google's User Messaging Platform (UMP) checks whether a privacy message is required and handles consent choices. It may process approximate location, performance data, and interactions with privacy messages to provide that functionality. Ad requests are gated on UMP reporting that ads may be requested.</p>
-                <p>When UMP requires a privacy-options entry, the mission selector shows <strong>Ad privacy</strong> so you can revisit the available choices. The message and options depend on your region and the consent requirements that apply. You can also decline to watch rewarded ads.</p>
+                <p>When UMP requires a privacy-options entry, <strong>Ad privacy</strong> is available in Campaign Settings so you can revisit the available choices. The message and options depend on your region and the consent requirements that apply. You can also decline to watch rewarded ads.</p>
                 <p>The app does not request App Tracking Transparency (ATT) authorization for Apple's advertising identifier (IDFA). This does not mean that no information is collected: the purchase, advertising, diagnostic, and network information described here can still be processed.</p>
 
                 <h3>Local saves and rewarded passes</h3>
