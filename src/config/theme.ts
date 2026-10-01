@@ -5,6 +5,7 @@ export type ThemeId = "default" | Season;
 export const activeTheme: Season = getSeasonForDate(buildDate);
 
 export interface SlideContent {
+  image?: { src: string; alt: string };
   headline: string;
   description?: string;
   ctaLabel: string;
@@ -50,7 +51,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     slide1: {
       headline: "DISCOVER JOYFUL SURPRISES",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/shop/shirts",
+      ctaLink: "/shop/category/shirts",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
@@ -62,7 +63,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       headline: "COFFEE FIRST.\nCOZY ALWAYS.",
       description: "Chill weather. Warm coffee. Easy layers. All-day comfort.",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/shop/shop",
+      ctaLink: "/shop",
     },
   },
   spring: {
@@ -86,7 +87,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       ctaLabel: "SHOP SPRING",
       ctaLink: "/shop/category/shirts",
       secondaryCtaLabel: "BEST SELLERS",
-      secondaryCtaLink: "/shop",
+      secondaryCtaLink: "/shop#products",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
@@ -118,11 +119,15 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     gamesCtaLabel: "PLAY & GET COZY",
     showFloatingLeaves: false,
     slide1: {
+      image: {
+        src: "/pumpkin-sweater/pumpkin-sweater-black-model.webp",
+        alt: "Model wearing a black Pumpkin Sweater in an autumn setting",
+      },
       headline: "FALL INTO FUN FINDS",
       ctaLabel: "SHOP SWEATERS",
-      ctaLink: "/shop/product/cats-pumpkins-crewneck",
+      ctaLink: "/shop/category/shirts",
       secondaryCtaLabel: "BEST SELLERS",
-      secondaryCtaLink: "/shop/shop",
+      secondaryCtaLink: "/shop#products",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
@@ -131,10 +136,14 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       ctaLink: "/crochet-bag",
     },
     slide3: {
+      image: {
+        src: "/winter-collection/bear-coffee/bear-sweater-green-front.webp",
+        alt: "Green Bear Coffee Sweater",
+      },
       headline: "COFFEE FIRST.\nCOZY ALWAYS.",
       description: "Chill weather. Warm coffee. Easy layers. All-day comfort.",
       ctaLabel: "SHOP NOW",
-      ctaLink: "/shop/product/coffee-first-sweater",
+      ctaLink: "/shop/product/bear-coffee-sweater",
     },
   },
   winter: {
@@ -154,11 +163,15 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
     gamesCtaLabel: "PLAY & GET COZY",
     showFloatingLeaves: false,
     slide1: {
+      image: {
+        src: "/winter-collection/dachshund/dachshund-sweater-seafoam-front.webp",
+        alt: "Seafoam Dachshund Sweater",
+      },
       headline: "LET THE SEASON BEGIN",
       ctaLabel: "SHOP SWEATERS",
       ctaLink: "/shop/category/shirts",
       secondaryCtaLabel: "BEST SELLERS",
-      secondaryCtaLink: "/shop",
+      secondaryCtaLink: "/shop#products",
     },
     slide2: {
       headline: "THE PERFECT\nHANDMADE GIFT",
@@ -167,6 +180,10 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       ctaLink: "/shop/category/bags",
     },
     slide3: {
+      image: {
+        src: "/winter-collection/bear-coffee/bear-sweater-green-front.webp",
+        alt: "Green Bear Coffee Sweater",
+      },
       headline: "COFFEE FIRST.\nCOZY ALWAYS.",
       description: "Chill weather. Warm coffee. Easy layers. All-day comfort.",
       ctaLabel: "SHOP NOW",
@@ -194,7 +211,7 @@ export const landingCopy: Record<ThemeId, LandingCopy> = {
       ctaLabel: "SHOP SUMMER",
       ctaLink: "/shop/category/shirts",
       secondaryCtaLabel: "BEST SELLERS",
-      secondaryCtaLink: "/shop",
+      secondaryCtaLink: "/shop#products",
     },
     slide2: {
       headline: "PETS LOVE\nSUMMER TOO",

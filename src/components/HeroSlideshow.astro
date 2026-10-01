@@ -10,14 +10,14 @@ const copy = landingCopy[activeTheme];
         <div
             id="slide-1-content"
             class="flex flex-col w-full h-full items-center justify-center pt-24 md:pt-48 text-[#fff2de]"
-            style="display: none; background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.65));"
+            style="display: flex; background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.65));"
         >
             <h1
                 class="text-4xl md:text-6xl lg:text-[132px] text-center font-boogaloo"
             >
                 {copy.slide1.headline}
             </h1>
-            <div class="flex flex-nowrap gap-6">
+            <div class="flex flex-wrap justify-center gap-3 md:gap-6 px-4">
                 <a
                     href={copy.slide1.ctaLink}
                     class="text-nowrap font-raleway font-bold md:text-4xl tracking-widest border-white border-[2px] md:border-[4px] hover:bg-white/20 mt-2 md:mt-16 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
@@ -28,7 +28,7 @@ const copy = landingCopy[activeTheme];
                     copy.slide1.secondaryCtaLabel && (
                         <a
                             href={copy.slide1.secondaryCtaLink}
-                            class="ftext-nowrap ont-raleway font-bold md:text-4xl tracking-widest border-white border-[2px] md:border-[4px] hover:bg-white/20 mt-2 md:mt-16 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
+                            class="text-nowrap font-raleway font-bold md:text-4xl tracking-widest border-white border-[2px] md:border-[4px] hover:bg-white/20 mt-2 md:mt-16 p-2 transition-all duration-300 transform hover:scale-105 z-10 rounded-xl flex-1"
                         >
                             {copy.slide1.secondaryCtaLabel}
                         </a>
@@ -39,7 +39,7 @@ const copy = landingCopy[activeTheme];
         <div
             id="slide-2-content"
             class="flex flex-col w-full h-full items-start justify-center px-8 md:px-16 lg:px-24"
-            style="display: flex; background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15));"
+            style="display: none; background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.15));"
         >
             <h1
                 class="text-4xl text-white md:text-6xl lg:text-7xl text-left font-boogaloo leading-tight whitespace-pre-line"
@@ -89,22 +89,23 @@ const copy = landingCopy[activeTheme];
         class="hero-carousel bg-transparent w-full h-[50vh] md:h-screen relative overflow-hidden shadow-2xl"
     >
         <img
-            src="/gym-brat-croptop/brat_crop_model_front_seedvr.webp"
-            alt="Gym Brat Cropped Shirt on model"
+            src={copy.slide1.image?.src ?? "/gym-brat-croptop/brat_crop_model_front_seedvr.webp"}
+            alt={copy.slide1.image?.alt ?? "Gym Brat Cropped Shirt on model"}
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
             data-index="1"
-            style="display: none;"
+            style="display: block;"
+            fetchpriority="high"
         />
         <img
             src="/chewbarka/dog.webp"
             alt="Dog wearing Chewbarka Bandana"
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0 transition-opacity duration-500"
             data-index="2"
-            style="display: block;"
+            style="display: none;"
         />
         <img
-            src="/gym-brat-croptop/brat_crop_model_turn.webp"
-            alt="Gym Brat Cropped Shirt side view on model"
+            src={copy.slide3.image?.src ?? "/gym-brat-croptop/brat_crop_model_turn.webp"}
+            alt={copy.slide3.image?.alt ?? "Gym Brat Cropped Shirt side view on model"}
             class="hero-slide w-full h-full object-cover shadow-2xl absolute inset-0"
             data-index="3"
             style="display: none;"
@@ -120,13 +121,13 @@ const copy = landingCopy[activeTheme];
     >
         <button
             class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300 active"
-            data-slide="1"></button>
+            data-slide="1" aria-label="Show slide 1"></button>
         <button
             class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
-            data-slide="2"></button>
+            data-slide="2" aria-label="Show slide 2"></button>
         <button
             class="hero-dot w-1 h-1 md:w-3 md:h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"
-            data-slide="3"></button>
+            data-slide="3" aria-label="Show slide 3"></button>
     </div>
 </div>
 

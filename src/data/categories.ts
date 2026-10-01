@@ -16,7 +16,7 @@ export const categories: Category[] = [
   },
   {
     id: 'shirts',
-    name: 'Shirts & Sweater',
+    name: 'Shirts & Sweaters',
     description: 'Comfortable and stylish tops with unique designs',
     image: '/yoga/corgi1.jpg', // Featured shirt image
     slug: 'shirts'
