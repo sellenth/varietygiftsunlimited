@@ -2,6 +2,9 @@
   "name": "vgu-2",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "start": "astro dev --host",
     "build": "npm i && astro check && astro build --config astro.config-server.mjs",
