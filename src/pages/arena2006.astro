@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const title = "Arena 2006 — Desktop Downloads & Upcoming iPhone Campaign";
-const description = "Download Arena 2006 for Windows and Linux, and explore the upcoming iPhone campaign: Black Sand free, with two premium missions and optional rewarded attempts.";
+const title = "Arena 2006 — iPhone Campaign & Desktop Downloads";
+const description = "Get Arena 2006 on the App Store or download it for Windows and Linux. Play the iPhone campaign with Black Sand free, two premium missions, and optional rewarded attempts.";
+const appStoreUrl = "https://apps.apple.com/us/app/arena2006/id6814988988";
 const bucketBase = "https://storage.googleapis.com/arena2006-downloads";
 // Verified against the public desktop manifest and both download URLs on 2026-09-22.
 const fallbackCommit = "d1719949f4f323cd33a18a119db8a92dbab71c3d";
@@ -41,19 +42,20 @@ const fallbackCommit = "d1719949f4f323cd33a18a119db8a92dbab71c3d";
 
             <div class="page-intro">
                 <p class="eyebrow">Arena 2006</p>
-                <h1>A new campaign. Coming to iPhone.</h1>
-                <p>The iPhone campaign is in development. Windows and Linux desktop downloads are available now.</p>
+                <h1>A new campaign. Now on iPhone.</h1>
+                <p>The iPhone campaign is available on the App Store. Windows and Linux desktop downloads are also available.</p>
+                <a class="app-store-button" href={appStoreUrl}>Download on the App Store <span aria-hidden="true">↗</span></a>
             </div>
 
             <div class="content-layout">
                 <section class="panel campaign" id="iphone" aria-labelledby="iphone-title">
                     <div class="panel-header">
                         <h2 id="iphone-title">iPhone campaign</h2>
-                        <span class="status-badge">Upcoming</span>
+                        <a class="status-badge" href={appStoreUrl}>Available now <span aria-hidden="true">↗</span></a>
                     </div>
                     <div class="panel-body">
                         <p class="lead">Three missions. Start with Black Sand, free.</p>
-                        <p>Planned for iPhone as a free download. No player account or game login is required. The iPhone app is not yet available on the App Store.</p>
+                        <p>Free to download for iPhone. No player account or game login is required.</p>
 
                         <ol class="missions">
                             <li>
@@ -98,7 +100,7 @@ const fallbackCommit = "d1719949f4f323cd33a18a119db8a92dbab71c3d";
                     <section class="panel" id="desktop" aria-labelledby="desktop-title">
                         <div class="panel-header"><h2 id="desktop-title">Desktop downloads</h2></div>
                         <div class="panel-body">
-                            <p>Arena 2006 for Windows and Linux is available now. These desktop clients are separate from the upcoming iPhone campaign.</p>
+                            <p>Arena 2006 for Windows and Linux is available now. These desktop clients are separate from the iPhone campaign.</p>
                             <p id="build-info" class="build-status" aria-live="polite">Desktop download links ready.</p>
                             <div class="package-card">
                                 <h3>Windows</h3>
@@ -173,6 +175,8 @@ const fallbackCommit = "d1719949f4f323cd33a18a119db8a92dbab71c3d";
     .hero-art { margin: 0; border-bottom: 1px solid #29415f; }
     .hero-art img { display: block; width: 100%; height: auto; }
     .page-intro { padding: 30px 28px; }
+    .app-store-button { display: inline-flex; align-items: center; gap: 12px; margin-top: 20px; padding: 12px 20px; border: 1px solid #c7e2ff; border-radius: 4px; background: #e8f3ff; color: #102744; font-size: 14px; font-weight: bold; }
+    .app-store-button:hover { background: #fff; }
     .eyebrow { color: #79b9ff; text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; font-weight: bold; margin-bottom: 8px; }
     h1 { color: #f3f7fc; font-size: clamp(24px, 4vw, 34px); line-height: 1.25; font-weight: bold; margin-bottom: 12px; }
     .content-layout { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); align-items: start; gap: 20px; padding: 0 28px 32px; }
