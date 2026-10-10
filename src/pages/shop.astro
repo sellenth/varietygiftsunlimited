@@ -13,47 +13,43 @@ const categoryProductCounts = categories.map(category => ({
     ...category,
     productCount: products.filter(p => p.category === category.id).length
 }));
-
-const desktopFeaturedColumns =
-    featuredProducts.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3";
 ---
 
 <Layout title="Shop - Variety Gifts Unlimited" hideHeader={false}>
-    <div class="min-h-screen bg-theme-mist">
-        <main
-            class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8"
-        >
-        <section class="text-center my-10">
-            <h1 class="text-4xl font-bold">Shop</h1>
-            <p class="mt-4 text-lg">
-                Discover our unique and fun gifts. Perfect for every occasion!
-            </p>
+    <div class="vg-wrap shop">
+        <section class="shop__intro">
+            <h1 class="shop__title">The catalog</h1>
+            <p class="vg-sub">Fun gifts for fun people. Perfect for every occasion!</p>
         </section>
-        
-        <!-- Featured Products Section -->
-        <section class="w-full max-w-6xl px-4 mb-16">
-            <h2 class="text-2xl font-bold text-center mb-8">Featured Products</h2>
-            <div
-                id="products"
-                class={`grid grid-cols-1 md:grid-cols-2 ${desktopFeaturedColumns} gap-6`}
-            >
-                {featuredProducts.map(product => (
+
+        <nav class="vg-chips" aria-label="Shop by category">
+            {categories.map(category => (
+                <a href={`/shop/category/${category.slug}`} class="vg-chip">{category.name}</a>
+            ))}
+        </nav>
+
+        <section id="products" class="shop__section">
+            <h2 class="vg-title">Featured products</h2>
+            <p class="vg-sub">Hand-picked favorites from the catalog.</p>
+            <div class="vg-grid">
+                {featuredProducts.map((product, index) => (
                     <Card
                         img={product.images[0].src}
                         title={product.name}
-                        body={product.description.substring(0, 50) + '...'}
+                        body={product.description}
                         href={`/shop/product/${product.slug}`}
                         price={product.price}
                         disabled={product.disabled}
+                        number={index + 1}
                     />
                 ))}
             </div>
         </section>
 
-        <!-- Categories Section -->
-        <section class="w-full max-w-6xl px-4">
-            <h2 class="text-2xl font-bold text-center mb-8">Categories</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section class="shop__section">
+            <h2 class="vg-title">Browse by category</h2>
+            <p class="vg-sub">Sweaters, tees, bags, hats and goodies for your pets.</p>
+            <div class="vg-grid">
                 {categoryProductCounts.map(category => (
                     <CategoryCard
                         href={`/shop/category/${category.slug}`}
@@ -63,11 +59,31 @@ const desktopFeaturedColumns =
                         productCount={category.productCount}
                     />
                 ))}
-                <div class="hidden lg:block"></div>
             </div>
         </section>
-        
-
-    </main>
     </div>
 </Layout>
+
+<style>
+    .shop {
+        padding-bottom: 80px;
+    }
+
+    .shop__intro {
+        margin: 24px 0 28px;
+    }
+
+    .shop__title {
+        font-family: var(--vg-display);
+        font-weight: 400;
+        font-size: clamp(46px, 7vw, 76px);
+        line-height: 1;
+        color: var(--vg-rust);
+        margin: 0 0 10px;
+    }
+
+    .shop__section {
+        margin-top: 64px;
+        scroll-margin-top: 24px;
+    }
+</style>

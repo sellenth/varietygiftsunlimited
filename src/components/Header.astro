@@ -1,68 +1,98 @@
-<div class="drawer">
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content">
-    <!-- Page content here -->
-    <header class="header-container">
-      <nav class="absolute py-4 px-4">
-        <div class="max-w-6xl mx-auto flex justify-start items-center">
-          <label for="my-drawer" class="btn btn-square btn-ghost drawer-button rounded-2xl">
-            <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
-              <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/>
-            </svg>
-          </label>
-        </div>
-      </nav>
-    </header>
+---
+const links = [
+  { label: "Shop", href: "/shop" },
+  { label: "Sweaters & Tees", href: "/shop/category/shirts" },
+  { label: "Bags", href: "/shop/category/bags" },
+  { label: "Pets", href: "/shop/category/accessories" },
+  { label: "Games", href: "/game-browser" },
+  { label: "Contact", href: "/contact" },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) =>
+  href === "/shop" ? path === "/shop" : path === href || path.startsWith(`${href}/`);
+---
+
+<header class="vg-header">
+  <div class="vg-stripes"></div>
+  <div class="vg-header__bar">
+    <a href="/" class="vg-header__logo" aria-label="Variety Gifts home">Variety Gifts</a>
+    <nav class="vg-header__nav" aria-label="Main">
+      {links.map((link) => (
+        <a href={link.href} aria-current={isActive(link.href) ? "page" : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
   </div>
-  <div class="drawer-side z-50">
-    <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-    <aside class="bg-[#1e3a5f] min-h-full w-80 p-4">
-      <ul class="mt-10 menu text-white text-4xl">
-        <li><a href="/" class="font-medium text-white hover:text-orange-200">HOME</a></li>
-        <li><a href="https://www.variety.gifts/shop" class="font-medium text-white hover:text-orange-200">SHOP</a></li>
-        <li><a href="/contact" class="font-medium text-white hover:text-orange-200">CONTACT</a></li>
-      </ul>
-    </aside>
-  </div>
-</div>
+</header>
 
 <style>
-  /* Header Container */
-  .header-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
+  .vg-header__bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    flex-wrap: wrap;
   }
 
-  /* Navigation */
-  .navbar {
-    background: transparent;
-    box-shadow: none;
+  .vg-header__logo {
+    font-family: var(--vg-display);
+    font-size: 34px;
+    line-height: 1.1;
+    color: var(--vg-rust);
+    text-shadow: 3px 3px 0 var(--vg-mustard);
+    white-space: nowrap;
   }
 
-  /* Hamburger button styling */
-  .drawer-button {
-    background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+  .vg-header__nav {
+    display: flex;
+    gap: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.06em;
   }
 
-  .drawer-button svg {
-    color: white;
+  .vg-header__nav a {
+    color: var(--vg-ink);
+    padding: 4px 0;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
 
-  .drawer-button:hover svg {
-    opacity: 0.8;
+  .vg-header__nav a:hover {
+    color: var(--vg-rust);
   }
 
-  /* Ensure menu items are clickable */
-  .drawer-side aside {
-    z-index: 60;
+  .vg-header__nav a[aria-current="page"] {
+    border-bottom-color: var(--vg-mustard);
   }
 
-  .drawer-side .menu li a {
-    position: relative;
-    z-index: 70;
+  @media (max-width: 767px) {
+    .vg-header__bar {
+      padding: 14px 16px 10px;
+    }
+
+    .vg-header__logo {
+      font-size: 28px;
+    }
+
+    .vg-header__nav {
+      width: 100%;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .vg-header__nav::-webkit-scrollbar {
+      display: none;
+    }
   }
 </style>
-
