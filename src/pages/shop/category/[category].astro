@@ -30,43 +30,61 @@ const canonicalUrl = `https://www.variety.gifts/shop/category/${category.slug}`;
     ogDescription={category.description}
     ogUrl={canonicalUrl}
 >
-    <main class="full flex flex-col gap-4 items-center overflow-x-hidden relative pb-20 mx-8">
-        <div class="max-w-6xl mx-auto px-4 w-full">
-            <!--
-            <button onclick="window.history.length > 1 ? history.back() : window.location.href = '/'" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
-                <span class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Back
-                </span>
-            </button> -->
+    <div class="vg-wrap category">
+        <nav class="category__crumbs" aria-label="Breadcrumb">
+            <a href="/">Home</a> / <a href="/shop">Shop</a> / <span>{category.name}</span>
+        </nav>
+
+        <section class="category__intro">
+            <h1 class="category__title">{category.name}</h1>
+            <p class="vg-sub">
+                {category.description} · {categoryProducts.length} {categoryProducts.length === 1 ? 'product' : 'products'}
+            </p>
+        </section>
+
+        <div class="vg-grid">
+            {categoryProducts.map((product, index) => (
+                <Card
+                    img={product.images[0].src}
+                    hoverImg={product.images[1]?.src}
+                    title={product.name}
+                    body={product.description}
+                    href={`/shop/product/${product.slug}`}
+                    price={product.price}
+                    disabled={product.disabled}
+                    number={index + 1}
+                />
+            ))}
         </div>
-        
-        <section class="text-center my-10">
-            <h1 class="text-4xl font-bold">{category.name}</h1>
-            <p class="mt-4 text-lg">
-                {category.description}
-            </p>
-            <p class="mt-2 text-sm text-gray-600">
-                {categoryProducts.length} {categoryProducts.length === 1 ? 'product' : 'products'} available
-            </p>
-        </section>
-        
-        <section class="w-full max-w-6xl px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-                {categoryProducts.map(product => (
-                    <Card
-                        img={product.images[0].src}
-                        hoverImg={product.images[1]?.src}
-                        title={product.name}
-                        body={product.description.substring(0, 80) + '...'}
-                        href={`/shop/product/${product.slug}`}
-                        price={product.price}
-                        disabled={product.disabled}
-                    />
-                ))}
-            </div>
-        </section>
-    </main>
+    </div>
 </Layout>
+
+
+<style>
+    .category {
+        padding-bottom: 80px;
+    }
+
+    .category__crumbs {
+        font-size: 14px;
+        color: var(--vg-muted);
+        margin-top: 4px;
+    }
+
+    .category__crumbs a:hover {
+        color: var(--vg-rust);
+    }
+
+    .category__intro {
+        margin: 20px 0 8px;
+    }
+
+    .category__title {
+        font-family: var(--vg-display);
+        font-weight: 400;
+        font-size: clamp(42px, 6vw, 68px);
+        line-height: 1;
+        color: var(--vg-rust);
+        margin: 0 0 10px;
+    }
+</style>

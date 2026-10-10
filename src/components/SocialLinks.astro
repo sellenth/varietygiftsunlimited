@@ -1,6 +1,16 @@
 ---
 import { socials } from "../data/socials";
 
+interface Props {
+  wrapperClass?: string;
+  linkClass?: string;
+}
+
+const {
+  wrapperClass = "flex justify-center space-x-6 mt-12",
+  linkClass = "text-purple-300 hover:text-purple-100 transition",
+} = Astro.props;
+
 const socialIcons = [
   {
     name: 'Instagram',
@@ -20,13 +30,13 @@ const socialIcons = [
 ];
 ---
 
-<div class="flex justify-center space-x-6 mt-12">
+<div class={wrapperClass}>
   {socialIcons.map(({ name, url, icon }) => (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      class="text-purple-300 hover:text-purple-100 transition"
+      class={linkClass}
     >
       <span class="sr-only">{name}</span>
       <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">

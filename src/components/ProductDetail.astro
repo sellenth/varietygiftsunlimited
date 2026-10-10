@@ -32,39 +32,26 @@ const defaultSize = availableSizes.length > 0 ? availableSizes[0] : null;
 const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.split(' - ')[1]))] : availableSizes;
 ---
 
-<div class="max-w-6xl mx-auto px-4 py-8">
-    <!--
-    <button onclick="window.history.length > 1 ? history.back() : window.location.href = '/'" class="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors">
-        <span class="flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back
-        </span>
-    </button> -->
-    <div class="grid md:grid-cols-2 gap-8 pt-12">
-        <ImageCarousel images={displayImages} title={title} />
-        <div class="flex flex-col gap-4">
-            <nav class="text-sm text-gray-500 mb-2">
-                <a href="/shop" class="hover:text-gray-700">All</a>
-                <span class="mx-2">></span>
-                <a href={`/shop/category/${category}`} class="hover:text-gray-700">{categoryName}</a>
-                <span class="mx-2">></span>
-                <span class="text-gray-900">{title}</span>
-            </nav>
-            <h1 class="text-3xl font-bold">{title}</h1>
-            <p class="text-gray-600">{description}</p>
+<div class="vg-wrap pd">
+    <nav class="pd__crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> / <a href="/shop">Shop</a> / <a href={`/shop/category/${category}`}>{categoryName}</a> / <span>{title}</span>
+    </nav>
+    <div class="pd__grid">
+        <div class="pd__gallery">
+            <ImageCarousel images={displayImages} title={title} />
+        </div>
+        <div class="pd__info">
+            <h1 class="pd__title">{title}</h1>
+            <p class="pd__desc">{description}</p>
 
 {priceIds ? (
                 <div class="space-y-4">
-                    <p class="text-xl font-semibold">{price || '$19.99'} w/ free shipping!</p>
+                    <p class="pd__price"><b>{price || '$19.99'}</b><span class="pd__pill">🚚 Free shipping</span></p>
                     {isColorSizeVariant ? (
                         <>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-3">
-                                    Select Color:
-                                </label>
-                                <div class="flex gap-3 flex-wrap">
+                                <p class="pd__label">Color</p>
+                                <div class="flex gap-5 flex-wrap pt-2 pb-7 pl-2">
                                     {colorOptions.map((color, index) => {
                                         const colorMap = {
                                             'Green': '#6b8671',
@@ -86,7 +73,7 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                             'Tan': '#d2b48c',
                                             'Olive': '#6b8e23',
                                             'Orange': '#f97316',
-                                            'Denim': '#4f5364',
+                                            'Denim': '#4b5874',
                                             'Seafoam': '#6ba6a4',
                                             'Pepper': '#5e5f5a'
                                         };
@@ -108,13 +95,11 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                 </div>
                             </div>
                             <div>
-                                <label for="size-select" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Select Size:
-                                </label>
+                                <label for="size-select" class="pd__label">Size</label>
                                 <select 
                                     id="size-select" 
                                     name="size" 
-                                    class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    class="pd__select"
                                 >
                                     {sizeOptions.map((size) => (
                                         <option value={size}>{size}</option>
@@ -124,13 +109,11 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                         </>
                     ) : (
                         <div>
-                            <label for="size-select" class="block text-sm font-medium text-gray-700 mb-2">
-                                Select Size:
-                            </label>
+                            <label for="size-select" class="pd__label">Size</label>
                             <select 
                                 id="size-select" 
                                 name="size" 
-                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                class="pd__select"
                             >
                                 {availableSizes.map((size) => (
                                     <option value={priceIds[size]} selected={size === defaultSize}>{size}</option>
@@ -141,13 +124,13 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                     {disabled ? (
                         <>
                             <button 
-                                class="w-full bg-gray-300 text-gray-600 py-3 px-6 rounded-md cursor-not-allowed"
+                                class="vg-btn pd__buy pd__buy--off"
                                 disabled
                                 aria-disabled="true"
                             >
                                 Unavailable
                             </button>
-                            <p class="text-sm text-center text-gray-500">This item is currently unavailable.</p>
+                            <p class="pd__note">This item is currently unavailable.</p>
                         </>
                     ) : (
                         <>
@@ -157,27 +140,27 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                 data-stripe-payment-id={priceIds[defaultSize]}
                                 data-is-color-size={isColorSizeVariant}
                                 data-client-reference-id={checkoutClientReference || undefined}
-                                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                                class="vg-btn pd__buy"
                             >
                                 Buy Now
                             </button>
-                            <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                            <p class="pd__note">🔒 Secure checkout with Stripe · 14-day returns</p>
                         </>
                     )}
                 </div>
             ) : (
                 <div class="space-y-4">
-                    <p class="text-xl font-semibold">{price || `$${singlePrice}`} w/ free shipping!</p>
+                    <p class="pd__price"><b>{price || `$${singlePrice}`}</b><span class="pd__pill">🚚 Free shipping</span></p>
                     {disabled ? (
                         <>
                             <button 
-                                class="w-full bg-gray-300 text-gray-600 py-3 px-6 rounded-md cursor-not-allowed"
+                                class="vg-btn pd__buy pd__buy--off"
                                 disabled
                                 aria-disabled="true"
                             >
                                 Unavailable
                             </button>
-                            <p class="text-sm text-center text-gray-500">This item is currently unavailable.</p>
+                            <p class="pd__note">This item is currently unavailable.</p>
                         </>
                     ) : (
                         <>
@@ -186,20 +169,25 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
                                 data-stripe-key={PUBLIC_STRIPE_KEY}
                                 data-stripe-payment-id={singlePriceId}
                                 data-client-reference-id={checkoutClientReference || undefined}
-                                class="w-full bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+                                class="vg-btn pd__buy"
                             >
                                 Buy Now
                             </button>
-                            <p class="text-sm text-center text-gray-500">Powered by Stripe • 30 day money back guarantee</p>
+                            <p class="pd__note">🔒 Secure checkout with Stripe · 14-day returns</p>
                         </>
                     )}
                 </div>
             )}
+            <div class="pd__perks">
+                <div><b>🧵</b>Made to order</div>
+                <div><b>🌎</b>Ships U.S. &amp; international</div>
+                <div><b>↩️</b>14-day returns</div>
+            </div>
         </div>
     </div>
 
-    <div class="mt-16 border-t border-gray-200 pt-12">
-        <div class="max-w-4xl mx-auto space-y-6">
+    <div class="pd__policies">
+        <div>
             <details class="policy-section">
                 <summary class="policy-header">
                     <span class="policy-title">Shipping Policy</span>
@@ -555,265 +543,324 @@ const sizeOptions = isColorSizeVariant ? [...new Set(availableSizes.map(s => s.s
 </script>
 
 <style>
+    .pd {
+        padding-bottom: 80px;
+    }
+
+    .pd__crumbs {
+        font-size: 14px;
+        color: var(--vg-muted);
+        margin: 4px 0 20px;
+    }
+
+    .pd__crumbs a:hover {
+        color: var(--vg-rust);
+    }
+
+    .pd__grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    .pd__gallery {
+        position: sticky;
+        top: 20px;
+    }
+
+    .pd__gallery :global(.image-carousel) {
+        border: 3px solid var(--vg-ink);
+        border-radius: 28px;
+        box-shadow: 8px 8px 0 var(--vg-ink);
+    }
+
+    .pd__info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .pd__title {
+        font-family: var(--vg-display);
+        font-weight: 400;
+        font-size: clamp(38px, 5vw, 58px);
+        line-height: 1.02;
+        color: var(--vg-rust);
+        margin: 0;
+    }
+
+    .pd__desc {
+        font-size: 18px;
+        line-height: 1.55;
+        margin: 0;
+    }
+
+    .pd__price {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin: 0;
+    }
+
+    .pd__price b {
+        font-family: var(--vg-display);
+        font-weight: 400;
+        font-size: 34px;
+    }
+
+    .pd__pill {
+        background: var(--vg-sage);
+        border: 2.5px solid var(--vg-ink);
+        border-radius: 999px;
+        padding: 4px 12px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .pd__label {
+        display: block;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 13px;
+        margin: 0 0 10px;
+    }
+
+    .pd__select {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        font: inherit;
+        font-weight: 700;
+        color: var(--vg-ink);
+        background: var(--vg-cream);
+        border: 3px solid var(--vg-ink);
+        border-radius: 14px;
+    }
+
+    .pd__select:focus {
+        outline: 3px solid var(--vg-mustard);
+        outline-offset: 2px;
+    }
+
+    .pd__buy {
+        display: block;
+        width: 100%;
+        font-size: 18px;
+        padding: 16px;
+    }
+
+    .pd__buy--off,
+    .pd__buy--off:hover {
+        background: #d8cdb8;
+        color: var(--vg-muted);
+        transform: none;
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+
+    .pd__note {
+        text-align: center;
+        font-size: 14px;
+        color: var(--vg-muted);
+        margin: 12px 0 0;
+    }
+
+    .pd__perks {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 4px;
+    }
+
+    .pd__perks div {
+        background: var(--vg-cream);
+        border: 2.5px solid var(--vg-ink);
+        border-radius: 16px;
+        padding: 12px 8px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .pd__perks b {
+        display: block;
+        font-size: 22px;
+    }
+
+    .pd__policies {
+        max-width: 860px;
+        margin: 64px auto 0;
+        display: grid;
+        gap: 16px;
+    }
+
     .color-orb {
         position: relative;
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
-        border: none;
+        border: 3px solid var(--vg-ink);
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
+        transition: transform 0.15s ease;
     }
-    
+
     .color-orb:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.08);
     }
-    
-    .color-orb:active {
-        transform: scale(0.95);
-    }
-    
-    .color-orb.active {
-        transform: scale(1.1);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
+
     .color-orb.active::after {
-        content: '✓';
+        content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 20px;
-        font-weight: bold;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        inset: -9px;
+        border: 3px solid var(--vg-rust);
+        border-radius: 50%;
     }
-    
-    .color-orb.active[data-color="Natural"]::after,
-    .color-orb.active[data-color="White"]::after,
-    .color-orb.active[data-color="Yellow"]::after,
-    .color-orb.active[data-color="Tan"]::after,
-    .color-orb.active[data-color="Ivory"]::after {
-        color: #374151;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    
+
     .color-name {
         position: absolute;
-        bottom: -24px;
+        bottom: -30px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 12px;
-        color: #6b7280;
+        font-weight: 700;
+        color: var(--vg-muted);
         white-space: nowrap;
         opacity: 0;
         transition: opacity 0.2s ease-in-out;
         pointer-events: none;
     }
-    
-    .color-orb:hover .color-name {
+
+    .color-orb:hover .color-name,
+    .color-orb.active .color-name {
         opacity: 1;
     }
-    
+
     .orb-border {
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        pointer-events: none;
+        display: none;
     }
-    
-    /* Ripple effect on click */
-    @keyframes ripple {
-        0% {
-            transform: scale(0);
-            opacity: 0.8;
-        }
-        100% {
-            transform: scale(4);
-            opacity: 0;
-        }
-    }
-    
-    .color-orb::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
-        transform: translate(-50%, -50%);
-    }
-    
-    .color-orb:active::before {
-        width: 100%;
-        height: 100%;
-        animation: ripple 0.6s ease-out;
-    }
-    
+
     .policy-section {
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        background: #ffffff;
+        background: var(--vg-cream);
+        border: 3px solid var(--vg-ink);
+        border-radius: 22px;
         overflow: hidden;
-        transition: all 0.2s ease-in-out;
     }
-    
-    .policy-section:hover {
-        border-color: #d1d5db;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
+
     .policy-section[open] {
-        border-color: #6366f1;
-        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1);
+        box-shadow: 5px 5px 0 var(--vg-ink);
     }
-    
+
     .policy-header {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 1.25rem 1.5rem;
+        padding: 18px 22px;
         cursor: pointer;
         list-style: none;
         user-select: none;
-        transition: background-color 0.2s ease-in-out;
     }
-    
+
     .policy-header::-webkit-details-marker {
         display: none;
     }
-    
-    .policy-header:hover {
-        background-color: #f9fafb;
-    }
-    
+
     .policy-section[open] .policy-header {
-        background-color: #f9fafb;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 3px dashed var(--vg-ink);
     }
-    
-    .policy-icon {
-        font-size: 1.5rem;
-        line-height: 1;
-        flex-shrink: 0;
-    }
-    
+
     .policy-title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #111827;
+        font-family: var(--vg-display);
+        font-size: 22px;
+        color: var(--vg-teal);
         flex: 1;
     }
-    
+
     .policy-chevron {
-        width: 1.25rem;
-        height: 1.25rem;
-        color: #6b7280;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--vg-rust);
         transition: transform 0.2s ease-in-out;
         flex-shrink: 0;
     }
-    
+
     .policy-section[open] .policy-chevron {
         transform: rotate(180deg);
     }
-    
+
     .policy-content {
-        padding: 1.5rem;
-        padding-top: 1.5rem;
+        padding: 20px 22px 24px;
     }
-    
+
     .policy-item {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
-    
+
     .policy-item:last-child {
         margin-bottom: 0;
     }
-    
+
     .policy-subtitle {
         font-size: 1rem;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 0.5rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
     }
-    
-    .policy-text {
-        font-size: 0.9375rem;
+
+    .policy-text,
+    .policy-list li {
+        font-size: 0.95rem;
         line-height: 1.6;
-        color: #4b5563;
     }
-    
+
     .policy-list {
         list-style: none;
         padding: 0;
         margin: 0.5rem 0;
     }
-    
+
     .policy-list li {
-        font-size: 0.9375rem;
-        line-height: 1.6;
-        color: #4b5563;
-        padding-left: 1.5rem;
+        padding-left: 1.4rem;
         position: relative;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
-    
-    .policy-list li:last-child {
-        margin-bottom: 0;
-    }
-    
+
     .policy-list li::before {
-        content: '•';
+        content: '✦';
         position: absolute;
-        left: 0.5rem;
-        color: #6366f1;
-        font-weight: bold;
+        left: 0.2rem;
+        color: var(--vg-rust);
+        font-size: 0.8rem;
     }
-    
+
     .policy-link {
-        color: #6366f1;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease-in-out;
+        color: var(--vg-rust);
+        font-weight: 700;
     }
-    
+
     .policy-link:hover {
-        color: #4f46e5;
         text-decoration: underline;
     }
-    
-    @media (max-width: 640px) {
-        .policy-header {
-            padding: 1rem;
+
+    @media (max-width: 860px) {
+        .pd__grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
         }
-        
-        .policy-content {
-            padding: 1rem;
+
+        .pd__gallery {
+            position: static;
         }
-        
-        .policy-title {
-            font-size: 1rem;
+
+        .pd__perks {
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
         }
-        
-        .policy-icon {
-            font-size: 1.25rem;
-        }
-        
-        .policy-subtitle {
-            font-size: 0.9375rem;
-        }
-        
-        .policy-text,
-        .policy-list li {
-            font-size: 0.875rem;
+
+        .pd__perks div {
+            font-size: 12.5px;
+            padding: 10px 4px;
         }
     }
-</style> 
+</style>

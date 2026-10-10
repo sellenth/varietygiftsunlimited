@@ -7,66 +7,39 @@ interface Props {
 	body: string;
 	href: string;
 	price?: string;
-    disabled?: boolean;
+	disabled?: boolean;
+	/** Catalog number shown as a "No. 001" tag. */
+	number?: number;
 }
 
-const { img, hoverImg, href, title, body, sticker, price, disabled = false } = Astro.props;
+const { img, hoverImg, href, title, price, disabled = false, number } = Astro.props;
+const catalogNo = number !== undefined ? `No. ${String(number).padStart(3, "0")}` : null;
 ---
 
 {!disabled ? (
-    <a href={href} class="block group">
-        <div class="bg-white relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl">
-            <div class="aspect-square relative">
-                <img
-                    class={`w-full h-full object-cover transition-all duration-300 ${hoverImg ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
-                    src={img}
-                    alt={title}
-                    loading="lazy"
-                />
-                {hoverImg && (
-                    <img
-                        class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        src={hoverImg}
-                        alt={`${title} - On Model`}
-                        loading="lazy"
-                    />
-                )}
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
-                <h3 class="text-xl font-bold text-black text-center">{title}</h3>
-                {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
-            </div>
-        </div>
-    </a>
+	<a href={href} class="vg-card">
+		{catalogNo && <span class="vg-card__no">{catalogNo}</span>}
+		<div class="vg-card__img">
+			<img class="vg-card__main" src={img} alt={title} loading="lazy" />
+			{hoverImg && (
+				<img class="vg-card__hover" src={hoverImg} alt={`${title} - On Model`} loading="lazy" />
+			)}
+		</div>
+		<div class="vg-card__info">
+			<h3 class="vg-card__name">{title}</h3>
+			{price && <p class="vg-card__price">{price}</p>}
+		</div>
+	</a>
 ) : (
-    <div class="block group cursor-not-allowed">
-        <div class="bg-white relative overflow-hidden rounded-lg shadow-md opacity-60 ">
-            <div class="aspect-square relative">
-                <img
-                    class="w-full h-full object-cover select-none"
-                    src={img}
-                    alt={title}
-                    loading="lazy"
-                />
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="px-3 py-1 rounded-md text-sm font-semibold bg-gray-800 text-white/90">Unavailable</span>
-                </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 bg-white/90 py-3">
-                <h3 class="text-xl font-bold text-black text-center">{title}</h3>
-                {price && <p class="text-lg font-semibold text-center text-gray-800 mt-1">{price}</p>}
-            </div>
-        </div>
-    </div>
+	<div class="vg-card vg-card--disabled" aria-disabled="true">
+		{catalogNo && <span class="vg-card__no">{catalogNo}</span>}
+		<div class="vg-card__img">
+			<img class="vg-card__main select-none" src={img} alt={title} loading="lazy" />
+			<div class="vg-card__flag"><span>Unavailable</span></div>
+		</div>
+		<div class="vg-card__info">
+			<h3 class="vg-card__name">{title}</h3>
+			{price && <p class="vg-card__price">{price}</p>}
+		</div>
+	</div>
 )}
-
-<style>
-  @keyframes vertical-scroll {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-50%); }
-  }
-
-  .vertical-scroll-wrapper {
-    animation: vertical-scroll 10s linear infinite;
-  }
-</style>
