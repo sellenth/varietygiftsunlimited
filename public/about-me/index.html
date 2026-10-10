@@ -1,266 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halston Sellentin | Software Engineer</title>
+<meta name="description" content="Halston Sellentin builds software that people rely on.">
+<link rel="icon" type="image/png" sizes="32x32" href="/about-me/favicon-32x32.png">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2328;--muted:#5c636b;--paper:#fffdf8;--note:#fff3a8;--acc:#c2410c;--blue:#1d4ed8;--cork:#c49a64}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;background:#f2a35e}
+.sky{position:fixed;inset:0;background:url(/about-me/assets/beach-sunset.jpg) center 35%/cover;z-index:-2}
+.sky:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,30,.35) 0%,rgba(20,10,30,0) 30%,rgba(40,20,10,.15) 70%,rgba(30,15,5,.45) 100%)}
+a{color:var(--blue)}
+.top{max-width:1120px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+.top b{font-weight:600;letter-spacing:.02em}
+.top nav{display:flex;gap:6px;flex-wrap:wrap}
+.top nav a{color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25)}
+.top nav a:hover{background:rgba(255,255,255,.28)}
+.title{max-width:1120px;margin:0 auto;padding:8vh 24px 6vh;color:#fff;text-shadow:0 2px 18px rgba(60,20,0,.45)}
+.title h1{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(44px,7vw,88px);line-height:1;margin:0;letter-spacing:-.02em}
+.title p{font-size:clamp(17px,2vw,21px);margin:12px 0 0;opacity:.95}
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halston Sellentin | Software Engineer</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="https://localhost:4321/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://localhost:4321/about-me/favicon-32x32.png">
-    <style>
-        :root {
-            --primary: #13293d;
-            --secondary: #247ba0;
-            --accent: #0089a6;
-            --light: #f0f2f2;
-            --gray: #4b5563;
-            --background: #fff;
-        }
+/* bulletin board */
+.board{max-width:1120px;margin:0 auto 64px;padding:36px;position:relative;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(120,80,40,.35) 0 1px,transparent 1.5px) 0 0/7px 7px,
+    radial-gradient(circle at 70% 60%,rgba(255,230,190,.35) 0 1px,transparent 1.5px) 0 0/9px 9px,
+    radial-gradient(circle at 40% 80%,rgba(90,55,25,.3) 0 1.2px,transparent 1.8px) 0 0/11px 11px,
+    linear-gradient(135deg,#cfa46c,#b98a52);
+  border:18px solid #6b4a2b;border-image:linear-gradient(135deg,#8a6038,#5a3b20 40%,#7d5631 70%,#4e331b) 1;
+  box-shadow:0 30px 60px rgba(40,15,0,.45),inset 0 0 40px rgba(60,30,10,.35);
+  display:grid;grid-template-columns:repeat(12,1fr);gap:28px;align-items:start}
+.pin{position:absolute;top:-9px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 35% 35%,#ff8a7a,#d62d20 55%,#8f1a12);box-shadow:0 3px 4px rgba(0,0,0,.35)}
+.pin.b{background:radial-gradient(circle at 35% 35%,#8fb6ff,#2557d6 55%,#173a8f)}
+.pin.g{background:radial-gradient(circle at 35% 35%,#9ff0b8,#1f9d55 55%,#136a39)}
+.pin.y{background:radial-gradient(circle at 35% 35%,#ffe48a,#e0a800 55%,#946f00)}
+.item{position:relative;background:var(--paper);box-shadow:0 2px 2px rgba(0,0,0,.12),0 10px 22px rgba(50,25,5,.28)}
 
-        html {
-            padding: 2%;
-            scroll-behavior: smooth;
-        }
+.photo{grid-column:span 4;padding:12px 12px 34px;transform:rotate(-2deg)}
+.photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee}
+.photo figcaption{text-align:center;font-size:13px;color:var(--muted);margin-top:10px}
 
-        body {
-            margin: 0;
-            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;
-            color: var(--primary);
-            background-color: var(--background);
-            line-height: 1.8;
-        }
+.intro{grid-column:span 5;padding:28px 30px;transform:rotate(.4deg)}
+.intro .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);font-weight:600}
+.intro h2{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:34px;line-height:1.1;margin:8px 0 12px}
+.intro p{margin:0 0 16px;color:var(--muted);font-size:16.5px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-block;padding:9px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid #d9d4c7;color:var(--ink);background:#fff}
+.btn.p{background:var(--ink);color:#fff;border-color:var(--ink)}.btn:hover{transform:translateY(-1px)}
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0;
-        }
+.note{grid-column:span 3;background:var(--note);padding:22px 20px;transform:rotate(2.2deg)}
+.note h3{font-family:Caveat,cursive;font-size:28px;margin:0 0 6px;font-weight:600}
+.note ul{list-style:none;margin:0;padding:0;font-size:15px}.note li{padding:5px 0;border-bottom:1px solid rgba(150,120,0,.18)}.note li:last-child{border:0}
 
-        header {
-            padding: 1rem 0 2rem;
-            position: relative;
-        }
+.xp{grid-column:span 8;padding:28px 30px;transform:rotate(-.5deg)}
+.sec{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:24px;margin:0 0 6px}
+.job{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px 0;border-top:1px solid #ece7dc}
+.job:first-of-type{border-top:0}
+.job .y{font-size:13px;color:var(--muted);padding-top:3px;font-variant-numeric:tabular-nums}
+.job h4{margin:0 0 4px;font-size:16.5px}.job p{margin:0;color:var(--muted);font-size:15px}
+.job ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:15px}
 
-        .nav-links {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1.25rem;
-            margin-bottom: 3rem;
-        }
+.side{grid-column:span 4;display:flex;flex-direction:column;gap:28px}
+.tools{padding:22px 22px;transform:rotate(1.2deg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips span{font-size:13px;border:1px solid #e3ddcf;border-radius:6px;padding:3px 9px;background:#faf7f0}
+.contact{padding:22px;transform:rotate(-1.4deg);background:#eef4ff}
+.contact p{margin:6px 0 12px;color:var(--muted);font-size:15px}
 
-        .nav-link {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 500;
-            font-size: 1.05rem;
-            border: 2px solid var(--accent);
-            background-color: var(--primary);
-            color: var(--light);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+.proj{grid-column:span 4;padding:12px 12px 16px;text-decoration:none;color:var(--ink);transition:transform .2s}
+.proj:nth-of-type(odd){transform:rotate(-1.2deg)}.proj:nth-of-type(even){transform:rotate(1deg)}
+.proj:hover{transform:rotate(0) translateY(-4px)}
+.proj .thumb{aspect-ratio:16/9;width:100%;height:auto;object-fit:cover;display:block;margin-bottom:12px}
+.proj .vid{position:relative;display:block}.proj .ph{aspect-ratio:16/9;display:grid;place-items:center;font-size:42px;margin-bottom:12px}
+.proj .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 4px}
+.proj h4{margin:4px 0 4px;font-size:17px;padding:0 4px}.proj p{margin:0 0 8px;font-size:14.5px;color:var(--muted);padding:0 4px}
+.proj .go{font-size:14px;font-weight:600;color:var(--blue);padding:0 4px;display:inline-flex;gap:6px;align-items:center}
+.label{grid-column:1/-1;margin:4px 0 -10px}
+.label span{display:inline-block;background:#fffdf8;padding:4px 14px;font-family:Newsreader,Georgia,serif;font-weight:600;font-size:18px;transform:rotate(-1deg);box-shadow:0 4px 10px rgba(50,25,5,.25);position:relative}
+.label span:before,.label span:after{content:"";position:absolute;top:-8px;width:44px;height:16px;background:rgba(255,255,255,.55);transform:rotate(-6deg)}
+.label span:before{left:-12px}.label span:after{right:-12px;transform:rotate(6deg)}
+footer{text-align:center;color:#fff;font-size:13px;padding:0 0 40px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 
-        .nav-link:hover {
-            background-color: var(--background);
-            color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
+@media(max-width:900px){
+  .board{padding:20px 16px;gap:22px;border-width:12px;margin:0 16px 48px}
+  .photo,.intro,.note,.xp,.side,.proj{grid-column:1/-1}
+  .photo{max-width:360px;justify-self:center}
+  .job{grid-template-columns:1fr;gap:2px}
+  .top,.title{padding-left:16px;padding-right:16px}.top b{display:none}
+}
+</style></head><body>
+<div class="sky" role="img" aria-label="Sunset over a tropical beach, framed by a beach shack"></div>
+<header class="top"><b>Halston Sellentin</b><nav><a href="https://www.linkedin.com/in/halston-sellentin">LinkedIn</a><a href="https://www.github.com/sellenth">GitHub</a><a href="https://www.youtube.com/@varietygifts">YouTube</a><a href="https://www.variety.gifts/">Fun</a></nav></header>
+<div class="title"><h1>Halston Sellentin</h1><p>Senior Software Engineer · full-stack SaaS, payments &amp; maps</p></div>
 
-        .hero {
-            padding: 2rem 0 6rem;
-            position: relative;
-            text-align: left;
-        }
+<main class="board">
+  <figure class="item photo" style="margin:0"><span class="pin"></span><img id="me" src="/about-me/assets/halston.webp" width="1200" height="900" alt="Halston Sellentin with girlfriend smiling on a rooftop overlooking red-tile roofs and mountains"></figure>
 
-        .hero h1 {
-            font-size: 9rem;
-            font-weight: 700;
-            line-height: 1;
-            margin: 0;
-            color: var(--primary);
-            position: relative;
-        }
+  <section class="item intro"><span class="pin b"></span><div class="k">About</div>
+    <h2>I build software that people rely on.</h2>
+    <p>I'm a senior software engineer working across product, payments, integrations and production support. I've been into computers for almost 20 years. Outside work I make websites, web toys and games.</p>
+    <div class="btns"><a class="btn p" href="mailto:halston@sellent.in">Get in touch</a><a class="btn" href="https://www.linkedin.com/in/halston-sellentin">LinkedIn</a><a class="btn" href="https://www.github.com/sellenth">GitHub</a></div>
+  </section>
 
-        .hero h1::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 6px;
-            background-color: var(--accent);
-            margin-top: 1.5rem;
-            border-radius: 3px;
-        }
+  <aside class="item note"><span class="pin y"></span><h3>Currently…</h3><ul>
+    <li>💼 Senior SWE at Hygiena</li><li>🎮 Updating my iPhone game</li><li>🏓 Playing pickleball</li><li>🐕 Walking the dog</li><li>📚 Always learning</li></ul></aside>
 
-        .hero p {
-            font-size: 1.5rem;
-            color: var(--gray);
-            margin-top: 2.5rem;
-            max-width: 600px;
-            line-height: 1.9;
-            font-weight: 400;
-        }
+  <section class="item xp"><span class="pin g"></span><h3 class="sec">Experience</h3>
+    <div class="job"><div class="y">2025 – Present</div><div><h4>Senior Software Engineer · Hygiena</h4><p>I build SureTrend Cloud, a food-safety SaaS platform, with Angular, C#/.NET, SQL and Azure.</p><ul>
+      <li>Primary engineer on EmPower E-Learning, from beta to general availability</li>
+      <li>Stripe checkout and invoicing, credit ledgers, idempotent webhook sync</li>
+      <li>Map IQ: animated contamination hotspots; AI image → 2D/3D renderings</li>
+      <li>Led the Angular 20 and .NET 9 upgrades; mentor a junior engineer</li></ul></div></div>
+    <div class="job"><div class="y">Earlier</div><div><h4>Software Engineer · USNR</h4><p>Maintained a state-of-the-art lumber-mill optimization program.</p></div></div>
+    <div class="job"><div class="y">Earlier</div><div><h4>Web Developer · EPA / ORAU</h4><p>Rewrote a GIS visualization with 10× fewer network requests, turning a three-minute wait into a real-time map. <a href="https://cfpub.epa.gov/si/si_public_record_Report.cfm?dirEntryId=351408&amp;Lab=CPHEA">Read the record</a>.</p></div></div>
+    <div class="job"><div class="y">2020</div><div><h4>B.S. Computer Science · Oregon State</h4><p>Applied Artificial Intelligence option.</p></div></div>
+  </section>
 
-        .section-title {
-            font-size: 2.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 2.5rem;
-            position: relative;
-            display: inline-block;
-        }
+  <div class="side">
+    <section class="item tools"><span class="pin"></span><h3 class="sec" style="font-size:20px">Toolbox</h3>
+      <div class="chips"><span>TypeScript</span><span>Angular</span><span>React</span><span>C#</span><span>.NET</span><span>Python</span><span>SQL</span><span>Azure</span><span>Stripe</span><span>C++</span><span>OpenGL</span><span>Godot</span><span>Gen AI</span></div></section>
+    <section class="item contact"><span class="pin b"></span><h3 class="sec" style="font-size:20px">Let's talk</h3>
+      <p>Open to interesting problems and good teams.</p><a class="btn p" href="mailto:halston@sellent.in">halston@sellent.in</a></section>
+  </div>
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 70px;
-            height: 4px;
-            background-color: var(--accent);
-            margin-top: 0.75rem;
-            border-radius: 2px;
-        }
+  <div class="label"><span>Side projects</span></div>
+  <a class="item proj" href="https://apps.apple.com/us/app/arena2006/id6814988988"><span class="pin g"></span><img class="thumb" src="/arena2006/arena2006-key-art.png" alt="Arena 2006 key art"><div class="k">Game · 2026</div><h4>Arena 2006</h4><p>A campaign shooter I built and shipped to iPhone and Steam.</p><span class="go"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9s-2-.9-3.4-.9C5.9 6.8 4.2 7.8 3.3 9.4c-1.9 3.2-.5 8 1.3 10.6.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.9-4.3zM13.9 4.9c.7-.9 1.2-2.1 1.1-3.3-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.1.1 2.3-.6 3-1.5z"/></svg>App Store →</span></a>
+  <a class="item proj" href="https://www.youtube.com/@varietygifts"><span class="pin y"></span><span class="vid"><img class="thumb" src="/about-me/assets/youtube.webp" width="640" height="360" alt="Disneyland Vlog thumbnail from the Variety Gifts YouTube channel"></span><div class="k">Video · 10K+ subscribers</div><h4>Variety Gifts on YouTube</h4><p>157 videos and counting.</p><span class="go">Watch →</span></a>
+  <a class="item proj" href="https://www.variety.gifts/"><span class="pin"></span><img class="thumb" src="/about-me/assets/shop.webp" width="640" height="360" alt="Variety Gifts shop homepage: Fun gifts for fun people"><div class="k">Web · Shop</div><h4>Variety Gifts</h4><p>A Stripe-powered gift shop, browser games, a VR robot and other web toys.</p><span class="go">Explore →</span></a>
+</main>
+<footer>© 2026 Halston Sellentin</footer>
 
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 5rem;
-        }
-
-        .skill-tag {
-            cursor: default;
-            display: inline-block;
-            padding: 0.65rem 1.25rem;
-            border-radius: 8px;
-            background-color: rgba(36, 123, 160, 0.08);
-            border: 1px solid rgba(36, 123, 160, 0.4);
-            color: var(--primary);
-            font-weight: 500;
-            transition: all 0.25s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .skill-tag:hover {
-            background-color: var(--secondary);
-            color: var(--light);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-section {
-            margin: 5rem 0;
-            line-height: 1.9;
-        }
-
-        .about-section p {
-            margin-bottom: 2rem;
-            color: var(--gray);
-            font-size: 1.2rem;
-        }
-
-        .about-section a {
-            color: var(--secondary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-            padding-bottom: 2px;
-            border-bottom: 1px solid var(--secondary);
-        }
-
-        .about-section a:hover {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        @media (max-width: 768px) {
-            html {
-                padding: 1.5%;
-            }
-            
-            .hero h1 {
-                font-size: 5rem;
-            }
-            
-            .hero p {
-                font-size: 1.3rem;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
-            }
-            
-            .nav-link {
-                padding: 0.6rem 1.2rem;
-                font-size: 1rem;
-            }
-            
-            .about-section p {
-                font-size: 1.1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-            
-            .nav-links {
-                justify-content: center;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <header>
-            <nav class="nav-links">
-                <a href="https://www.linkedin.com/in/halston-sellentin" class="nav-link">LinkedIn</a>
-                <a href="https://www.github.com/sellenth" class="nav-link">Github</a>
-                <a href="/" class="nav-link">Fun</a>
-            </nav>
-        </header>
-
-        <main>
-            <section class="hero">
-                <h1>Hello.</h1>
-                <p>My name is Halston,<br>I am a software engineer<br>and lifelong learner.</p>
-            </section>
-
-            <section>
-                <h2 class="section-title">What I've worked on</h2>
-                <div class="skills-container">
-                    <span class="skill-tag">HTML</span>
-                    <span class="skill-tag">Typescript</span>
-                    <span class="skill-tag">C#</span>
-                    <span class="skill-tag">.NET</span>
-                    <span class="skill-tag">CSS</span>
-                    <span class="skill-tag">React</span>
-                    <span class="skill-tag">Godot</span>
-                    <span class="skill-tag">Gen AI</span>
-                    <span class="skill-tag">Angular</span>
-                    <span class="skill-tag">SQL</span>
-                    <span class="skill-tag">Azure</span>
-                    <span class="skill-tag">C++</span>
-                    <span class="skill-tag">OpenGL</span>
-                </div>
-
-                <div class="about-section">
-                    <p>I've been interested in all things computers for almost 20 years now and I always strive to improve.
-                        My career started as a web developer on projects at the Environmental Protection Agency. Most
-                        notably, I worked on a GIS data visualization project that you can learn more about <a
-                            href="https://cfpub.epa.gov/si/si_public_record_Report.cfm?dirEntryId=351408&amp;Lab=CPHEA">here</a>.
-                    </p>
-                    <p>I later worked for USNR, a lumber mill automation company where I maintained a
-                        state-of-the-art mill optimization program.</p>
-                    <p>Currently I work on cloud data applications for a leading environmental diagnostics company.</p>
-                    <p>On my own time, I run a popular youtube channel, make websites + games + web experiences, 
-                        play pickleball, and take my dog for walks.</p>
-                </div>
-            </section>
-        </main>
-    </div>
-</body>
-
-</html>
+</body></html>
