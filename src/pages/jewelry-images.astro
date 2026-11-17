@@ -1,0 +1,1666 @@
+---
+import "@fontsource-variable/raleway";
+import Analytics from "@vercel/analytics/astro";
+import {
+  BACKDROPS,
+  DEFAULT_MODEL_DESCRIPTION,
+  JEWELRY_TYPES,
+  METALS,
+} from "../lib/jewelryPrompt";
+
+export const prerender = true;
+
+const ratios = ["4:5", "1:1", "3:4", "2:3", "9:16", "16:9"];
+const resolutions = ["1K", "2K", "4K"];
+---
+
+<!doctype html>
+<html lang="en" class="jw-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0e0d10" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>Jewelry Studio - Variety Gifts Unlimited</title>
+    <Analytics />
+  </head>
+  <body class="jw-body">
+    <header class="jw-top">
+      <div class="jw-brandmark">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M6 3h12l4 6-10 12L2 9l4-6Zm0 0 6 18m6-18-6 18M2 9h20M9.5 3 7 9m7.5-6L17 9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linejoin="round"></path>
+        </svg>
+        <span>Jewelry Studio</span>
+      </div>
+      <nav class="jw-toplinks">
+        <a href="/backroom">Backroom</a>
+        <a href="/upscaler">Upscaler</a>
+        <button id="clearAllBtn" type="button" class="jw-linkbtn"
+          >Clear gallery</button
+        >
+      </nav>
+    </header>
+
+    <main id="gallery" class="jw-gallery" aria-live="polite"></main>
+
+    <section id="composer" class="jw-composer" aria-label="Create images">
+      <!-- Reference tray -->
+      <div class="jw-tray">
+        <div id="pieceTray" class="jw-trayrow"></div>
+        <div class="jw-traysep" aria-hidden="true"></div>
+        <div id="sceneTray" class="jw-trayrow"></div>
+        <button
+          id="clearRefsBtn"
+          type="button"
+          class="jw-iconbtn jw-trash"
+          title="Remove all reference images"
+          aria-label="Remove all reference images"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v6m4-6v6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <input id="pieceInput" type="file" accept="image/*" multiple hidden />
+        <input id="sceneInput" type="file" accept="image/*" hidden />
+      </div>
+
+      <textarea
+        id="composition"
+        class="jw-text"
+        rows="2"
+        placeholder="Describe the shot in a sentence — e.g. “hand resting against the curtain, rings stacked on the ring finger, soft light from the left”"
+      ></textarea>
+
+      <!-- Auto-inserted style ingredients -->
+      <div class="jw-style">
+        <span class="jw-stylelabel">Auto-added</span>
+        <label class="jw-chip">
+          <span>Piece</span>
+          <select id="jewelryType">
+            {
+              Object.entries(JEWELRY_TYPES).map(([k, v]) => (
+                <option value={k}>{v.label}</option>
+              ))
+            }
+          </select>
+        </label>
+        <button id="stackBtn" type="button" class="jw-toggle" aria-pressed="true"
+          >Stacked on one finger</button
+        >
+        <label class="jw-chip">
+          <span>Metal</span>
+          <select id="metal">
+            {
+              Object.entries(METALS).map(([k, v]) => (
+                <option value={k}>{v.label}</option>
+              ))
+            }
+          </select>
+        </label>
+        <label class="jw-chip">
+          <span>Backdrop</span>
+          <select id="backdrop">
+            {
+              Object.entries(BACKDROPS).map(([k, v]) => (
+                <option value={k}>{v.label}</option>
+              ))
+            }
+          </select>
+        </label>
+        <button id="diamondsBtn" type="button" class="jw-toggle" aria-pressed="true"
+          >Diamond realism</button
+        >
+        <button id="modelBtn" type="button" class="jw-toggle" aria-pressed="true"
+          >Model &amp; skin</button
+        >
+        <button
+          id="eyeBtn"
+          type="button"
+          class="jw-eye"
+          aria-expanded="false"
+          aria-controls="promptPanel"
+          title="Show the full prompt that will be sent"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linejoin="round"></path>
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"></circle>
+          </svg>
+          <span>Final prompt</span>
+        </button>
+      </div>
+
+      <!-- Progressive disclosure: the full prompt -->
+      <div id="promptPanel" class="jw-panel" hidden>
+        <div class="jw-panelhead">
+          <span id="promptMeta"></span>
+          <button id="copyPromptBtn" type="button" class="jw-linkbtn"
+            >Copy</button
+          >
+        </div>
+        <div id="promptBody" class="jw-promptbody"></div>
+      </div>
+
+      <!-- Settings -->
+      <div id="settingsPanel" class="jw-panel" hidden>
+        <div class="jw-fields">
+          <label class="jw-field">
+            <span>Brand name</span>
+            <input id="brand" type="text" placeholder="MARIS JEWELRY" />
+          </label>
+          <label class="jw-field jw-wide">
+            <span>Model description</span>
+            <input
+              id="modelDescription"
+              type="text"
+              placeholder={DEFAULT_MODEL_DESCRIPTION}
+            />
+          </label>
+          <label class="jw-field jw-wide">
+            <span>fal API key (stored only in this browser)</span>
+            <input
+              id="apiKey"
+              type="password"
+              autocomplete="off"
+              placeholder="Paste your fal key"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div id="status" class="jw-status" role="status"></div>
+
+      <div class="jw-bar">
+        <button
+          id="settingsBtn"
+          type="button"
+          class="jw-iconbtn"
+          aria-expanded="false"
+          aria-controls="settingsPanel"
+          title="Brand, model and API key"
+          aria-label="Brand, model and API key"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path
+              d="M4 7h10m4 0h2M4 17h2m4 0h10M16 4.5v5M8 14.5v5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"></path>
+          </svg>
+        </button>
+        <label class="jw-chip">
+          <select id="model" aria-label="Model">
+            <option value="fal-ai/nano-banana-pro/edit">Nano Banana Pro</option>
+            <option value="google/nano-banana-2.1/edit"
+              >Nano Banana 2.1 · medium thinking</option
+            >
+          </select>
+        </label>
+        <label class="jw-chip">
+          <select id="aspectRatio" aria-label="Aspect ratio">
+            {ratios.map((r) => <option value={r}>{r}</option>)}
+          </select>
+        </label>
+        <label class="jw-chip">
+          <select id="resolution" aria-label="Resolution">
+            {resolutions.map((r) => <option value={r}>{r}</option>)}
+          </select>
+        </label>
+        <div class="jw-stepper" role="group" aria-label="Number of images">
+          <button id="countDown" type="button" aria-label="Fewer images"
+            >−</button
+          >
+          <span id="countLabel">1/4</span>
+          <button id="countUp" type="button" aria-label="More images">+</button>
+        </div>
+        <button id="generateBtn" type="button" class="jw-generate">
+          Generate
+        </button>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="jw-lightbox" hidden>
+      <button id="lbClose" type="button" class="jw-lbbtn jw-lbclose" aria-label="Close"
+        >×</button
+      >
+      <button id="lbPrev" type="button" class="jw-lbbtn jw-lbprev" aria-label="Previous"
+        >‹</button
+      >
+      <img id="lbImage" alt="Generated jewelry image" />
+      <button id="lbNext" type="button" class="jw-lbbtn jw-lbnext" aria-label="Next"
+        >›</button
+      >
+      <div class="jw-lbactions">
+        <button id="lbDownload" type="button">Download</button>
+        <button id="lbScene" type="button">Use as scene reference</button>
+      </div>
+    </div>
+
+    <div id="dropVeil" class="jw-dropveil" hidden>
+      Drop jewelry images to add them as references
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  html.jw-root {
+    --bg: #0e0d10;
+    --panel: #1a191e;
+    --panel-2: #24232a;
+    --line: #34323b;
+    --ink: #f3efe8;
+    --muted: #9d98a3;
+    --gold: #e3c58b;
+    --gold-ink: #23190a;
+    --you: #f0a9b6;
+    --bad: #ff8d8d;
+    background: var(--bg);
+    color: var(--ink);
+    color-scheme: dark;
+  }
+  .jw-body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Raleway Variable", system-ui, sans-serif;
+    font-size: 15px;
+    --composer-h: 320px;
+  }
+  .jw-body button,
+  .jw-body select,
+  .jw-body input,
+  .jw-body textarea {
+    font: inherit;
+    color: inherit;
+  }
+  .jw-body button {
+    cursor: pointer;
+  }
+  .jw-body [hidden] {
+    display: none !important;
+  }
+  .jw-body :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .jw-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .jw-brandmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+  .jw-toplinks {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+  }
+  .jw-toplinks a,
+  .jw-linkbtn {
+    color: var(--muted);
+    background: none;
+    border: 0;
+    padding: 0;
+    text-decoration: none;
+  }
+  .jw-toplinks a:hover,
+  .jw-linkbtn:hover {
+    color: var(--ink);
+  }
+
+  /* Gallery */
+  .jw-gallery {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px 16px calc(var(--composer-h) + 40px);
+  }
+  .jw-empty {
+    max-width: 520px;
+    margin: 12vh auto 0;
+    text-align: center;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .jw-empty h1 {
+    color: var(--ink);
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 10px;
+  }
+  .jw-empty ol {
+    text-align: left;
+    list-style: decimal;
+    margin: 18px auto 0;
+    padding-left: 20px;
+    max-width: 400px;
+  }
+  .jw-batch {
+    margin-bottom: 28px;
+  }
+  .jw-batchhead {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .jw-batchhead q {
+    color: var(--ink);
+    font-size: 14px;
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+  .jw-batchhead .jw-linkbtn {
+    font-size: 13px;
+  }
+  .jw-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 8px;
+  }
+  .jw-tile {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--panel);
+  }
+  .jw-tile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+  }
+  .jw-tileactions {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .jw-tile:hover .jw-tileactions,
+  .jw-tile:focus-within .jw-tileactions {
+    opacity: 1;
+  }
+  .jw-tileactions button {
+    background: rgba(14, 13, 16, 0.82);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+  .jw-tileactions button:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .jw-pending {
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 13px;
+    background: linear-gradient(
+      100deg,
+      var(--panel) 30%,
+      var(--panel-2) 50%,
+      var(--panel) 70%
+    );
+    background-size: 220% 100%;
+    animation: jw-shimmer 1.6s linear infinite;
+  }
+  .jw-failed {
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    text-align: center;
+    color: var(--bad);
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  @keyframes jw-shimmer {
+    to {
+      background-position: -220% 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jw-pending {
+      animation: none;
+    }
+  }
+
+  /* Composer */
+  .jw-composer {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    width: min(1040px, calc(100vw - 24px));
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+  }
+  .jw-tray {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .jw-trayrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .jw-traysep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--line);
+  }
+  .jw-thumb {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+  }
+  .jw-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .jw-thumb button {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(14, 13, 16, 0.85);
+    line-height: 1;
+    font-size: 14px;
+    padding: 0;
+  }
+  .jw-thumb small {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    background: rgba(14, 13, 16, 0.75);
+    padding: 1px 0;
+  }
+  .jw-add {
+    height: 60px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px dashed #55525e;
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.25;
+  }
+  .jw-add:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .jw-add b {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .jw-iconbtn {
+    width: 40px;
+    height: 40px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--muted);
+  }
+  .jw-iconbtn:hover,
+  .jw-iconbtn[aria-expanded="true"] {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+  .jw-trash {
+    margin-left: auto;
+  }
+  .jw-text {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 56px;
+    max-height: 30vh;
+    background: transparent;
+    border: 0;
+    padding: 4px 2px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .jw-text:focus {
+    outline: none;
+  }
+  .jw-text::placeholder {
+    color: #76717d;
+  }
+
+  .jw-style,
+  .jw-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .jw-stylelabel {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 2px;
+  }
+  .jw-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 4px 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    font-size: 13px;
+  }
+  .jw-chip > span {
+    color: var(--muted);
+  }
+  .jw-chip select {
+    background: transparent;
+    border: 0;
+    height: 34px;
+    padding: 0 4px;
+    font-weight: 600;
+    max-width: 190px;
+  }
+  .jw-chip select option {
+    background: var(--panel-2);
+  }
+  .jw-toggle {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: line-through;
+  }
+  .jw-toggle[aria-pressed="true"] {
+    background: var(--panel-2);
+    color: var(--ink);
+    border-color: #6a5d43;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .jw-eye {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .jw-eye:hover,
+  .jw-eye[aria-expanded="true"] {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .jw-panel {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #131216;
+    padding: 12px 14px;
+  }
+  .jw-panelhead {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .jw-promptbody {
+    max-height: 34vh;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #c9c4cf;
+  }
+  .jw-psec {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 2px solid var(--line);
+  }
+  .jw-psec h3 {
+    margin: 0 0 2px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .jw-psec p {
+    margin: 0;
+  }
+  .jw-psec.jw-you {
+    border-left-color: var(--you);
+    color: var(--ink);
+  }
+  .jw-psec.jw-you h3 {
+    color: var(--you);
+  }
+  .jw-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .jw-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .jw-field input {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    padding: 0 10px;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .jw-status {
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 0;
+  }
+  .jw-status:empty {
+    display: none;
+  }
+  .jw-status.jw-err {
+    color: var(--bad);
+  }
+  .jw-stepper {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .jw-stepper button {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    font-size: 17px;
+    color: var(--muted);
+  }
+  .jw-stepper button:hover {
+    color: var(--ink);
+  }
+  .jw-stepper span {
+    min-width: 30px;
+    text-align: center;
+  }
+  .jw-generate {
+    margin-left: auto;
+    height: 46px;
+    padding: 0 30px;
+    border-radius: 12px;
+    border: 0;
+    background: var(--gold);
+    color: var(--gold-ink) !important;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+  .jw-generate:hover {
+    filter: brightness(1.08);
+  }
+
+  /* Lightbox */
+  .jw-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(6, 5, 8, 0.94);
+    display: grid;
+    place-items: center;
+  }
+  .jw-lightbox[hidden],
+  .jw-dropveil[hidden],
+  .jw-panel[hidden] {
+    display: none;
+  }
+  .jw-lightbox img {
+    max-width: 92vw;
+    max-height: 82vh;
+    border-radius: 6px;
+  }
+  .jw-lbbtn {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .jw-lbclose {
+    top: 16px;
+    right: 16px;
+  }
+  .jw-lbprev {
+    left: 16px;
+    top: 50%;
+  }
+  .jw-lbnext {
+    right: 16px;
+    top: 50%;
+  }
+  .jw-lbactions {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .jw-lbactions button {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 13px;
+  }
+  .jw-lbactions button:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .jw-dropveil {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    background: rgba(14, 13, 16, 0.86);
+    border: 2px dashed var(--gold);
+    color: var(--gold);
+    font-size: 20px;
+    pointer-events: none;
+  }
+
+  @media (max-width: 720px) {
+    .jw-body {
+      display: flex;
+      flex-direction: column;
+    }
+    .jw-composer {
+      position: static;
+      transform: none;
+      width: auto;
+      max-height: none;
+      margin: 12px;
+      order: 1;
+    }
+    .jw-gallery {
+      order: 2;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 12px 40px;
+    }
+    .jw-empty {
+      margin-top: 24px;
+    }
+    .jw-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .jw-tileactions {
+      opacity: 1;
+    }
+    .jw-generate {
+      flex: 1 1 100%;
+    }
+    .jw-eye {
+      margin-left: 0;
+    }
+    .jw-toplinks a {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import {
+    BACKDROPS,
+    JEWELRY_TYPES,
+    METALS,
+    buildSections,
+    renderPrompt,
+    type BackdropKey,
+    type JewelryType,
+    type MetalKey,
+    type PromptInput,
+  } from "../lib/jewelryPrompt";
+
+  // ---------- types & constants ----------
+  type Role = "piece" | "scene";
+  interface Ref {
+    id: string;
+    role: Role;
+    src: string; // data URL or https URL
+  }
+  interface Settings {
+    brand: string;
+    modelDescription: string;
+    jewelryType: JewelryType;
+    stack: boolean;
+    includeModel: boolean;
+    diamonds: boolean;
+    metal: MetalKey;
+    backdrop: BackdropKey;
+    model: string;
+    aspectRatio: string;
+    resolution: string;
+    count: number;
+    showPrompt: boolean;
+  }
+  interface Slot {
+    state: "pending" | "done" | "failed";
+    url?: string;
+    error?: string;
+  }
+  interface Batch {
+    id: string;
+    ts: number;
+    composition: string;
+    prompt: string;
+    settings: Settings;
+    slots: Slot[];
+  }
+
+  const MAX_PIECES = 6;
+  const MAX_BATCHES = 40;
+  const MAX_SIDE = 2048;
+  const KEY_STORE = "falApiKey"; // shared with /backroom
+  const SETTINGS_STORE = "jewelrySettings";
+  const HISTORY_STORE = "jewelryHistory";
+  const DRAFT_STORE = "jewelryDraft";
+  const MODELS: Record<string, { label: string; thinking?: string }> = {
+    // Pro only supports "high" thinking, which is also its default.
+    "fal-ai/nano-banana-pro/edit": { label: "Nano Banana Pro" },
+    "google/nano-banana-2.1/edit": {
+      label: "Nano Banana 2.1",
+      thinking: "medium",
+    },
+  };
+
+  const DEFAULTS: Settings = {
+    brand: "MARIS JEWELRY",
+    modelDescription: "",
+    jewelryType: "ring",
+    stack: true,
+    includeModel: true,
+    diamonds: true,
+    metal: "white-gold",
+    backdrop: "burgundy-velvet",
+    model: "fal-ai/nano-banana-pro/edit",
+    aspectRatio: "4:5",
+    resolution: "1K",
+    count: 1,
+    showPrompt: false,
+  };
+
+  // ---------- tiny helpers ----------
+  const $ = <T extends HTMLElement>(id: string) =>
+    document.getElementById(id) as T;
+  type Child = Node | string | null | undefined | false;
+  const h = (
+    tag: string,
+    attrs: Record<string, string> = {},
+    ...children: Child[]
+  ) => {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    for (const c of children) if (c) el.append(c);
+    return el;
+  };
+  const uid = () =>
+    Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const readJson = <T,>(key: string, fallback: T): T => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? (JSON.parse(raw) as T) : fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  const writeJson = (key: string, value: unknown) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {}
+  };
+
+  // ---------- state ----------
+  let settings: Settings = { ...DEFAULTS, ...readJson(SETTINGS_STORE, {}) };
+  if (!MODELS[settings.model]) settings.model = DEFAULTS.model;
+  if (!JEWELRY_TYPES[settings.jewelryType]) settings.jewelryType = "ring";
+  if (!METALS[settings.metal]) settings.metal = DEFAULTS.metal;
+  if (!BACKDROPS[settings.backdrop]) settings.backdrop = DEFAULTS.backdrop;
+  let refs: Ref[] = [];
+  let batches: Batch[] = readJson<Batch[]>(HISTORY_STORE, []);
+  let backdropBeforeScene: BackdropKey | null = null;
+
+  // ---------- reference persistence (IndexedDB, so they survive reloads) ----------
+  const idb = (): Promise<IDBDatabase> =>
+    new Promise((resolve, reject) => {
+      const req = indexedDB.open("jewelry-studio", 1);
+      req.onupgradeneeded = () => req.result.createObjectStore("kv");
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  const saveRefs = async () => {
+    try {
+      const db = await idb();
+      db.transaction("kv", "readwrite").objectStore("kv").put(refs, "refs");
+    } catch {}
+  };
+  const loadRefs = async (): Promise<Ref[]> => {
+    try {
+      const db = await idb();
+      return await new Promise((resolve) => {
+        const req = db.transaction("kv").objectStore("kv").get("refs");
+        req.onsuccess = () => resolve((req.result as Ref[]) || []);
+        req.onerror = () => resolve([]);
+      });
+    } catch {
+      return [];
+    }
+  };
+
+  // ---------- elements ----------
+  const composition = $<HTMLTextAreaElement>("composition");
+  const apiKey = $<HTMLInputElement>("apiKey");
+  const statusEl = $("status");
+  const gallery = $("gallery");
+  const composer = $("composer");
+
+  const setStatus = (msg: string, isError = false) => {
+    statusEl.textContent = msg;
+    statusEl.classList.toggle("jw-err", isError);
+  };
+
+  // ---------- prompt ----------
+  const promptInput = (): PromptInput => ({
+    brand: settings.brand,
+    composition: composition.value,
+    pieceCount: refs.filter((r) => r.role === "piece").length,
+    hasScene: refs.some((r) => r.role === "scene"),
+    jewelryType: settings.jewelryType,
+    stack: settings.stack,
+    includeModel: settings.includeModel,
+    modelDescription: settings.modelDescription,
+    diamonds: settings.diamonds,
+    metal: settings.metal,
+    backdrop: settings.backdrop,
+    aspectRatio: settings.aspectRatio,
+  });
+
+  const renderPromptPanel = () => {
+    const sections = buildSections(promptInput());
+    const text = renderPrompt(sections);
+    const auto = sections.filter((s) => s.auto).length;
+    $("promptMeta").textContent =
+      `${text.length.toLocaleString()} characters · ${auto} blocks added automatically`;
+    const body = $("promptBody");
+    body.replaceChildren(
+      ...sections.map((s) =>
+        h(
+          "div",
+          { class: `jw-psec${s.auto ? "" : " jw-you"}` },
+          s.title && h("h3", {}, s.auto ? s.title : `${s.title} · yours`),
+          ...s.lines.map((l) => h("p", {}, l)),
+        ),
+      ),
+    );
+    if (!composition.value.trim()) {
+      body.prepend(
+        h(
+          "div",
+          { class: "jw-psec jw-you" },
+          h("h3", {}, "COMPOSITION · yours"),
+          h("p", {}, "(your sentence goes here)"),
+        ),
+      );
+    }
+  };
+
+  // ---------- settings <-> controls ----------
+  const bindSelect = (id: string, key: keyof Settings) => {
+    const el = $<HTMLSelectElement>(id);
+    el.value = String(settings[key]);
+    el.addEventListener("change", () => {
+      (settings as any)[key] = el.value;
+      if (key === "backdrop") backdropBeforeScene = null;
+      sync();
+    });
+  };
+  const bindToggle = (id: string, key: keyof Settings) => {
+    const el = $<HTMLButtonElement>(id);
+    el.addEventListener("click", () => {
+      (settings as any)[key] = !settings[key];
+      sync();
+    });
+  };
+  const bindText = (id: string, key: keyof Settings) => {
+    const el = $<HTMLInputElement>(id);
+    el.value = String(settings[key] ?? "");
+    el.addEventListener("input", () => {
+      (settings as any)[key] = el.value;
+      sync();
+    });
+  };
+  const bindDisclosure = (btnId: string, panelId: string, onToggle?: (open: boolean) => void) => {
+    const btn = $(btnId);
+    const panel = $(panelId);
+    const set = (open: boolean) => {
+      panel.hidden = !open;
+      btn.setAttribute("aria-expanded", String(open));
+      onToggle?.(open);
+    };
+    btn.addEventListener("click", () => set(panel.hidden));
+    return set;
+  };
+
+  /** Push state into the controls, persist it, and refresh the prompt. */
+  const sync = () => {
+    const pieces = refs.filter((r) => r.role === "piece").length;
+    const type = JEWELRY_TYPES[settings.jewelryType];
+    const stackBtn = $("stackBtn");
+    stackBtn.hidden = !(settings.jewelryType === "ring" && pieces > 1);
+    stackBtn.setAttribute("aria-pressed", String(settings.stack));
+    $("diamondsBtn").setAttribute("aria-pressed", String(settings.diamonds));
+    $("modelBtn").setAttribute("aria-pressed", String(settings.includeModel));
+    for (const id of ["jewelryType", "metal", "backdrop", "model", "aspectRatio", "resolution"]) {
+      $<HTMLSelectElement>(id).value = String((settings as any)[id]);
+    }
+    $("countLabel").textContent = `${settings.count}/4`;
+    $("generateBtn").textContent =
+      settings.count > 1 ? `Generate ${settings.count}` : "Generate";
+    // "Match scene reference" only makes sense with a scene image loaded.
+    const matchOpt = $<HTMLSelectElement>("backdrop").querySelector<HTMLOptionElement>(
+      'option[value="match"]',
+    )!;
+    matchOpt.disabled = !refs.some((r) => r.role === "scene");
+    $("pieceTray").dataset.noun = type.one;
+    writeJson(SETTINGS_STORE, settings);
+    renderPromptPanel();
+  };
+
+  // ---------- reference tray ----------
+  const renderTray = () => {
+    const pieces = refs.filter((r) => r.role === "piece");
+    const scene = refs.find((r) => r.role === "scene");
+    const thumb = (r: Ref, label: string) => {
+      const x = h("button", { type: "button", "aria-label": `Remove ${label}` }, "×");
+      x.addEventListener("click", () => removeRef(r.id));
+      return h(
+        "div",
+        { class: "jw-thumb" },
+        h("img", { src: r.src, alt: label }),
+        h("small", {}, label),
+        x,
+      );
+    };
+    const addBtn = (title: string, hint: string, input: string) => {
+      const b = h("button", { type: "button", class: "jw-add" }, h("b", {}, title), hint);
+      b.addEventListener("click", () => $<HTMLInputElement>(input).click());
+      return b;
+    };
+    $("pieceTray").replaceChildren(
+      ...pieces.map((r, i) => thumb(r, `Piece ${i + 1}`)),
+      pieces.length < MAX_PIECES &&
+        addBtn(
+          pieces.length ? "+ Add piece" : "+ Jewelry",
+          pieces.length ? `${pieces.length} of ${MAX_PIECES}` : "product renders",
+          "pieceInput",
+        ),
+    );
+    $("sceneTray").replaceChildren(
+      scene
+        ? thumb(scene, "Scene")
+        : addBtn("+ Scene", "hand / model (optional)", "sceneInput"),
+    );
+    $("clearRefsBtn").hidden = refs.length === 0;
+  };
+
+  const afterRefsChanged = () => {
+    const hasScene = refs.some((r) => r.role === "scene");
+    // A scene photo brings its own background, so follow it unless told otherwise.
+    if (hasScene && backdropBeforeScene === null && settings.backdrop !== "match") {
+      backdropBeforeScene = settings.backdrop;
+      settings.backdrop = "match";
+    } else if (!hasScene && settings.backdrop === "match") {
+      settings.backdrop = backdropBeforeScene ?? DEFAULTS.backdrop;
+      backdropBeforeScene = null;
+    }
+    renderTray();
+    sync();
+    saveRefs();
+  };
+
+  const removeRef = (id: string) => {
+    refs = refs.filter((r) => r.id !== id);
+    afterRefsChanged();
+  };
+
+  /** Downscale big uploads so requests stay small; PNG keeps transparency. */
+  const prepareImage = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, MAX_SIDE / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        const keepPng = file.type === "image/png";
+        resolve(canvas.toDataURL(keepPng ? "image/png" : "image/jpeg", 0.92));
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error(`Couldn't read ${file.name || "that image"}`));
+      };
+      img.src = url;
+    });
+
+  const addFiles = async (files: File[], role: Role) => {
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    if (!images.length) return;
+    try {
+      if (role === "scene") {
+        const src = await prepareImage(images[0]);
+        refs = refs.filter((r) => r.role !== "scene");
+        refs.push({ id: uid(), role, src });
+      } else {
+        const room = MAX_PIECES - refs.filter((r) => r.role === "piece").length;
+        if (room <= 0) {
+          setStatus(`Up to ${MAX_PIECES} jewelry references at a time.`, true);
+          return;
+        }
+        for (const f of images.slice(0, room)) {
+          refs.push({ id: uid(), role, src: await prepareImage(f) });
+        }
+      }
+      setStatus("");
+      afterRefsChanged();
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "Couldn't add that image", true);
+    }
+  };
+
+  const setSceneFromUrl = (url: string) => {
+    refs = refs.filter((r) => r.role !== "scene");
+    refs.push({ id: uid(), role: "scene", src: url });
+    afterRefsChanged();
+    setStatus("Added as the scene reference.");
+  };
+
+  // ---------- gallery ----------
+  const persistHistory = () => {
+    const done = batches
+      .map((b) => ({ ...b, slots: b.slots.filter((s) => s.state === "done") }))
+      .filter((b) => b.slots.length)
+      .slice(0, MAX_BATCHES);
+    writeJson(HISTORY_STORE, done);
+  };
+
+  const allImages = () =>
+    batches.flatMap((b) =>
+      b.slots.filter((s) => s.state === "done").map((s) => s.url!),
+    );
+
+  const download = async (url: string) => {
+    const name = `jewelry-${Date.now()}.${url.split("?")[0].split(".").pop() || "png"}`;
+    try {
+      const blob = await (await fetch(url)).blob();
+      const a = h("a", { href: URL.createObjectURL(blob), download: name });
+      document.body.append(a);
+      (a as HTMLAnchorElement).click();
+      a.remove();
+    } catch {
+      window.open(url, "_blank", "noopener");
+    }
+  };
+
+  const renderGallery = () => {
+    if (!batches.length) {
+      gallery.replaceChildren(
+        h(
+          "div",
+          { class: "jw-empty" },
+          h("h1", {}, "Campaign shots from your renders"),
+          h(
+            "p",
+            {},
+            "The lighting, diamond realism, backdrop and accuracy rules are added to every request for you.",
+          ),
+          h(
+            "ol",
+            {},
+            h("li", {}, "Add your jewelry renders (drop, paste or browse)."),
+            h("li", {}, "Optionally add a hand or model photo as the scene."),
+            h("li", {}, "Describe the shot in a sentence and press Generate."),
+          ),
+        ),
+      );
+      return;
+    }
+    gallery.replaceChildren(
+      ...batches.map((b) => {
+        const reuse = h("button", { type: "button", class: "jw-linkbtn" }, "Reuse settings");
+        reuse.addEventListener("click", () => {
+          settings = { ...settings, ...b.settings, showPrompt: settings.showPrompt };
+          composition.value = b.composition;
+          writeJson(DRAFT_STORE, composition.value);
+          backdropBeforeScene = null;
+          if (settings.backdrop === "match" && !refs.some((r) => r.role === "scene")) {
+            settings.backdrop = DEFAULTS.backdrop;
+          }
+          sync();
+          composition.focus();
+        });
+        const copy = h("button", { type: "button", class: "jw-linkbtn" }, "Copy prompt");
+        copy.addEventListener("click", async () => {
+          await navigator.clipboard.writeText(b.prompt);
+          copy.textContent = "Copied";
+          setTimeout(() => (copy.textContent = "Copy prompt"), 1500);
+        });
+        const del = h("button", { type: "button", class: "jw-linkbtn" }, "Remove");
+        del.addEventListener("click", () => {
+          batches = batches.filter((x) => x.id !== b.id);
+          persistHistory();
+          renderGallery();
+        });
+        const [rw, rh] = b.settings.aspectRatio.split(":");
+        return h(
+          "section",
+          { class: "jw-batch" },
+          h(
+            "div",
+            { class: "jw-batchhead" },
+            h("q", {}, b.composition || "No composition note"),
+            h(
+              "span",
+              {},
+              `${MODELS[b.settings.model]?.label ?? b.settings.model} · ${b.settings.aspectRatio} · ${b.settings.resolution} · ${new Date(b.ts).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}`,
+            ),
+            reuse,
+            copy,
+            del,
+          ),
+          h(
+            "div",
+            { class: "jw-grid" },
+            ...b.slots.map((s) => {
+              const style = `aspect-ratio: ${rw} / ${rh}`;
+              if (s.state === "pending")
+                return h("div", { class: "jw-tile jw-pending", style }, "Photographing…");
+              if (s.state === "failed")
+                return h("div", { class: "jw-tile jw-failed", style }, s.error || "Failed");
+              const img = h("img", { src: s.url!, alt: b.composition || "Generated jewelry image", loading: "lazy" });
+              img.addEventListener("click", () => openLightbox(s.url!));
+              const save = h("button", { type: "button" }, "Download");
+              save.addEventListener("click", () => download(s.url!));
+              const scene = h("button", { type: "button" }, "Use as scene");
+              scene.addEventListener("click", () => setSceneFromUrl(s.url!));
+              return h(
+                "div",
+                { class: "jw-tile", style },
+                img,
+                h("div", { class: "jw-tileactions" }, scene, save),
+              );
+            }),
+          ),
+        );
+      }),
+    );
+  };
+
+  // ---------- lightbox ----------
+  let lbUrl = "";
+  const openLightbox = (url: string) => {
+    lbUrl = url;
+    $<HTMLImageElement>("lbImage").src = url;
+    $("lightbox").hidden = false;
+  };
+  const closeLightbox = () => ($("lightbox").hidden = true);
+  const stepLightbox = (dir: number) => {
+    const all = allImages();
+    if (!all.length) return;
+    const i = all.indexOf(lbUrl);
+    openLightbox(all[(i + dir + all.length) % all.length]);
+  };
+
+  // ---------- generation ----------
+  const describeError = async (res: Response) => {
+    if (res.status === 401 || res.status === 403)
+      return "fal rejected the API key. Check it under settings.";
+    let detail = "";
+    try {
+      const body = await res.json();
+      const d = body?.detail;
+      detail = typeof d === "string" ? d : Array.isArray(d) ? d.map((x: any) => x?.msg).filter(Boolean).join("; ") : "";
+    } catch {}
+    return detail || `Request failed (${res.status})`;
+  };
+
+  const generate = async () => {
+    const key = apiKey.value.trim();
+    if (!key) {
+      openSettings(true);
+      apiKey.focus();
+      setStatus("Add your fal API key to start generating.", true);
+      return;
+    }
+    const pieces = refs.filter((r) => r.role === "piece");
+    if (!pieces.length) {
+      setStatus("Add at least one jewelry render first.", true);
+      return;
+    }
+    if (!composition.value.trim()) {
+      setStatus("Describe the shot in a sentence first.", true);
+      composition.focus();
+      return;
+    }
+
+    const prompt = renderPrompt(buildSections(promptInput()));
+    // Order matters: the prompt refers to "the first N" and "the last" image.
+    const imageUrls = [
+      ...pieces.map((r) => r.src),
+      ...refs.filter((r) => r.role === "scene").map((r) => r.src),
+    ];
+    const batch: Batch = {
+      id: uid(),
+      ts: Date.now(),
+      composition: composition.value.trim(),
+      prompt,
+      settings: { ...settings },
+      slots: Array.from({ length: settings.count }, () => ({ state: "pending" as const })),
+    };
+    batches.unshift(batch);
+    renderGallery();
+    setStatus("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const body: Record<string, unknown> = {
+      prompt,
+      image_urls: imageUrls,
+      num_images: 1,
+      aspect_ratio: settings.aspectRatio,
+      resolution: settings.resolution,
+      output_format: "png",
+    };
+    const thinking = MODELS[settings.model].thinking;
+    if (thinking) body.thinking_level = thinking;
+
+    // One request per image so they land as they finish and fail independently.
+    await Promise.all(
+      batch.slots.map(async (slot) => {
+        try {
+          const res = await fetch(`https://fal.run/${batch.settings.model}`, {
+            method: "POST",
+            headers: {
+              Authorization: `Key ${key}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          });
+          if (!res.ok) throw new Error(await describeError(res));
+          const url = (await res.json())?.images?.[0]?.url;
+          if (!url) throw new Error("No image came back. Try again.");
+          slot.state = "done";
+          slot.url = url;
+        } catch (err) {
+          slot.state = "failed";
+          slot.error = err instanceof Error ? err.message : "Something went wrong";
+        }
+        persistHistory();
+        renderGallery();
+      }),
+    );
+  };
+
+  // ---------- wiring ----------
+  bindSelect("jewelryType", "jewelryType");
+  bindSelect("metal", "metal");
+  bindSelect("backdrop", "backdrop");
+  bindSelect("model", "model");
+  bindSelect("aspectRatio", "aspectRatio");
+  bindSelect("resolution", "resolution");
+  bindToggle("stackBtn", "stack");
+  bindToggle("diamondsBtn", "diamonds");
+  bindToggle("modelBtn", "includeModel");
+  bindText("brand", "brand");
+  bindText("modelDescription", "modelDescription");
+
+  const openPrompt = bindDisclosure("eyeBtn", "promptPanel", (open) => {
+    settings.showPrompt = open;
+    writeJson(SETTINGS_STORE, settings);
+  });
+  const openSettings = bindDisclosure("settingsBtn", "settingsPanel");
+  if (settings.showPrompt) openPrompt(true);
+
+  apiKey.value = localStorage.getItem(KEY_STORE) || "";
+  apiKey.addEventListener("input", () =>
+    localStorage.setItem(KEY_STORE, apiKey.value.trim()),
+  );
+
+  composition.value = readJson(DRAFT_STORE, "");
+  composition.addEventListener("input", () => {
+    writeJson(DRAFT_STORE, composition.value);
+    renderPromptPanel();
+  });
+  composition.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      generate();
+    }
+  });
+
+  $("countDown").addEventListener("click", () => {
+    settings.count = Math.max(1, settings.count - 1);
+    sync();
+  });
+  $("countUp").addEventListener("click", () => {
+    settings.count = Math.min(4, settings.count + 1);
+    sync();
+  });
+  $("generateBtn").addEventListener("click", generate);
+
+  $<HTMLInputElement>("pieceInput").addEventListener("change", (e) => {
+    const input = e.target as HTMLInputElement;
+    addFiles(Array.from(input.files || []), "piece");
+    input.value = "";
+  });
+  $<HTMLInputElement>("sceneInput").addEventListener("change", (e) => {
+    const input = e.target as HTMLInputElement;
+    addFiles(Array.from(input.files || []), "scene");
+    input.value = "";
+  });
+  $("clearRefsBtn").addEventListener("click", () => {
+    refs = [];
+    afterRefsChanged();
+  });
+
+  $("copyPromptBtn").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(renderPrompt(buildSections(promptInput())));
+    $("copyPromptBtn").textContent = "Copied";
+    setTimeout(() => ($("copyPromptBtn").textContent = "Copy"), 1500);
+  });
+
+  $("clearAllBtn").addEventListener("click", () => {
+    if (!batches.length) return;
+    if (!confirm("Remove every image from this gallery? This can't be undone.")) return;
+    batches = batches.filter((b) => b.slots.some((s) => s.state === "pending"));
+    persistHistory();
+    renderGallery();
+  });
+
+  // Paste and drag-drop add jewelry references.
+  document.addEventListener("paste", (e) => {
+    const files = Array.from(e.clipboardData?.files || []);
+    if (files.some((f) => f.type.startsWith("image/"))) {
+      e.preventDefault();
+      addFiles(files, "piece");
+    }
+  });
+  let dragDepth = 0;
+  const veil = $("dropVeil");
+  const hasFiles = (e: DragEvent) => e.dataTransfer?.types.includes("Files");
+  document.addEventListener("dragenter", (e) => {
+    if (!hasFiles(e)) return;
+    dragDepth++;
+    veil.hidden = false;
+  });
+  document.addEventListener("dragleave", (e) => {
+    if (!hasFiles(e)) return;
+    if (--dragDepth <= 0) {
+      dragDepth = 0;
+      veil.hidden = true;
+    }
+  });
+  document.addEventListener("dragover", (e) => {
+    if (hasFiles(e)) e.preventDefault();
+  });
+  document.addEventListener("drop", (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault();
+    dragDepth = 0;
+    veil.hidden = true;
+    addFiles(Array.from(e.dataTransfer?.files || []), "piece");
+  });
+
+  $("lbClose").addEventListener("click", closeLightbox);
+  $("lbPrev").addEventListener("click", () => stepLightbox(-1));
+  $("lbNext").addEventListener("click", () => stepLightbox(1));
+  $("lbDownload").addEventListener("click", () => download(lbUrl));
+  $("lbScene").addEventListener("click", () => {
+    setSceneFromUrl(lbUrl);
+    closeLightbox();
+  });
+  $("lightbox").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeLightbox();
+  });
+  document.addEventListener("keydown", (e) => {
+    if ($("lightbox").hidden) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") stepLightbox(-1);
+    if (e.key === "ArrowRight") stepLightbox(1);
+  });
+
+  // Keep the gallery clear of the docked composer.
+  new ResizeObserver(() => {
+    document.body.style.setProperty("--composer-h", `${composer.offsetHeight}px`);
+  }).observe(composer);
+
+  // ---------- init ----------
+  renderTray();
+  sync();
+  renderGallery();
+  loadRefs().then((saved) => {
+    if (saved.length && !refs.length) {
+      refs = saved;
+      // Restoring shouldn't override a backdrop the user already chose.
+      backdropBeforeScene = settings.backdrop === "match" ? DEFAULTS.backdrop : settings.backdrop;
+    }
+    if (settings.backdrop === "match" && !refs.some((r) => r.role === "scene")) {
+      settings.backdrop = DEFAULTS.backdrop;
+    }
+    renderTray();
+    sync();
+  });
+</script>
