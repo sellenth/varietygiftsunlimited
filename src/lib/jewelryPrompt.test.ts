@@ -63,6 +63,15 @@ describe("jewelryPrompt", () => {
     expect(prompt).toContain("match the exact metal color");
   });
 
+  it("describes a layout sketch as guidance only", () => {
+    const prompt = buildPrompt({ ...base, hasSketch: true, sketchOverPhoto: true });
+    expect(prompt).toContain(
+      "Uploaded image 4 is a rough composition sketch drawn over a reference photo.",
+    );
+    expect(prompt).toContain("Do not reproduce any sketch lines");
+    expect(buildPrompt(base)).not.toContain("composition sketch");
+  });
+
   it("does not stack non-ring pieces", () => {
     const prompt = buildPrompt({ ...base, jewelryType: "necklace", pieceCount: 2 });
     expect(prompt).toContain("Show all two necklaces worn naturally together");

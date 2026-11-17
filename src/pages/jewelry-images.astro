@@ -39,6 +39,7 @@ const resolutions = ["1K", "2K", "4K"];
         <span>Jewelry Studio</span>
       </div>
       <nav class="jw-toplinks">
+        <button id="balance" type="button" class="jw-balance" hidden></button>
         <a href="/backroom">Backroom</a>
         <a href="/upscaler">Upscaler</a>
         <button id="clearAllBtn" type="button" class="jw-linkbtn"
@@ -55,6 +56,8 @@ const resolutions = ["1K", "2K", "4K"];
         <div id="pieceTray" class="jw-trayrow"></div>
         <div class="jw-traysep" aria-hidden="true"></div>
         <div id="sceneTray" class="jw-trayrow"></div>
+        <div class="jw-traysep" aria-hidden="true"></div>
+        <div id="sketchTray" class="jw-trayrow"></div>
         <button
           id="clearRefsBtn"
           type="button"
@@ -187,6 +190,18 @@ const resolutions = ["1K", "2K", "4K"];
               placeholder="Paste your fal key"
             />
           </label>
+          <label class="jw-field jw-wide">
+            <span
+              >Billing key for the balance display (optional — only needed if
+              the key above can't read billing)</span
+            >
+            <input
+              id="billingKey"
+              type="password"
+              autocomplete="off"
+              placeholder="fal key with the Billing or Read-only preset"
+            />
+          </label>
         </div>
       </div>
 
@@ -258,6 +273,55 @@ const resolutions = ["1K", "2K", "4K"];
         <button id="lbDownload" type="button">Download</button>
         <button id="lbScene" type="button">Use as scene reference</button>
       </div>
+    </div>
+
+    <!-- Sketch pad -->
+    <div id="sketch" class="jw-sketch" hidden>
+      <div class="jw-skbar">
+        <label class="jw-chip">
+          <span>Draw on</span>
+          <select id="skBase"></select>
+        </label>
+        <div class="jw-sktools">
+          <button id="skPen" type="button" class="jw-toggle" aria-pressed="true"
+            >Pen</button
+          >
+          <button id="skEraser" type="button" class="jw-toggle" aria-pressed="false"
+            >Eraser</button
+          >
+          <div id="skColors" class="jw-swatches" role="group" aria-label="Pen color"></div>
+          <label class="jw-chip">
+            <select id="skSize" aria-label="Line weight">
+              <option value="4">Fine</option>
+              <option value="8" selected>Medium</option>
+              <option value="16">Bold</option>
+            </select>
+          </label>
+          <button id="skUndo" type="button" class="jw-toggle" aria-pressed="true"
+            >Undo</button
+          >
+          <button id="skClear" type="button" class="jw-toggle" aria-pressed="true"
+            >Clear</button
+          >
+        </div>
+        <div class="jw-skend">
+          <button id="skCancel" type="button" class="jw-toggle" aria-pressed="true"
+            >Cancel</button
+          >
+          <button id="skDone" type="button" class="jw-generate">Use sketch</button>
+        </div>
+      </div>
+      <div class="jw-skstage">
+        <div id="skWrap" class="jw-skwrap">
+          <canvas id="skBg"></canvas>
+          <canvas id="skInk"></canvas>
+        </div>
+      </div>
+      <p class="jw-skhint">
+        Rough is fine: outline where the hand and pieces should sit, add arrows
+        for light direction. The sketch guides the layout and is not copied into
+        the photo.
+      </p>
     </div>
 
     <div id="dropVeil" class="jw-dropveil" hidden>
@@ -858,6 +922,107 @@ const resolutions = ["1K", "2K", "4K"];
     border-color: var(--gold);
     color: var(--gold);
   }
+  .jw-balance {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .jw-balance:hover {
+    border-color: var(--gold);
+  }
+  .jw-balance.jw-low {
+    border-color: var(--bad);
+    color: var(--bad);
+  }
+  .jw-balance.jw-dim {
+    color: var(--muted);
+  }
+
+  .jw-sketch {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .jw-skbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .jw-sktools,
+  .jw-skend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .jw-skend {
+    margin-left: auto;
+  }
+  .jw-skend .jw-generate {
+    height: 40px;
+    margin-left: 0;
+  }
+  .jw-swatches {
+    display: flex;
+    gap: 6px;
+  }
+  .jw-swatches button {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    padding: 0;
+  }
+  .jw-swatches button[aria-pressed="true"] {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--gold);
+  }
+  .jw-skstage {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+  }
+  .jw-skwrap {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    touch-action: none;
+    cursor: crosshair;
+  }
+  .jw-skwrap canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .jw-skhint {
+    margin: 0;
+    padding: 0 16px 14px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .jw-thumb img.jw-editable {
+    cursor: pointer;
+  }
+
   .jw-dropveil {
     position: fixed;
     inset: 0;
@@ -905,6 +1070,9 @@ const resolutions = ["1K", "2K", "4K"];
     .jw-eye {
       margin-left: 0;
     }
+    .jw-skend .jw-generate {
+      flex: none;
+    }
     .jw-toplinks a {
       display: none;
     }
@@ -925,11 +1093,24 @@ const resolutions = ["1K", "2K", "4K"];
   } from "../lib/jewelryPrompt";
 
   // ---------- types & constants ----------
-  type Role = "piece" | "scene";
+  type Role = "piece" | "scene" | "sketch";
+  interface Stroke {
+    color: string;
+    size: number;
+    erase: boolean;
+    pts: number[]; // x0, y0, x1, y1, … in canvas pixels
+  }
+  interface SketchData {
+    base: string | null; // photo being drawn over, or null for a blank canvas
+    w: number;
+    h: number;
+    strokes: Stroke[];
+  }
   interface Ref {
     id: string;
     role: Role;
     src: string; // data URL or https URL
+    sketch?: SketchData; // kept so a sketch can be reopened and edited
   }
   interface Settings {
     brand: string;
@@ -967,6 +1148,11 @@ const resolutions = ["1K", "2K", "4K"];
   const SETTINGS_STORE = "jewelrySettings";
   const HISTORY_STORE = "jewelryHistory";
   const DRAFT_STORE = "jewelryDraft";
+  const BILLING_KEY_STORE = "falBillingKey";
+  const BALANCE_STORE = "jewelryBalance";
+  const BALANCE_MAX_AGE = 10 * 60 * 1000; // reuse a cached balance for 10 minutes
+  const BALANCE_MIN_GAP = 20 * 1000; // never hit the billing API more often than this
+  const LOW_BALANCE = 2;
   const MODELS: Record<string, { label: string; thinking?: string }> = {
     // Pro only supports "high" thinking, which is also its default.
     "fal-ai/nano-banana-pro/edit": { label: "Nano Banana Pro" },
@@ -1077,6 +1263,8 @@ const resolutions = ["1K", "2K", "4K"];
     composition: composition.value,
     pieceCount: refs.filter((r) => r.role === "piece").length,
     hasScene: refs.some((r) => r.role === "scene"),
+    hasSketch: refs.some((r) => r.role === "sketch"),
+    sketchOverPhoto: !!refs.find((r) => r.role === "sketch")?.sketch?.base,
     jewelryType: settings.jewelryType,
     stack: settings.stack,
     includeModel: settings.includeModel,
@@ -1105,7 +1293,7 @@ const resolutions = ["1K", "2K", "4K"];
       ),
     );
     if (!composition.value.trim()) {
-      body.prepend(
+      body.firstElementChild!.after(
         h(
           "div",
           { class: "jw-psec jw-you" },
@@ -1182,35 +1370,42 @@ const resolutions = ["1K", "2K", "4K"];
   const renderTray = () => {
     const pieces = refs.filter((r) => r.role === "piece");
     const scene = refs.find((r) => r.role === "scene");
-    const thumb = (r: Ref, label: string) => {
+    const sketch = refs.find((r) => r.role === "sketch");
+    const thumb = (r: Ref, label: string, onOpen?: () => void) => {
       const x = h("button", { type: "button", "aria-label": `Remove ${label}` }, "×");
       x.addEventListener("click", () => removeRef(r.id));
-      return h(
-        "div",
-        { class: "jw-thumb" },
-        h("img", { src: r.src, alt: label }),
-        h("small", {}, label),
-        x,
-      );
+      const img = h("img", { src: r.src, alt: label });
+      if (onOpen) {
+        img.classList.add("jw-editable");
+        img.title = "Edit sketch";
+        img.addEventListener("click", onOpen);
+      }
+      return h("div", { class: "jw-thumb" }, img, h("small", {}, label), x);
     };
-    const addBtn = (title: string, hint: string, input: string) => {
+    const addBtn = (title: string, hint: string, onClick: () => void) => {
       const b = h("button", { type: "button", class: "jw-add" }, h("b", {}, title), hint);
-      b.addEventListener("click", () => $<HTMLInputElement>(input).click());
+      b.addEventListener("click", onClick);
       return b;
     };
+    const pick = (input: string) => () => $<HTMLInputElement>(input).click();
     $("pieceTray").replaceChildren(
       ...pieces.map((r, i) => thumb(r, `Piece ${i + 1}`)),
       pieces.length < MAX_PIECES &&
         addBtn(
           pieces.length ? "+ Add piece" : "+ Jewelry",
           pieces.length ? `${pieces.length} of ${MAX_PIECES}` : "product renders",
-          "pieceInput",
+          pick("pieceInput"),
         ),
+    );
+    $("sketchTray").replaceChildren(
+      sketch
+        ? thumb(sketch, "Sketch", () => openSketch(sketch.sketch))
+        : addBtn("+ Sketch", "draw the layout (optional)", () => openSketch()),
     );
     $("sceneTray").replaceChildren(
       scene
         ? thumb(scene, "Scene")
-        : addBtn("+ Scene", "hand / model (optional)", "sceneInput"),
+        : addBtn("+ Scene", "hand / model (optional)", pick("sceneInput")),
     );
     $("clearRefsBtn").hidden = refs.length === 0;
   };
@@ -1461,6 +1656,7 @@ const resolutions = ["1K", "2K", "4K"];
     // Order matters: the prompt refers to "the first N" and "the last" image.
     const imageUrls = [
       ...pieces.map((r) => r.src),
+      ...refs.filter((r) => r.role === "sketch").map((r) => r.src),
       ...refs.filter((r) => r.role === "scene").map((r) => r.src),
     ];
     const batch: Batch = {
@@ -1512,7 +1708,285 @@ const resolutions = ["1K", "2K", "4K"];
         renderGallery();
       }),
     );
+    // One balance check per batch, a few seconds later so billing has caught up.
+    if (batch.slots.some((s) => s.state === "done")) {
+      setTimeout(() => refreshBalance(true), 5000);
+    }
   };
+
+  // ---------- fal balance ----------
+  // Fetched once per visit (cached for 10 minutes), once after each batch, and
+  // on click. There is deliberately no timer polling this.
+  const billingKey = $<HTMLInputElement>("billingKey");
+  const balanceEl = $("balance");
+  interface BalanceCache {
+    ts: number;
+    amount?: number;
+    currency?: string;
+    denied?: boolean;
+  }
+  let balanceBusy = false;
+  let lastBalanceCall = 0;
+
+  const showBalance = (b: BalanceCache | null) => {
+    balanceEl.hidden = !b;
+    if (!b) return;
+    balanceEl.classList.toggle("jw-low", !b.denied && (b.amount ?? 0) < LOW_BALANCE);
+    balanceEl.classList.toggle("jw-dim", !!b.denied);
+    if (b.denied) {
+      balanceEl.textContent = "fal balance: add billing key";
+      balanceEl.title = "This key can't read billing. Click to add a billing key.";
+      return;
+    }
+    const money = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: b.currency || "USD",
+    }).format(b.amount ?? 0);
+    balanceEl.textContent =
+      `fal balance ${money}${(b.amount ?? 0) < LOW_BALANCE ? " · low" : ""}`;
+    balanceEl.title = `Checked ${new Date(b.ts).toLocaleTimeString([], { timeStyle: "short" })}. Click to refresh.`;
+  };
+
+  const refreshBalance = async (force = false) => {
+    const key = billingKey.value.trim() || apiKey.value.trim();
+    if (!key) return showBalance(null);
+    const cached = readJson<BalanceCache | null>(BALANCE_STORE, null);
+    if (cached) showBalance(cached);
+    if (!force && cached && Date.now() - cached.ts < BALANCE_MAX_AGE) return;
+    if (balanceBusy || Date.now() - lastBalanceCall < BALANCE_MIN_GAP) return;
+    balanceBusy = true;
+    lastBalanceCall = Date.now();
+    try {
+      const res = await fetch(
+        "https://api.fal.ai/v1/account/billing?expand=credits",
+        { headers: { Authorization: `Key ${key}` } },
+      );
+      let next: BalanceCache | null = null;
+      if (res.status === 401 || res.status === 403) {
+        next = { ts: Date.now(), denied: true };
+      } else if (res.ok) {
+        const credits = (await res.json())?.credits;
+        if (typeof credits?.current_balance === "number") {
+          next = {
+            ts: Date.now(),
+            amount: credits.current_balance,
+            currency: credits.currency,
+          };
+        }
+      }
+      if (next) {
+        writeJson(BALANCE_STORE, next);
+        showBalance(next);
+      }
+    } catch {
+      // Offline or blocked: keep showing whatever we had.
+    } finally {
+      balanceBusy = false;
+    }
+  };
+
+  // ---------- sketch pad ----------
+  const SK_COLORS = ["#ff3b30", "#ffd60a", "#ffffff", "#111111", "#0a84ff"];
+  const skBg = $<HTMLCanvasElement>("skBg");
+  const skInk = $<HTMLCanvasElement>("skInk");
+  const skWrap = $("skWrap");
+  const skBaseSelect = $<HTMLSelectElement>("skBase");
+  let sk: SketchData = { base: null, w: 0, h: 0, strokes: [] };
+  let skBases: { label: string; src: string | null }[] = [];
+  let skColor = SK_COLORS[0];
+  let skErase = false;
+  let skActive: Stroke | null = null;
+
+  const drawStroke = (ctx: CanvasRenderingContext2D, s: Stroke, from = 0) => {
+    ctx.save();
+    ctx.globalCompositeOperation = s.erase ? "destination-out" : "source-over";
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = s.size;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(s.pts[from], s.pts[from + 1]);
+    if (s.pts.length - from <= 2) ctx.lineTo(s.pts[from] + 0.01, s.pts[from + 1]);
+    for (let i = from + 2; i < s.pts.length; i += 2) ctx.lineTo(s.pts[i], s.pts[i + 1]);
+    ctx.stroke();
+    ctx.restore();
+  };
+  const redrawInk = () => {
+    const ctx = skInk.getContext("2d")!;
+    ctx.clearRect(0, 0, skInk.width, skInk.height);
+    sk.strokes.forEach((s) => drawStroke(ctx, s));
+  };
+  const fitSketch = () => {
+    const stage = skWrap.parentElement!;
+    const availW = stage.clientWidth - 32;
+    const availH = stage.clientHeight - 32;
+    const scale = Math.min(availW / sk.w, availH / sk.h);
+    skWrap.style.width = `${Math.floor(sk.w * scale)}px`;
+    skWrap.style.height = `${Math.floor(sk.h * scale)}px`;
+  };
+
+  /** Size both canvases for a base photo (or a blank page at the output ratio). */
+  const setSketchBase = async (src: string | null, keepStrokes = false) => {
+    let w: number;
+    let h: number;
+    let img: HTMLImageElement | null = null;
+    if (src) {
+      img = new Image();
+      if (!src.startsWith("data:")) img.crossOrigin = "anonymous";
+      img.src = src;
+      await img.decode();
+      const scale = Math.min(1, 1280 / Math.max(img.naturalWidth, img.naturalHeight));
+      w = Math.round(img.naturalWidth * scale);
+      h = Math.round(img.naturalHeight * scale);
+    } else {
+      const [rw, rh] = settings.aspectRatio.split(":").map(Number);
+      const scale = 1024 / Math.max(rw, rh);
+      w = Math.round(rw * scale);
+      h = Math.round(rh * scale);
+    }
+    sk = { base: src, w, h, strokes: keepStrokes ? sk.strokes : [] };
+    for (const c of [skBg, skInk]) {
+      c.width = w;
+      c.height = h;
+    }
+    const bg = skBg.getContext("2d")!;
+    bg.fillStyle = "#fff";
+    bg.fillRect(0, 0, w, h);
+    if (img) bg.drawImage(img, 0, 0, w, h);
+    fitSketch();
+    redrawInk();
+  };
+
+  const setSketchTool = (erase: boolean, color = skColor) => {
+    skErase = erase;
+    skColor = color;
+    $("skPen").setAttribute("aria-pressed", String(!erase));
+    $("skEraser").setAttribute("aria-pressed", String(erase));
+    $("skColors")
+      .querySelectorAll("button")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(!erase && b.dataset.color === color)),
+      );
+  };
+
+  const openSketch = async (existing?: SketchData) => {
+    const scene = refs.find((r) => r.role === "scene");
+    skBases = [
+      { label: `Blank canvas (${settings.aspectRatio})`, src: null },
+      ...(scene ? [{ label: "Scene photo", src: scene.src }] : []),
+      ...refs
+        .filter((r) => r.role === "piece")
+        .map((r, i) => ({ label: `Piece ${i + 1}`, src: r.src })),
+    ];
+    if (existing?.base && !skBases.some((b) => b.src === existing.base)) {
+      skBases.push({ label: "Original photo", src: existing.base });
+    }
+    skBaseSelect.replaceChildren(
+      ...skBases.map((b, i) => h("option", { value: String(i) }, b.label)),
+    );
+    // New sketches start over the scene photo when there is one.
+    const start = existing ? existing.base : (scene?.src ?? null);
+    skBaseSelect.value = String(Math.max(0, skBases.findIndex((b) => b.src === start)));
+    $("sketch").hidden = false;
+    setSketchTool(false);
+    try {
+      sk = { base: null, w: 0, h: 0, strokes: existing ? existing.strokes.map((s) => ({ ...s, pts: [...s.pts] })) : [] };
+      await setSketchBase(start, true);
+    } catch {
+      skBaseSelect.value = "0";
+      await setSketchBase(null);
+      setStatus("Couldn't load that photo to draw on, so the sketch starts blank.", true);
+    }
+  };
+  const closeSketch = () => ($("sketch").hidden = true);
+
+  const skPoint = (e: PointerEvent) => {
+    const r = skInk.getBoundingClientRect();
+    return [
+      ((e.clientX - r.left) * skInk.width) / r.width,
+      ((e.clientY - r.top) * skInk.height) / r.height,
+    ];
+  };
+  skWrap.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    skWrap.setPointerCapture(e.pointerId);
+    const weight = Number($<HTMLSelectElement>("skSize").value) * (Math.max(sk.w, sk.h) / 1024);
+    skActive = {
+      color: skColor,
+      size: skErase ? weight * 3 : weight,
+      erase: skErase,
+      pts: skPoint(e),
+    };
+    sk.strokes.push(skActive);
+    drawStroke(skInk.getContext("2d")!, skActive);
+  });
+  skWrap.addEventListener("pointermove", (e) => {
+    if (!skActive) return;
+    const from = skActive.pts.length - 2;
+    skActive.pts.push(...skPoint(e));
+    drawStroke(skInk.getContext("2d")!, skActive, from);
+  });
+  const endStroke = () => (skActive = null);
+  skWrap.addEventListener("pointerup", endStroke);
+  skWrap.addEventListener("pointercancel", endStroke);
+
+  $("skColors").replaceChildren(
+    ...SK_COLORS.map((c) => {
+      const b = h("button", {
+        type: "button",
+        style: `background:${c}`,
+        "data-color": c,
+        "aria-label": `Color ${c}`,
+      });
+      b.addEventListener("click", () => setSketchTool(false, c));
+      return b;
+    }),
+  );
+  $("skPen").addEventListener("click", () => setSketchTool(false));
+  $("skEraser").addEventListener("click", () => setSketchTool(true));
+  $("skUndo").addEventListener("click", () => {
+    sk.strokes.pop();
+    redrawInk();
+  });
+  $("skClear").addEventListener("click", () => {
+    sk.strokes = [];
+    redrawInk();
+  });
+  skBaseSelect.addEventListener("change", async () => {
+    try {
+      await setSketchBase(skBases[Number(skBaseSelect.value)].src);
+    } catch {
+      skBaseSelect.value = "0";
+      await setSketchBase(null);
+    }
+  });
+  $("skCancel").addEventListener("click", closeSketch);
+  $("skDone").addEventListener("click", () => {
+    if (!sk.strokes.length) {
+      closeSketch();
+      return;
+    }
+    try {
+      const out = document.createElement("canvas");
+      out.width = sk.w;
+      out.height = sk.h;
+      const ctx = out.getContext("2d")!;
+      ctx.drawImage(skBg, 0, 0);
+      ctx.drawImage(skInk, 0, 0);
+      const src = out.toDataURL("image/jpeg", 0.9);
+      refs = refs.filter((r) => r.role !== "sketch");
+      refs.push({ id: uid(), role: "sketch", src, sketch: sk });
+      afterRefsChanged();
+      setStatus("Sketch added as a layout guide.");
+    } catch {
+      setStatus("Couldn't save the sketch over that photo. Try a blank canvas.", true);
+    }
+    closeSketch();
+  });
+  window.addEventListener("resize", () => {
+    if (!$("sketch").hidden) fitSketch();
+  });
 
   // ---------- wiring ----------
   bindSelect("jewelryType", "jewelryType");
@@ -1538,6 +2012,26 @@ const resolutions = ["1K", "2K", "4K"];
   apiKey.addEventListener("input", () =>
     localStorage.setItem(KEY_STORE, apiKey.value.trim()),
   );
+  billingKey.value = localStorage.getItem(BILLING_KEY_STORE) || "";
+  billingKey.addEventListener("input", () =>
+    localStorage.setItem(BILLING_KEY_STORE, billingKey.value.trim()),
+  );
+  // A changed key means the cached balance belongs to another account.
+  for (const el of [apiKey, billingKey]) {
+    el.addEventListener("change", () => {
+      localStorage.removeItem(BALANCE_STORE);
+      lastBalanceCall = 0;
+      refreshBalance(true);
+    });
+  }
+  balanceEl.addEventListener("click", () => {
+    if (balanceEl.classList.contains("jw-dim")) {
+      openSettings(true);
+      billingKey.focus();
+    } else {
+      refreshBalance(true);
+    }
+  });
 
   composition.value = readJson(DRAFT_STORE, "");
   composition.addEventListener("input", () => {
@@ -1636,6 +2130,7 @@ const resolutions = ["1K", "2K", "4K"];
     if (e.target === e.currentTarget) closeLightbox();
   });
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !$("sketch").hidden) closeSketch();
     if ($("lightbox").hidden) return;
     if (e.key === "Escape") closeLightbox();
     if (e.key === "ArrowLeft") stepLightbox(-1);
@@ -1651,6 +2146,7 @@ const resolutions = ["1K", "2K", "4K"];
   renderTray();
   sync();
   renderGallery();
+  refreshBalance();
   loadRefs().then((saved) => {
     if (saved.length && !refs.length) {
       refs = saved;

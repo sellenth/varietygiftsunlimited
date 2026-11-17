@@ -23,6 +23,9 @@ export interface PromptInput {
   composition: string;
   pieceCount: number;
   hasScene: boolean;
+  /** a hand-drawn layout sketch is sent right after the product renders */
+  hasSketch?: boolean;
+  sketchOverPhoto?: boolean;
   jewelryType: JewelryType;
   stack: boolean;
   includeModel: boolean;
@@ -188,6 +191,13 @@ export function buildSections(input: PromptInput): PromptSection[] {
   } else if (n > 1) {
     refs.push(
       `The first ${word(n)} uploaded images are the ${type.one} renders. Use all ${word(n)} as precise product references. Carefully study each design before placing them together.`,
+    );
+  }
+  if (input.hasSketch) {
+    refs.push(
+      `Uploaded image ${n + 1} is a rough composition sketch${
+        input.sketchOverPhoto ? " drawn over a reference photo" : ""
+      }. Use it only as a guide for framing, placement, and pose. Do not reproduce any sketch lines, arrows, or marks in the final photograph.`,
     );
   }
   if (input.hasScene) {
