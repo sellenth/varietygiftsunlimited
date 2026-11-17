@@ -74,7 +74,9 @@ a{color:var(--blue)}
 .proj .vid{position:relative;display:block}.proj .ph{aspect-ratio:16/9;display:grid;place-items:center;font-size:42px;margin-bottom:12px}
 .proj .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 4px}
 .proj h4{margin:4px 0 4px;font-size:17px;padding:0 4px}.proj p{margin:0 0 8px;font-size:14.5px;color:var(--muted);padding:0 4px}
-.proj .go{font-size:14px;font-weight:600;color:var(--blue);padding:0 4px;display:inline-flex;gap:6px;align-items:center}
+.proj .go:first-of-type::after{content:"";position:absolute;inset:0}
+.proj .go.steam{position:relative;z-index:1;margin-left:10px}
+.proj .go{text-decoration:none;font-size:14px;font-weight:600;color:var(--blue);padding:0 4px;display:inline-flex;gap:6px;align-items:center}
 .label{grid-column:1/-1;margin:4px 0 -10px}
 .label span{display:inline-block;background:#fffdf8;padding:4px 14px;font-family:Newsreader,Georgia,serif;font-weight:600;font-size:18px;transform:rotate(-1deg);box-shadow:0 4px 10px rgba(50,25,5,.25);position:relative}
 .label span:before,.label span:after{content:"";position:absolute;top:-8px;width:44px;height:16px;background:rgba(255,255,255,.55);transform:rotate(-6deg)}
@@ -124,7 +126,7 @@ footer{text-align:center;color:#fff;font-size:13px;padding:0 0 40px;text-shadow:
   </div>
 
   <div class="label"><span>Side projects</span></div>
-  <a class="item proj" href="https://apps.apple.com/us/app/arena2006/id6814988988"><span class="pin g"></span><img class="thumb" src="/arena2006/arena2006-key-art.png" alt="Arena 2006 key art"><div class="k">Game · 2026</div><h4>Arena 2006</h4><p>A campaign shooter I built and shipped to iPhone and Steam.</p><span class="go"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9s-2-.9-3.4-.9C5.9 6.8 4.2 7.8 3.3 9.4c-1.9 3.2-.5 8 1.3 10.6.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.9-4.3zM13.9 4.9c.7-.9 1.2-2.1 1.1-3.3-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.1.1 2.3-.6 3-1.5z"/></svg>App Store →</span></a>
+  <div class="item proj"><span class="pin g"></span><img class="thumb" src="/arena2006/arena2006-key-art.png" alt="Arena 2006 key art"><div class="k">Game · 2026</div><h4>Arena 2006</h4><p>A campaign shooter I built and shipped to iPhone and Steam.</p><a class="go" href="https://apps.apple.com/us/app/arena2006/id6814988988"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9s-2-.9-3.4-.9C5.9 6.8 4.2 7.8 3.3 9.4c-1.9 3.2-.5 8 1.3 10.6.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.9-4.3zM13.9 4.9c.7-.9 1.2-2.1 1.1-3.3-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.1.1 2.3-.6 3-1.5z"/></svg>App Store →</a><a class="go steam" href="https://store.steampowered.com/app/4690270/Arena_2006/">Steam →</a></div>
   <a class="item proj" href="https://www.youtube.com/@varietygifts"><span class="pin y"></span><span class="vid"><img class="thumb" src="/about-me/assets/youtube.webp" width="640" height="360" alt="Disneyland Vlog thumbnail from the Variety Gifts YouTube channel"></span><div class="k">Video · 10K+ subscribers</div><h4>Variety Gifts on YouTube</h4><p>157 videos and counting.</p><span class="go">Watch →</span></a>
   <a class="item proj" href="https://www.variety.gifts/"><span class="pin"></span><img class="thumb" src="/about-me/assets/shop.webp" width="640" height="360" alt="Variety Gifts shop homepage: Fun gifts for fun people"><div class="k">Web · Shop</div><h4>Variety Gifts</h4><p>A Stripe-powered gift shop, browser games, a VR robot and other web toys.</p><span class="go">Explore →</span></a>
 </main>
